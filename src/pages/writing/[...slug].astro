@@ -34,6 +34,10 @@ const ogImage = `/og/${slug}.svg`;
   author="Karthikeyan NG"
 >
   <article class="post">
+    <div class="banner-wrap">
+      <img src={ogImage} alt={`${post.data.title} — banner`} class="banner" loading="eager" decoding="async" />
+    </div>
+
     <header class="post-head">
       <div class="meta">
         <a href="/writing" class="back">← /writing</a>
@@ -84,6 +88,24 @@ const ogImage = `/og/${slug}.svg`;
 
 <style>
   .post { max-width: 760px; margin: 0 auto; padding-top: 12px; }
+
+  .banner-wrap {
+    margin: 0 -28px 24px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--green);
+    background: var(--bg2);
+    overflow: hidden;
+  }
+  @media (max-width: 700px) {
+    .banner-wrap { margin: 0 -16px 20px; }
+  }
+  .banner {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1200 / 630;
+  }
+
   .post-head {
     border-bottom: 1px dashed var(--line);
     padding-bottom: 24px; margin-bottom: 28px;
