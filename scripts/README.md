@@ -84,6 +84,29 @@ Short **Shares/Posts → `src/content/notes/`** (only with `--notes`)
 as drafts. LinkedIn's tracking redirects on outbound links are
 automatically unwrapped.
 
+**Duplicate detection.** The importer normalizes titles (lowercases,
+drops punctuation, drops stopwords) and skips articles whose title
+matches anything already in `src/content/posts/`. So if you imported
+something from Medium and then run the LinkedIn import, cross-posts
+are auto-skipped.
+
+**Images.** LinkedIn embeds article images via signed CDN URLs that
+**expire after a few months**. The importer rewrites every
+`<img src>` to a local path like `/images/articles/<slug>/01.jpg`
+and saves the original URLs to `scripts/article_images_manifest.json`.
+
+**Download the images locally before they expire:**
+
+```bash
+python3 scripts/download_article_images.py
+```
+
+That walks the manifest, fetches each LinkedIn image, and saves it
+to `public/images/articles/<slug>/<n>.<ext>` so the markdown
+references resolve. Idempotent — skips already-downloaded files.
+Use `--force` to re-download. Run this within a couple of months of
+the LinkedIn export or the URLs will 403.
+
 ---
 
 ## `recover_from_wayback.py`
