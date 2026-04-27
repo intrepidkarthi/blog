@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Multi-country trip">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- globe -->
+    <circle class="g" cx="100" cy="100" r="60"/>
+    <!-- meridians -->
+    <ellipse class="d" cx="100" cy="100" rx="60" ry="20"/>
+    <ellipse class="d" cx="100" cy="100" rx="20" ry="60"/>
+    <ellipse class="d" cx="100" cy="100" rx="40" ry="60"/>
+    <!-- equator -->
+    <line class="d" x1="40" y1="100" x2="160" y2="100"/>
+    <!-- continent blob (simplified India shape) -->
+    <path class="d" d="M 95 75 Q 105 75 110 85 L 105 110 Q 100 115 95 110 L 90 90 Z" style="fill:rgba(78,255,124,0.1);"/>
+    <!-- route dots -->
+    <circle class="dot-a" cx="75" cy="80" r="3"/>
+    <circle class="dot-a" cx="100" cy="65" r="3"/>
+    <circle class="dot-a" cx="135" cy="85" r="3"/>
+    <circle class="dot-a" cx="120" cy="120" r="3"/>
+    <!-- dotted route -->
+    <path class="a" d="M 75 80 Q 90 70 100 65 Q 120 70 135 85 Q 130 105 120 120" stroke-dasharray="3 3" fill="none"/>
+    <text class="mono-a" x="50" y="185">// 1 trip · many lands</text>
+    
+</svg>

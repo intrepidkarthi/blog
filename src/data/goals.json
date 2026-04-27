@@ -1,0 +1,174 @@
+[
+  {
+    "id": 1,
+    "title": "Write a book",
+    "category": "Build",
+    "status": "done",
+    "year": 2018,
+    "note": "Two ML books published with Packt: Mobile Artificial Intelligence Projects and Machine Learning for Mobile Applications.",
+    "image": "/images/goals/01-writing-book.svg"
+  },
+  {
+    "id": 2,
+    "title": "Meet Thalaivar Rajinikanth",
+    "category": "Encounter",
+    "status": "todo",
+    "note": "The man, the myth, the punchlines. Someday, somewhere — preferably without a queue.",
+    "image": "/images/goals/02-rajinikanth.svg"
+  },
+  {
+    "id": 3,
+    "title": "1M downloads on a personal app",
+    "category": "Build",
+    "status": "todo",
+    "note": "Teleport Call hit 420k organic downloads in the first month — close, but not crossed yet on anything I solely owned.",
+    "image": "/images/goals/03-million-downloads.svg"
+  },
+  {
+    "id": 4,
+    "title": "Manage a large engineering team",
+    "category": "Lead",
+    "status": "done",
+    "note": "Multiple times across nference, Sequoia, Chumbak, Pi42, VisionPlus.",
+    "image": "/images/goals/04-managing-team.svg"
+  },
+  {
+    "id": 5,
+    "title": "Start my own company",
+    "category": "Build",
+    "status": "done-failed",
+    "year": 2015,
+    "note": "GazeMatic — Teleport Call VR app. Shipped, hit 420k+ downloads, ran for 4 years. Didn't reach escape velocity. Counts.",
+    "image": "/images/goals/05-own-business.svg"
+  },
+  {
+    "id": 6,
+    "title": "Skydive",
+    "category": "Adventure",
+    "status": "done",
+    "year": 2022,
+    "note": "Dubai, 13,000 feet, free fall. The 60 seconds of weightlessness rewires you a little.",
+    "image": "/images/goals/06-skydiving.svg"
+  },
+  {
+    "id": 7,
+    "title": "Helicopter trip",
+    "category": "Adventure",
+    "status": "todo",
+    "note": "Some valley, some coastline, some sunrise. Not picky.",
+    "image": "/images/goals/07-chopper.svg"
+  },
+  {
+    "id": 8,
+    "title": "Set foot in Antarctica",
+    "category": "Travel",
+    "status": "todo",
+    "note": "The seventh continent. Probably via a research vessel from Ushuaia.",
+    "image": "/images/goals/08-antarctica.svg"
+  },
+  {
+    "id": 9,
+    "title": "Watch the Northern Lights",
+    "category": "Travel",
+    "status": "todo",
+    "note": "Tromsø, Reykjavik, Yellowknife — anywhere the aurora puts on its show.",
+    "image": "/images/goals/09-northern-lights.svg"
+  },
+  {
+    "id": 10,
+    "title": "Dip in ice-cold running water",
+    "category": "Adventure",
+    "status": "done",
+    "note": "Glacier-fed stream, the kind of cold that makes you forget your name for a few seconds.",
+    "image": "/images/goals/10-ice-dip.svg"
+  },
+  {
+    "id": 11,
+    "title": "Grow my own coconut trees",
+    "category": "Roots",
+    "status": "todo",
+    "note": "Plant them young, watch them outlive me. Madurai backyard, ideally.",
+    "image": "/images/goals/11-coconut.svg"
+  },
+  {
+    "id": 12,
+    "title": "Build a wooden farmhouse",
+    "category": "Build",
+    "status": "todo",
+    "note": "Slow-living escape, off-grid solar, a porch big enough for a hammock.",
+    "image": "/images/goals/12-farmhouse.svg"
+  },
+  {
+    "id": 13,
+    "title": "Win 20 hackathons",
+    "category": "Build",
+    "status": "in-progress",
+    "progress": "18 / 20",
+    "note": "Two more to go. Specifically scoped to hackathons I personally led or co-led, not team participations.",
+    "image": "/images/goals/13-hackathons.svg"
+  },
+  {
+    "id": 14,
+    "title": "Ship a personal hack that goes viral",
+    "category": "Build",
+    "status": "todo",
+    "note": "A weekend-built thing that hits the front page and stays useful past the news cycle.",
+    "image": "/images/goals/14-viral.svg"
+  },
+  {
+    "id": 15,
+    "title": "Own a 7-seater SUV",
+    "category": "Live",
+    "status": "deferred",
+    "note": "On the list more out of family-trip optionality than need. Currently no need — re-evaluating.",
+    "image": "/images/goals/15-suv.svg"
+  },
+  {
+    "id": 16,
+    "title": "Run an LLM on a local home machine",
+    "category": "Build",
+    "status": "in-progress",
+    "note": "Currently experimenting with the Dailyvox app. Llama 3 + a beefy Mac — closing in.",
+    "image": "/images/goals/16-local-llm.svg"
+  },
+  {
+    "id": 17,
+    "title": "Possess a rare unique item on Earth",
+    "category": "Collect",
+    "status": "todo",
+    "note": "Open-ended on purpose. A first edition, a meteorite, a one-of-one piece — TBD.",
+    "image": "/images/goals/17-rare-item.svg"
+  },
+  {
+    "id": 18,
+    "title": "Guinness World Record",
+    "category": "Build",
+    "status": "partial",
+    "note": "Was part of a team that set a Guinness record at a Microsoft hackathon. Counts as a partial — doing one solo or as the lead is the next step.",
+    "image": "/images/goals/18-guinness.svg"
+  },
+  {
+    "id": 19,
+    "title": "Multi-country trip in one go",
+    "category": "Travel",
+    "status": "todo",
+    "note": "A proper itinerary — three or more countries, two-plus weeks, one passport.",
+    "image": "/images/goals/19-multi-country.svg"
+  },
+  {
+    "id": 20,
+    "title": "Scuba dive",
+    "category": "Adventure",
+    "status": "done",
+    "note": "Multiple times. Coral reefs, low-vis wrecks, night dives. The ocean is louder than you'd think.",
+    "image": "/images/goals/20-scuba.svg"
+  },
+  {
+    "id": 21,
+    "title": "Earn a PhD",
+    "category": "Learn",
+    "status": "todo",
+    "note": "Probably mid-life, probably in something at the intersection of distributed systems and applied ML. No rush.",
+    "image": "/images/goals/21-phd.svg"
+  }
+]

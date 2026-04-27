@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="7-seater SUV">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- ground -->
+    <line class="d" x1="10" y1="155" x2="190" y2="155"/>
+    <!-- body -->
+    <path class="g" d="M 25 140 L 25 105 Q 25 95 35 95 L 60 95 L 75 70 L 145 70 L 160 95 L 175 95 Q 180 95 180 105 L 180 140 L 165 140"/>
+    <line class="g" x1="60" y1="140" x2="35" y2="140"/>
+    <line class="g" x1="140" y1="140" x2="105" y2="140"/>
+    <!-- windows -->
+    <path class="c" d="M 80 75 L 90 95 L 105 95 L 105 75 Z"/>
+    <path class="c" d="M 110 75 L 110 95 L 130 95 L 140 75 Z"/>
+    <line class="d" x1="105" y1="75" x2="105" y2="95"/>
+    <!-- door lines -->
+    <line class="d" x1="65" y1="100" x2="65" y2="138"/>
+    <line class="d" x1="105" y1="100" x2="105" y2="138"/>
+    <!-- wheels -->
+    <circle class="a fill-a" cx="60" cy="150" r="14" style="fill-opacity:0.1;"/>
+    <circle class="a" cx="60" cy="150" r="14"/>
+    <circle class="g" cx="60" cy="150" r="6"/>
+    <circle class="a fill-a" cx="150" cy="150" r="14" style="fill-opacity:0.1;"/>
+    <circle class="a" cx="150" cy="150" r="14"/>
+    <circle class="g" cx="150" cy="150" r="6"/>
+    <!-- headlight -->
+    <rect class="a" x="170" y="105" width="10" height="6"/>
+    <text class="mono" x="55" y="185">// 7 seats</text>
+    
+</svg>

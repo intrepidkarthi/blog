@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Wooden farmhouse">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- ground -->
+    <line class="d" x1="10" y1="170" x2="190" y2="170"/>
+    <!-- roof -->
+    <path class="a" d="M 50 90 L 100 50 L 150 90 L 150 95 L 100 55 L 50 95 Z" class="fill-a" style="fill-opacity:0.15;"/>
+    <path class="a" d="M 50 90 L 100 50 L 150 90"/>
+    <!-- roof eave -->
+    <line class="a" x1="48" y1="92" x2="152" y2="92"/>
+    <!-- walls -->
+    <rect class="g" x="55" y="95" width="90" height="75"/>
+    <!-- log lines -->
+    <line class="d" x1="55" y1="110" x2="145" y2="110"/>
+    <line class="d" x1="55" y1="125" x2="145" y2="125"/>
+    <line class="d" x1="55" y1="140" x2="145" y2="140"/>
+    <line class="d" x1="55" y1="155" x2="145" y2="155"/>
+    <!-- door -->
+    <rect class="a" x="92" y="135" width="16" height="35"/>
+    <circle class="dot-g" cx="103" cy="153" r="1"/>
+    <!-- window -->
+    <rect class="c" x="65" y="115" width="14" height="14"/>
+    <line class="c" x1="72" y1="115" x2="72" y2="129"/>
+    <line class="c" x1="65" y1="122" x2="79" y2="122"/>
+    <rect class="c" x="121" y="115" width="14" height="14"/>
+    <line class="c" x1="128" y1="115" x2="128" y2="129"/>
+    <line class="c" x1="121" y1="122" x2="135" y2="122"/>
+    <!-- chimney + smoke -->
+    <rect class="d" x="125" y="60" width="10" height="22"/>
+    <path class="d" d="M 130 55 Q 138 48 130 40 Q 122 32 130 25"/>
+    <text class="mono" x="55" y="190">// off-grid</text>
+    
+</svg>

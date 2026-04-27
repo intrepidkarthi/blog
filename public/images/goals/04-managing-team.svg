@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Managing a team">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- center node -->
+    <circle class="a fill-a" cx="100" cy="100" r="9" style="fill-opacity:0.3;"/>
+    <circle class="a" cx="100" cy="100" r="9"/>
+    <!-- ring nodes -->
+    <circle class="g" cx="100" cy="40" r="7"/>
+    <circle class="g" cx="155" cy="70" r="7"/>
+    <circle class="g" cx="155" cy="130" r="7"/>
+    <circle class="g" cx="100" cy="160" r="7"/>
+    <circle class="g" cx="45" cy="130" r="7"/>
+    <circle class="g" cx="45" cy="70" r="7"/>
+    <!-- connecting lines -->
+    <line class="d" x1="100" y1="49" x2="100" y2="91"/>
+    <line class="d" x1="148" y1="74" x2="108" y2="96"/>
+    <line class="d" x1="148" y1="126" x2="108" y2="104"/>
+    <line class="d" x1="100" y1="151" x2="100" y2="109"/>
+    <line class="d" x1="52" y1="126" x2="92" y2="104"/>
+    <line class="d" x1="52" y1="74" x2="92" y2="96"/>
+    <text class="mono-a" x="70" y="190">// ship together</text>
+    
+</svg>

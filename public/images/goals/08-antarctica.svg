@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Antarctica">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- stars -->
+    <circle class="dot-a" cx="40" cy="40" r="1.5"/>
+    <circle class="dot-g" cx="60" cy="25" r="1.2"/>
+    <circle class="dot-a" cx="120" cy="32" r="1.5"/>
+    <circle class="dot-g" cx="160" cy="45" r="1.2"/>
+    <circle class="dot-a" cx="170" cy="22" r="1.5"/>
+    <circle class="dot-g" cx="90" cy="20" r="1.2"/>
+    <!-- back peaks -->
+    <path class="d" d="M 20 130 L 50 70 L 80 110 L 110 60 L 145 100 L 180 75 L 180 140 L 20 140 Z"/>
+    <!-- front iceberg (large) -->
+    <path class="g" d="M 30 165 L 75 95 L 110 165 Z"/>
+    <line class="d" x1="60" y1="120" x2="80" y2="135"/>
+    <!-- iceberg (small) -->
+    <path class="a" d="M 100 175 L 130 130 L 170 175 Z"/>
+    <line class="d" x1="120" y1="155" x2="140" y2="160"/>
+    <!-- water line -->
+    <line class="c" x1="0" y1="175" x2="200" y2="175"/>
+    <line class="c" x1="0" y1="180" x2="200" y2="180" stroke-dasharray="3 4"/>
+    <text class="mono-a" x="55" y="195">// 7th continent</text>
+    
+</svg>

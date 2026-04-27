@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Starting own business">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- rocket body -->
+    <path class="g" d="M 90 55 Q 100 35 110 55 L 110 125 L 90 125 Z"/>
+    <!-- nose cap -->
+    <path class="a" d="M 90 55 Q 100 35 110 55"/>
+    <!-- window -->
+    <circle class="c" cx="100" cy="80" r="6"/>
+    <!-- fins -->
+    <path class="g" d="M 90 110 L 78 130 L 90 125 Z"/>
+    <path class="g" d="M 110 110 L 122 130 L 110 125 Z"/>
+    <!-- flames -->
+    <path class="a" d="M 90 125 L 95 145 L 100 130 L 105 145 L 110 125"/>
+    <path class="p" d="M 93 130 L 100 155 L 107 130"/>
+    <!-- launch pad -->
+    <line class="d" x1="50" y1="170" x2="150" y2="170"/>
+    <line class="d" x1="60" y1="170" x2="55" y2="180"/>
+    <line class="d" x1="140" y1="170" x2="145" y2="180"/>
+    <text class="mono" x="55" y="40">▲ liftoff '15</text>
+    
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Chopper trip">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- main rotor -->
+    <line class="a" x1="35" y1="55" x2="165" y2="55"/>
+    <line class="d" x1="100" y1="50" x2="100" y2="60"/>
+    <!-- mast -->
+    <line class="g" x1="100" y1="55" x2="100" y2="80"/>
+    <!-- body -->
+    <path class="g" d="M 50 100 Q 50 80 75 80 L 130 80 Q 145 80 150 95 L 150 115 Q 150 125 140 125 L 60 125 Q 50 125 50 115 Z"/>
+    <!-- cockpit -->
+    <path class="c" d="M 55 100 Q 55 88 67 88 L 90 88 L 90 105 L 55 105 Z"/>
+    <!-- tail boom -->
+    <path class="g" d="M 150 100 L 180 95 L 180 102 L 150 105 Z"/>
+    <!-- tail rotor -->
+    <line class="a" x1="178" y1="85" x2="178" y2="115"/>
+    <!-- skids -->
+    <line class="g" x1="55" y1="135" x2="145" y2="135"/>
+    <line class="g" x1="65" y1="125" x2="65" y2="135"/>
+    <line class="g" x1="135" y1="125" x2="135" y2="135"/>
+    <text class="mono-a" x="55" y="160">// soon</text>
+    
+</svg>

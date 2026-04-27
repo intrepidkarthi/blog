@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Ice cold dip">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- snowflake -->
+    <g transform="translate(60 55)">
+      <line class="c" x1="0" y1="-22" x2="0" y2="22"/>
+      <line class="c" x1="-22" y1="0" x2="22" y2="0"/>
+      <line class="c" x1="-16" y1="-16" x2="16" y2="16"/>
+      <line class="c" x1="16" y1="-16" x2="-16" y2="16"/>
+      <line class="a" x1="0" y1="-22" x2="-5" y2="-17"/>
+      <line class="a" x1="0" y1="-22" x2="5" y2="-17"/>
+      <line class="a" x1="0" y1="22" x2="-5" y2="17"/>
+      <line class="a" x1="0" y1="22" x2="5" y2="17"/>
+    </g>
+    <!-- water ripples -->
+    <ellipse class="g" cx="125" cy="125" rx="40" ry="10"/>
+    <ellipse class="g" cx="125" cy="125" rx="28" ry="7"/>
+    <ellipse class="a" cx="125" cy="125" rx="14" ry="3.5"/>
+    <!-- splash drops -->
+    <circle class="dot-g" cx="100" cy="105" r="2"/>
+    <circle class="dot-g" cx="115" cy="98" r="1.5"/>
+    <circle class="dot-a" cx="135" cy="100" r="1.8"/>
+    <circle class="dot-g" cx="150" cy="108" r="1.5"/>
+    <text class="mono" x="55" y="190">brrrr ✓</text>
+    
+</svg>

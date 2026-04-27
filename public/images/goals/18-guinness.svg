@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Guinness record">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- ribbon -->
+    <path class="p" d="M 70 30 L 100 95 L 130 30 L 122 30 L 100 80 L 78 30 Z" class="fill-p" style="fill-opacity:0.15;"/>
+    <path class="p" d="M 70 30 L 100 95 L 130 30 L 122 30 L 100 80 L 78 30 Z"/>
+    <!-- medal disk -->
+    <circle class="a fill-a" cx="100" cy="115" r="35" style="fill-opacity:0.1;"/>
+    <circle class="a" cx="100" cy="115" r="35"/>
+    <circle class="g" cx="100" cy="115" r="28"/>
+    <!-- star inside -->
+    <path class="a fill-a" d="M 100 96 L 105 110 L 120 110 L 108 119 L 113 132 L 100 124 L 87 132 L 92 119 L 80 110 L 95 110 Z"/>
+    <!-- record text -->
+    <text class="mono-a" x="55" y="180">team record ✓</text>
+    
+</svg>

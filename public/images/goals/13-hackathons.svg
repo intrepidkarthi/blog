@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="20 hackathons">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- trophy bowl -->
+    <path class="a" d="M 70 55 L 70 95 Q 70 115 100 115 Q 130 115 130 95 L 130 55 Z" class="fill-a" style="fill-opacity:0.15;"/>
+    <path class="a" d="M 70 55 L 70 95 Q 70 115 100 115 Q 130 115 130 95 L 130 55 Z"/>
+    <!-- handles -->
+    <path class="a" d="M 70 65 Q 50 65 50 80 Q 50 95 70 95"/>
+    <path class="a" d="M 130 65 Q 150 65 150 80 Q 150 95 130 95"/>
+    <!-- top rim -->
+    <line class="a" x1="65" y1="55" x2="135" y2="55"/>
+    <!-- star -->
+    <path class="a fill-a" d="M 100 70 L 104 80 L 114 80 L 106 87 L 109 97 L 100 91 L 91 97 L 94 87 L 86 80 L 96 80 Z"/>
+    <!-- stem & base -->
+    <line class="g" x1="100" y1="115" x2="100" y2="135"/>
+    <rect class="g" x="80" y="135" width="40" height="8"/>
+    <rect class="g" x="75" y="143" width="50" height="6"/>
+    <!-- progress bar -->
+    <rect class="d" x="35" y="165" width="130" height="10"/>
+    <rect class="g fill-g" x="35" y="165" width="117" height="10"/>
+    <text class="mono-a" x="60" y="190">18 / 20</text>
+    
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Writing a book">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .dot-g { fill: #4eff7c; stroke: none; }
+    .dot-a { fill: #ffb454; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+  
+    <!-- bottom book -->
+    <rect class="g" x="35" y="135" width="130" height="22" rx="2"/>
+    <line class="d" x1="50" y1="142" x2="150" y2="142"/>
+    <line class="d" x1="50" y1="150" x2="120" y2="150"/>
+    <!-- middle book (offset, amber) -->
+    <rect class="a" x="42" y="100" width="125" height="32" rx="2"/>
+    <line class="d" x1="55" y1="110" x2="155" y2="110"/>
+    <text class="mono-a" x="60" y="123">ML for Mobile</text>
+    <!-- top book (open, green) -->
+    <path class="g" d="M 38 65 L 38 95 L 100 90 L 162 95 L 162 65 L 100 60 Z"/>
+    <line class="g" x1="100" y1="60" x2="100" y2="90"/>
+    <line class="d" x1="50" y1="74" x2="92" y2="71"/>
+    <line class="d" x1="50" y1="82" x2="92" y2="79"/>
+    <line class="d" x1="108" y1="71" x2="150" y2="74"/>
+    <line class="d" x1="108" y1="79" x2="150" y2="82"/>
+    <text class="mono" x="55" y="50">2 published</text>
+    
+</svg>
