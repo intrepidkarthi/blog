@@ -239,6 +239,23 @@
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
       );
     }
+
+    // ---------- nerd helpers ----------
+    const _rand = (lo, hi) => Math.random() * (hi - lo) + lo;
+    const _fmtUSD = (n) => "$" + n.toLocaleString("en-US", { maximumFractionDigits: n > 100 ? 0 : 2 });
+    const _arrow = (n) => n >= 0
+      ? `<span class="ok">▲ ${n.toFixed(2)}%</span>`
+      : `<span class="err">▼ ${Math.abs(n).toFixed(2)}%</span>`;
+    const _bar = (val, max = 100, w = 30) => {
+      const filled = Math.max(0, Math.min(w, Math.round((val / max) * w)));
+      return "█".repeat(filled) + "░".repeat(w - filled);
+    };
+    const _spark = (vals) => {
+      const chars = "▁▂▃▄▅▆▇█";
+      const lo = Math.min(...vals), hi = Math.max(...vals);
+      return vals.map(v => chars[Math.floor(((v - lo) / (hi - lo || 1)) * 7)]).join("");
+    };
+    const _randSeq = (n, lo = 0, hi = 100) => Array.from({ length: n }, () => _rand(lo, hi));
     function unlockAchievement(key, title, msg) {
       if (achievements.has(key)) return;
       achievements.add(key);
@@ -251,22 +268,19 @@
     // ---------- commands ----------
     const COMMANDS = {
       help() {
-        return `<span class="info">commands:</span>
-<table>
-<tr><td class="k">whoami / about</td><td class="v">→ jumps to /about</td></tr>
-<tr><td class="k">writing / posts</td><td class="v">→ jumps to /writing</td></tr>
-<tr><td class="k">lab</td><td class="v">→ jumps to /lab (feaws · dailyvox · books)</td></tr>
-<tr><td class="k">mission / goals</td><td class="v">→ jumps to /mission</td></tr>
-<tr><td class="k">contact / hire</td><td class="v">→ jumps to /contact</td></tr>
-<tr><td class="k">cat &lt;file&gt;</td><td class="v">show ambitions.md, wishlist.md, now.md</td></tr>
-<tr><td class="k">date / uptime / pwd</td><td class="v">system info</td></tr>
-<tr><td class="k">theme</td><td class="v">cycle terminal palette</td></tr>
-<tr><td class="k">matrix</td><td class="v">turn it up</td></tr>
-<tr><td class="k">joke</td><td class="v">random tech humor</td></tr>
-<tr><td class="k">snake / 42 / konami</td><td class="v">things that are hidden</td></tr>
-<tr><td class="k">clear</td><td class="v">clear the screen</td></tr>
-</table>
-<span class="dim">tip: tabs at top are clickable too. or press 1-6.</span>`;
+        return `<span class="info">commands · grouped</span>
+
+<span class="accent">nav</span>      whoami · writing · lab · mission · about · contact · ls · cd
+<span class="accent">files</span>    cat &lt;file&gt; (ambitions.md, wishlist.md, now.md)
+<span class="accent">crypto</span>   btc · eth · sol · gas · fear · greed · funding · block · halving · whales · liq
+<span class="accent">ai/ml</span>    gpu · models · tokenize &lt;text&gt; · embed &lt;text&gt; · agi · params
+<span class="accent">system</span>   neofetch · ping &lt;host&gt; · traceroute · top · htop · curl &lt;host&gt;
+<span class="accent">stats</span>    streak · setup · bookshelf · stack · uptime · date · pwd
+<span class="accent">fun</span>      joke · fortune · cowsay &lt;text&gt; · figlet &lt;text&gt; · theme · matrix
+<span class="accent">hidden</span>   snake · 42 · konami · sl · vim · :wq · sudo · hack the planet
+<span class="accent">util</span>     clear · echo &lt;text&gt;
+
+<span class="dim">tip: tabs above are clickable. press 1-6 to navigate. TAB autocompletes.</span>`;
       },
       whoami() {
         unlockAchievement("whoami", "Identified", "You met Karthik");
@@ -353,9 +367,369 @@
           "Two engineers walk into a bar. They argue for an hour about whether it's a bar or a tavern.",
           "Crypto doesn't lie. People who hold crypto lie about their cost basis.",
           "My favorite kind of music? Algo-rhythms.",
+          "There are 2 hard problems in CS: cache invalidation, naming things, and off-by-one errors.",
+          "Stablecoins are a great solution to a problem regulators created and then forgot about.",
         ];
         return '<span class="info">▸</span> ' + jokes[Math.floor(Math.random() * jokes.length)];
       },
+
+      // ---------- crypto / trading ----------
+      btc() {
+        unlockAchievement("trader", "Trader", "Checked the tape");
+        const price = 97500 + _rand(-2500, 3500);
+        const change = _rand(-3.5, 4);
+        const series = _randSeq(24, 90, 105);
+        return `<span class="accent">BTC/USDT</span>  ${_fmtUSD(price)}  ${_arrow(change)}\n` +
+          `<span class="dim">24h:</span>  ${_spark(series)}\n` +
+          `<span class="dim">snapshot · live data + signals at <a href="https://feaws.xyz" target="_blank">feaws.xyz</a></span>`;
+      },
+      eth() {
+        const price = 3650 + _rand(-180, 250);
+        const change = _rand(-4, 5);
+        const series = _randSeq(24, 95, 105);
+        return `<span class="accent">ETH/USDT</span>  ${_fmtUSD(price)}  ${_arrow(change)}\n` +
+          `<span class="dim">24h:</span>  ${_spark(series)}\n` +
+          `<span class="dim">snapshot · feaws.xyz</span>`;
+      },
+      sol() {
+        const price = 195 + _rand(-15, 25);
+        const change = _rand(-6, 8);
+        return `<span class="accent">SOL/USDT</span>  ${_fmtUSD(price)}  ${_arrow(change)}\n` +
+          `<span class="dim">snapshot · feaws.xyz</span>`;
+      },
+      gas() {
+        const slow = Math.floor(_rand(8, 18));
+        const avg = slow + Math.floor(_rand(2, 8));
+        const fast = avg + Math.floor(_rand(3, 12));
+        return `<span class="accent">ETH gas (gwei)</span>\n` +
+          `  slow:    <span class="info">${slow}</span>   ~5 min\n` +
+          `  average: <span class="ok">${avg}</span>   ~30 sec\n` +
+          `  fast:    <span class="warn">${fast}</span>   ~10 sec\n` +
+          `<span class="dim">always verify on etherscan before signing</span>`;
+      },
+      fear() {
+        const v = Math.floor(_rand(20, 80));
+        let label, color;
+        if (v < 25) { label = "EXTREME FEAR"; color = "err"; }
+        else if (v < 45) { label = "FEAR"; color = "warn"; }
+        else if (v < 55) { label = "NEUTRAL"; color = "dim"; }
+        else if (v < 75) { label = "GREED"; color = "ok"; }
+        else { label = "EXTREME GREED"; color = "pink"; }
+        return `<span class="accent">Crypto Fear &amp; Greed Index</span>\n` +
+          `  <span class="${color}">${v.toString().padStart(3)} / 100  ·  ${label}</span>\n` +
+          `  ${_bar(v, 100, 30)}\n` +
+          `  <span class="dim">0 = panic · 100 = euphoria</span>`;
+      },
+      greed() { return COMMANDS.fear(); },
+      funding() {
+        return `<span class="accent">perpetual funding rates · 8h annualized</span>
+<table>
+<tr><td class="k">BTC-PERP</td><td class="v"><span class="ok">+0.012%</span> · longs pay shorts</td></tr>
+<tr><td class="k">ETH-PERP</td><td class="v"><span class="warn">−0.008%</span> · shorts pay longs</td></tr>
+<tr><td class="k">SOL-PERP</td><td class="v"><span class="ok">+0.024%</span></td></tr>
+<tr><td class="k">RNDR-PERP</td><td class="v"><span class="ok">+0.041%</span> ★ hot</td></tr>
+<tr><td class="k">DOGE-PERP</td><td class="v"><span class="warn">−0.018%</span></td></tr>
+</table>
+<span class="dim">snapshot · live signals at feaws.xyz</span>`;
+      },
+      block() {
+        const h = 870000 + Math.floor(_rand(0, 5000));
+        const next = 1050000;
+        const diff = next - h;
+        const yrs = (diff * 10 / 60 / 24 / 365).toFixed(1);
+        return `<span class="accent">BTC</span>  block  <span class="ok">${h.toLocaleString()}</span>\n` +
+          `next halving:  block ${next.toLocaleString()}\n` +
+          `                ${diff.toLocaleString()} blocks · ~${yrs} years\n` +
+          `<span class="dim">avg block ~10 min</span>`;
+      },
+      halving() { return COMMANDS.block(); },
+      whales() {
+        return `<span class="accent">recent whale movements · 24h</span>
+<table>
+<tr><td class="k">19:42 UTC</td><td class="v">2,400 BTC → Coinbase  <span class="warn">[possible sell]</span></td></tr>
+<tr><td class="k">17:15 UTC</td><td class="v">15,000 ETH → unknown  <span class="dim">[accumulation?]</span></td></tr>
+<tr><td class="k">14:08 UTC</td><td class="v">820 BTC ← Binance     <span class="ok">[withdrawal]</span></td></tr>
+<tr><td class="k">11:22 UTC</td><td class="v">9,300 ETH ← Kraken    <span class="ok">[withdrawal]</span></td></tr>
+</table>
+<span class="dim">snapshot · whales lie sometimes</span>`;
+      },
+      liq() {
+        const total = (_rand(80, 380)).toFixed(1);
+        const longs = (_rand(40, 70)).toFixed(0);
+        return `<span class="accent">liquidations · last 24h</span>\n` +
+          `total: <span class="warn">$${total}M</span>\n` +
+          `  longs:  ${longs}%  ${_bar(longs, 100, 24)}\n` +
+          `  shorts: ${100-longs}%  ${_bar(100-longs, 100, 24)}\n` +
+          `<span class="dim">cascade threshold approached at 09:14 UTC</span>`;
+      },
+      liquidations() { return COMMANDS.liq(); },
+
+      // ---------- ai / ml ----------
+      gpu() {
+        return `<pre class="ascii">+-----------------------------------------------------------+
+| NVIDIA-SMI · driver 555.42  ·  CUDA 12.5                  |
++-----------------------------------------------------------+
+| GPU 0   M3 Max (Apple)       Temp: 52°C   Power:  21W     |
+|         VRAM: 18.2 / 64.0 GB                              |
+|         Utilization: 87%                                  |
+|         Process:  ollama serve · llama-3.3-70b-instruct   |
++-----------------------------------------------------------+
+| GPU 1   RTX 4090 (cloud)     Temp: 47°C   Power:  85W     |
+|         VRAM: 21.4 / 24.0 GB                              |
+|         Utilization: 94%                                  |
+|         Process:  vllm · qwen2.5-coder-32b                |
++-----------------------------------------------------------+</pre>
+<span class="dim">M3 Max for dailyvox · 4090 for the heavier work</span>`;
+      },
+      models() {
+        return `<span class="accent">models on hand</span>
+<table>
+<tr><td class="k">llama-3.3-70b</td><td class="v"><span class="ok">●</span> local · 40GB · default</td></tr>
+<tr><td class="k">qwen-2.5-coder-32b</td><td class="v"><span class="ok">●</span> local · 18GB · code tasks</td></tr>
+<tr><td class="k">phi-4-mini</td><td class="v"><span class="ok">●</span> local · 4GB · fast lightweight</td></tr>
+<tr><td class="k">whisper-large-v3</td><td class="v"><span class="ok">●</span> local · 3GB · STT for dailyvox</td></tr>
+<tr><td class="k">claude-sonnet-4.6</td><td class="v"><span class="info">○</span> api · the heavy lift</td></tr>
+<tr><td class="k">gpt-5.3-codex</td><td class="v"><span class="info">○</span> api · code review</td></tr>
+<tr><td class="k">flux-dev</td><td class="v"><span class="info">○</span> api · image gen</td></tr>
+</table>
+<span class="dim">testbed: <a href="https://getdailyvox.com" target="_blank">dailyvox</a> running local · ollama on M3 Max</span>`;
+      },
+      tokenize(arg) {
+        if (!arg) return '<span class="err">usage:</span> tokenize &lt;text&gt;';
+        const tokens = Math.max(1, Math.ceil(arg.length / 4));
+        const cost = (tokens / 1000 * 3).toFixed(4);
+        return `<span class="accent">"${escapeHtml(arg)}"</span>\n` +
+          `chars:  ${arg.length}\n` +
+          `tokens: ~${tokens}  <span class="dim">(rough: chars / 4)</span>\n` +
+          `cost:   ~$${cost}  <span class="dim">at $3 / 1M input tokens</span>`;
+      },
+      embed(arg) {
+        if (!arg) return '<span class="err">usage:</span> embed &lt;text&gt;';
+        const dims = 8;
+        const v = Array.from({ length: dims }, () => (_rand(-1, 1)).toFixed(3));
+        return `<span class="accent">embedding</span>  "${escapeHtml(arg)}"\n` +
+          `dim 1536 (cohere/openai · truncated to ${dims})\n` +
+          `[ ${v.join(", ")}, ... ]\n` +
+          `<span class="dim">cosine sim to "shipping": 0.${Math.floor(_rand(50, 90))}</span>`;
+      },
+      agi() {
+        const days = Math.floor(_rand(180, 1825));
+        return `<span class="accent">AGI countdown · vibes only</span>\n` +
+          `estimate:    <span class="ok">${days}</span> days\n` +
+          `error term:  ±∞\n` +
+          `confidence:  low\n` +
+          `meanwhile:   build infrastructure that compounds.\n` +
+          `<span class="dim">based on no model. updated when memes change.</span>`;
+      },
+      params() {
+        return `<span class="accent">parameter counts (rounded)</span>
+<table>
+<tr><td class="k">phi-4-mini</td><td class="v">3.8B</td></tr>
+<tr><td class="k">llama-3.3-70b</td><td class="v">70B</td></tr>
+<tr><td class="k">qwen-2.5-coder-32b</td><td class="v">32B</td></tr>
+<tr><td class="k">claude-sonnet-4.6</td><td class="v">undisclosed (~mid 100s of B)</td></tr>
+<tr><td class="k">gpt-5</td><td class="v">undisclosed (rumored 1-2T MoE)</td></tr>
+<tr><td class="k">human brain</td><td class="v">~86B neurons · ~100T synapses</td></tr>
+</table>
+<span class="dim">ratio of synapses to gpt-5 params: ~50-100×</span>`;
+      },
+
+      // ---------- system / hacker ----------
+      neofetch() {
+        return `<pre class="ascii">         <span class="accent">karthik</span>@<span class="info">intrepidkarthi</span>
+         ────────────────────────────
+         <span class="ok">os</span>:        Madurai · BLR · DXB rolling release
+         <span class="ok">kernel</span>:    karthik 6.5.6-builder
+         <span class="ok">uptime</span>:    16+ years shipping · 412 day streak
+         <span class="ok">role</span>:      Engineer · Author · Speaker
+         <span class="ok">trading</span>:   full-time perpetual futures
+         <span class="ok">stack</span>:     crypto · ai · trading · stablecoins
+         <span class="ok">books</span>:     2 published · 1 in draft
+         <span class="ok">trophies</span>:  18× hackathon · 1× tedx
+         <span class="ok">memory</span>:    16y compounded · all banks healthy
+         <span class="ok">cpu</span>:       1× curious human, hyperthreaded
+         <span class="ok">gpu</span>:       caffeine + insomnia, dual-channel
+         <span class="ok">terminal</span>:  intrepidkarthi.com (this one)</pre>`;
+      },
+      ping(arg) {
+        const host = arg || "intrepidkarthi.com";
+        const t = () => (_rand(8, 18)).toFixed(1);
+        return `PING ${escapeHtml(host)} · 56 data bytes
+64 bytes from ${escapeHtml(host)}: icmp_seq=1 ttl=53 time=${t()} ms
+64 bytes from ${escapeHtml(host)}: icmp_seq=2 ttl=53 time=${t()} ms
+64 bytes from ${escapeHtml(host)}: icmp_seq=3 ttl=53 time=${t()} ms
+--- ${escapeHtml(host)} ping statistics ---
+3 packets transmitted, 3 received, <span class="ok">0.0% packet loss</span>`;
+      },
+      traceroute(arg) {
+        const host = arg || "intrepidkarthi.com";
+        return `traceroute to ${escapeHtml(host)}, 30 hops max, 60 byte packets
+ 1  router.local           1.2 ms
+ 2  10.42.0.1              4.5 ms
+ 3  isp-gw.bsnl.in        12.1 ms
+ 4  AS9498  ***  filtered  *
+ 5  cf-101.cloudflare.net 24.8 ms
+ 6  vercel-edge.iad1     108.4 ms
+ 7  ${escapeHtml(host)}    109.2 ms <span class="ok">★ arrived</span>`;
+      },
+      top() {
+        return `<pre class="ascii">PID    USER     %CPU  %MEM  COMMAND
+1      karthik   ∞    100   /sbin/karthik --mode=builder
+42     karthik  87.4  12.3  ollama serve
+137    karthik  62.1   8.7  feaws.xyz / quant-engine
+418    karthik  44.0  18.2  dailyvox-ios-bridge
+523    karthik  28.6   3.1  intrepidkarthi.com (astro dev)
+901    karthik   ∞    ∞     thinking about retirement</pre>`;
+      },
+      htop() { return COMMANDS.top(); },
+      curl(arg) {
+        const host = arg || "intrepidkarthi.com";
+        return `<pre class="ascii">HTTP/2 200
+content-type: text/html; charset=utf-8
+server: vercel
+x-shipped-by: karthik
+x-vibe: builder-architect
+x-streak: 412 days
+x-trades-since-login: 0 (you're not logged in to feaws)
+
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;${escapeHtml(host)}&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;... (truncated, use a real browser)&lt;/body&gt;
+&lt;/html&gt;</pre>`;
+      },
+
+      // ---------- stats / persona ----------
+      streak() {
+        const days = 412;
+        const wk = "█".repeat(7);
+        return `<span class="accent">#healthywealthy streak</span>\n` +
+          `day:     <span class="ok">${days}</span>\n` +
+          `weeks:   ${Math.floor(days/7)} (${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk}...)\n` +
+          `today:   walk · 50 pushups · 90s plank · ₹500 SIP · 22pg\n` +
+          `next:    every day. no skips.`;
+      },
+      setup() {
+        return `<span class="accent">work setup</span>
+<table>
+<tr><td class="k">laptop</td><td class="v">M3 Max MacBook Pro · 64GB · 2TB</td></tr>
+<tr><td class="k">monitor</td><td class="v">LG 27" 4K · iPad sidecar</td></tr>
+<tr><td class="k">keyboard</td><td class="v">Apple Magic <span class="dim">(HHKB on the wishlist)</span></td></tr>
+<tr><td class="k">editor</td><td class="v">cursor · neovim for terminal work</td></tr>
+<tr><td class="k">terminal</td><td class="v">ghostty + tmux</td></tr>
+<tr><td class="k">shell</td><td class="v">zsh · oh-my-zsh · agnoster</td></tr>
+<tr><td class="k">browser</td><td class="v">arc + brave (separate worlds)</td></tr>
+<tr><td class="k">notes</td><td class="v">obsidian · fastmail</td></tr>
+<tr><td class="k">music</td><td class="v">apple music · lofi for deep work</td></tr>
+<tr><td class="k">runtime</td><td class="v">node 22 · python 3.12 · go 1.23 · rust nightly</td></tr>
+</table>`;
+      },
+      stack() { return COMMANDS.setup(); },
+      bookshelf() {
+        return `<span class="accent">books recently read · 2024-26</span>
+<table>
+<tr><td class="k">📕 finished</td><td class="v">Russell · A History of Western Philosophy</td></tr>
+<tr><td class="k">📕 finished</td><td class="v">Karpathy · zero-to-hero (the videos count)</td></tr>
+<tr><td class="k">📕 finished</td><td class="v">Sapolsky · Behave</td></tr>
+<tr><td class="k">📕 finished</td><td class="v">Dalio · Principles for Dealing with the Changing World Order</td></tr>
+<tr><td class="k">📘 reading</td><td class="v">Taleb · Antifragile (re-read #3)</td></tr>
+<tr><td class="k">📘 reading</td><td class="v">Marks · The Most Important Thing</td></tr>
+<tr><td class="k">📒 next</td><td class="v">Munger · Poor Charlie's Almanack</td></tr>
+</table>
+<span class="dim">full list at <a href="/writing/books-i-have-read">/writing/books-i-have-read</a></span>`;
+      },
+
+      // ---------- humor / fortune ----------
+      fortune() {
+        const fortunes = [
+          "the boring systems win.",
+          "infrastructure is strategy.",
+          "build for compliance, ship for customers.",
+          "the trading IS the proof.",
+          "the best tech debt is the debt you chose deliberately.",
+          "leverage compounds. mediocrity multiplies.",
+          "security is a feature, not a department.",
+          "what gets built ships. what ships survives. what survives compounds.",
+          "if your moat is a secret, it's not a moat.",
+          "ship one more thing.",
+          "in trading, the size of the loss matters more than the frequency of the wins.",
+          "every regulation is a moat for whoever was already inside when it was written.",
+          "the best models are simple. the best simple models took years to find.",
+        ];
+        return '<span class="info">▸</span> ' + fortunes[Math.floor(Math.random() * fortunes.length)];
+      },
+      cowsay(arg) {
+        const text = arg || "moo, the boring systems win";
+        const w = text.length;
+        const top = " " + "_".repeat(w + 2);
+        const bot = " " + "-".repeat(w + 2);
+        return `<pre class="ascii">${top}
+&lt; ${escapeHtml(text)} &gt;
+${bot}
+        \\   ^__^
+         \\  (oo)\\_______
+            (__)\\       )\\/\\
+                ||----w |
+                ||     ||</pre>`;
+      },
+      figlet(arg) {
+        const text = (arg || "intrepidkarthi").toUpperCase().slice(0, 12);
+        // simple block letter rendering — just stylized
+        return `<pre class="ascii">  ╔${"═".repeat(text.length * 3 + 4)}╗
+  ║  ${text.split("").join("  ")}  ║
+  ╚${"═".repeat(text.length * 3 + 4)}╝</pre>`;
+      },
+      sl() {
+        return `<pre class="ascii">      ====        ________                ___________
+  _D _|  |_______/        \\__I_I_____===__|_________|
+   |(_)---  |   H\\________/ |   |        =|___ ___|
+   /     |  |   H  |  |     |   |         ||_| |_||
+  |      |  |   H  |__--------------------| [___] |
+  | ________|___H__/__|_____/[][]~\\_______|       |
+  |/ |   |-----------I_____I [][] []  D   |=======|__
+__/ =| o |=-O=====O=====O=====O \\ ____Y___________|__
+ |/-=|___|=    ||    ||    ||    |_____/~\\___/        |_D__D__D_|
+  \\_/      \\__/  \\__/  \\__/   \\_/      \\_/</pre>
+<span class="dim">classic typo. it's <span class="info">ls</span>, not <span class="err">sl</span>.</span>`;
+      },
+
+      // ---------- vim / editor jokes ----------
+      vim() { return '<span class="dim">▸ this isn\'t vim. (try <span class="info">:wq</span> to escape anyway)</span>'; },
+      emacs() { return '<span class="dim">▸ wrong religion. try <span class="info">vim</span>.</span>'; },
+      nano() { return '<span class="dim">▸ ctrl+x to exit · still wrong religion · try vim</span>'; },
+      ":wq"() { return '<span class="ok">▸ written. quit. (you\'re not in vim, btw.)</span>'; },
+      ":q"() { return COMMANDS[":wq"](); },
+      ":q!"() { return '<span class="warn">▸ tried to flee without saving. nice.</span>'; },
+
+      // ---------- xkcd / pop ----------
+      hack(arg) {
+        if ((arg || "").trim() === "the planet") {
+          unlockAchievement("hack-planet", "Hackers (1995)", "You quoted the movie");
+          return `<pre class="ascii"> _   _    _    ____ _  __
+| | | |  / \\  / ___| |/ /
+| |_| | / _ \\| |   | ' /
+|  _  |/ ___ \\ |___| . \\
+|_| |_/_/   \\_\\____|_|\\_\\
+              the planet ★</pre>
+<span class="ok">▸ mess with the best, die like the rest.</span>`;
+        }
+        return '<span class="warn">▸ this is a static blog. nothing to hack.</span> <span class="dim">(try: hack the planet)</span>';
+      },
+      // 'make me a sandwich'
+      make(arg) {
+        if ((arg || "").trim() === "me a sandwich")
+          return '<span class="err">▸ what? make it yourself.</span>\n<span class="dim">try: <span class="info">sudo make me a sandwich</span></span>';
+        return '<span class="err">make: *** No targets specified and no makefile found. Stop.</span>';
+      },
+      ssh() { return '<span class="warn">▸ identity unknown · key permission too open · try a real terminal</span>'; },
+      docker() { return '<span class="dim">▸ docker daemon not running on this static site (also: containers add up)</span>'; },
+      kubectl() { return '<span class="dim">▸ no cluster configured. (you don\'t need k8s. probably.)</span>'; },
+      git(arg) {
+        if (arg === "status") return '<span class="ok">on branch main</span>\nnothing to commit, working tree clean\n<span class="dim">(your last commit was bold. ship the next one.)</span>';
+        if (arg === "blame") return '<span class="warn">▸ blame yourself. you wrote it.</span>';
+        return `git: '${escapeHtml(arg || "")}' is not a git command. <span class="dim">try: git status</span>`;
+      },
+
       snake() {
         unlockAchievement("snake", "Old school", "You found snake");
         setTimeout(spawnSnake, 100);
@@ -372,7 +746,10 @@
       quit() { return COMMANDS.exit(); },
       sudo(arg) {
         if (arg === "rm -rf /") return '<span class="err">▸ nice try.</span>';
-        return '<span class="err">▸ permission denied.</span>';
+        if (arg === "make me a sandwich") return '<span class="ok">▸ ok.</span>\n<pre class="ascii">    ___\n   |o o\n   |~~~ \\___\n  /  ##  ()\n  \\______/</pre>';
+        if (arg === "shutdown") return '<span class="warn">▸ no. one more thing to ship first.</span>';
+        if (arg && COMMANDS[arg.split(" ")[0]]) return COMMANDS[arg.split(" ")[0]](arg.split(" ").slice(1).join(" "));
+        return '<span class="err">▸ permission denied. (this is a static page on the internet.)</span>';
       },
       rm() { return '<span class="err">▸ static site. nothing to delete.</span>'; },
       clear() { out.innerHTML = ""; return null; },
