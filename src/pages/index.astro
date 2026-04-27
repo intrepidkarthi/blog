@@ -31,7 +31,7 @@ const recent = all
           <div class="row"><span class="k">uptime</span><span class="v">16+ years shipping</span></div>
           <div class="row"><span class="k">books</span><span class="v">2 (Mobile ML &amp; AI Projects)</span></div>
           <div class="row"><span class="k">trophies</span><span class="v">18× hackathon · 1× TEDx</span></div>
-          <div class="row"><span class="k">streak</span><span class="v"><span class="accent">412 days</span> #healthywealthy</span></div>
+          <div class="row"><span class="k">streak</span><span class="v"><span class="accent">412 days</span> <a href="https://x.com/search?q=%23healthywealthy+from%3Aintrepidkarthi&f=live" target="_blank" rel="noopener" class="hw-link">#healthywealthy</a></span></div>
           <div class="row"><span class="k">stack</span><span class="v">crypto · AI · trading · stablecoins</span></div>
           <div class="row"><span class="k">mission</span><span class="v"><span class="accent">$3M FIRE life</span></span></div>
           <div class="palette">
@@ -117,6 +117,16 @@ const recent = all
   .bio-info .row .k { color: var(--green); width: 95px; }
   .bio-info .row .v { color: var(--ink); }
   .bio-info .row .v .accent { color: var(--amber); }
+  .bio-info .row .v .hw-link {
+    color: var(--cyan);
+    text-decoration: none;
+    border-bottom: 1px dotted currentColor;
+    padding-bottom: 1px;
+    transition: color .15s;
+  }
+  .bio-info .row .v .hw-link:hover {
+    color: var(--green-bright);
+  }
   .palette { display: flex; gap: 4px; margin-top: 12px; }
   .palette span { width: 18px; height: 12px; }
 
