@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="feaws · quant trading lab">
+  <style>
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .g { stroke: #4eff7c; } .a { stroke: #ffb454; } .p { stroke: #ff5f87; } .c { stroke: #5fd7ff; } .d { stroke: #2a8c44; } .pu { stroke: #c780ff; }
+    .fg { fill: #4eff7c; stroke: #4eff7c; } .fa { fill: #ffb454; stroke: #ffb454; } .fp { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #4eff7c; stroke: none; letter-spacing: 1px; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #ffb454; stroke: none; letter-spacing: 1px; }
+    .vt { font-family: 'VT323', monospace; font-size: 16px; fill: #4eff7c; stroke: none; }
+  </style>
+  
+    <!-- chart axes -->
+    <line class="d" x1="20" y1="160" x2="190" y2="160"/>
+    <line class="d" x1="20" y1="30" x2="20" y2="160"/>
+    <!-- candlesticks -->
+    <line class="g" x1="35" y1="120" x2="35" y2="155"/>
+    <rect class="fg" x="31" y="135" width="8" height="15"/>
+    <line class="p" x1="50" y1="100" x2="50" y2="145"/>
+    <rect class="fp" x="46" y="105" width="8" height="20"/>
+    <line class="g" x1="65" y1="80" x2="65" y2="135"/>
+    <rect class="fg" x="61" y="95" width="8" height="22"/>
+    <line class="g" x1="80" y1="65" x2="80" y2="115"/>
+    <rect class="fg" x="76" y="78" width="8" height="20"/>
+    <line class="p" x1="95" y1="55" x2="95" y2="125"/>
+    <rect class="fp" x="91" y="62" width="8" height="35"/>
+    <line class="g" x1="110" y1="70" x2="110" y2="130"/>
+    <rect class="fg" x="106" y="80" width="8" height="22"/>
+    <line class="g" x1="125" y1="50" x2="125" y2="115"/>
+    <rect class="fg" x="121" y="60" width="8" height="20"/>
+    <line class="p" x1="140" y1="45" x2="140" y2="105"/>
+    <rect class="fp" x="136" y="52" width="8" height="22"/>
+    <line class="g" x1="155" y1="60" x2="155" y2="115"/>
+    <rect class="fg" x="151" y="74" width="8" height="22"/>
+    <line class="g" x1="170" y1="40" x2="170" y2="95"/>
+    <rect class="fg" x="166" y="48" width="8" height="20"/>
+    <!-- signal trend line -->
+    <path class="a" d="M 25 145 Q 60 110 100 95 Q 140 75 180 60" stroke-dasharray="3 3" stroke-width="2"/>
+    <!-- signal arrow -->
+    <path class="a fa" d="M 180 60 L 172 65 L 175 56 Z"/>
+    <text class="mono-a" x="100" y="22">▲ feaws.xyz</text>
+    <text class="mono" x="22" y="180">70% / 30 trades</text>
+    
+</svg>

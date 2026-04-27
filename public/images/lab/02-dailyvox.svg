@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Dailyvox · offline voice diary">
+  <style>
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .g { stroke: #4eff7c; } .a { stroke: #ffb454; } .p { stroke: #ff5f87; } .c { stroke: #5fd7ff; } .d { stroke: #2a8c44; } .pu { stroke: #c780ff; }
+    .fg { fill: #4eff7c; stroke: #4eff7c; } .fa { fill: #ffb454; stroke: #ffb454; } .fp { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #4eff7c; stroke: none; letter-spacing: 1px; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #ffb454; stroke: none; letter-spacing: 1px; }
+    .vt { font-family: 'VT323', monospace; font-size: 16px; fill: #4eff7c; stroke: none; }
+  </style>
+  
+    <!-- microphone body -->
+    <rect class="g" x="80" y="35" width="40" height="65" rx="20"/>
+    <line class="g" x1="100" y1="100" x2="100" y2="125"/>
+    <line class="g" x1="80" y1="125" x2="120" y2="125"/>
+    <!-- mic stand cradle -->
+    <path class="g" d="M 60 80 Q 60 130 100 130 Q 140 130 140 80"/>
+    <!-- waveform on the right -->
+    <line class="c" x1="35" y1="95" x2="35" y2="110"/>
+    <line class="c" x1="42" y1="85" x2="42" y2="120"/>
+    <line class="c" x1="49" y1="78" x2="49" y2="127"/>
+    <line class="c" x1="155" y1="85" x2="155" y2="120"/>
+    <line class="c" x1="162" y1="75" x2="162" y2="130"/>
+    <line class="c" x1="169" y1="80" x2="169" y2="125"/>
+    <!-- privacy lock (top-right) -->
+    <rect class="a fa" x="155" y="38" width="22" height="18" rx="2" style="fill-opacity:0.15;"/>
+    <rect class="a" x="155" y="38" width="22" height="18" rx="2"/>
+    <path class="a" d="M 159 38 L 159 32 Q 159 25 166 25 Q 173 25 173 32 L 173 38"/>
+    <circle class="fa" cx="166" cy="46" r="2"/>
+    <!-- text -->
+    <text class="mono-a" x="40" y="20">getdailyvox.com</text>
+    <text class="mono" x="42" y="160">100% offline · 0 cloud</text>
+    <text class="mono" x="55" y="178">your digital twin</text>
+    
+</svg>

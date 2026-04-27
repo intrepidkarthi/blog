@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Machine Learning for Mobile Applications">
+  <style>
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .g { stroke: #4eff7c; } .a { stroke: #ffb454; } .p { stroke: #ff5f87; } .c { stroke: #5fd7ff; } .d { stroke: #2a8c44; } .pu { stroke: #c780ff; }
+    .fg { fill: #4eff7c; stroke: #4eff7c; } .fa { fill: #ffb454; stroke: #ffb454; } .fp { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #4eff7c; stroke: none; letter-spacing: 1px; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #ffb454; stroke: none; letter-spacing: 1px; }
+    .vt { font-family: 'VT323', monospace; font-size: 16px; fill: #4eff7c; stroke: none; }
+  </style>
+  
+    <rect class="d" x="58" y="160" width="84" height="6" rx="1"/>
+    <path class="g" d="M 55 35 L 55 160 L 145 160 L 145 35 Z"/>
+    <path class="g" d="M 55 35 L 60 30 L 150 30 L 145 35"/>
+    <path class="g" d="M 145 35 L 150 30 L 150 155 L 145 160"/>
+    <!-- cover band cyan (different from sibling book) -->
+    <rect class="c" x="55" y="35" width="90" height="20" style="fill:#5fd7ff; fill-opacity:0.8;"/>
+    <text class="vt" x="64" y="50" style="fill:#030604; font-size:11px;">PACKT &gt;</text>
+    <!-- ML graph illustration (line + scatter) -->
+    <line class="d" x1="65" y1="130" x2="135" y2="130"/>
+    <line class="d" x1="65" y1="75" x2="65" y2="130"/>
+    <!-- scatter dots -->
+    <circle class="fa" cx="74" cy="120" r="2.5"/>
+    <circle class="fa" cx="84" cy="115" r="2.5"/>
+    <circle class="fa" cx="94" cy="105" r="2.5"/>
+    <circle class="fa" cx="104" cy="100" r="2.5"/>
+    <circle class="fa" cx="114" cy="92" r="2.5"/>
+    <circle class="fa" cx="124" cy="85" r="2.5"/>
+    <circle class="fa" cx="132" cy="80" r="2.5"/>
+    <!-- regression line -->
+    <line class="g" x1="68" y1="125" x2="135" y2="78"/>
+    <!-- title -->
+    <text class="mono" x="64" y="148">ML · MOBILE</text>
+    <text class="mono" x="64" y="158" style="font-size:9px;">karthikeyan ng</text>
+    <text class="mono-a" x="115" y="28">// 2018</text>
+    
+</svg>

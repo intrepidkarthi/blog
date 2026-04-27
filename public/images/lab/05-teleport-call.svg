@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Teleport Call · VR app">
+  <style>
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .g { stroke: #4eff7c; } .a { stroke: #ffb454; } .p { stroke: #ff5f87; } .c { stroke: #5fd7ff; } .d { stroke: #2a8c44; } .pu { stroke: #c780ff; }
+    .fg { fill: #4eff7c; stroke: #4eff7c; } .fa { fill: #ffb454; stroke: #ffb454; } .fp { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #4eff7c; stroke: none; letter-spacing: 1px; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #ffb454; stroke: none; letter-spacing: 1px; }
+    .vt { font-family: 'VT323', monospace; font-size: 16px; fill: #4eff7c; stroke: none; }
+  </style>
+  
+    <!-- headset main body -->
+    <path class="g" d="M 35 80 Q 35 70 50 70 L 150 70 Q 165 70 165 80 L 165 130 Q 165 145 150 145 L 50 145 Q 35 145 35 130 Z"/>
+    <!-- nose cutout -->
+    <path class="d" d="M 90 145 Q 100 155 110 145"/>
+    <!-- left lens -->
+    <ellipse class="a" cx="68" cy="105" rx="20" ry="22"/>
+    <circle class="fp" cx="68" cy="105" r="6" style="fill-opacity:0.6;"/>
+    <!-- right lens with VR portal -->
+    <ellipse class="a" cx="132" cy="105" rx="20" ry="22"/>
+    <circle class="fp" cx="132" cy="105" r="6" style="fill-opacity:0.6;"/>
+    <!-- portal rings -->
+    <ellipse class="c" cx="68" cy="105" rx="14" ry="16" stroke-dasharray="2 3"/>
+    <ellipse class="c" cx="132" cy="105" rx="14" ry="16" stroke-dasharray="2 3"/>
+    <!-- strap -->
+    <path class="g" d="M 35 100 L 22 95 L 22 115 L 35 110"/>
+    <path class="g" d="M 165 100 L 178 95 L 178 115 L 165 110"/>
+    <!-- top brand -->
+    <text class="mono-a" x="55" y="62">teleport call · 2014</text>
+    <text class="mono" x="55" y="180">420k+ downloads</text>
+    
+</svg>

@@ -1,0 +1,107 @@
+{
+  "sections": [
+    {
+      "title": "Live projects",
+      "subtitle": "Things that are running right now and you can use today",
+      "items": [
+        {
+          "id": "feaws",
+          "name": "feaws",
+          "tagline": "Public quantitative trading lab",
+          "status": "active",
+          "url": "https://feaws.xyz",
+          "url_label": "feaws.xyz",
+          "year": 2025,
+          "image": "/images/lab/01-feaws.svg",
+          "summary": "An asset-agnostic quant trading model. BTC first, but the same engine applies to stocks, commodities, forex. The whitepaper is open. The trades are public.",
+          "highlights": [
+            { "k": "accuracy", "v": "70% on 30 test windows" },
+            { "k": "current signal", "v": "BTC dip over the next couple of months" },
+            { "k": "stack", "v": "Python · Polymarket API · GDELT · sentiment + F&G · Postgres · Next.js" },
+            { "k": "philosophy", "v": "the content IS the product · the trading IS the proof" }
+          ]
+        },
+        {
+          "id": "dailyvox",
+          "name": "Dailyvox",
+          "tagline": "Offline AI voice diary, 100% on-device",
+          "status": "active",
+          "url": "https://getdailyvox.com",
+          "url_label": "getdailyvox.com",
+          "year": 2025,
+          "image": "/images/lab/02-dailyvox.svg",
+          "summary": "A free voice journal that builds your Digital Twin without ever leaving your iPhone. No accounts, no cloud, no tracking. Voice-to-LLM, all local. Also where I'm experimenting with running a real LLM on a home machine — closing in.",
+          "highlights": [
+            { "k": "platform", "v": "iOS · App Store" },
+            { "k": "privacy", "v": "0 cloud calls · 0 telemetry · 0 accounts" },
+            { "k": "models", "v": "on-device speech-to-text + on-device LLM" },
+            { "k": "pricing", "v": "free, no upsell" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Books",
+      "subtitle": "Published with Packt, 2018. Code repos still maintained.",
+      "items": [
+        {
+          "id": "mobile-ai-projects",
+          "name": "Mobile Artificial Intelligence Projects",
+          "tagline": "TensorFlow Lite + Core ML, end-to-end",
+          "status": "published",
+          "url": "https://www.amazon.com/dp/B07JKWLH3G",
+          "url_label": "amazon.com",
+          "year": 2018,
+          "image": "/images/lab/03-book-mobile-ai.svg",
+          "summary": "Project-driven guide for shipping ML on iOS and Android. Age + gender CNN, neural style transfer, ML Kit (text/face/barcode), Snapchat-style face filters with OpenCV, MNIST adversarial classifier, on-device food classification via transfer learning.",
+          "highlights": [
+            { "k": "publisher", "v": "Packt · 2018" },
+            { "k": "code", "v": "github.com/intrepidkarthi/Machine-Learning-Projects-for-Mobile-Applications" },
+            { "k": "covers", "v": "TF Lite · Core ML · Caffe2 · ML Kit · OpenCV · transfer learning" },
+            { "k": "format", "v": "Hands-on. ~300 pages." }
+          ]
+        },
+        {
+          "id": "ml-for-mobile",
+          "name": "Machine Learning for Mobile Applications",
+          "tagline": "Concept-first companion to Mobile AI Projects",
+          "status": "published",
+          "url": "https://www.amazon.in/Machine-Learning-Projects-MobileApplications-ebook/dp/B07F2GZQWH/",
+          "url_label": "amazon.in",
+          "year": 2018,
+          "image": "/images/lab/04-book-ml-mobile.svg",
+          "summary": "The mental-model book. Demystifies the mobile ML landscape — toolchains, deployment patterns, on-device vs cloud tradeoffs, what to use when. Pairs cleanly with the projects book if you want both the why and the how.",
+          "highlights": [
+            { "k": "publisher", "v": "Packt · 2018" },
+            { "k": "audience", "v": "Mobile engineers learning ML" },
+            { "k": "depth", "v": "Light on code, heavy on architecture decisions" },
+            { "k": "shelf-life", "v": "The mental model held up better than the specific tool versions did" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Past work",
+      "subtitle": "Older builds — Teleport Call (GazeMatic) is the one that hit hardest.",
+      "items": [
+        {
+          "id": "teleport-call",
+          "name": "Teleport Call",
+          "tagline": "VR voice calling — 420k organic downloads",
+          "status": "archived",
+          "url": "https://github.com/intrepidkarthi/GazeMatic",
+          "url_label": "github / GazeMatic",
+          "year": 2014,
+          "image": "/images/lab/05-teleport-call.svg",
+          "summary": "Founded GazeMatic in 2014. Built Teleport Call — a first-of-its-kind VR voice-calling app where two callers could meet inside a shared virtual environment. 420k+ organic downloads in the first month, 1.2M+ calls placed across US/UK/Germany/Russia/India. Zero paid marketing. Ran for 4 years before winding down.",
+          "highlights": [
+            { "k": "downloads", "v": "420k+ organic in month 1" },
+            { "k": "calls placed", "v": "1.2M+" },
+            { "k": "VR scenes", "v": "2,000+ environments" },
+            { "k": "tech", "v": "live streaming · adaptive video compression · multi-node CDN · real-time 3D" }
+          ]
+        }
+      ]
+    }
+  ]
+}

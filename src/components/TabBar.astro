@@ -7,6 +7,7 @@ const { active = "home" } = Astro.props;
 const tabs = [
   { key: "home", label: "~/home", href: "/" },
   { key: "writing", label: "~/writing", href: "/writing" },
+  { key: "lab", label: "~/lab", href: "/lab" },
   { key: "mission", label: "~/mission", href: "/mission" },
   { key: "about", label: "~/about", href: "/about" },
   { key: "contact", label: "~/contact", href: "/contact" },
@@ -95,7 +96,7 @@ const tabs = [
     tick(); setInterval(tick, 1000);
     document.addEventListener("keydown", (e) => {
       if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
-      const map = { "1": "/", "2": "/writing", "3": "/mission", "4": "/about", "5": "/contact" };
+      const map = { "1": "/", "2": "/writing", "3": "/lab", "4": "/mission", "5": "/about", "6": "/contact" };
       if (map[e.key]) { e.preventDefault(); window.location.href = map[e.key]; }
     });
   })();

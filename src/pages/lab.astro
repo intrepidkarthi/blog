@@ -1,0 +1,232 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import labRaw from "../data/lab.json";
+
+interface Item {
+  id: string;
+  name: string;
+  tagline: string;
+  status: string;
+  url: string;
+  url_label: string;
+  year: number;
+  image: string;
+  summary: string;
+  highlights: { k: string; v: string }[];
+}
+interface Section { title: string; subtitle: string; items: Item[]; }
+const lab = labRaw as { sections: Section[] };
+---
+
+<BaseLayout
+  title="Lab"
+  description="What I'm building — feaws, Dailyvox, books, and older ships worth remembering."
+  active="lab"
+  file="~/intrepidkarthi/lab"
+>
+  <div class="content">
+    <div class="pre-title"><span class="arrow">$</span> systemctl status lab</div>
+    <h1><span class="hash">#</span>the lab</h1>
+    <p class="lede">
+      Things I'm building, things I've published, things still running.
+      <em>The content IS the product. The trading IS the proof.</em>
+    </p>
+
+    {lab.sections.map((sec) => (
+      <section class="section">
+        <h2 class="section-title">
+          <span class="hash">##</span> {sec.title}
+        </h2>
+        <p class="section-sub">{sec.subtitle}</p>
+
+        <div class="grid">
+          {sec.items.map((item) => (
+            <article class={`card status-${item.status}`}>
+              <div class="card-img">
+                <img src={item.image} alt={item.name} loading="lazy" />
+              </div>
+              <div class="card-body">
+                <div class="card-head">
+                  <h3>{item.name}</h3>
+                  <span class={`status-pill status-${item.status}`}>
+                    {item.status === "active" && "● live"}
+                    {item.status === "published" && "■ published"}
+                    {item.status === "archived" && "○ archived"}
+                  </span>
+                </div>
+                <p class="tagline">{item.tagline}</p>
+                <p class="summary">{item.summary}</p>
+
+                <dl class="highlights">
+                  {item.highlights.map((h) => (
+                    <div class="hi">
+                      <dt>{h.k}</dt>
+                      <dd>{h.v}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                <div class="card-foot">
+                  <a class="link-btn" href={item.url} target="_blank" rel="noopener">
+                    → {item.url_label}
+                  </a>
+                  <span class="year">{item.year}</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <div class="footer-note">
+      <span class="dim">→</span> More writing about each in <a href="/writing">/writing</a>.
+      Spotted something to collaborate on? <a href="/contact">drop a line</a>.
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content { max-width: 1100px; }
+  .pre-title {
+    color: var(--dim); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .pre-title .arrow { color: var(--green); }
+  h1 {
+    font-family: var(--font-vt); font-size: 36px; line-height: 1;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    margin-bottom: 6px;
+  }
+  h1 .hash { color: var(--pink); margin-right: 8px; }
+  .lede {
+    color: var(--ink); margin-bottom: 32px;
+    max-width: 720px;
+  }
+  .lede em {
+    color: var(--amber); font-style: italic;
+    display: inline-block; margin-top: 4px;
+  }
+
+  .section { margin-bottom: 48px; }
+  .section-title {
+    font-family: var(--font-vt); font-size: 26px;
+    color: var(--green-bright);
+    text-shadow: 0 0 4px var(--green-glow);
+    margin-bottom: 4px;
+  }
+  .section-title .hash { color: var(--pink); margin-right: 8px; }
+  .section-sub {
+    color: var(--dim); font-size: 13px; margin-bottom: 18px;
+  }
+
+  .grid {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--green);
+    overflow: hidden;
+    transition: transform .15s ease, border-left-color .15s;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-2px); }
+  .card.status-published { border-left-color: var(--amber); }
+  .card.status-archived { border-left-color: var(--dim); }
+
+  .card-img {
+    background: var(--bg);
+    padding: 16px;
+    border-bottom: 1px dashed var(--line);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 180px;
+  }
+  .card-img img { width: 100%; max-width: 240px; height: auto; }
+
+  .card-body { padding: 18px 20px 16px; flex: 1; display: flex; flex-direction: column; }
+  .card-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 10px; margin-bottom: 4px;
+  }
+  .card-head h3 {
+    color: var(--green-bright); font-family: var(--font-mono);
+    font-size: 18px; font-weight: 700; line-height: 1.2;
+  }
+  .status-pill {
+    font-size: 10px; padding: 2px 8px;
+    border: 1px solid currentColor;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    white-space: nowrap;
+  }
+  .status-pill.status-active { color: var(--green); }
+  .status-pill.status-published { color: var(--amber); }
+  .status-pill.status-archived { color: var(--dim); }
+
+  .tagline {
+    color: var(--cyan); font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .summary {
+    color: var(--ink); font-size: 13px; line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .highlights {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px dashed var(--line);
+    font-size: 12px;
+  }
+  .highlights .hi {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 8px;
+    padding: 3px 0;
+  }
+  .highlights dt {
+    color: var(--green);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .highlights dd {
+    color: var(--ink);
+    font-size: 12.5px;
+  }
+
+  .card-foot {
+    margin-top: auto;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px dashed var(--line);
+    padding-top: 12px;
+  }
+  .link-btn {
+    color: var(--green-bright);
+    font-size: 13px;
+    border-bottom: 1px dotted currentColor;
+  }
+  .link-btn:hover { color: var(--amber); }
+  .year {
+    color: var(--dim);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 18px;
+    border: 1px dashed var(--line-bright);
+    color: var(--ink); font-size: 13px;
+  }
+  .footer-note .dim { color: var(--green); margin-right: 4px; }
+</style>

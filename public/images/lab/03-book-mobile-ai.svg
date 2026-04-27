@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Mobile Artificial Intelligence Projects">
+  <style>
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .g { stroke: #4eff7c; } .a { stroke: #ffb454; } .p { stroke: #ff5f87; } .c { stroke: #5fd7ff; } .d { stroke: #2a8c44; } .pu { stroke: #c780ff; }
+    .fg { fill: #4eff7c; stroke: #4eff7c; } .fa { fill: #ffb454; stroke: #ffb454; } .fp { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #4eff7c; stroke: none; letter-spacing: 1px; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #ffb454; stroke: none; letter-spacing: 1px; }
+    .vt { font-family: 'VT323', monospace; font-size: 16px; fill: #4eff7c; stroke: none; }
+  </style>
+  
+    <!-- book base shadow -->
+    <rect class="d" x="58" y="160" width="84" height="6" rx="1"/>
+    <!-- book spine perspective -->
+    <path class="g" d="M 55 35 L 55 160 L 145 160 L 145 35 Z"/>
+    <path class="g" d="M 55 35 L 60 30 L 150 30 L 145 35"/>
+    <path class="g" d="M 145 35 L 150 30 L 150 155 L 145 160"/>
+    <!-- cover band (Packt-ish) -->
+    <rect class="a fa" x="55" y="35" width="90" height="20" style="fill-opacity:0.85;"/>
+    <text class="vt" x="64" y="50" style="fill:#030604; font-size:11px;">PACKT &gt;</text>
+    <!-- AI / brain glyph (network nodes) -->
+    <circle class="fp" cx="100" cy="85" r="4"/>
+    <circle class="fg" cx="80" cy="105" r="3"/>
+    <circle class="fg" cx="120" cy="105" r="3"/>
+    <circle class="fa" cx="70" cy="125" r="3"/>
+    <circle class="fa" cx="100" cy="125" r="3"/>
+    <circle class="fa" cx="130" cy="125" r="3"/>
+    <line class="d" x1="100" y1="85" x2="80" y2="105"/>
+    <line class="d" x1="100" y1="85" x2="120" y2="105"/>
+    <line class="d" x1="80" y1="105" x2="70" y2="125"/>
+    <line class="d" x1="80" y1="105" x2="100" y2="125"/>
+    <line class="d" x1="120" y1="105" x2="100" y2="125"/>
+    <line class="d" x1="120" y1="105" x2="130" y2="125"/>
+    <!-- title text -->
+    <text class="mono" x="64" y="148">MOBILE · AI</text>
+    <text class="mono" x="64" y="158" style="font-size:9px;">karthikeyan ng</text>
+    <!-- top-right "2018" badge -->
+    <text class="mono-a" x="115" y="28">// 2018</text>
+    
+</svg>
