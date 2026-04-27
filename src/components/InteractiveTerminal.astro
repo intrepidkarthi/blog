@@ -1,7 +1,8 @@
 ---
 // Global interactive shell — collapsed by default, click bar or press `/` to open.
 // Commands: help, whoami, ls, cat, writing, lab, mission, about, contact,
-// joke, theme, matrix, snake, 42, konami, clear, date, pwd, uptime, echo
+// btc/eth/sol/gas/fear/greed/funding/block/whales/liq, gpu/models/tokenize/embed/params,
+// streak, setup, bookshelf, neofetch, theme, matrix, clear, date, pwd, uptime, echo
 ---
 
 <div class="terminal collapsed" id="ikt-terminal">
@@ -356,6 +357,7 @@
         unlockAchievement("matrix", "Wake up", "You took the green pill");
         return '<span class="ok">▸</span> wake up, neo. <span class="dim">(5s)</span>';
       },
+
       // ---------- crypto / trading ----------
       btc() {
         unlockAchievement("trader", "Trader", "Checked the tape");
@@ -525,6 +527,7 @@
          <span class="ok">gpu</span>:       caffeine + insomnia, dual-channel
          <span class="ok">terminal</span>:  intrepidkarthi.com (this one)</pre>`;
       },
+
       // ---------- stats / persona ----------
       streak() {
         const days = 412;
@@ -566,16 +569,13 @@
       },
 
       // ---------- humor / fortune ----------
+
       // ---------- vim / editor jokes ----------
+
       // ---------- xkcd / pop ----------
       // 'make me a sandwich'
-      sudo(arg) {
-        if (arg === "rm -rf /") return '<span class="err">▸ nice try.</span>';
-        if (arg === "make me a sandwich") return '<span class="ok">▸ ok.</span>\n<pre class="ascii">    ___\n   |o o\n   |~~~ \\___\n  /  ##  ()\n  \\______/</pre>';
-        if (arg === "shutdown") return '<span class="warn">▸ no. one more thing to ship first.</span>';
-        if (arg && COMMANDS[arg.split(" ")[0]]) return COMMANDS[arg.split(" ")[0]](arg.split(" ").slice(1).join(" "));
-        return '<span class="err">▸ permission denied. (this is a static page on the internet.)</span>';
-      },
+
+      sudo() { return '<span class="err">▸ permission denied. (this is a static page on the internet.)</span>'; },
       clear() { out.innerHTML = ""; return null; },
       cls() { return COMMANDS.clear(); },
       echo(arg) { return arg || ""; },
@@ -648,5 +648,5 @@
         cmdInput.focus();
       }
     });
-    })();
+  })();
 </script>
