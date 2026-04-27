@@ -1,0 +1,538 @@
+---
+// Global interactive shell — collapsed by default, click bar or press `/` to open.
+// Commands: help, whoami, ls, cat, writing, lab, mission, about, contact,
+// joke, theme, matrix, snake, 42, konami, clear, date, pwd, uptime, echo
+---
+
+<div class="terminal collapsed" id="ikt-terminal">
+  <div class="term-bar" id="ikt-term-bar">
+    <span class="chevron">▾</span>
+    <span class="label">[shell]</span>
+    <span class="prompt-prefix">karthik@intrepidkarthi:~$</span>
+    <span class="hint-text">power-user mode — type <span class="hl">help</span> for commands</span>
+    <span class="kb-hint">
+      <kbd>/</kbd> focus
+      <kbd>esc</kbd> close
+    </span>
+  </div>
+  <div class="term-body" id="ikt-term-body">
+    <div id="ikt-out"></div>
+    <div class="input-line">
+      <span class="prompt">
+        <span class="u">karthik</span>@<span class="h">intrepidkarthi</span>:<span class="d">~</span>$
+      </span>
+      <input
+        id="ikt-cmd"
+        type="text"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        aria-label="terminal input"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="ikt-toast" id="ikt-toast">
+  <div class="head" id="ikt-toast-head">★ Achievement</div>
+  <div class="body" id="ikt-toast-body"></div>
+</div>
+
+<style>
+  .terminal {
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    flex-shrink: 0;
+    transition: height 0.3s ease;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 10;
+  }
+  .terminal.collapsed { height: 36px; }
+
+  .term-bar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 16px;
+    font-size: 11.5px;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--dim);
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+  .term-bar:hover { color: var(--green-bright); }
+  .term-bar .chevron {
+    font-family: var(--font-vt);
+    font-size: 16px;
+    transition: transform 0.3s;
+  }
+  .terminal.collapsed .term-bar .chevron { transform: rotate(-90deg); }
+  .term-bar .label { color: var(--green); }
+  .term-bar .prompt-prefix { color: var(--ink); white-space: nowrap; }
+  .term-bar .hint-text {
+    color: var(--dim);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .term-bar .hl { color: var(--green-bright); }
+  .term-bar .kb-hint {
+    color: var(--dim);
+    white-space: nowrap;
+  }
+  .term-bar kbd {
+    background: var(--bg3);
+    color: var(--green-bright);
+    border: 1px solid var(--green-dim);
+    border-radius: 3px;
+    padding: 0 5px;
+    font-family: inherit;
+    font-size: 10px;
+    margin: 0 2px;
+  }
+  @media (max-width: 700px) {
+    .term-bar .hint-text, .term-bar .kb-hint { display: none; }
+  }
+
+  .term-body {
+    flex: 1;
+    padding: 12px 18px;
+    overflow-y: auto;
+    font-size: 12.5px;
+    cursor: text;
+  }
+  .terminal.collapsed .term-body { display: none; }
+  .term-body::-webkit-scrollbar { width: 6px; }
+  .term-body::-webkit-scrollbar-thumb { background: var(--line-bright); }
+
+  #ikt-out { font-family: var(--font-mono); }
+  #ikt-out .l { white-space: pre-wrap; word-break: break-word; line-height: 1.55; }
+  #ikt-out .pl { color: var(--green-bright); margin-top: 6px; }
+  #ikt-out .pl .u { color: var(--green); }
+  #ikt-out .pl .h { color: var(--cyan); }
+  #ikt-out .pl .d { color: var(--amber); }
+  #ikt-out .pl .cmd { color: var(--ink); }
+  #ikt-out .ok { color: var(--green-bright); }
+  #ikt-out .info { color: var(--cyan); }
+  #ikt-out .warn { color: var(--warn); }
+  #ikt-out .err { color: var(--red); }
+  #ikt-out .pink { color: var(--pink); }
+  #ikt-out .purple { color: var(--purple); }
+  #ikt-out .dim { color: var(--dim); }
+  #ikt-out .accent { color: var(--amber); }
+  #ikt-out a { color: var(--cyan); text-decoration: underline; }
+  #ikt-out a:hover { color: var(--green-bright); }
+  #ikt-out .ascii {
+    color: var(--green-bright);
+    font-family: var(--font-vt);
+    font-size: 13px;
+    line-height: 1.05;
+    text-shadow: 0 0 6px var(--green-glow);
+    white-space: pre;
+  }
+  #ikt-out table { width: 100%; border-collapse: collapse; }
+  #ikt-out td { padding: 2px 6px 2px 0; vertical-align: top; }
+  #ikt-out td.k { color: var(--green); width: 130px; white-space: nowrap; }
+  #ikt-out td.v { color: var(--ink); }
+
+  .input-line {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 6px; font-size: 13px;
+  }
+  .input-line .prompt { white-space: nowrap; }
+  .input-line .prompt .u { color: var(--green); }
+  .input-line .prompt .h { color: var(--cyan); }
+  .input-line .prompt .d { color: var(--amber); }
+  .input-line input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    caret-color: var(--green-bright);
+  }
+
+  /* Achievement toast */
+  .ikt-toast {
+    position: fixed;
+    right: 16px;
+    bottom: 56px;
+    z-index: 100;
+    background: var(--bg2);
+    color: var(--green-bright);
+    border: 1px solid var(--green);
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    min-width: 240px;
+    max-width: 320px;
+    box-shadow: 0 0 16px var(--green-glow);
+    transform: translateX(420px);
+    transition: transform 0.4s ease;
+  }
+  .ikt-toast.show { transform: translateX(0); }
+  .ikt-toast .head {
+    color: var(--amber);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .ikt-toast .body { color: var(--ink); font-size: 12.5px; }
+
+  /* Mini snake game frame */
+  .ikt-game-frame {
+    border: 1px solid var(--green);
+    padding: 4px;
+    background: var(--bg2);
+    display: inline-block;
+    margin: 6px 0;
+  }
+  .ikt-game-frame canvas {
+    display: block;
+    image-rendering: pixelated;
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const term = document.getElementById("ikt-terminal");
+    const bar = document.getElementById("ikt-term-bar");
+    const body = document.getElementById("ikt-term-body");
+    const out = document.getElementById("ikt-out");
+    const cmdInput = document.getElementById("ikt-cmd");
+    const toast = document.getElementById("ikt-toast");
+    const toastHead = document.getElementById("ikt-toast-head");
+    const toastBody = document.getElementById("ikt-toast-body");
+    const matrixCanvas = document.getElementById("matrix-canvas");
+
+    let history = [];
+    let historyIdx = -1;
+    const achievements = new Set();
+    let theme = "green";
+
+    // ---------- helpers ----------
+    function append(html) {
+      const d = document.createElement("div");
+      d.className = "l";
+      d.innerHTML = html;
+      out.appendChild(d);
+      body.scrollTop = body.scrollHeight;
+    }
+    function appendPrompt(cmd) {
+      append(
+        '<span class="pl"><span class="u">karthik</span>@<span class="h">intrepidkarthi</span>:<span class="d">~</span>$ <span class="cmd">' +
+          escapeHtml(cmd) +
+          "</span></span>"
+      );
+    }
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+      );
+    }
+    function unlockAchievement(key, title, msg) {
+      if (achievements.has(key)) return;
+      achievements.add(key);
+      toastHead.textContent = "★ Achievement · " + title;
+      toastBody.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3600);
+    }
+
+    // ---------- commands ----------
+    const COMMANDS = {
+      help() {
+        return `<span class="info">commands:</span>
+<table>
+<tr><td class="k">whoami / about</td><td class="v">→ jumps to /about</td></tr>
+<tr><td class="k">writing / posts</td><td class="v">→ jumps to /writing</td></tr>
+<tr><td class="k">lab</td><td class="v">→ jumps to /lab (feaws · dailyvox · books)</td></tr>
+<tr><td class="k">mission / goals</td><td class="v">→ jumps to /mission</td></tr>
+<tr><td class="k">contact / hire</td><td class="v">→ jumps to /contact</td></tr>
+<tr><td class="k">cat &lt;file&gt;</td><td class="v">show ambitions.md, wishlist.md, now.md</td></tr>
+<tr><td class="k">date / uptime / pwd</td><td class="v">system info</td></tr>
+<tr><td class="k">theme</td><td class="v">cycle terminal palette</td></tr>
+<tr><td class="k">matrix</td><td class="v">turn it up</td></tr>
+<tr><td class="k">joke</td><td class="v">random tech humor</td></tr>
+<tr><td class="k">snake / 42 / konami</td><td class="v">things that are hidden</td></tr>
+<tr><td class="k">clear</td><td class="v">clear the screen</td></tr>
+</table>
+<span class="dim">tip: tabs at top are clickable too. or press 1-6.</span>`;
+      },
+      whoami() {
+        unlockAchievement("whoami", "Identified", "You met Karthik");
+        return `<pre class="ascii">       .--.
+      |o_o |    karthik <span class="info">@</span> intrepidkarthi
+      |:_/ |    ────────────────────────────
+     //   \\ \\   role     : <span class="accent">Engineer · Author · Speaker</span>
+    (|     | )  trading  : <span class="accent">full-time perpetual futures</span>
+    /'\\_   _/\\\` since    : 2008 · 16+ years shipping
+    \\___)=(___/ books    : <span class="info">2</span> (Mobile ML &amp; AI Projects)</pre>
+<span class="ok">▸</span> Builder-Architect. Crypto + AI + trading infrastructure.
+<span class="ok">▸</span> Madurai → Bengaluru → Dubai. 18× hackathon · 1× TEDx.
+<span class="ok">▸</span> Mission: <span class="accent">$3M FIRE life</span>.
+<span class="dim">▸</span> Try: <span class="info">cat ambitions.md</span> · <span class="info">writing</span> · <span class="info">lab</span>`;
+      },
+      about() { window.location.href = "/about"; return '<span class="ok">▸</span> opening /about'; },
+      writing() { window.location.href = "/writing"; return '<span class="ok">▸</span> opening /writing'; },
+      posts() { return COMMANDS.writing(); },
+      lab() { window.location.href = "/lab"; return '<span class="ok">▸</span> opening /lab'; },
+      mission() { window.location.href = "/mission"; return '<span class="ok">▸</span> opening /mission'; },
+      goals() { return COMMANDS.mission(); },
+      wishlist() { return COMMANDS.mission(); },
+      contact() { window.location.href = "/contact"; return '<span class="ok">▸</span> opening /contact'; },
+      hire() { return COMMANDS.contact(); },
+      home() { window.location.href = "/"; return '<span class="ok">▸</span> /'; },
+      cd(arg) {
+        const p = (arg || "~").replace(/^[~\/]+/, "").replace(/\/$/, "").toLowerCase();
+        const map = { "": "/", "home": "/", "writing": "/writing", "posts": "/writing",
+                      "lab": "/lab", "about": "/about", "mission": "/mission",
+                      "goals": "/mission", "contact": "/contact" };
+        if (p in map) { window.location.href = map[p]; return `<span class="ok">▸</span> ~/${p || "home"}`; }
+        return `<span class="err">cd: ${escapeHtml(p)}: no such directory</span>`;
+      },
+      ls() {
+        return `<table>
+<tr><td class="k"><a href="/">home/</a></td><td class="v">→ landing · whoami + recent posts</td></tr>
+<tr><td class="k"><a href="/writing">writing/</a></td><td class="v">→ blog posts since 2008</td></tr>
+<tr><td class="k"><a href="/lab">lab/</a></td><td class="v">→ feaws · dailyvox · books</td></tr>
+<tr><td class="k"><a href="/mission">mission/</a></td><td class="v">→ 21 goals · wishlist</td></tr>
+<tr><td class="k"><a href="/about">about/</a></td><td class="v">→ full bio</td></tr>
+<tr><td class="k"><a href="/contact">contact/</a></td><td class="v">→ hire me · social</td></tr>
+</table>`;
+      },
+      dir() { return COMMANDS.ls(); },
+      cat(arg) {
+        if (!arg) return '<span class="err">cat: missing operand</span>';
+        const f = arg.replace(/^\.\//, "").toLowerCase();
+        const files = {
+          "ambitions.md": '<span class="info"># ambitions.md</span>\n<span class="ok">▸</span> Build a $100M+ infrastructure company\n<span class="ok">▸</span> Hit $3M FIRE through compounding\n<span class="ok">▸</span> Mentor 100 builders to ship\n<span class="ok">▸</span> Write book #3 — agent infra\n<span class="dim">▸ [done] Speak at TEDx</span>\n<span class="dim">▸ [done] Win 10+ hackathons</span>',
+          "wishlist.md": '<span class="info"># wishlist.md</span>\n<span class="pink">◇</span> MacBook Pro M5\n<span class="pink">◇</span> Bose QC Ultra\n<span class="pink">◇</span> Madurai sabbatical (1 month)\n<span class="pink">◇</span> Russell first edition\n<span class="pink">◇</span> Polymarket position that prints',
+          "now.md": '<span class="info"># now.md</span>\n<span class="ok">▸</span> Full-time trading on perpetual futures\n<span class="ok">▸</span> feaws.xyz — public quant lab\n<span class="ok">▸</span> Dailyvox — local-LLM iOS app\n<span class="ok">▸</span> 412-day #healthywealthy streak'
+        };
+        if (files[f]) return files[f];
+        return `<span class="err">cat: ${escapeHtml(f)}: no such file</span>\n<span class="dim">try: ambitions.md, wishlist.md, now.md</span>`;
+      },
+      date() { return new Date().toString(); },
+      pwd() { return "/home/karthik"; },
+      uptime() { return 'up <span class="accent">6,560+ days</span> since 2008-08 · <span class="ok">412-day</span> streak'; },
+
+      theme() {
+        const themes = ["green", "amber", "cyan", "pink", "purple"];
+        theme = themes[(themes.indexOf(theme) + 1) % themes.length];
+        const map = { green: "#4eff7c", amber: "#ffb454", cyan: "#5fd7ff", pink: "#ff5f87", purple: "#c780ff" };
+        document.documentElement.style.setProperty("--green", map[theme]);
+        document.documentElement.style.setProperty("--green-bright", map[theme]);
+        unlockAchievement("theme", "Style", "Cycled the palette");
+        return `<span class="ok">theme:</span> ${theme} <span class="dim">(run again to cycle)</span>`;
+      },
+      matrix() {
+        if (matrixCanvas) {
+          matrixCanvas.classList.add("boost");
+          setTimeout(() => matrixCanvas.classList.remove("boost"), 5000);
+        }
+        unlockAchievement("matrix", "Wake up", "You took the green pill");
+        return '<span class="ok">▸</span> wake up, neo. <span class="dim">(5s)</span>';
+      },
+      joke() {
+        const jokes = [
+          "There are only 10 kinds of people: those who understand binary, and those who don't.",
+          'A SQL query walks into a bar, walks up to two tables, and asks: "Can I join you?"',
+          "Why do programmers prefer dark mode? Because light attracts bugs.",
+          "!false — funny because it's true.",
+          "I would tell you a UDP joke, but you might not get it.",
+          "Two engineers walk into a bar. They argue for an hour about whether it's a bar or a tavern.",
+          "Crypto doesn't lie. People who hold crypto lie about their cost basis.",
+          "My favorite kind of music? Algo-rhythms.",
+        ];
+        return '<span class="info">▸</span> ' + jokes[Math.floor(Math.random() * jokes.length)];
+      },
+      snake() {
+        unlockAchievement("snake", "Old school", "You found snake");
+        setTimeout(spawnSnake, 100);
+        return '<span class="ok">▸ launching snake...</span> <span class="dim">arrows. esc to exit.</span>';
+      },
+      "42"() {
+        unlockAchievement("42", "Hitchhiker", "You knew the answer");
+        return '<span class="info">▸</span> the answer to life, the universe, and shipping infrastructure.';
+      },
+      konami() {
+        return '<span class="info">▸</span> listening for: <span class="accent">↑ ↑ ↓ ↓ ← → ← → B A</span>';
+      },
+      exit() { return '<span class="warn">▸</span> there is no escape. you\'re already inside.'; },
+      quit() { return COMMANDS.exit(); },
+      sudo(arg) {
+        if (arg === "rm -rf /") return '<span class="err">▸ nice try.</span>';
+        return '<span class="err">▸ permission denied.</span>';
+      },
+      rm() { return '<span class="err">▸ static site. nothing to delete.</span>'; },
+      clear() { out.innerHTML = ""; return null; },
+      cls() { return COMMANDS.clear(); },
+      echo(arg) { return arg || ""; },
+    };
+
+    function runCommand(raw) {
+      const cmd = raw.trim();
+      appendPrompt(cmd);
+      if (!cmd) return;
+      history.push(cmd);
+      historyIdx = history.length;
+      const parts = cmd.split(/\s+/);
+      const fn = COMMANDS[parts[0].toLowerCase()];
+      if (fn) {
+        const r = fn(parts.slice(1).join(" "));
+        if (r != null) append(r);
+      } else {
+        append(
+          `<span class="err">command not found:</span> ${escapeHtml(parts[0])}\n<span class="dim">try:</span> <span class="info">help</span>`
+        );
+      }
+    }
+
+    cmdInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        runCommand(cmdInput.value);
+        cmdInput.value = "";
+      } else if (e.key === "ArrowUp") {
+        if (!history.length) return;
+        historyIdx = Math.max(0, historyIdx - 1);
+        cmdInput.value = history[historyIdx] || "";
+        e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+        if (!history.length) return;
+        historyIdx = Math.min(history.length, historyIdx + 1);
+        cmdInput.value = history[historyIdx] || "";
+        e.preventDefault();
+      } else if (e.key === "Tab") {
+        e.preventDefault();
+        const cur = cmdInput.value.toLowerCase();
+        if (!cur) return;
+        const m = Object.keys(COMMANDS).filter((c) => c.startsWith(cur));
+        if (m.length === 1) cmdInput.value = m[0];
+        else if (m.length > 1) append('<span class="dim">→ ' + m.join("  ") + "</span>");
+      } else if (e.key === "Escape") {
+        term.classList.add("collapsed");
+        cmdInput.blur();
+      }
+    });
+
+    body.addEventListener("click", (e) => {
+      if (e.target.tagName !== "A") cmdInput.focus();
+    });
+
+    bar.addEventListener("click", () => {
+      term.classList.toggle("collapsed");
+      if (!term.classList.contains("collapsed")) cmdInput.focus();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+      if (e.key === "/") {
+        e.preventDefault();
+        term.classList.remove("collapsed");
+        cmdInput.focus();
+      } else if (e.key === "?") {
+        e.preventDefault();
+        term.classList.remove("collapsed");
+        runCommand("help");
+        cmdInput.focus();
+      }
+    });
+
+    // Konami code
+    const konamiSeq = [
+      "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+      "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
+      "b", "a"
+    ];
+    let konamiIdx = 0;
+    document.addEventListener("keydown", (e) => {
+      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (k === konamiSeq[konamiIdx]) {
+        konamiIdx++;
+        if (konamiIdx === konamiSeq.length) {
+          konamiIdx = 0;
+          if (matrixCanvas) {
+            matrixCanvas.classList.add("boost");
+            setTimeout(() => matrixCanvas.classList.remove("boost"), 6000);
+          }
+          document.documentElement.style.setProperty("--green", "#ff5f87");
+          document.documentElement.style.setProperty("--green-bright", "#ff6be7");
+          if (!term.classList.contains("collapsed")) {
+            append('<span class="purple">▸ KONAMI ACTIVATED</span> · <span class="dim">extra lives granted.</span>');
+          }
+          unlockAchievement("konami", "True believer", "You found the konami code");
+        }
+      } else {
+        konamiIdx = 0;
+      }
+    });
+
+    // Snake game
+    function spawnSnake() {
+      if (term.classList.contains("collapsed")) term.classList.remove("collapsed");
+      const wrap = document.createElement("div");
+      wrap.className = "ikt-game-frame";
+      const c = document.createElement("canvas");
+      c.width = 240; c.height = 160;
+      wrap.appendChild(c);
+      const status = document.createElement("div");
+      status.style.cssText = "font-size:11px; color:var(--dim); margin-top:4px;";
+      status.innerHTML = '<span class="info">snake</span> · score <span id="ikt-snake-score" style="color:var(--green-bright)">0</span> · arrow keys · esc to exit';
+      out.appendChild(wrap);
+      out.appendChild(status);
+      body.scrollTop = body.scrollHeight;
+
+      const ctx = c.getContext("2d");
+      const cell = 8;
+      let snake = [{x:5,y:5},{x:4,y:5},{x:3,y:5}];
+      let dir = {x:1,y:0};
+      let food = {x:15, y:10};
+      let score = 0;
+      let alive = true;
+      function draw() {
+        ctx.fillStyle = "#030604"; ctx.fillRect(0,0,c.width,c.height);
+        ctx.fillStyle = "#ff5f87"; ctx.fillRect(food.x*cell, food.y*cell, cell-1, cell-1);
+        ctx.fillStyle = "#4eff7c";
+        snake.forEach(s => ctx.fillRect(s.x*cell, s.y*cell, cell-1, cell-1));
+        if (!alive) {
+          ctx.fillStyle = "rgba(0,0,0,0.7)"; ctx.fillRect(0,0,c.width,c.height);
+          ctx.fillStyle = "#ff5f87"; ctx.font = "bold 16px monospace"; ctx.textAlign = "center";
+          ctx.fillText("GAME OVER", c.width/2, c.height/2);
+        }
+      }
+      function step() {
+        if (!alive) return;
+        const h = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+        if (h.x < 0 || h.y < 0 || h.x >= c.width/cell || h.y >= c.height/cell) { alive = false; draw(); return; }
+        if (snake.some(s => s.x === h.x && s.y === h.y)) { alive = false; draw(); return; }
+        snake.unshift(h);
+        if (h.x === food.x && h.y === food.y) {
+          score++;
+          document.getElementById("ikt-snake-score").textContent = score;
+          if (score >= 5) unlockAchievement("snake5", "Snake master", "5 dots");
+          food = { x: Math.floor(Math.random()*(c.width/cell)), y: Math.floor(Math.random()*(c.height/cell)) };
+        } else { snake.pop(); }
+        draw();
+      }
+      const kh = (e) => {
+        if (!alive) return;
+        const m = {ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1}, ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0}};
+        if (m[e.key] && (m[e.key].x !== -dir.x || m[e.key].y !== -dir.y)) { dir = m[e.key]; e.preventDefault(); }
+        if (e.key === "Escape") { alive = false; draw(); }
+      };
+      document.addEventListener("keydown", kh);
+      const iv = setInterval(() => { step(); if (!alive) { clearInterval(iv); document.removeEventListener("keydown", kh); } }, 110);
+      draw();
+    }
+  })();
+</script>

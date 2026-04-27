@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
+import AsciiBanner from "../components/AsciiBanner.astro";
 import { getCollection } from "astro:content";
 
 const all = await getCollection("posts", ({ data }) => !data.draft);
@@ -10,6 +11,8 @@ const recent = all
 ---
 
 <BaseLayout title="intrepidkarthi" active="home">
+  <AsciiBanner />
+
   <div class="home-grid">
 
     <!-- LEFT: WHOAMI -->

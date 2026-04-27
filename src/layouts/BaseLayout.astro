@@ -4,6 +4,7 @@ import MatrixRain from "../components/MatrixRain.astro";
 import BootSequence from "../components/BootSequence.astro";
 import TabBar from "../components/TabBar.astro";
 import StatusBar from "../components/StatusBar.astro";
+import InteractiveTerminal from "../components/InteractiveTerminal.astro";
 
 interface Props {
   title: string;
@@ -64,6 +65,7 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
       <main class="main">
         <slot />
       </main>
+      <InteractiveTerminal />
       <StatusBar file={file ?? `~/intrepidkarthi/${active}`} />
     </div>
 
