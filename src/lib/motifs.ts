@@ -219,8 +219,8 @@ const motifs: Record<string, Motif> = {
 
   "code-brackets": (cx, cy, s = 1) =>
     t(cx, cy, s, `
-      <text x="0" y="35" fill="${G}" font-family="JetBrains Mono, monospace" font-weight="700" font-size="160" text-anchor="middle">{ }</text>
-      <text x="0" y="80" fill="${A}" font-family="JetBrains Mono, monospace" font-size="20" text-anchor="middle">function ship() {`}</text>
+      <text x="0" y="35" fill="${G}" font-family="JetBrains Mono, monospace" font-weight="700" font-size="160" text-anchor="middle">&#123; &#125;</text>
+      <text x="0" y="80" fill="${A}" font-family="JetBrains Mono, monospace" font-size="20" text-anchor="middle">function ship() &#123;&#125;</text>
     `),
 
   pen: (cx, cy, s = 1) =>
