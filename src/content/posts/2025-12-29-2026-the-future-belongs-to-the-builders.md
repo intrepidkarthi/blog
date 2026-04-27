@@ -2,15 +2,13 @@
 title: "2026: The Future Belongs to the Builders"
 date: 2025-12-29
 slug: 2026-the-future-belongs-to-the-builders
-excerpt: "** ![2026: The Future Belongs to the Builders](/images/articles/2026-the-future-belongs-to-the-builders/01.jpg) Since last year, I’ve completely transformed how I work by integrating AI tools into my "
+excerpt: "Since last year, I’ve completely transformed how I work by integrating AI tools into my "
 tags: [linkedin, imported]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/2026-future-belongs-builders-karthikeyan-ng-f8elc
 image_count: 20
 ---
 
-**
-![2026: The Future Belongs to the Builders](/images/articles/2026-the-future-belongs-to-the-builders/01.jpg)
 
 Since last year, I’ve completely transformed how I work by integrating AI tools into my development workflow. The difference isn’t just noticeable; it’s exponential. I’m seeing a solid 2-3x boost in productivity—complex tasks that used to take days now take hours.
 

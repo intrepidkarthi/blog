@@ -2,15 +2,13 @@
 title: "Highlights on India Budget 2023-24"
 date: 2023-02-03
 slug: highlights-on-india-budget-2023-24
-excerpt: "** ![Photo by Ravi Roshan: https://www.pexels.com/photo/close-up-shot-of-indian-rupees-14907311/](/images/articles/highlights-on-india-budget-2023-24/01.jpg) A thread on Indian Budget for the financia"
+excerpt: "A thread on Indian Budget for the financia"
 tags: [linkedin, imported]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/highlights-india-budget-2023-24-karthikeyan-ng
 image_count: 1
 ---
 
-**
-![Photo by Ravi Roshan: https://www.pexels.com/photo/close-up-shot-of-indian-rupees-14907311/](/images/articles/highlights-on-india-budget-2023-24/01.jpg)
 
 A thread on Indian Budget for the financial year 2023-24 with a few key take aways.
 

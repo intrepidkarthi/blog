@@ -2,15 +2,13 @@
 title: "The Learning Never Ends"
 date: 2020-09-15
 slug: the-learning-never-ends
-excerpt: "** ![Image: Pexels](/images/articles/the-learning-never-ends/01.jpg) This month I am completing my 11th year into my professional life. I have worked across MNC, Startups and Mid-size companies. Runni"
+excerpt: "This month I am completing my 11th year into my professional life. I have worked across MNC, Startups and Mid-size companies. Runni"
 tags: [linkedin, imported]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/learning-never-ends-karthikeyan-ng
 image_count: 1
 ---
 
-**
-![Image: Pexels](/images/articles/the-learning-never-ends/01.jpg)
 
 This month I am completing my 11th year into my professional life. I have worked across MNC, Startups and Mid-size companies. Running your own startup will give you first hand learning experience into everything. Every company and the people around I have worked with gave me a different learning throughout. Some of these points has changed the way how I view the world and still I am learning on a few of these points mentioned. The learning never ends.
 

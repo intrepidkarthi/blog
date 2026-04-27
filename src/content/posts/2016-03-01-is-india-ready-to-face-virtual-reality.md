@@ -2,14 +2,13 @@
 title: "Is India ready to face Virtual Reality?"
 date: 2016-03-01
 slug: is-india-ready-to-face-virtual-reality
-excerpt: "![Is India ready to face Virtual Reality?](/images/articles/is-india-ready-to-face-virtual-reality/01.jpg) The first decade of 21st century can be categorised for smartphone and handheld devices evolu"
+excerpt: "The first decade of 21st century can be categorised for smartphone and handheld devices evolu"
 tags: [linkedin, imported]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/india-ready-face-virtual-reality-karthikeyan-ng
 image_count: 1
 ---
 
-![Is India ready to face Virtual Reality?](/images/articles/is-india-ready-to-face-virtual-reality/01.jpg)
 
 The first decade of 21st century can be categorised for smartphone and handheld devices evolution. And the next decade which we are already half the way through it, can be categorised for the evolution on multiple things, especially on Artificial Intelligence, Augmented Reality and Virtual Reality. In the last 3 years there is a lot of developments that is going on under Virtual Reality. And all of a sudden companies like Facebook, Microsoft, Google, Apple, HTC and Sony started investing in these technologies. Did they see a future out there? May be. Hopefully not everyone is predicting a wrong future. Have you ever played with a View-Master in your childhood days? The same view-master with advancement over years, started landing into consumer’s head in the form of Google cardboard and Oculus Rift within the last 2 years. The market for VR is predicted at 30B $ by 2020. But there are many analysis says that it will be worth more by that time. Google cardboard is already popular in Indian market since it is affordable and works with existing mobile phones. India is yet to see popularity on any head mounted displays like Oculus rift.
 

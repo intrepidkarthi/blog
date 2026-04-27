@@ -2,15 +2,13 @@
 title: "What did I learn in 25 years?"
 date: 2014-12-14
 slug: what-did-i-learn-in-25-years
-excerpt: "** ![What did I learn in 25 years?](/images/articles/what-did-i-learn-in-25-years/01.jpg) I have downloaded a random app from app store on my mobile in morning. There were a few initial screens with q"
+excerpt: "I have downloaded a random app from app store on my mobile in morning. There were a few initial screens with q"
 tags: [linkedin, imported]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/what-did-i-learn-till-now-karthikeyan-ng
 image_count: 1
 ---
 
-**
-![What did I learn in 25 years?](/images/articles/what-did-i-learn-in-25-years/01.jpg)
 
 I have downloaded a random app from app store on my mobile in morning. There were a few initial screens with questions about the user. There was a question on which age group I belong to. There were age groups as (0 -19), (20 – 26), (27 – 35), (35 – 50), (51 - 100). I always used to select second group. But now I am forced to select the age group #3. Oh yeah, that is the indication that I am getting older. I was thinking about what have I accomplished on my dreams and goals till now in the past 25 years.
 

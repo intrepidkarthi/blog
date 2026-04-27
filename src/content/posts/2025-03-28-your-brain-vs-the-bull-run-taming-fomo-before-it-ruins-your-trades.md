@@ -2,15 +2,13 @@
 title: "Your Brain vs. the Bull Run: Taming FOMO Before It Ruins Your Trades"
 date: 2025-03-28
 slug: your-brain-vs-the-bull-run-taming-fomo-before-it-ruins-your-trades
-excerpt: "** ![Chatgpt](/images/articles/your-brain-vs-the-bull-run-taming-fomo-before-it-ruins-your-trades/01.jpg) If you're still letting FOMO control your trades, maybe the problem isn't the market—maybe it'"
+excerpt: "If you're still letting FOMO control your trades, maybe the problem isn't the market—maybe it'"
 tags: [linkedin, imported]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/your-brain-vs-bull-run-taming-fomo-before-ruins-trades-karthikeyan-ng-bq8xc
 image_count: 1
 ---
 
-**
-![Chatgpt](/images/articles/your-brain-vs-the-bull-run-taming-fomo-before-it-ruins-your-trades/01.jpg)
 
 If you're still letting FOMO control your trades, maybe the problem isn't the market—maybe it's you. Have you ever felt that panic when a market is going up fast, and you didn't buy in time? That's called FOMO (Fear Of Missing Out)**. It's a big reason why people lose money in trading. It's not just a catchy phrase; it's a real feeling that can mess with your decisions.
 

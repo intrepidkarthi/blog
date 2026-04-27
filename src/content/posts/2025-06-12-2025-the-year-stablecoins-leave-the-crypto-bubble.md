@@ -2,15 +2,13 @@
 title: "2025: The Year Stablecoins Leave the Crypto Bubble"
 date: 2025-06-12
 slug: 2025-the-year-stablecoins-leave-the-crypto-bubble
-excerpt: "** ![2025: The Year Stablecoins Leave the Crypto Bubble](/images/articles/2025-the-year-stablecoins-leave-the-crypto-bubble/01.jpg) When I first noticed stablecoins back in 2020, they felt like a side"
+excerpt: "When I first noticed stablecoins back in 2020, they felt like a side"
 tags: [linkedin, imported]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/2025-year-stablecoins-leave-crypto-bubble-karthikeyan-ng-yrfyc
 image_count: 3
 ---
 
-**
-![2025: The Year Stablecoins Leave the Crypto Bubble](/images/articles/2025-the-year-stablecoins-leave-the-crypto-bubble/01.jpg)
 
 When I first noticed stablecoins back in 2020, they felt like a side-note in crypto—handy for traders, invisible to everyone else. Today they’re elbowing into the same sentence as Visa, Stripe, and cross-border bank wires. The numbers below show why.
 
