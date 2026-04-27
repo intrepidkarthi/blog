@@ -3,7 +3,7 @@ title: "I Have An Idea And I Need An App For That"
 date: 2015-06-17
 slug: i-have-an-idea-and-i-need-an-app-for-that
 excerpt: "Be brave. Take risks. Nothing can substitute experience. -Paulo Coelho"
-tags: [imported]
+tags: [startup, founder, mobile, app]
 source: medium
 canonical_url: https://medium.com/@intrepidkarthi/i-have-an-idea-and-i-need-an-app-for-that-a6130a8d20a9
 ---

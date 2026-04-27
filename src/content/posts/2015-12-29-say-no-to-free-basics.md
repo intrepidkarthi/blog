@@ -3,7 +3,7 @@ title: "SAY NO TO FREE BASICS"
 date: 2015-12-29
 slug: say-no-to-free-basics
 excerpt: "India’s poor deserves something better than Facebook and their advertisements."
-tags: [imported]
+tags: [india, regulation, internet, policy]
 source: medium
 canonical_url: https://medium.com/@intrepidkarthi/say-no-to-free-basics-ef7be0f3dfa2
 ---

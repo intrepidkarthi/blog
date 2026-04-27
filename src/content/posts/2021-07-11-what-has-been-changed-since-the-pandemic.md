@@ -3,7 +3,7 @@ title: "What has been changed since the pandemic?"
 date: 2021-07-11
 slug: what-has-been-changed-since-the-pandemic
 excerpt: "I was having a casual chat with a friend who is a Group Manager at one of the India’s "
-tags: [linkedin, imported]
+tags: [life, pandemic, personal]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/what-has-been-changed-since-pandemic-karthikeyan-ng
 image_count: 1

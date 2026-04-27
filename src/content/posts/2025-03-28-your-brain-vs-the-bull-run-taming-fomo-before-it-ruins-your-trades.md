@@ -3,7 +3,7 @@ title: "Your Brain vs. the Bull Run: Taming FOMO Before It Ruins Your Trades"
 date: 2025-03-28
 slug: your-brain-vs-the-bull-run-taming-fomo-before-it-ruins-your-trades
 excerpt: "If you're still letting FOMO control your trades, maybe the problem isn't the market—maybe it'"
-tags: [linkedin, imported]
+tags: [crypto, trading, fomo, psychology]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/your-brain-vs-bull-run-taming-fomo-before-ruins-trades-karthikeyan-ng-bq8xc
 image_count: 1

@@ -3,7 +3,7 @@ title: "I’ve Been Writing a Diary for 20 Years. Then I Couldn’t Anymore."
 date: 2026-04-14
 slug: i-ve-been-writing-a-diary-for-20-years-then-i-couldn-t-anymore
 excerpt: "I’ve Been Writing a Diary for 20 Years. Then I Couldn’t Anymore."
-tags: [imported]
+tags: [diary, writing, personal, life]
 source: medium
 canonical_url: https://medium.com/@intrepidkarthi/ive-been-writing-a-diary-for-20-years-then-i-couldn-t-anymore-10a4c9087a78
 ---

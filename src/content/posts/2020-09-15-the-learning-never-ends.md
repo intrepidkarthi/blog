@@ -3,7 +3,7 @@ title: "The Learning Never Ends"
 date: 2020-09-15
 slug: the-learning-never-ends
 excerpt: "This month I am completing my 11th year into my professional life. I have worked across MNC, Startups and Mid-size companies. Runni"
-tags: [linkedin, imported]
+tags: [career, books, life, growth]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/learning-never-ends-karthikeyan-ng
 image_count: 1

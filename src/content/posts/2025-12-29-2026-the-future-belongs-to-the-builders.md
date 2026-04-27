@@ -3,7 +3,7 @@ title: "2026: The Future Belongs to the Builders"
 date: 2025-12-29
 slug: 2026-the-future-belongs-to-the-builders
 excerpt: "Since last year, I’ve completely transformed how I work by integrating AI tools into my "
-tags: [linkedin, imported]
+tags: [ai, agents, startup, future, prediction]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/2026-future-belongs-builders-karthikeyan-ng-f8elc
 image_count: 20

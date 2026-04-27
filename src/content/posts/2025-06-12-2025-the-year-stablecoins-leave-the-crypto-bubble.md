@@ -3,7 +3,7 @@ title: "2025: The Year Stablecoins Leave the Crypto Bubble"
 date: 2025-06-12
 slug: 2025-the-year-stablecoins-leave-the-crypto-bubble
 excerpt: "When I first noticed stablecoins back in 2020, they felt like a side"
-tags: [linkedin, imported]
+tags: [crypto, stablecoin, regulation, prediction]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/2025-year-stablecoins-leave-crypto-bubble-karthikeyan-ng-yrfyc
 image_count: 3

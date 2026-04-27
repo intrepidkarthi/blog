@@ -3,7 +3,7 @@ title: "Blockchain + Brands + Loyalty"
 date: 2020-10-06
 slug: blockchain-brands-loyalty
 excerpt: "In the past 2 months, I am helping a startup as a consultant before I pick my next role. In the meantime, I was exploring a f"
-tags: [linkedin, imported]
+tags: [blockchain, web3, marketing]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/blockchain-brands-loyalty-karthikeyan-ng
 image_count: 4

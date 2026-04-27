@@ -3,7 +3,7 @@ title: "Mobile app statistics :: One week after launch"
 date: 2016-04-04
 slug: mobile-app-statistics-one-week-after-launch
 excerpt: "We have launched Teleport Call :: First ever VR Caller application on Android "
-tags: [linkedin, imported]
+tags: [mobile, app, startup, analytics]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/mobile-app-statistics-one-week-after-launch-karthikeyan-ng
 image_count: 2

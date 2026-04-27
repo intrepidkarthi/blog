@@ -3,7 +3,7 @@ title: "Highlights on India Budget 2023-24"
 date: 2023-02-03
 slug: highlights-on-india-budget-2023-24
 excerpt: "A thread on Indian Budget for the financia"
-tags: [linkedin, imported]
+tags: [india, regulation, finance, government]
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/highlights-india-budget-2023-24-karthikeyan-ng
 image_count: 1

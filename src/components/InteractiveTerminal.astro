@@ -270,17 +270,14 @@
     // ---------- commands ----------
     const COMMANDS = {
       help() {
-        return `<span class="info">commands · grouped</span>
+        return `<span class="info">commands</span>
 
 <span class="accent">nav</span>      whoami · writing · lab · mission · about · contact · ls · cd
 <span class="accent">files</span>    cat &lt;file&gt; (ambitions.md, wishlist.md, now.md)
-<span class="accent">crypto</span>   btc · eth · sol · gas · fear · greed · funding · block · halving · whales · liq
-<span class="accent">ai/ml</span>    gpu · models · tokenize &lt;text&gt; · embed &lt;text&gt; · agi · params
-<span class="accent">system</span>   neofetch · ping &lt;host&gt; · traceroute · top · htop · curl &lt;host&gt;
-<span class="accent">stats</span>    streak · setup · bookshelf · stack · uptime · date · pwd
-<span class="accent">fun</span>      joke · fortune · cowsay &lt;text&gt; · figlet &lt;text&gt; · theme · matrix
-<span class="accent">hidden</span>   snake · 42 · konami · sl · vim · :wq · sudo · hack the planet
-<span class="accent">util</span>     clear · echo &lt;text&gt;
+<span class="accent">crypto</span>   btc · eth · sol · gas · fear · greed · funding · block · whales · liq
+<span class="accent">ai/ml</span>    gpu · models · tokenize &lt;text&gt; · embed &lt;text&gt; · params
+<span class="accent">stats</span>    streak · setup · bookshelf · neofetch · uptime · date · pwd
+<span class="accent">style</span>    theme · matrix · clear
 
 <span class="dim">tip: tabs above are clickable. press 1-6 to navigate. TAB autocompletes.</span>`;
       },
@@ -359,22 +356,6 @@
         unlockAchievement("matrix", "Wake up", "You took the green pill");
         return '<span class="ok">▸</span> wake up, neo. <span class="dim">(5s)</span>';
       },
-      joke() {
-        const jokes = [
-          "There are only 10 kinds of people: those who understand binary, and those who don't.",
-          'A SQL query walks into a bar, walks up to two tables, and asks: "Can I join you?"',
-          "Why do programmers prefer dark mode? Because light attracts bugs.",
-          "!false — funny because it's true.",
-          "I would tell you a UDP joke, but you might not get it.",
-          "Two engineers walk into a bar. They argue for an hour about whether it's a bar or a tavern.",
-          "Crypto doesn't lie. People who hold crypto lie about their cost basis.",
-          "My favorite kind of music? Algo-rhythms.",
-          "There are 2 hard problems in CS: cache invalidation, naming things, and off-by-one errors.",
-          "Stablecoins are a great solution to a problem regulators created and then forgot about.",
-        ];
-        return '<span class="info">▸</span> ' + jokes[Math.floor(Math.random() * jokes.length)];
-      },
-
       // ---------- crypto / trading ----------
       btc() {
         unlockAchievement("trader", "Trader", "Checked the tape");
@@ -514,15 +495,6 @@
           `[ ${v.join(", ")}, ... ]\n` +
           `<span class="dim">cosine sim to "shipping": 0.${Math.floor(_rand(50, 90))}</span>`;
       },
-      agi() {
-        const days = Math.floor(_rand(180, 1825));
-        return `<span class="accent">AGI countdown · vibes only</span>\n` +
-          `estimate:    <span class="ok">${days}</span> days\n` +
-          `error term:  ±∞\n` +
-          `confidence:  low\n` +
-          `meanwhile:   build infrastructure that compounds.\n` +
-          `<span class="dim">based on no model. updated when memes change.</span>`;
-      },
       params() {
         return `<span class="accent">parameter counts (rounded)</span>
 <table>
@@ -553,54 +525,6 @@
          <span class="ok">gpu</span>:       caffeine + insomnia, dual-channel
          <span class="ok">terminal</span>:  intrepidkarthi.com (this one)</pre>`;
       },
-      ping(arg) {
-        const host = arg || "intrepidkarthi.com";
-        const t = () => (_rand(8, 18)).toFixed(1);
-        return `PING ${escapeHtml(host)} · 56 data bytes
-64 bytes from ${escapeHtml(host)}: icmp_seq=1 ttl=53 time=${t()} ms
-64 bytes from ${escapeHtml(host)}: icmp_seq=2 ttl=53 time=${t()} ms
-64 bytes from ${escapeHtml(host)}: icmp_seq=3 ttl=53 time=${t()} ms
---- ${escapeHtml(host)} ping statistics ---
-3 packets transmitted, 3 received, <span class="ok">0.0% packet loss</span>`;
-      },
-      traceroute(arg) {
-        const host = arg || "intrepidkarthi.com";
-        return `traceroute to ${escapeHtml(host)}, 30 hops max, 60 byte packets
- 1  router.local           1.2 ms
- 2  10.42.0.1              4.5 ms
- 3  isp-gw.bsnl.in        12.1 ms
- 4  AS9498  ***  filtered  *
- 5  cf-101.cloudflare.net 24.8 ms
- 6  vercel-edge.iad1     108.4 ms
- 7  ${escapeHtml(host)}    109.2 ms <span class="ok">★ arrived</span>`;
-      },
-      top() {
-        return `<pre class="ascii">PID    USER     %CPU  %MEM  COMMAND
-1      karthik   ∞    100   /sbin/karthik --mode=builder
-42     karthik  87.4  12.3  ollama serve
-137    karthik  62.1   8.7  feaws.xyz / quant-engine
-418    karthik  44.0  18.2  dailyvox-ios-bridge
-523    karthik  28.6   3.1  intrepidkarthi.com (astro dev)
-901    karthik   ∞    ∞     thinking about retirement</pre>`;
-      },
-      htop() { return COMMANDS.top(); },
-      curl(arg) {
-        const host = arg || "intrepidkarthi.com";
-        return `<pre class="ascii">HTTP/2 200
-content-type: text/html; charset=utf-8
-server: vercel
-x-shipped-by: karthik
-x-vibe: builder-architect
-x-streak: 412 days
-x-trades-since-login: 0 (you're not logged in to feaws)
-
-&lt;!doctype html&gt;
-&lt;html&gt;
-  &lt;head&gt;&lt;title&gt;${escapeHtml(host)}&lt;/title&gt;&lt;/head&gt;
-  &lt;body&gt;... (truncated, use a real browser)&lt;/body&gt;
-&lt;/html&gt;</pre>`;
-      },
-
       // ---------- stats / persona ----------
       streak() {
         const days = 412;
@@ -642,110 +566,9 @@ x-trades-since-login: 0 (you're not logged in to feaws)
       },
 
       // ---------- humor / fortune ----------
-      fortune() {
-        const fortunes = [
-          "the boring systems win.",
-          "infrastructure is strategy.",
-          "build for compliance, ship for customers.",
-          "the trading IS the proof.",
-          "the best tech debt is the debt you chose deliberately.",
-          "leverage compounds. mediocrity multiplies.",
-          "security is a feature, not a department.",
-          "what gets built ships. what ships survives. what survives compounds.",
-          "if your moat is a secret, it's not a moat.",
-          "ship one more thing.",
-          "in trading, the size of the loss matters more than the frequency of the wins.",
-          "every regulation is a moat for whoever was already inside when it was written.",
-          "the best models are simple. the best simple models took years to find.",
-        ];
-        return '<span class="info">▸</span> ' + fortunes[Math.floor(Math.random() * fortunes.length)];
-      },
-      cowsay(arg) {
-        const text = arg || "moo, the boring systems win";
-        const w = text.length;
-        const top = " " + "_".repeat(w + 2);
-        const bot = " " + "-".repeat(w + 2);
-        return `<pre class="ascii">${top}
-&lt; ${escapeHtml(text)} &gt;
-${bot}
-        \\   ^__^
-         \\  (oo)\\_______
-            (__)\\       )\\/\\
-                ||----w |
-                ||     ||</pre>`;
-      },
-      figlet(arg) {
-        const text = (arg || "intrepidkarthi").toUpperCase().slice(0, 12);
-        // simple block letter rendering — just stylized
-        return `<pre class="ascii">  ╔${"═".repeat(text.length * 3 + 4)}╗
-  ║  ${text.split("").join("  ")}  ║
-  ╚${"═".repeat(text.length * 3 + 4)}╝</pre>`;
-      },
-      sl() {
-        return `<pre class="ascii">      ====        ________                ___________
-  _D _|  |_______/        \\__I_I_____===__|_________|
-   |(_)---  |   H\\________/ |   |        =|___ ___|
-   /     |  |   H  |  |     |   |         ||_| |_||
-  |      |  |   H  |__--------------------| [___] |
-  | ________|___H__/__|_____/[][]~\\_______|       |
-  |/ |   |-----------I_____I [][] []  D   |=======|__
-__/ =| o |=-O=====O=====O=====O \\ ____Y___________|__
- |/-=|___|=    ||    ||    ||    |_____/~\\___/        |_D__D__D_|
-  \\_/      \\__/  \\__/  \\__/   \\_/      \\_/</pre>
-<span class="dim">classic typo. it's <span class="info">ls</span>, not <span class="err">sl</span>.</span>`;
-      },
-
       // ---------- vim / editor jokes ----------
-      vim() { return '<span class="dim">▸ this isn\'t vim. (try <span class="info">:wq</span> to escape anyway)</span>'; },
-      emacs() { return '<span class="dim">▸ wrong religion. try <span class="info">vim</span>.</span>'; },
-      nano() { return '<span class="dim">▸ ctrl+x to exit · still wrong religion · try vim</span>'; },
-      ":wq"() { return '<span class="ok">▸ written. quit. (you\'re not in vim, btw.)</span>'; },
-      ":q"() { return COMMANDS[":wq"](); },
-      ":q!"() { return '<span class="warn">▸ tried to flee without saving. nice.</span>'; },
-
       // ---------- xkcd / pop ----------
-      hack(arg) {
-        if ((arg || "").trim() === "the planet") {
-          unlockAchievement("hack-planet", "Hackers (1995)", "You quoted the movie");
-          return `<pre class="ascii"> _   _    _    ____ _  __
-| | | |  / \\  / ___| |/ /
-| |_| | / _ \\| |   | ' /
-|  _  |/ ___ \\ |___| . \\
-|_| |_/_/   \\_\\____|_|\\_\\
-              the planet ★</pre>
-<span class="ok">▸ mess with the best, die like the rest.</span>`;
-        }
-        return '<span class="warn">▸ this is a static blog. nothing to hack.</span> <span class="dim">(try: hack the planet)</span>';
-      },
       // 'make me a sandwich'
-      make(arg) {
-        if ((arg || "").trim() === "me a sandwich")
-          return '<span class="err">▸ what? make it yourself.</span>\n<span class="dim">try: <span class="info">sudo make me a sandwich</span></span>';
-        return '<span class="err">make: *** No targets specified and no makefile found. Stop.</span>';
-      },
-      ssh() { return '<span class="warn">▸ identity unknown · key permission too open · try a real terminal</span>'; },
-      docker() { return '<span class="dim">▸ docker daemon not running on this static site (also: containers add up)</span>'; },
-      kubectl() { return '<span class="dim">▸ no cluster configured. (you don\'t need k8s. probably.)</span>'; },
-      git(arg) {
-        if (arg === "status") return '<span class="ok">on branch main</span>\nnothing to commit, working tree clean\n<span class="dim">(your last commit was bold. ship the next one.)</span>';
-        if (arg === "blame") return '<span class="warn">▸ blame yourself. you wrote it.</span>';
-        return `git: '${escapeHtml(arg || "")}' is not a git command. <span class="dim">try: git status</span>`;
-      },
-
-      snake() {
-        unlockAchievement("snake", "Old school", "You found snake");
-        setTimeout(spawnSnake, 100);
-        return '<span class="ok">▸ launching snake...</span> <span class="dim">arrows. esc to exit.</span>';
-      },
-      "42"() {
-        unlockAchievement("42", "Hitchhiker", "You knew the answer");
-        return '<span class="info">▸</span> the answer to life, the universe, and shipping infrastructure.';
-      },
-      konami() {
-        return '<span class="info">▸</span> listening for: <span class="accent">↑ ↑ ↓ ↓ ← → ← → B A</span>';
-      },
-      exit() { return '<span class="warn">▸</span> there is no escape. you\'re already inside.'; },
-      quit() { return COMMANDS.exit(); },
       sudo(arg) {
         if (arg === "rm -rf /") return '<span class="err">▸ nice try.</span>';
         if (arg === "make me a sandwich") return '<span class="ok">▸ ok.</span>\n<pre class="ascii">    ___\n   |o o\n   |~~~ \\___\n  /  ##  ()\n  \\______/</pre>';
@@ -753,7 +576,6 @@ __/ =| o |=-O=====O=====O=====O \\ ____Y___________|__
         if (arg && COMMANDS[arg.split(" ")[0]]) return COMMANDS[arg.split(" ")[0]](arg.split(" ").slice(1).join(" "));
         return '<span class="err">▸ permission denied. (this is a static page on the internet.)</span>';
       },
-      rm() { return '<span class="err">▸ static site. nothing to delete.</span>'; },
       clear() { out.innerHTML = ""; return null; },
       cls() { return COMMANDS.clear(); },
       echo(arg) { return arg || ""; },
@@ -826,92 +648,5 @@ __/ =| o |=-O=====O=====O=====O \\ ____Y___________|__
         cmdInput.focus();
       }
     });
-
-    // Konami code
-    const konamiSeq = [
-      "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
-      "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
-      "b", "a"
-    ];
-    let konamiIdx = 0;
-    document.addEventListener("keydown", (e) => {
-      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-      if (k === konamiSeq[konamiIdx]) {
-        konamiIdx++;
-        if (konamiIdx === konamiSeq.length) {
-          konamiIdx = 0;
-          if (matrixCanvas) {
-            matrixCanvas.classList.add("boost");
-            setTimeout(() => matrixCanvas.classList.remove("boost"), 6000);
-          }
-          document.documentElement.style.setProperty("--green", "#ff5f87");
-          document.documentElement.style.setProperty("--green-bright", "#ff6be7");
-          if (!term.classList.contains("collapsed")) {
-            append('<span class="purple">▸ KONAMI ACTIVATED</span> · <span class="dim">extra lives granted.</span>');
-          }
-          unlockAchievement("konami", "True believer", "You found the konami code");
-        }
-      } else {
-        konamiIdx = 0;
-      }
-    });
-
-    // Snake game
-    function spawnSnake() {
-      if (term.classList.contains("collapsed")) term.classList.remove("collapsed");
-      const wrap = document.createElement("div");
-      wrap.className = "ikt-game-frame";
-      const c = document.createElement("canvas");
-      c.width = 240; c.height = 160;
-      wrap.appendChild(c);
-      const status = document.createElement("div");
-      status.style.cssText = "font-size:11px; color:var(--dim); margin-top:4px;";
-      status.innerHTML = '<span class="info">snake</span> · score <span id="ikt-snake-score" style="color:var(--green-bright)">0</span> · arrow keys · esc to exit';
-      out.appendChild(wrap);
-      out.appendChild(status);
-      body.scrollTop = body.scrollHeight;
-
-      const ctx = c.getContext("2d");
-      const cell = 8;
-      let snake = [{x:5,y:5},{x:4,y:5},{x:3,y:5}];
-      let dir = {x:1,y:0};
-      let food = {x:15, y:10};
-      let score = 0;
-      let alive = true;
-      function draw() {
-        ctx.fillStyle = "#030604"; ctx.fillRect(0,0,c.width,c.height);
-        ctx.fillStyle = "#ff5f87"; ctx.fillRect(food.x*cell, food.y*cell, cell-1, cell-1);
-        ctx.fillStyle = "#4eff7c";
-        snake.forEach(s => ctx.fillRect(s.x*cell, s.y*cell, cell-1, cell-1));
-        if (!alive) {
-          ctx.fillStyle = "rgba(0,0,0,0.7)"; ctx.fillRect(0,0,c.width,c.height);
-          ctx.fillStyle = "#ff5f87"; ctx.font = "bold 16px monospace"; ctx.textAlign = "center";
-          ctx.fillText("GAME OVER", c.width/2, c.height/2);
-        }
-      }
-      function step() {
-        if (!alive) return;
-        const h = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
-        if (h.x < 0 || h.y < 0 || h.x >= c.width/cell || h.y >= c.height/cell) { alive = false; draw(); return; }
-        if (snake.some(s => s.x === h.x && s.y === h.y)) { alive = false; draw(); return; }
-        snake.unshift(h);
-        if (h.x === food.x && h.y === food.y) {
-          score++;
-          document.getElementById("ikt-snake-score").textContent = score;
-          if (score >= 5) unlockAchievement("snake5", "Snake master", "5 dots");
-          food = { x: Math.floor(Math.random()*(c.width/cell)), y: Math.floor(Math.random()*(c.height/cell)) };
-        } else { snake.pop(); }
-        draw();
-      }
-      const kh = (e) => {
-        if (!alive) return;
-        const m = {ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1}, ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0}};
-        if (m[e.key] && (m[e.key].x !== -dir.x || m[e.key].y !== -dir.y)) { dir = m[e.key]; e.preventDefault(); }
-        if (e.key === "Escape") { alive = false; draw(); }
-      };
-      document.addEventListener("keydown", kh);
-      const iv = setInterval(() => { step(); if (!alive) { clearInterval(iv); document.removeEventListener("keydown", kh); } }, 110);
-      draw();
-    }
-  })();
+    })();
 </script>
