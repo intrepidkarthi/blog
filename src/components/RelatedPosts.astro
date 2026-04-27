@@ -1,0 +1,74 @@
+---
+import PostCard from "./PostCard.astro";
+import { getCollection } from "astro:content";
+
+interface Props {
+  currentSlug: string;
+  currentTags: string[];
+  currentDate: Date;
+  limit?: number;
+}
+const { currentSlug, currentTags, currentDate, limit = 3 } = Astro.props;
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+
+// Score each post by tag overlap + recency proximity to current
+const scored = all
+  .filter((p) => (p.data.slug ?? p.slug) !== currentSlug)
+  .map((p) => {
+    const overlap = (p.data.tags ?? []).filter((t) =>
+      currentTags.includes(t),
+    ).length;
+    const yearsApart = Math.abs(
+      p.data.date.getFullYear() - currentDate.getFullYear(),
+    );
+    // tag overlap dominant; recency tiebreaker (closer = higher)
+    const score = overlap * 100 - yearsApart;
+    return { post: p, score, overlap };
+  })
+  .filter((x) => x.overlap > 0) // must share at least one tag
+  .sort((a, b) => b.score - a.score)
+  .slice(0, limit);
+---
+
+{scored.length > 0 && (
+  <aside class="related">
+    <h2 class="related-head">
+      <span class="hash">##</span> related reading
+    </h2>
+    <div class="related-list">
+      {scored.map(({ post: p }) => (
+        <PostCard
+          href={`/writing/${p.data.slug ?? p.slug}`}
+          date={p.data.date}
+          title={p.data.title}
+          tags={p.data.tags}
+          excerpt={p.data.excerpt}
+        />
+      ))}
+    </div>
+  </aside>
+)}
+
+<style>
+  .related {
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px dashed var(--line);
+  }
+  .related-head {
+    font-family: var(--font-vt);
+    font-size: 22px;
+    color: var(--green-bright);
+    text-shadow: 0 0 4px var(--green-glow);
+    margin-bottom: 14px;
+  }
+  .related-head .hash {
+    color: var(--pink);
+    margin-right: 6px;
+  }
+  .related-list {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

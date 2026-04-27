@@ -10,7 +10,7 @@ canonical_url: https://medium.com/@intrepidkarthi/say-no-to-free-basics-ef7be0f3
 
 ### SAY NO TO FREE BASICS
 
-![](https://cdn-images-1.medium.com/max/800/1*4fkDdRAcrhQJbIW6Mq8tSA.png)Digital Equality can be implemented better without Facebook***India’s poor deserves something better than Facebook and their advertisements.*Let’s start the conversation from the Facebook’s side of story. For the past one week Facebook is running “Free Basics” campaign that easily makes people fall for it by the kind of ads and twisted words.
+![SAY NO TO FREE BASICS — illustration 1](https://cdn-images-1.medium.com/max/800/1*4fkDdRAcrhQJbIW6Mq8tSA.png)Digital Equality can be implemented better without Facebook***India’s poor deserves something better than Facebook and their advertisements.*Let’s start the conversation from the Facebook’s side of story. For the past one week Facebook is running “Free Basics” campaign that easily makes people fall for it by the kind of ads and twisted words.
 
 Here is the excerpt that is being shared for supporting Free Basics.
 

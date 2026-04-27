@@ -10,7 +10,7 @@ canonical_url: https://medium.com/@intrepidkarthi/ive-been-writing-a-diary-for-2
 
 ### ***I’ve Been Writing a Diary for 20 Years. Then I Couldn’t Anymore.***
 
-![](https://cdn-images-1.medium.com/max/1200/1*qR2xtX86VXCpWqMljq4xVg.png)***I’ve Been Writing a Diary for 20 Years. Then I Couldn’t Anymore.***
+![I’ve Been Writing a Diary for 20 Years. Then I Couldn’t Anymore. — illustration 1](https://cdn-images-1.medium.com/max/1200/1*qR2xtX86VXCpWqMljq4xVg.png)***I’ve Been Writing a Diary for 20 Years. Then I Couldn’t Anymore.***
 
 I’ve kept a diary for over 20 years. That’s not something I say to impress anyone. It’s just something I did. One of the habits which I follow for years.
 

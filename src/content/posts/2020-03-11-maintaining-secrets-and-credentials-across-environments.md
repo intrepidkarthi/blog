@@ -12,7 +12,7 @@ canonical_url: https://medium.com/@intrepidkarthi/maintaining-secrets-and-creden
 
 At Sequoia.com, we are building an Enterprise B2B SaaS product for providing health Insurance, HR Benefits & Payroll processing. We are working with almost all the top hyper growth companies from across the world crossing over 1000+ customers.
 
-![](https://cdn-images-1.medium.com/max/800/1*RvjS8OWcq2Q_6wwd4QgMIQ.png)As our team size is growing it became hectic for our DevOps team and engineering teams to manage all the secrets and credentials. As a HIPAA and SOC2 complaint organisation, we were exploring options to move all the credentials to a vault.
+![Maintaining secrets and credentials across environments — illustration 1](https://cdn-images-1.medium.com/max/800/1*RvjS8OWcq2Q_6wwd4QgMIQ.png)As our team size is growing it became hectic for our DevOps team and engineering teams to manage all the secrets and credentials. As a HIPAA and SOC2 complaint organisation, we were exploring options to move all the credentials to a vault.
 
 AWS Systems Manager Parameter Store comes in handy as the solution that we were looking for. Also this is easier for us since we run on top of AWS infrastructure. With in Parameter Store, you can store plain text as well as encrypted text and also DevOps team have better control in managing the key-value pairs across multiple environments through IAM policies.
 
@@ -30,10 +30,10 @@ From there, we will have tagged changes goes into UAT environment and then to Pr
 
 To keep the system intact across the environments, we have decided to write a script to check the param store keys between environments in our Jenkins pipeline.
 
-![](https://cdn-images-1.medium.com/max/800/1*hI8OiRrXOiHjT9m2jNy4GA.png)SSM Params check in Jenkins pipelineFor example, if a developer pushing code changes into the staging environment, we will do the param store check between both development and staging environments.
+![Maintaining secrets and credentials across environments — illustration 2](https://cdn-images-1.medium.com/max/800/1*hI8OiRrXOiHjT9m2jNy4GA.png)SSM Params check in Jenkins pipelineFor example, if a developer pushing code changes into the staging environment, we will do the param store check between both development and staging environments.
 
 The snippet checks all the AWS SSM parameter store values between the two environments and prints out what is missing. This will pause the deployment process.
 
-![](https://cdn-images-1.medium.com/max/800/1*b_N7_sxlvQbVF-05NoepCA.png)Jenkins pipeline check for AWS SSM ParametersWith this, we are now able to properly maintain all the secrets in the right manner securely. We do follow a lot of practices in our development cycle and pick the approach which is correct and also which fits our need.
+![Maintaining secrets and credentials across environments — illustration 3](https://cdn-images-1.medium.com/max/800/1*b_N7_sxlvQbVF-05NoepCA.png)Jenkins pipeline check for AWS SSM ParametersWith this, we are now able to properly maintain all the secrets in the right manner securely. We do follow a lot of practices in our development cycle and pick the approach which is correct and also which fits our need.
 
-![](https://cdn-images-1.medium.com/max/800/1*egAn2rh5yxks2GXcpd5StQ.png)And yes, there are many ways to solve this problem. If there is a better way to solve this problem, do let us know.
+![Maintaining secrets and credentials across environments — illustration 4](https://cdn-images-1.medium.com/max/800/1*egAn2rh5yxks2GXcpd5StQ.png)And yes, there are many ways to solve this problem. If there is a better way to solve this problem, do let us know.

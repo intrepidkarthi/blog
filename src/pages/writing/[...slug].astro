@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import RelatedPosts from "../../components/RelatedPosts.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -16,15 +17,18 @@ const date = post.data.date;
 const dateStr = date.toLocaleDateString("en-GB", {
   year: "numeric", month: "long", day: "numeric",
 });
+const slug = post.data.slug ?? post.slug;
+const ogImage = `/og/${slug}.svg`;
 ---
 
 <BaseLayout
   title={post.data.title}
   description={post.data.excerpt ?? `${post.data.title} — by Karthikeyan NG`}
   active="writing"
-  file={`~/intrepidkarthi/writing/${post.data.slug ?? post.slug}.md`}
+  file={`~/intrepidkarthi/writing/${slug}.md`}
   canonicalUrl={post.data.canonical_url}
   ogType="article"
+  ogImage={ogImage}
   publishedTime={post.data.date.toISOString()}
   tags={post.data.tags}
   author="Karthikeyan NG"
@@ -65,6 +69,12 @@ const dateStr = date.toLocaleDateString("en-GB", {
     <div class="prose">
       <Content />
     </div>
+
+    <RelatedPosts
+      currentSlug={slug}
+      currentTags={post.data.tags}
+      currentDate={post.data.date}
+    />
 
     <footer class="post-foot">
       <a href="/writing" class="back">← back to /writing</a>
