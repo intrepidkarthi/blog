@@ -4,7 +4,6 @@ date: 2015-08-22
 slug: onthego-civic-tech-hackathon
 excerpt: "An Android app that lets citizens snap a photo of a civic problem and tag the responsible legislator. Built at MobileSparks 2015 in Bengaluru with two friends and a lot of caffeine."
 tags: [hackathon, android, civic-tech, india]
-draft: true
 source: github
 repo_url: https://github.com/intrepidkarthi/OnTheGo
 event: "MobileSparks 2015 (YourStory)"

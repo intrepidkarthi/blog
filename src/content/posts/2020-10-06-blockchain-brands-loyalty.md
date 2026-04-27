@@ -4,7 +4,6 @@ date: 2020-10-06
 slug: blockchain-brands-loyalty
 excerpt: "** ![Image from pexels](/images/articles/blockchain-brands-loyalty/01.jpg) In the past 2 months, I am helping a startup as a consultant before I pick my next role. In the meantime, I was exploring a f"
 tags: [linkedin, imported]
-draft: true
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/blockchain-brands-loyalty-karthikeyan-ng
 image_count: 4

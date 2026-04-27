@@ -4,7 +4,6 @@ date: 2018-06-10
 slug: insurance-fraud-detection-pipeline
 excerpt: "Five-stage pipeline: synthesize Indian insurance data, clean it, do EDA, anonymize with k-anonymity and perturbation, then classify with a decision tree. ~99% accuracy on a 91k-row test set."
 tags: [machine-learning, privacy, security, fraud, india]
-draft: true
 source: github
 repo_url: https://github.com/intrepidkarthi/Insurance_Fraud_Detection
 ---

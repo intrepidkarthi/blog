@@ -8,7 +8,12 @@
       "Bash(python3:*)",
       "Bash(curl:*)",
       "Bash(kill 60337 60333 83048 83046)",
-      "WebFetch(domain:x.com)"
+      "WebFetch(domain:x.com)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(npm ls:*)",
+      "Bash(npx vercel:*)",
+      "Bash(vercel:*)"
     ]
   }
 }

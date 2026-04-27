@@ -4,7 +4,6 @@ date: 2014-09-15
 slug: medic-sequoia-hackathon
 excerpt: "A hospital → patient → pharmacy ecosystem prototype, built in a weekend at Sequoia Capital's 2014 hackathon in Bangalore. Shipped to the Play Store before we left."
 tags: [hackathon, healthtech, android, sequoia]
-draft: true
 source: github
 repo_url: https://github.com/intrepidkarthi/Medic
 play_store: https://play.google.com/store/apps/details?id=com.sparks.medic

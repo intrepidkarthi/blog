@@ -4,7 +4,6 @@ date: 2014-12-14
 slug: what-did-i-learn-in-25-years
 excerpt: "** ![What did I learn in 25 years?](/images/articles/what-did-i-learn-in-25-years/01.jpg) I have downloaded a random app from app store on my mobile in morning. There were a few initial screens with q"
 tags: [linkedin, imported]
-draft: true
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/what-did-i-learn-till-now-karthikeyan-ng
 image_count: 1

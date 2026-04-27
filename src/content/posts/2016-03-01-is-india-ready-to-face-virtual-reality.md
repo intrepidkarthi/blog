@@ -4,7 +4,6 @@ date: 2016-03-01
 slug: is-india-ready-to-face-virtual-reality
 excerpt: "![Is India ready to face Virtual Reality?](/images/articles/is-india-ready-to-face-virtual-reality/01.jpg) The first decade of 21st century can be categorised for smartphone and handheld devices evolu"
 tags: [linkedin, imported]
-draft: true
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/india-ready-face-virtual-reality-karthikeyan-ng
 image_count: 1

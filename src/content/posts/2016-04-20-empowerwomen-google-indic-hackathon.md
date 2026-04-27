@@ -4,7 +4,6 @@ date: 2016-04-20
 slug: empowerwomen-google-indic-hackathon
 excerpt: "An Android survey-collection app for rural India, built in 18 hours at the Google Android Indic Hackathon. ODK on the front end, App Engine on the back."
 tags: [hackathon, android, social-good, google, india]
-draft: true
 source: github
 repo_url: https://github.com/intrepidkarthi/EmpowerWomen
 event: "Google Android Indic Hackathon"

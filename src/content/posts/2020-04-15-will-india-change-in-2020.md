@@ -4,7 +4,6 @@ date: 2020-04-15
 slug: will-india-change-in-2020
 excerpt: "Since my childhood, I have heard our late ex president Dr Abdul Kalam’s words “India will become a superpower by 2020”. We are a…"
 tags: [imported]
-draft: true
 source: medium
 canonical_url: https://medium.com/@intrepidkarthi/will-india-change-in-2020-6d1f948873dc
 ---

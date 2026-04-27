@@ -4,7 +4,6 @@ date: 2015-11-22
 slug: 3ps-of-attending-hackathons-and-events
 excerpt: "** ![http://mashable.com/](/images/articles/3ps-of-attending-hackathons-and-events/01.jpg) > Chase your dreams and not the money. Money will follow you automatically! It is still in my memory about th"
 tags: [linkedin, imported]
-draft: true
 source: linkedin-article
 canonical_url: https://www.linkedin.com/pulse/3ps-attending-hackathons-events-karthikeyan-ng
 image_count: 1

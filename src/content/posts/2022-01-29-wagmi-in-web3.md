@@ -4,7 +4,6 @@ date: 2022-01-29
 slug: wagmi-in-web3
 excerpt: "Decoupling a few queries about the Web3 eco system as simple as possible based on the attempt of deploying a couple of dApps as a hobby…"
 tags: [imported]
-draft: true
 source: medium
 canonical_url: https://medium.com/@intrepidkarthi/wagmi-in-web3-6e568fea889f
 ---

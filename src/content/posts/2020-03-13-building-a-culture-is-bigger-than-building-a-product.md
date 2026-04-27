@@ -4,7 +4,6 @@ date: 2020-03-13
 slug: building-a-culture-is-bigger-than-building-a-product
 excerpt: "It has been 11 months since I joined with Sequoia Consulting Group, a leading provider of Benefits, Payroll processing, 401(k) management…"
 tags: [imported]
-draft: true
 source: medium
 canonical_url: https://medium.com/@intrepidkarthi/building-a-culture-is-bigger-than-building-a-product-41a6057d6fe6
 ---

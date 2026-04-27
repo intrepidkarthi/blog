@@ -4,7 +4,6 @@ date: 2018-09-01
 slug: from-hackathons-to-publishing-ml-books
 excerpt: "I bagged 18 hackathon prizes, gave a TEDx talk, and ended up writing two books on mobile machine learning. The connection between the three is not what I expected."
 tags: [career, books, machine-learning, hackathons, tedx, meta]
-draft: true
 source: github
 repo_url: https://github.com/intrepidkarthi/Machine-Learning-Projects-for-Mobile-Applications
 amazon_links:
