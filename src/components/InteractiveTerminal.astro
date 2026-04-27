@@ -40,15 +40,17 @@
 
 <style>
   .terminal {
+    /* anchored to viewport bottom, above the status bar */
+    position: fixed;
+    left: 0; right: 0;
+    bottom: 28px; /* clears the status bar */
     background: var(--bg);
     border-top: 1px solid var(--line);
-    flex-shrink: 0;
     transition: height 0.3s ease;
     height: 280px;
     display: flex;
     flex-direction: column;
-    position: relative;
-    z-index: 10;
+    z-index: 50;
   }
   .terminal.collapsed { height: 36px; }
 

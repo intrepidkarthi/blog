@@ -21,7 +21,7 @@
     <!-- ground -->
     <line class="d" x1="10" y1="170" x2="190" y2="170"/>
     <!-- roof -->
-    <path class="a" d="M 50 90 L 100 50 L 150 90 L 150 95 L 100 55 L 50 95 Z" class="fill-a" style="fill-opacity:0.15;"/>
+    <path class="a fill-a" d="M 50 90 L 100 50 L 150 90 L 150 95 L 100 55 L 50 95 Z" style="fill-opacity:0.15;"/>
     <path class="a" d="M 50 90 L 100 50 L 150 90"/>
     <!-- roof eave -->
     <line class="a" x1="48" y1="92" x2="152" y2="92"/>

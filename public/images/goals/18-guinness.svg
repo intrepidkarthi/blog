@@ -19,7 +19,7 @@
   </style>
   
     <!-- ribbon -->
-    <path class="p" d="M 70 30 L 100 95 L 130 30 L 122 30 L 100 80 L 78 30 Z" class="fill-p" style="fill-opacity:0.15;"/>
+    <path class="p fill-p" d="M 70 30 L 100 95 L 130 30 L 122 30 L 100 80 L 78 30 Z" style="fill-opacity:0.15;"/>
     <path class="p" d="M 70 30 L 100 95 L 130 30 L 122 30 L 100 80 L 78 30 Z"/>
     <!-- medal disk -->
     <circle class="a fill-a" cx="100" cy="115" r="35" style="fill-opacity:0.1;"/>

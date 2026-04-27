@@ -85,13 +85,14 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
       }
       .main {
         flex: 1;
-        padding: 24px 28px 48px;
+        /* bottom padding clears the fixed terminal (36px) + status bar (28px) + breathing room */
+        padding: 24px 28px 96px;
         max-width: 1180px;
         width: 100%;
         margin: 0 auto;
       }
       @media (max-width: 700px) {
-        .main { padding: 18px 16px 36px; }
+        .main { padding: 18px 16px 84px; }
       }
     </style>
   </body>
