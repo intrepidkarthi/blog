@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About" active="about" file="~/intrepidkarthi/about.md">
+  <div class="content prose">
+    <div class="pre-title"><span class="arrow">$</span> cat ~/about/full.md</div>
+    <h1><span class="hash">#</span>about</h1>
+
+    <p style="font-size: 16px; line-height: 1.7;">
+      I'm <strong>Karthikeyan Natarajan Gnanapalam</strong> — Karthik for short. I've been building software since 2008 and shipping it on the internet ever since. Born in <em>Madurai</em>, raised on bazaar logic and engineering textbooks, currently splitting time between <em>Bengaluru and Dubai</em>.
+    </p>
+
+    <p>I optimize for <strong>structural advantage</strong>, <strong>autonomy</strong>, and <strong>compounding technological leverage</strong>. I think in mechanisms, not narratives. The systems that win are usually the boring ones.</p>
+
+    <h2>currently</h2>
+    <ul>
+      <li><strong>CTO &amp; CISO at VisionPlus</strong> — building stablecoin settlement infrastructure (Jan 2025–present)</li>
+      <li><strong>Co-founder, TaxNodes</strong> — crypto compliance and tax tooling for Indian exchanges</li>
+      <li><strong>Public quant lab</strong> — 5 trading hypotheses, weekly reports, transparent results</li>
+    </ul>
+
+    <h2>previously</h2>
+    <ul>
+      <li><strong>CTO @ Pi42</strong> · Principal Officer with FIU-IND · 2022–2024</li>
+      <li><strong>Director of Engineering @ nference</strong> · BERT on 2.5PB healthcare data, HIPAA · 2021–2022</li>
+      <li><strong>Director of Engineering @ Sequoia Consulting</strong> · health insurance + payroll SaaS · 2019–2020</li>
+      <li><strong>Head of Tech @ Chumbak</strong> · custom ERP + B2C platforms · 2017–2019</li>
+      <li><strong>Founder/CEO, GazeMatic</strong> · Teleport Call VR app · 420k+ organic downloads · 2014–2018</li>
+      <li><strong>Founding engineer @ Perk.com Bangalore</strong> · Android apps for millions · 2012–2014</li>
+      <li><strong>Senior Engineer @ Symantec</strong> · cloud security automation · 2011–2012</li>
+    </ul>
+
+    <h2>books &amp; talks</h2>
+    <ul>
+      <li><a href="https://www.amazon.com/dp/B07JKWLH3G" rel="noopener" target="_blank"><strong>Mobile Artificial Intelligence Projects</strong></a> · Packt, 2018</li>
+      <li><a href="https://www.amazon.in/Machine-Learning-Projects-MobileApplications-ebook/dp/B07F2GZQWH/" rel="noopener" target="_blank"><strong>Machine Learning for Mobile Applications</strong></a> · Packt, 2018</li>
+      <li><strong>TEDx</strong> · "Building under regulation" · 2017</li>
+      <li>18× hackathon wins · keynote speaker at 12+ tech conferences</li>
+    </ul>
+
+    <h2>education</h2>
+    <ul>
+      <li><strong>BE Computer Science</strong> · Thiagarajar College of Engineering, Madurai · 2009</li>
+      <li><strong>MBA Computer Systems</strong> · Madurai Kamaraj University · 2012</li>
+    </ul>
+
+    <h2>elsewhere</h2>
+    <ul>
+      <li><a href="https://x.com/intrepidkarthi" rel="noopener" target="_blank">@intrepidkarthi · twitter</a></li>
+      <li><a href="https://github.com/intrepidkarthi" rel="noopener" target="_blank">github.com/intrepidkarthi</a></li>
+      <li><a href="https://linkedin.com/in/intrepidkarthi" rel="noopener" target="_blank">in/intrepidkarthi · linkedin</a></li>
+      <li><a href="mailto:intrepidkarthi@gmail.com">intrepidkarthi@gmail.com</a></li>
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .content { max-width: 760px; }
+  .pre-title {
+    color: var(--dim); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .pre-title .arrow { color: var(--green); }
+  .content h1 {
+    font-family: var(--font-vt); font-size: 36px; line-height: 1;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    margin-bottom: 12px;
+  }
+  .content h1 .hash { color: var(--pink); margin-right: 8px; }
+</style>

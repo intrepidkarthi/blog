@@ -1,0 +1,102 @@
+---
+interface Props {
+  active?: string;
+}
+const { active = "home" } = Astro.props;
+
+const tabs = [
+  { key: "home", label: "~/home", href: "/" },
+  { key: "writing", label: "~/writing", href: "/writing" },
+  { key: "mission", label: "~/mission", href: "/mission" },
+  { key: "about", label: "~/about", href: "/about" },
+  { key: "contact", label: "~/contact", href: "/contact" },
+];
+---
+
+<nav class="tabbar" aria-label="Primary">
+  {tabs.map((t, i) => (
+    <a
+      class:list={["tab", { active: t.key === active }]}
+      href={t.href}
+      data-key={t.key}
+    >
+      <span class="num">{i + 1}</span>
+      <span class="dot" aria-hidden="true"></span>
+      {t.label}
+    </a>
+  ))}
+  <div class="right">
+    <span class="live">412d streak</span>
+    <span id="clock">--:--:--</span>
+  </div>
+</nav>
+
+<style>
+  .tabbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center;
+    overflow-x: auto;
+    flex-shrink: 0;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .tab {
+    padding: 10px 18px;
+    color: var(--dim); font-size: 12.5px;
+    cursor: pointer; user-select: none;
+    border-right: 1px solid var(--line);
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none;
+    transition: color .15s, background .15s;
+  }
+  .tab:hover { color: var(--green-bright); background: var(--bg3); }
+  .tab.active {
+    color: var(--green-bright);
+    background: var(--bg);
+    border-bottom: 2px solid var(--green);
+    margin-bottom: -1px;
+  }
+  .tab .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--dim);
+  }
+  .tab.active .dot {
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+  }
+  .tab .num { color: var(--dim); font-size: 11px; }
+  .tab.active .num { color: var(--green); }
+  .right {
+    margin-left: auto; padding: 8px 16px;
+    color: var(--dim); font-size: 11.5px;
+    display: flex; gap: 14px; align-items: center;
+    white-space: nowrap;
+  }
+  .right .live::before {
+    content: "●"; color: var(--green); margin-right: 4px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const el = document.getElementById("clock");
+    if (!el) return;
+    const pad = (n) => n.toString().padStart(2, "0");
+    const tick = () => {
+      const d = new Date();
+      el.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    };
+    tick(); setInterval(tick, 1000);
+    document.addEventListener("keydown", (e) => {
+      if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+      const map = { "1": "/", "2": "/writing", "3": "/mission", "4": "/about", "5": "/contact" };
+      if (map[e.key]) { e.preventDefault(); window.location.href = map[e.key]; }
+    });
+  })();
+</script>

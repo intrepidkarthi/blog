@@ -1,0 +1,181 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import goalsRaw from "../data/goals.json";
+
+interface Goal {
+  id: number;
+  title: string;
+  category: string;
+  status: string;
+  year?: number;
+  progress?: string;
+  note: string;
+  image: string;
+}
+const goals = goalsRaw as Goal[];
+
+// Sort: in-progress + done first, then partial, then todo, then deferred
+const order: Record<string, number> = {
+  "in-progress": 0,
+  "done": 1,
+  "partial": 2,
+  "done-failed": 3,
+  "todo": 4,
+  "deferred": 5,
+};
+const sorted = [...goals].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
+
+const counts = goals.reduce<Record<string, number>>((acc, g) => {
+  acc[g.status] = (acc[g.status] ?? 0) + 1;
+  return acc;
+}, {});
+---
+
+<BaseLayout
+  title="Mission"
+  description="A working list — 21 things I'm building toward, in different stages of progress."
+  active="mission"
+  file="~/intrepidkarthi/mission.md"
+>
+  <div class="content">
+    <div class="pre-title"><span class="arrow">$</span> cat ~/mission/goals.md</div>
+    <h1><span class="hash">#</span>mission</h1>
+    <p class="lede">A working list, not a bucket list. {goals.length} items in different stages of progress. Updated when reality catches up.</p>
+
+    <div class="legend">
+      {Object.entries(counts).map(([status, n]) => (
+        <span class={`pill pill-${status}`}>
+          <span class="pill-dot"></span>
+          {status.replace("-", " ")} <b>{n}</b>
+        </span>
+      ))}
+    </div>
+
+    <div class="grid">
+      {sorted.map((g) => (
+        <article class={`card card-${g.status}`}>
+          <div class="card-head">
+            <span class="num">#{String(g.id).padStart(2, "0")}</span>
+            <span class="cat">{g.category}</span>
+          </div>
+          <h3>{g.title}</h3>
+          <div class="badges">
+            <span class={`badge badge-${g.status}`}>{g.status.replace("-", " ")}</span>
+            {g.year && <span class="meta">{g.year}</span>}
+            {g.progress && <span class="meta">{g.progress}</span>}
+          </div>
+          <div class="img">
+            <img src={g.image} alt={g.title} loading="lazy" />
+          </div>
+          <p class="note">{g.note}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content { max-width: 1100px; }
+  .pre-title {
+    color: var(--dim); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .pre-title .arrow { color: var(--green); }
+  h1 {
+    font-family: var(--font-vt); font-size: 36px; line-height: 1;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    margin-bottom: 6px;
+  }
+  h1 .hash { color: var(--pink); margin-right: 8px; }
+  .lede { color: var(--dim); margin-bottom: 18px; max-width: 640px; }
+
+  .legend {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 28px; padding: 12px;
+    border: 1px dashed var(--line-bright);
+    background: var(--bg2);
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    border: 1px solid currentColor;
+  }
+  .pill-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+  }
+  .pill b { color: var(--ink); margin-left: 2px; font-weight: 600; }
+  .pill-done { color: var(--green); }
+  .pill-todo { color: var(--dim); }
+  .pill-in-progress { color: var(--cyan); }
+  .pill-partial { color: var(--amber); }
+  .pill-deferred { color: var(--pink); }
+  .pill-done-failed { color: var(--pink); }
+
+  .grid {
+    display: grid; gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    padding: 18px;
+    border-left: 3px solid var(--green);
+    transition: transform .15s ease, border-left-color .15s;
+  }
+  .card:hover { transform: translateY(-2px); }
+  .card-done { border-left-color: var(--green); }
+  .card-todo { border-left-color: var(--dim); }
+  .card-partial { border-left-color: var(--amber); }
+  .card-in-progress { border-left-color: var(--cyan); }
+  .card-deferred { border-left-color: var(--pink); }
+  .card-done-failed { border-left-color: var(--pink); }
+
+  .card-head {
+    display: flex; gap: 8px; align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .num { color: var(--dim); font-size: 11px; letter-spacing: 2px; }
+  .cat { color: var(--amber); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+  .card h3 {
+    font-size: 17px; color: var(--ink); margin: 4px 0 6px;
+    line-height: 1.2; font-weight: 600;
+  }
+
+  .badges { margin-bottom: 12px; }
+  .badge {
+    display: inline-block; font-size: 9px; padding: 2px 8px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    border: 1px solid currentColor; margin-right: 4px;
+  }
+  .badge-done { color: var(--green); }
+  .badge-todo { color: var(--dim); }
+  .badge-partial { color: var(--amber); }
+  .badge-in-progress { color: var(--cyan); }
+  .badge-deferred { color: var(--pink); }
+  .badge-done-failed { color: var(--pink); }
+  .meta {
+    font-size: 10px; color: var(--dim); margin-left: 4px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  .img {
+    background: var(--bg);
+    padding: 14px;
+    margin: 12px 0;
+    border: 1px dashed var(--line);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 160px;
+  }
+  .img img { width: 100%; max-width: 200px; height: auto; }
+
+  .note {
+    font-size: 13px; color: var(--ink); line-height: 1.5;
+    margin-top: 4px;
+  }
+</style>

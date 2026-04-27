@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const sorted = all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Group by year
+const byYear: Record<string, typeof sorted> = {};
+for (const p of sorted) {
+  const y = p.data.date.getFullYear().toString();
+  (byYear[y] ??= []).push(p);
+}
+const years = Object.keys(byYear).sort((a, b) => b.localeCompare(a));
+---
+
+<BaseLayout title="Writing" active="writing" file="~/intrepidkarthi/writing">
+  <div class="content">
+    <div class="pre-title"><span class="arrow">$</span> cat /writing/index.md</div>
+    <h1><span class="hash">#</span>writing</h1>
+    <p class="lede">{all.length} posts since 2008. Long-form essays, technical deep-dives, lab notes, daily logs.</p>
+
+    {years.map((y) => (
+      <section class="year-block">
+        <h2 class="year-head">
+          <span class="hash">##</span> {y}
+          <span class="count">· {byYear[y].length} {byYear[y].length === 1 ? "post" : "posts"}</span>
+        </h2>
+        {byYear[y].map((p) => (
+          <PostCard
+            href={`/writing/${p.data.slug ?? p.slug}`}
+            date={p.data.date}
+            title={p.data.title}
+            tags={p.data.tags}
+            excerpt={p.data.excerpt}
+          />
+        ))}
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .content { max-width: 900px; }
+  .pre-title {
+    color: var(--dim); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .pre-title .arrow { color: var(--green); }
+  h1 {
+    font-family: var(--font-vt); font-size: 36px; line-height: 1;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    margin-bottom: 6px;
+  }
+  h1 .hash { color: var(--pink); margin-right: 8px; }
+  .lede { color: var(--dim); margin-bottom: 24px; }
+  .year-head {
+    color: var(--green-bright); font-family: var(--font-vt); font-size: 24px;
+    margin: 28px 0 8px; padding-bottom: 6px;
+    border-bottom: 2px solid var(--line-bright);
+    text-shadow: 0 0 4px var(--green-glow);
+  }
+  .year-head .hash { color: var(--pink); }
+  .year-head .count {
+    color: var(--dim); font-size: 14px; font-family: var(--font-mono);
+    margin-left: 8px;
+  }
+</style>

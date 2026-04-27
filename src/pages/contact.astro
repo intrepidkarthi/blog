@@ -1,0 +1,108 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Contact" active="contact" file="~/intrepidkarthi/contact.md">
+  <div class="content">
+    <div class="pre-title"><span class="arrow">$</span> cat ~/contact/hire-me.md</div>
+    <h1><span class="hash">#</span>contact</h1>
+    <p class="lede">DMs open. Reply within 24 hours, usually faster.</p>
+
+    <div class="contact-card">
+      <div class="head">▸ best way to reach me</div>
+      <div class="big-email">
+        <a href="mailto:intrepidkarthi@gmail.com">intrepidkarthi@gmail.com</a>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top: 28px;">
+      <h2><span class="hash">##</span> work with me</h2>
+      <ul>
+        <li><em>Fractional CTO</em> — 4 to 12-week engagements, fintech/crypto/AI infra</li>
+        <li><em>Advisory</em> — 1-2 hours/month retainer, founder coaching, technical strategy</li>
+        <li><em>Talks &amp; workshops</em> — security, ML at scale, building under regulation</li>
+        <li><em>Consulting projects</em> — stablecoin rails, exchange architecture, compliance engineering</li>
+      </ul>
+
+      <h2><span class="hash">##</span> elsewhere</h2>
+      <div class="pill-row">
+        <a class="pill" href="https://x.com/intrepidkarthi" rel="noopener" target="_blank">@intrepidkarthi · twitter</a>
+        <a class="pill" href="https://github.com/intrepidkarthi" rel="noopener" target="_blank">github.com/intrepidkarthi</a>
+        <a class="pill" href="https://linkedin.com/in/intrepidkarthi" rel="noopener" target="_blank">in/intrepidkarthi · linkedin</a>
+        <a class="pill" href="/rss.xml">rss feed</a>
+      </div>
+
+      <div class="newsletter">
+        <span class="star">★</span> Subscribe to the <a href="#">monthly newsletter</a> — one email a month, lab results + the best post + nothing else.
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content { max-width: 760px; }
+  .pre-title {
+    color: var(--dim); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .pre-title .arrow { color: var(--green); }
+  h1 {
+    font-family: var(--font-vt); font-size: 36px; line-height: 1;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    margin-bottom: 6px;
+  }
+  h1 .hash { color: var(--pink); margin-right: 8px; }
+  .lede { color: var(--dim); margin-bottom: 22px; }
+
+  .contact-card {
+    border: 1px solid var(--green);
+    padding: 22px;
+    background: rgba(78,255,124,0.04);
+    box-shadow: 0 0 16px var(--green-glow);
+    margin: 14px 0;
+  }
+  .head {
+    font-size: 11px; color: var(--dim);
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .big-email {
+    font-family: var(--font-vt); font-size: 28px;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    word-break: break-all;
+  }
+  .big-email a { color: inherit; }
+
+  .prose h2 {
+    font-family: var(--font-vt); font-size: 24px;
+    color: var(--green-bright);
+    margin: 24px 0 10px;
+    text-shadow: 0 0 4px var(--green-glow);
+  }
+  .prose h2 .hash { color: var(--pink); margin-right: 6px; }
+  .prose ul { padding-left: 1.4em; }
+  .prose li { padding: 4px 0; color: var(--ink); }
+  .prose em { color: var(--amber); font-style: normal; }
+
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .pill {
+    padding: 4px 12px; font-size: 12px;
+    border: 1px solid var(--line-bright); color: var(--ink);
+    transition: all .15s;
+  }
+  .pill:hover {
+    border-color: var(--green); color: var(--green-bright);
+    background: var(--bg2);
+  }
+
+  .newsletter {
+    margin-top: 32px;
+    padding: 16px 18px;
+    border: 1px dashed var(--line-bright);
+    color: var(--ink); font-size: 13px;
+  }
+  .newsletter .star { color: var(--amber); margin-right: 6px; }
+</style>

@@ -1,0 +1,44 @@
+---
+// Subtle matrix rain background. Boostable via the terminal `matrix` command.
+---
+
+<canvas id="matrix-canvas"></canvas>
+
+<style>
+  #matrix-canvas {
+    position: fixed; inset: 0; z-index: 1;
+    opacity: 0.06;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+  #matrix-canvas.boost { opacity: 0.55; }
+</style>
+
+<script is:inline>
+  (() => {
+    const c = document.getElementById("matrix-canvas");
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノ01ARTHIK01";
+    let drops = [];
+    function resize() {
+      c.width = window.innerWidth; c.height = window.innerHeight;
+      drops = Array(Math.floor(c.width / 14)).fill(1);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    function draw() {
+      ctx.fillStyle = "rgba(3,6,4,0.06)";
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.fillStyle = "#4eff7c";
+      ctx.font = "14px monospace";
+      for (let i = 0; i < drops.length; i++) {
+        const ch = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(ch, i * 14, drops[i] * 14);
+        if (drops[i] * 14 > c.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(draw, 60);
+  })();
+</script>

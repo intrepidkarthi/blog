@@ -1,0 +1,144 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const recent = all
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 8);
+---
+
+<BaseLayout title="intrepidkarthi" active="home">
+  <div class="home-grid">
+
+    <!-- LEFT: WHOAMI -->
+    <section class="col-bio">
+      <div class="col-head">
+        <span class="num">$</span>
+        <span>whoami --verbose</span>
+        <span class="right">/home/karthik</span>
+      </div>
+
+      <div class="bio-block">
+        <div class="bio-info">
+          <h2>karthik<span class="at">@</span><span class="h">intrepidkarthi</span></h2>
+          <div class="sep">────────────────────</div>
+          <div class="row"><span class="k">role</span><span class="v"><span class="accent">CTO &amp; CISO</span> @ VisionPlus</span></div>
+          <div class="row"><span class="k">co-founder</span><span class="v">TaxNodes</span></div>
+          <div class="row"><span class="k">based</span><span class="v">Madurai → Bengaluru → Dubai</span></div>
+          <div class="row"><span class="k">uptime</span><span class="v">16+ years shipping</span></div>
+          <div class="row"><span class="k">books</span><span class="v">2 (Mobile ML &amp; AI Projects)</span></div>
+          <div class="row"><span class="k">trophies</span><span class="v">18× hackathon · 1× TEDx</span></div>
+          <div class="row"><span class="k">streak</span><span class="v"><span class="accent">412 days</span> #healthywealthy</span></div>
+          <div class="row"><span class="k">stack</span><span class="v">crypto · AI · trading · stablecoins</span></div>
+          <div class="row"><span class="k">mission</span><span class="v">$3M FIRE → infra company</span></div>
+          <div class="palette">
+            <span style="background:#030604"></span>
+            <span style="background:#4eff7c"></span>
+            <span style="background:#5fd7ff"></span>
+            <span style="background:#ffb454"></span>
+            <span style="background:#ff5f87"></span>
+            <span style="background:#c780ff"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bio-tagline">
+        <div class="line"><span class="tip">▸</span> Builder-Architect. Infrastructure that compounds.</div>
+        <div class="line"><span class="tip">▸</span> Crypto + AI + trading systems. <span class="accent">Boring systems win.</span></div>
+        <div class="line"><span class="tip">▸</span> Currently: stablecoin settlement rails, public quant lab.</div>
+        <div class="line"><span class="tip">▸</span> Optimizing for: <span class="accent">structural advantage. autonomy. compounding leverage.</span></div>
+        <div class="line" style="margin-top:8px;">
+          <span class="tip">▸</span>
+          <a href="/contact">→ work with me</a> ·
+          <a href="/about">→ full bio</a> ·
+          <a href="/mission">→ goals + wishlist</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: RECENT POSTS -->
+    <section class="col-posts">
+      <div class="col-head">
+        <span class="num">$</span>
+        <span>ls ~/writing/recent</span>
+        <span class="right">{recent.length} of {all.length}</span>
+      </div>
+
+      {recent.map((p) => (
+        <PostCard
+          href={`/writing/${p.data.slug ?? p.slug}`}
+          date={p.data.date}
+          title={p.data.title}
+          tags={p.data.tags}
+        />
+      ))}
+
+      <a class="more-link" href="/writing">
+        → browse the full archive · {all.length} posts since 2008
+      </a>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 28px;
+    padding-top: 8px;
+  }
+  @media (max-width: 900px) {
+    .home-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+  .col-head {
+    color: var(--dim); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 14px;
+    border-bottom: 1px dashed var(--line); padding-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .col-head .num { color: var(--pink); font-weight: 700; }
+  .col-head .right { margin-left: auto; }
+
+  .bio-block { margin-bottom: 18px; }
+  .bio-info h2 {
+    font-family: var(--font-vt); font-size: 30px; line-height: 1;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    margin-bottom: 4px;
+  }
+  .bio-info h2 .at { color: var(--ink); }
+  .bio-info h2 .h { color: var(--cyan); }
+  .bio-info .sep { color: var(--green-dim); margin: 4px 0 8px; font-size: 13px; }
+  .bio-info .row { display: flex; gap: 10px; padding: 2px 0; font-size: 13px; }
+  .bio-info .row .k { color: var(--green); width: 95px; }
+  .bio-info .row .v { color: var(--ink); }
+  .bio-info .row .v .accent { color: var(--amber); }
+  .palette { display: flex; gap: 4px; margin-top: 12px; }
+  .palette span { width: 18px; height: 12px; }
+
+  .bio-tagline {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+  .bio-tagline .line {
+    padding: 4px 0; color: var(--ink); font-size: 13px;
+  }
+  .bio-tagline .line .tip { color: var(--green); }
+  .bio-tagline .line .accent { color: var(--amber); }
+
+  .more-link {
+    display: block;
+    margin-top: 14px; padding: 10px 12px;
+    border: 1px dashed var(--line-bright);
+    color: var(--green); font-size: 12.5px;
+    text-align: center;
+    transition: all .15s;
+  }
+  .more-link:hover {
+    border-color: var(--green); color: var(--green-bright);
+    background: var(--bg2);
+  }
+</style>

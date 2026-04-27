@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const all = await getCollection("posts", ({ data }) => !data.draft);
+  return all.map((post) => ({
+    params: { slug: post.data.slug ?? post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const date = post.data.date;
+const dateStr = date.toLocaleDateString("en-GB", {
+  year: "numeric", month: "long", day: "numeric",
+});
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.excerpt}
+  active="writing"
+  file={`~/intrepidkarthi/writing/${post.data.slug ?? post.slug}.md`}
+>
+  <article class="post">
+    <header class="post-head">
+      <div class="meta">
+        <a href="/writing" class="back">← /writing</a>
+        <time datetime={date.toISOString()}>{dateStr}</time>
+        {post.data.tags.length > 0 && (
+          <span class="tags">
+            {post.data.tags.slice(0, 4).map((t) => (
+              <span class="tag">#{t}</span>
+            ))}
+          </span>
+        )}
+      </div>
+      <h1>{post.data.title}</h1>
+      {post.data.excerpt && <p class="excerpt">{post.data.excerpt}</p>}
+      {post.data.canonical_url && (
+        <p class="canonical">
+          <span class="dim">canonical:</span>{" "}
+          <a href={post.data.canonical_url} rel="noopener" target="_blank">
+            {post.data.canonical_url}
+          </a>
+        </p>
+      )}
+      {post.data.repo_url && (
+        <p class="canonical">
+          <span class="dim">repo:</span>{" "}
+          <a href={post.data.repo_url} rel="noopener" target="_blank">
+            {post.data.repo_url}
+          </a>
+        </p>
+      )}
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="post-foot">
+      <a href="/writing" class="back">← back to /writing</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .post { max-width: 760px; margin: 0 auto; padding-top: 12px; }
+  .post-head {
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 24px; margin-bottom: 28px;
+  }
+  .post-head .meta {
+    display: flex; gap: 14px; align-items: baseline;
+    color: var(--dim); font-size: 12px; flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .back {
+    color: var(--cyan); font-family: var(--font-mono);
+  }
+  .post-head time { color: var(--amber); }
+  .tags { color: var(--dim); }
+  .tag {
+    color: var(--cyan);
+    margin-right: 6px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .post-head h1 {
+    font-family: var(--font-vt); font-size: 44px; line-height: 1.1;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    margin: 6px 0;
+    letter-spacing: -0.5px;
+  }
+  @media (max-width: 600px) { .post-head h1 { font-size: 32px; } }
+  .excerpt { color: var(--ink); font-size: 16px; margin-top: 10px; }
+  .canonical {
+    color: var(--dim); font-size: 12px; margin-top: 14px;
+    word-break: break-all;
+  }
+  .canonical .dim { color: var(--dim); margin-right: 6px; }
+  .post-foot {
+    margin-top: 48px; padding-top: 24px;
+    border-top: 1px dashed var(--line);
+  }
+</style>

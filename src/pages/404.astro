@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="404" active="home" file="~/intrepidkarthi/error.log">
+  <div class="content">
+    <div class="pre-title"><span class="arrow">$</span> cat last_error.log</div>
+    <h1>404 // <span class="hash">file_not_found</span></h1>
+    <pre class="ascii">
+      ╔═══════════════════════════════════════╗
+      ║  the page you're looking for has      ║
+      ║  either moved, never existed, or      ║
+      ║  was lost in the 2022 reinstall       ║
+      ╚═══════════════════════════════════════╝
+    </pre>
+    <p>
+      <a href="/">← back to /home</a> · <a href="/writing">browse writing</a>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .content { max-width: 720px; padding-top: 40px; }
+  .pre-title { color: var(--dim); font-size: 11px; letter-spacing: 2px; margin-bottom: 8px; }
+  .pre-title .arrow { color: var(--green); }
+  h1 {
+    font-family: var(--font-vt); font-size: 56px; line-height: 1;
+    color: var(--green-bright);
+    text-shadow: 0 0 8px var(--green-glow);
+    margin: 8px 0 16px;
+  }
+  h1 .hash { color: var(--pink); }
+  .ascii {
+    color: var(--green); font-family: var(--font-vt); font-size: 16px;
+    line-height: 1.05; margin: 24px 0;
+    text-shadow: 0 0 4px var(--green-glow);
+  }
+  p { color: var(--ink); margin-top: 20px; }
+</style>

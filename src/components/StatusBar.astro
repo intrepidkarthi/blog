@@ -1,0 +1,32 @@
+---
+interface Props {
+  file?: string;
+  mode?: string;
+}
+const { file = "~/intrepidkarthi/home", mode = "NORMAL" } = Astro.props;
+---
+
+<div class="statusbar">
+  <span class="seg mode">{mode}</span>
+  <span class="seg branch"> main</span>
+  <span class="seg file">{file} · est. 2008</span>
+  <span class="seg live">● 412d streak</span>
+  <span class="seg right">utf-8</span>
+  <span class="seg right">visitor #043,217</span>
+</div>
+
+<style>
+  .statusbar {
+    display: flex; align-items: center;
+    background: var(--bg2); border-top: 1px solid var(--line);
+    font-size: 11px; color: var(--dim);
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+  .seg { padding: 5px 12px; white-space: nowrap; }
+  .seg.mode { background: var(--green); color: var(--bg); font-weight: 700; }
+  .seg.branch { background: var(--bg3); color: var(--purple); }
+  .seg.file { color: var(--ink); flex: 1; }
+  .seg.live { color: var(--green); }
+  .seg.right { color: var(--dim); }
+</style>

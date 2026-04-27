@@ -1,0 +1,152 @@
+---
+// Renders once per session (sessionStorage gate). Skippable with any key/click.
+---
+
+<div id="boot" aria-hidden="true">
+  <div class="boot-inner"></div>
+</div>
+
+<style>
+  #boot {
+    position: fixed; inset: 0; z-index: 1500;
+    background: var(--bg);
+    color: var(--green);
+    padding: 28px 32px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 13px; line-height: 1.6;
+    transition: opacity .5s ease;
+  }
+  #boot.fade { opacity: 0; pointer-events: none; }
+  #boot .l { white-space: pre; min-height: 1.6em; }
+  #boot .ok { color: var(--green-bright); }
+  #boot .info { color: var(--cyan); }
+  #boot .warn { color: var(--warn); }
+  #boot .pink { color: var(--pink); }
+  #boot .dim { color: var(--dim); }
+  #boot .ascii {
+    color: var(--green-bright); font-family: var(--font-vt);
+    font-size: 16px; line-height: 1.05; margin: 8px 0;
+    text-shadow: 0 0 8px var(--green-glow);
+    white-space: pre;
+  }
+  #boot .skip {
+    position: absolute; right: 18px; bottom: 14px;
+    color: var(--dim); font-size: 11px;
+  }
+  #boot .skip kbd {
+    border: 1px solid var(--dim); padding: 1px 6px;
+    border-radius: 3px; color: var(--green);
+    font-family: inherit;
+  }
+  .progress-line {
+    display: flex; align-items: center; gap: 12px; margin: 4px 0;
+  }
+  .progress-line .lbl { color: var(--ink); width: 280px; }
+  .progress-line .bar {
+    flex: 1; max-width: 220px; height: 6px;
+    background: var(--bg2); border: 1px solid var(--green-dim);
+  }
+  .progress-line .fill {
+    height: 100%; background: var(--green); width: 0;
+    transition: width .35s ease;
+    box-shadow: 0 0 8px var(--green-glow);
+  }
+  .progress-line .pct {
+    width: 50px; color: var(--green-bright); text-align: right;
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const boot = document.getElementById("boot");
+    if (!boot) return;
+    const inner = boot.querySelector(".boot-inner");
+
+    // Skip if already booted this session
+    if (sessionStorage.getItem("ikrth_booted") === "1") {
+      boot.style.display = "none";
+      return;
+    }
+
+    const lines = [
+      '<span class="ok">[</span> <span class="ok">OK</span> <span class="ok">]</span> intrepidkarthi BIOS v18.4 — POST starting...',
+      '<span class="ok">[</span> <span class="ok">OK</span> <span class="ok">]</span> Detected hardware: 1x curious human, 1x caffeine reservoir',
+      '<span class="ok">[</span> <span class="ok">OK</span> <span class="ok">]</span> Memory check: 16 years compounded · all banks healthy',
+      '<span class="ok">[</span> <span class="ok">OK</span> <span class="ok">]</span> Loading kernel: <span class="dim">/boot/karthik-6560d.img</span>',
+      '<span class="ok">[</span> <span class="ok">OK</span> <span class="ok">]</span> Mounted: /home/karthik (412-day streak)',
+      '<span class="ok">[</span> <span class="ok">OK</span> <span class="ok">]</span> Initializing services: <span class="info">crypto.svc · ai.svc · trading.svc</span>',
+      '<span class="warn">[</span> <span class="warn">!!</span> <span class="warn">]</span> Bullshit detector: <span class="info">enabled</span>',
+      '<span class="ok">[</span> <span class="ok">OK</span> <span class="ok">]</span> Personality.cfg loaded: <span class="pink">builder-architect</span>',
+      "",
+      '<pre class="ascii">    ██╗███╗   ██╗████████╗██████╗ ███████╗██████╗ ██╗██████╗\n    ██║████╗  ██║╚══██╔══╝██╔══██╗██╔════╝██╔══██╗██║██╔══██╗\n    ██║██╔██╗ ██║   ██║   ██████╔╝█████╗  ██████╔╝██║██║  ██║\n    ██║██║╚██╗██║   ██║   ██╔══██╗██╔══╝  ██╔═══╝ ██║██║  ██║\n    ██║██║ ╚████║   ██║   ██║  ██║███████╗██║     ██║██████╔╝\n    ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚═════╝</pre>',
+    ];
+
+    let idx = 0;
+    function emit() {
+      if (idx >= lines.length) { showBars(); return; }
+      const div = document.createElement("div");
+      div.className = "l";
+      div.innerHTML = lines[idx] || "&nbsp;";
+      inner.appendChild(div);
+      idx++;
+      setTimeout(emit, 90);
+    }
+
+    function showBars() {
+      const wrap = document.createElement("div");
+      wrap.innerHTML =
+        '<div class="progress-line"><span class="lbl">building infrastructure that compounds</span><span class="bar"><span class="fill" id="b1"></span></span><span class="pct" id="p1">0%</span></div>' +
+        '<div class="progress-line"><span class="lbl">indexing 380+ posts since 2008</span><span class="bar"><span class="fill" id="b2"></span></span><span class="pct" id="p2">0%</span></div>' +
+        '<div class="progress-line"><span class="lbl">deferring sleep to ship one more thing</span><span class="bar"><span class="fill" id="b3"></span></span><span class="pct" id="p3">0%</span></div>';
+      inner.appendChild(wrap);
+
+      const skip = document.createElement("div");
+      skip.className = "skip";
+      skip.innerHTML = "press <kbd>any key</kbd> or click to skip";
+      boot.appendChild(skip);
+
+      [["b1", "p1", 900], ["b2", "p2", 1300], ["b3", "p3", 1700]].forEach((cfg, i) => {
+        setTimeout(() => {
+          document.getElementById(cfg[0]).style.width = "100%";
+          let cur = 0;
+          const step = setInterval(() => {
+            cur += Math.ceil(100 / (cfg[2] / 40));
+            if (cur >= 100) { cur = 100; clearInterval(step); }
+            document.getElementById(cfg[1]).textContent = cur + "%";
+          }, 40);
+        }, 200 + i * 250);
+      });
+
+      setTimeout(() => {
+        const f = document.createElement("div");
+        f.className = "l";
+        f.style.marginTop = "10px";
+        f.innerHTML =
+          '<span class="ok">[</span> <span class="ok">OK</span> <span class="ok">]</span> All systems ready.';
+        inner.appendChild(f);
+        const w = document.createElement("div");
+        w.className = "l";
+        w.innerHTML =
+          '<span class="dim">Welcome. Click any tab above to navigate.</span>';
+        inner.appendChild(w);
+      }, 2200);
+
+      setTimeout(dismiss, 3400);
+    }
+
+    function dismiss() {
+      if (boot.classList.contains("fade")) return;
+      boot.classList.add("fade");
+      sessionStorage.setItem("ikrth_booted", "1");
+      setTimeout(() => { boot.style.display = "none"; }, 500);
+    }
+
+    boot.addEventListener("click", dismiss);
+    document.addEventListener("keydown", () => {
+      if (boot.style.display !== "none" && !boot.classList.contains("fade")) dismiss();
+    }, { once: false });
+
+    setTimeout(emit, 200);
+  })();
+</script>

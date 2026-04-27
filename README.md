@@ -2,14 +2,35 @@
 
 Personal blog of Karthikeyan N.G. — builder, CTO/CISO, occasional writer.
 
-> **Status:** content migration checkpoint. Astro scaffolding lands in the next commit.
+Built with **Astro** + **MDX**. Content lives as Markdown files; push to `main`
+on GitHub and Vercel rebuilds the site.
+
+## Run locally
+
+```bash
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # outputs to dist/
+npm run preview  # preview prod build
+```
 
 ## What's in this repo
 
 ```
 src/
   content/
-    posts/        ← blog posts as Markdown (one .md per post, dated filename)
+    posts/        ← blog posts as Markdown (one .md per post)
+    pages/        ← singleton pages (mission intro, about, etc)
+    config.ts     ← content schemas (TypeScript)
+  data/
+    goals.json    ← mission/wishlist data (21 items)
+  components/     ← Astro components (boot sequence, tabs, terminal, etc)
+  layouts/        ← BaseLayout
+  pages/          ← routes (index, writing, mission, about, contact)
+  styles/         ← global.css with terminal design tokens
+public/
+  images/         ← article + goal illustrations
+scripts/          ← one-off importers (Medium, LinkedIn, Wayback)
 INVENTORY.md      ← detailed report of what was migrated from the old site
 ```
 

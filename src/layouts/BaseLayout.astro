@@ -1,0 +1,96 @@
+---
+import "../styles/global.css";
+import MatrixRain from "../components/MatrixRain.astro";
+import BootSequence from "../components/BootSequence.astro";
+import TabBar from "../components/TabBar.astro";
+import StatusBar from "../components/StatusBar.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: string;
+  file?: string;
+  ogImage?: string;
+}
+const {
+  title,
+  description = "Builder-Architect · CTO/CISO · Crypto + AI infrastructure since 2008",
+  active = "home",
+  file,
+  ogImage = "/og-default.png",
+} = Astro.props;
+
+const fullTitle = title === "intrepidkarthi" ? title : `${title} · intrepidkarthi`;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="intrepidkarthi" href="/rss.xml" />
+    <link rel="canonical" href={url} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site).href} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@intrepidkarthi" />
+    <meta name="twitter:creator" content="@intrepidkarthi" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <MatrixRain />
+    <BootSequence />
+
+    <div id="app">
+      <TabBar active={active} />
+      <main class="main">
+        <slot />
+      </main>
+      <StatusBar file={file ?? `~/intrepidkarthi/${active}`} />
+    </div>
+
+    <style>
+      #app {
+        position: relative;
+        z-index: 5;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        animation: fade-in 0.5s ease forwards;
+        animation-delay: 0.2s;
+      }
+      @keyframes fade-in {
+        to { opacity: 1; }
+      }
+      .main {
+        flex: 1;
+        padding: 24px 28px 48px;
+        max-width: 1180px;
+        width: 100%;
+        margin: 0 auto;
+      }
+      @media (max-width: 700px) {
+        .main { padding: 18px 16px 36px; }
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+/* ================================================================
+   intrepidkarthi · cyberdeck design tokens
+   ================================================================ */
+
+:root {
+  --bg: #030604;
+  --bg2: #081109;
+  --bg3: #0d1810;
+  --line: #16291c;
+  --line-bright: #1e3a26;
+  --green: #4eff7c;
+  --green-dim: #2a8c44;
+  --green-bright: #b8ffc8;
+  --green-glow: rgba(78, 255, 124, 0.4);
+  --amber: #ffb454;
+  --pink: #ff5f87;
+  --cyan: #5fd7ff;
+  --purple: #c780ff;
+  --red: #ff6b6b;
+  --ink: #c9d9c9;
+  --dim: #5f7a65;
+  --warn: #e0af68;
+
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-vt: "VT323", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--bg); }
+
+html, body {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  background-image: radial-gradient(rgba(78, 255, 124, 0.04) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+/* CRT scanlines + vignette — applied site-wide */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 200;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    rgba(0, 0, 0, 0.18) 3px,
+    transparent 4px
+  );
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 199;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: var(--green-bright); }
+
+::selection { background: var(--green); color: var(--bg); }
+
+/* Utility classes */
+.glow { text-shadow: 0 0 4px currentColor, 0 0 12px var(--green-glow); }
+.mono { font-family: var(--font-mono); }
+.vt { font-family: var(--font-vt); }
+.ascii { font-family: var(--font-vt); white-space: pre; line-height: 1.05; }
+
+/* Prose for post bodies — markdown rendered HTML */
+.prose {
+  max-width: 720px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: var(--green-bright);
+  font-family: var(--font-vt);
+  text-shadow: 0 0 4px var(--green-glow);
+  margin: 1.6em 0 0.4em;
+  line-height: 1.15;
+}
+.prose h1 { font-size: 36px; }
+.prose h2 { font-size: 28px; }
+.prose h3 { font-size: 22px; }
+.prose h2::before, .prose h3::before { color: var(--pink); margin-right: 8px; }
+.prose h2::before { content: "##"; }
+.prose h3::before { content: "###"; }
+.prose p { margin: 1em 0; }
+.prose a {
+  color: var(--cyan);
+  border-bottom: 1px dotted currentColor;
+}
+.prose a:hover { color: var(--green-bright); }
+.prose strong { color: var(--green-bright); font-weight: 600; }
+.prose em { color: var(--amber); }
+.prose code {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  padding: 1px 6px;
+  border-radius: 3px;
+  color: var(--green-bright);
+  font-size: 0.92em;
+}
+.prose pre {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--green);
+  padding: 16px 20px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 1.5em 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.prose pre code {
+  background: none; border: none; padding: 0;
+}
+.prose blockquote {
+  border-left: 3px solid var(--amber);
+  padding: 0.5em 1em;
+  margin: 1.5em 0;
+  background: rgba(255, 180, 84, 0.04);
+  color: var(--ink);
+  font-style: italic;
+}
+.prose ul, .prose ol { margin: 1em 0; padding-left: 1.6em; }
+.prose ul li, .prose ol li { margin: 0.4em 0; }
+.prose ul li::marker { color: var(--green); }
+.prose img {
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin: 1.5em 0;
+}
+.prose hr {
+  border: none;
+  border-top: 1px dashed var(--line);
+  margin: 2em 0;
+}
+.prose figure { margin: 1.5em 0; }
+.prose figcaption {
+  color: var(--dim);
+  font-size: 13px;
+  margin-top: 0.5em;
+  text-align: center;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--line-bright); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--green-dim); }
