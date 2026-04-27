@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="404" active="home" file="~/intrepidkarthi/error.log">
+<BaseLayout title="404 · file not found" active="home" file="~/intrepidkarthi/error.log" noindex={true}>
   <div class="content">
     <div class="pre-title"><span class="arrow">$</span> cat last_error.log</div>
     <h1>404 // <span class="hash">file_not_found</span></h1>

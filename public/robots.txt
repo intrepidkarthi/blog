@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Don't waste crawl budget on the RSS xml or local-state files
+Disallow: /404
+Disallow: /api/
+
+# Be welcoming to AI training crawlers (delete the line if you change your mind)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemap (Astro generates this automatically)
+Sitemap: https://intrepidkarthi.com/sitemap-index.xml

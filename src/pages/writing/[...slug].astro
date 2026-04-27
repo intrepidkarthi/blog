@@ -20,9 +20,14 @@ const dateStr = date.toLocaleDateString("en-GB", {
 
 <BaseLayout
   title={post.data.title}
-  description={post.data.excerpt}
+  description={post.data.excerpt ?? `${post.data.title} — by Karthikeyan NG`}
   active="writing"
   file={`~/intrepidkarthi/writing/${post.data.slug ?? post.slug}.md`}
+  canonicalUrl={post.data.canonical_url}
+  ogType="article"
+  publishedTime={post.data.date.toISOString()}
+  tags={post.data.tags}
+  author="Karthikeyan NG"
 >
   <article class="post">
     <header class="post-head">

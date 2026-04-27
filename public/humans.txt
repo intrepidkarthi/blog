@@ -1,0 +1,19 @@
+/* TEAM */
+  Author    : Karthikeyan N.G.
+  Site      : https://intrepidkarthi.com
+  Twitter   : @intrepidkarthi
+  GitHub    : @intrepidkarthi
+  Location  : Madurai → Bengaluru → Dubai
+
+/* SITE */
+  Standards : HTML5, CSS3, ES2022
+  Stack     : Astro · MDX · TypeScript
+  Hosted on : Vercel
+  Source    : https://github.com/intrepidkarthi/blog
+  Built     : with too much caffeine
+
+/* THANKS */
+  Reader    : if you found something useful here, drop a line.
+              intrepidkarthi@gmail.com
+
+# the boring systems win.

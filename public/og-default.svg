@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#030604"/>
+      <stop offset="1" stop-color="#0d1810"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="0" cy="0" r="1" fill="rgba(78,255,124,0.07)"/>
+    </pattern>
+    <filter id="glow"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- scanline overlay -->
+  <g opacity="0.18">
+    <rect x="0" y="0" width="1200" height="2" fill="#000"/>
+    <rect x="0" y="6" width="1200" height="2" fill="#000"/>
+    <rect x="0" y="12" width="1200" height="2" fill="#000"/>
+  </g>
+
+  <!-- prompt indicator -->
+  <text x="80" y="120" fill="#5f7a65" font-family="JetBrains Mono, monospace" font-size="18" letter-spacing="3">
+    KARTHIKEYAN NG:~$ cat about
+  </text>
+
+  <!-- main name -->
+  <text x="80" y="240" fill="#b8ffc8" font-family="VT323, monospace" font-size="120" filter="url(#glow)">
+    Karthikeyan NG
+  </text>
+  <text x="80" y="240" fill="#4eff7c" font-family="VT323, monospace" font-size="120">
+    Karthikeyan NG
+  </text>
+
+  <!-- separator -->
+  <line x1="80" y1="280" x2="500" y2="280" stroke="#2a8c44" stroke-width="2"/>
+
+  <!-- tagline lines -->
+  <text x="80" y="340" fill="#c9d9c9" font-family="JetBrains Mono, monospace" font-size="32">
+    Engineer · Author · Speaker
+  </text>
+  <text x="80" y="385" fill="#ffb454" font-family="JetBrains Mono, monospace" font-size="26">
+    full-time perpetual futures trader
+  </text>
+  <text x="80" y="430" fill="#5fd7ff" font-family="JetBrains Mono, monospace" font-size="22">
+    crypto · AI · trading · stablecoins
+  </text>
+
+  <!-- domain -->
+  <text x="80" y="540" fill="#5f7a65" font-family="JetBrains Mono, monospace" font-size="18" letter-spacing="2">
+    intrepidkarthi.com
+  </text>
+  <text x="80" y="570" fill="#5f7a65" font-family="JetBrains Mono, monospace" font-size="14" letter-spacing="2">
+    builder-architect · shipping since 2008
+  </text>
+
+  <!-- prompt cursor in corner -->
+  <rect x="1080" y="540" width="40" height="50" fill="#4eff7c" opacity="0.9">
+    <animate attributeName="opacity" values="0.9;0.2;0.9" dur="1s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- corner brackets -->
+  <path d="M 40 40 L 40 80 M 40 40 L 80 40" stroke="#4eff7c" stroke-width="3" fill="none"/>
+  <path d="M 1160 40 L 1160 80 M 1160 40 L 1120 40" stroke="#4eff7c" stroke-width="3" fill="none"/>
+  <path d="M 40 590 L 40 550 M 40 590 L 80 590" stroke="#4eff7c" stroke-width="3" fill="none"/>
+  <path d="M 1160 590 L 1160 550 M 1160 590 L 1120 590" stroke="#4eff7c" stroke-width="3" fill="none"/>
+</svg>
