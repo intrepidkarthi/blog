@@ -13,7 +13,15 @@
       "Bash(npm run:*)",
       "Bash(npm ls:*)",
       "Bash(npx vercel:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "WebFetch(domain:feaws.xyz)",
+      "WebFetch(domain:getdailyvox.com)",
+      "Bash(head -30 /Users/karthikeyanng/CascadeProjects/intrepidkarthi/src/content/posts/*.md)",
+      "Bash(find src/content/posts -type f \\\\\\( -name \"*.md\" -o -name \"*.mdx\" \\\\\\) -exec grep -l \"^slug:\" {} \\\\;)",
+      "Bash(find src/content/posts -type f \\\\\\( -name \"*.md\" -o -name \"*.mdx\" \\\\\\) -exec grep -l \"draft: true\" {} \\\\;)",
+      "Bash(find:*)",
+      "Bash(npm list:*)",
+      "Bash(npm audit:*)"
     ]
   }
 }
