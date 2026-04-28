@@ -21,7 +21,8 @@
       "Bash(find src/content/posts -type f \\\\\\( -name \"*.md\" -o -name \"*.mdx\" \\\\\\) -exec grep -l \"draft: true\" {} \\\\;)",
       "Bash(find:*)",
       "Bash(npm list:*)",
-      "Bash(npm audit:*)"
+      "Bash(npm audit:*)",
+      "Bash(ls:*)"
     ]
   }
 }
