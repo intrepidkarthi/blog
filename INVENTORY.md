@@ -10,6 +10,10 @@ repo.
 
 - **27 blog posts** migrated to `src/content/posts/` as clean Markdown,
   spanning **2008-11-14 → 2009-05-10**, dates preserved.
+- **20 additional posts** imported from `intrepidkarthi.wordpress.com`
+  via the WP.com REST API, spanning **2007-12-17 → 2008-01-08** — these
+  predate the self-hosted blog and were the user's first writings
+  online. All marked `legacy: true`, `source: wordpress.com`.
 - **The `wp_posts.csv` export was incomplete** — it only contained the
   same 27 posts the SQL dump had. The full archive on disk is what we
   recovered.
@@ -40,6 +44,38 @@ Format: `YYYY-MM-DD-slug.md` with YAML frontmatter (`title`, `date`,
 
 Tags inferred from content: `college`, `madurai`, `travel`, `events`,
 `movies`, `personal`, `blogging`, `tech`, `journal`.
+
+### WordPress.com import (2026-04-28)
+
+20 posts pulled from `https://public-api.wordpress.com/rest/v1.1/sites/intrepidkarthi.wordpress.com/posts/`:
+
+| Date       | Slug                                                              | Notes |
+|------------|-------------------------------------------------------------------|-------|
+| 2007-12-17 | hello-world                                                       | First post ever — title overridden from "General" to "Hello World — My First Post" |
+| 2007-12-27 | mybook                                                            | VB.Net + MS Access mini-app for storing friend details |
+| 2007-12-27 | what-is-memory-leak                                               | C/malloc explainer (code fenced) |
+| 2007-12-27 | to-my-god                                                         | Personal/philosophy |
+| 2007-12-27 | natpu                                                             | Image-only post (Tamil: friendship) |
+| 2007-12-28 | news-today                                                        | |
+| 2007-12-28 | kalloori                                                          | College life (Tamil) |
+| 2007-12-28 | kaadhal                                                           | Tamil |
+| 2007-12-28 | googles-new-service                                               | GOOG-411 |
+| 2007-12-28 | polladhavan                                                       | Tamil movie |
+| 2007-12-28 | eula-vs-gpl                                                       | License comparison |
+| 2007-12-28 | saw-iv                                                            | Movie review |
+| 2007-12-28 | c-online-test-2007                                                | **Slug renamed** — collided with existing 2008-11-22 c-online-test (re-publication on self-hosted blog) |
+| 2007-12-28 | simple-triangle-but-4-diff-approach                               | C/C++ patterns (code fenced) |
+| 2007-12-30 | mig33                                                             | Mobile IM service |
+| 2007-12-30 | about-my-city                                                     | Madurai history |
+| 2007-12-30 | factory-waste-produces-enough-energy-for-750-homes-nice-one       | Tech news |
+| 2007-12-31 | let-us-walk-on-2008                                               | New Year image |
+| 2008-01-02 | new-year                                                          | Hassan al-Basri quote |
+| 2008-01-08 | yo-yo-robo-on-d-track                                             | Rajinikanth in Shankar's Robot announcement |
+
+Tags inferred via keyword + WP category mapping (`General → personal`,
+`TechStuffs → tech`, `Entertainment → movies`, `Programming → programming`,
+`தமிழ் வாழ்க → tamil`). Code blocks auto-fenced for posts containing
+`#include` / `int main` / `void main` / `printf`.
 
 ### Source of truth
 
