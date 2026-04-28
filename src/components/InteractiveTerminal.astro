@@ -344,14 +344,14 @@
         const files = {
           "ambitions.md": '<span class="info"># ambitions.md</span>\n<span class="ok">▸</span> Build a $100M+ infrastructure company\n<span class="ok">▸</span> Hit $3M FIRE through compounding\n<span class="ok">▸</span> Mentor 100 builders to ship\n<span class="ok">▸</span> Write book #3 — agent infra\n<span class="dim">▸ [done] Speak at TEDx</span>\n<span class="dim">▸ [done] Win 10+ hackathons</span>',
           "wishlist.md": '<span class="info"># wishlist.md</span>\n<span class="pink">◇</span> MacBook Pro M5\n<span class="pink">◇</span> Bose QC Ultra\n<span class="pink">◇</span> Madurai sabbatical (1 month)\n<span class="pink">◇</span> Russell first edition\n<span class="pink">◇</span> Polymarket position that prints',
-          "now.md": '<span class="info"># now.md</span>\n<span class="ok">▸</span> Full-time trading on perpetual futures\n<span class="ok">▸</span> feaws.xyz — public quant lab\n<span class="ok">▸</span> Dailyvox — local-LLM iOS app\n<span class="ok">▸</span> 412-day #healthywealthy streak'
+          "now.md": '<span class="info"># now.md</span>\n<span class="ok">▸</span> Full-time trading on perpetual futures\n<span class="ok">▸</span> feaws.xyz — public quant lab\n<span class="ok">▸</span> Dailyvox — local-LLM iOS app\n<span class="ok">▸</span> 3+ year #healthywealthy streak (Fitbit Versa, daily)'
         };
         if (files[f]) return files[f];
         return `<span class="err">cat: ${escapeHtml(f)}: no such file</span>\n<span class="dim">try: ambitions.md, wishlist.md, now.md</span>`;
       },
       date() { return new Date().toString(); },
       pwd() { return "/home/karthik"; },
-      uptime() { return 'up <span class="accent">6,560+ days</span> since 2008-08 · <span class="ok">412-day</span> streak'; },
+      uptime() { return 'up <span class="accent">6,560+ days</span> since 2008-08 · <span class="ok">3+ year</span> #healthywealthy streak'; },
 
       theme() {
         const themes = ["green", "amber", "cyan", "pink", "purple"];
@@ -529,7 +529,7 @@
          ────────────────────────────
          <span class="ok">os</span>:        Madurai · BLR · DXB rolling release
          <span class="ok">kernel</span>:    karthik 6.5.6-builder
-         <span class="ok">uptime</span>:    16+ years shipping · 412 day streak
+         <span class="ok">uptime</span>:    16+ years shipping · 3+ year #healthywealthy streak
          <span class="ok">role</span>:      Engineer · Author · Speaker
          <span class="ok">trading</span>:   full-time perpetual futures
          <span class="ok">stack</span>:     crypto · ai · trading · stablecoins
@@ -543,11 +543,15 @@
 
       // ---------- stats / persona ----------
       streak() {
-        const days = 412;
+        // Daily #healthywealthy posts began on x.com on this date.
+        const start = new Date("2023-01-01T00:00:00");
+        const days = Math.max(0, Math.floor((Date.now() - start.getTime()) / 86400000));
+        const years = (days / 365).toFixed(1);
         const wk = "█".repeat(7);
         return `<span class="accent">#healthywealthy streak</span>\n` +
-          `day:     <span class="ok">${days}</span>\n` +
-          `weeks:   ${Math.floor(days/7)} (${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk}...)\n` +
+          `day:     <span class="ok">${days.toLocaleString()}</span> (≈ ${years} years)\n` +
+          `device:  Fitbit Versa · daily ritual since 2023-01-01\n` +
+          `weeks:   ${Math.floor(days/7).toLocaleString()} (${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk} ${wk}...)\n` +
           `today:   walk · 50 pushups · 90s plank · ₹500 SIP · 22pg\n` +
           `next:    every day. no skips.`;
       },
