@@ -170,5 +170,63 @@
     "status": "todo",
     "note": "Probably mid-life, probably in something at the intersection of distributed systems and applied ML. No rush.",
     "image": "/images/goals/21-phd.svg"
+  },
+  {
+    "id": 22,
+    "title": "Sell at a shop in a foreign country",
+    "category": "Adventure",
+    "status": "todo",
+    "note": "Spend a week behind a counter abroad — different language, different currency, real customers. Learn the trade by doing it.",
+    "image": "/images/goals/22-foreign-shop.svg"
+  },
+  {
+    "id": 23,
+    "title": "Dance on stage in front of an audience",
+    "category": "Live",
+    "status": "done",
+    "progress": "x2",
+    "note": "Done twice. Stage lights, live audience, the kind of nerves that make you forget the count for the first eight beats.",
+    "image": "/images/goals/23-stage-dance.svg"
+  },
+  {
+    "id": 24,
+    "title": "Complete 50+ treks",
+    "category": "Adventure",
+    "status": "in-progress",
+    "progress": "40 / 50",
+    "note": "Roughly 40 trails behind me — Western Ghats, Himalayas, Sahyadris. Ten more before I hit half a hundred.",
+    "image": "/images/goals/24-treks.svg"
+  },
+  {
+    "id": 25,
+    "title": "Cook for a large audience",
+    "category": "Live",
+    "status": "todo",
+    "note": "A proper feast for 50+ guests. Menu planned end-to-end, ingredients sourced, no caterers — just a long apron and a sharp knife.",
+    "image": "/images/goals/25-cook.svg"
+  },
+  {
+    "id": 26,
+    "title": "Volunteer for a bigger cause",
+    "category": "Lead",
+    "status": "todo",
+    "note": "Sustained, hands-on, not just a donation. Pick something that compounds — education, disaster relief, environment — and show up for years.",
+    "image": "/images/goals/26-volunteer.svg"
+  },
+  {
+    "id": 27,
+    "title": "Learn a musical instrument",
+    "category": "Learn",
+    "status": "todo",
+    "note": "Pick one — guitar, keyboard, mridangam — and stay with it long enough that it stops sounding like a fight.",
+    "image": "/images/goals/27-instrument.svg"
+  },
+  {
+    "id": 28,
+    "title": "Ride a long-haul convoy trip",
+    "category": "Adventure",
+    "status": "todo",
+    "note": "Multi-day road convoy with friends — bikes or cars, single arrow on the map, fuel stops as the only forced pauses.",
+    "image": "/images/goals/28-convoy.svg"
   }
 ]

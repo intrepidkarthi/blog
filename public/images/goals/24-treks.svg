@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="50+ treks">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .mono   { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+  </style>
+
+  <!-- back mountain -->
+  <path class="d" d="M 20 130 L 70 55 L 100 100 L 130 60 L 180 130 Z" style="fill: rgba(78,255,124,0.04);"/>
+  <!-- front mountain -->
+  <path class="g" d="M 20 130 L 70 55 L 100 100 L 130 60 L 180 130 Z"/>
+  <!-- snow caps -->
+  <path class="a fill-a" d="M 60 70 L 70 55 L 80 70 Z" style="fill-opacity:0.30;"/>
+  <path class="a fill-a" d="M 122 73 L 130 60 L 138 73 Z" style="fill-opacity:0.30;"/>
+
+  <!-- ground -->
+  <line class="g" x1="20" y1="130" x2="180" y2="130"/>
+
+  <!-- winding trail -->
+  <path class="a" d="M 30 145 Q 60 138 75 152 T 120 150 T 170 145" style="stroke-dasharray: 4 4;"/>
+
+  <!-- hiker figure -->
+  <circle class="g" cx="155" cy="140" r="4"/>
+  <line class="g" x1="155" y1="144" x2="158" y2="155"/>
+  <line class="g" x1="158" y1="155" x2="153" y2="166"/>
+  <line class="g" x1="158" y1="155" x2="164" y2="166"/>
+  <!-- backpack -->
+  <rect class="a" x="148" y="146" width="6" height="9"/>
+  <!-- trekking pole -->
+  <line class="c" x1="160" y1="148" x2="168" y2="167"/>
+  <!-- flag at peak -->
+  <line class="p" x1="70" y1="55" x2="70" y2="38"/>
+  <path class="p fill-p" d="M 70 38 L 82 42 L 70 46 Z" style="fill-opacity:0.40;"/>
+
+  <!-- progress bar -->
+  <rect class="d" x="35" y="172" width="130" height="10"/>
+  <rect class="g fill-g" x="35" y="172" width="104" height="10"/>
+  <text class="mono-a" x="60" y="195">40 / 50</text>
+</svg>

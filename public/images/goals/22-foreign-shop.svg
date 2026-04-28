@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Sell at a shop in a foreign country">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono   { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+    .mono-p { font-family: 'JetBrains Mono', monospace; font-size: 9px;  fill: #ff5f87; stroke: none; }
+    .dim-fill { fill: rgba(78,255,124,0.08); stroke: #4eff7c; }
+  </style>
+
+  <!-- awning -->
+  <path class="a fill-a" d="M 35 60 L 165 60 L 155 80 L 45 80 Z" style="fill-opacity:0.18;"/>
+  <path class="a" d="M 35 60 L 165 60 L 155 80 L 45 80 Z"/>
+  <line class="d" x1="65" y1="60" x2="60"  y2="80"/>
+  <line class="d" x1="95" y1="60" x2="92"  y2="80"/>
+  <line class="d" x1="125" y1="60" x2="123" y2="80"/>
+
+  <!-- shop body -->
+  <rect class="g" x="40" y="80" width="120" height="80"/>
+  <!-- door -->
+  <rect class="g" x="55" y="105" width="30" height="55"/>
+  <circle class="dot-g g" cx="78" cy="135" r="1.6"/>
+  <!-- window -->
+  <rect class="g" x="100" y="105" width="50" height="35"/>
+  <line class="d" x1="125" y1="105" x2="125" y2="140"/>
+  <line class="d" x1="100" y1="122" x2="150" y2="122"/>
+  <!-- counter line -->
+  <line class="g" x1="40" y1="160" x2="160" y2="160"/>
+
+  <!-- OPEN sign -->
+  <rect class="p fill-p" x="105" y="88" width="40" height="12" style="fill-opacity:0.18;"/>
+  <rect class="p" x="105" y="88" width="40" height="12"/>
+  <text class="mono-p" x="111" y="97">OPEN</text>
+
+  <!-- foreign flag waving -->
+  <line class="a" x1="155" y1="25" x2="155" y2="60"/>
+  <path class="a fill-a" d="M 155 28 L 180 30 L 175 38 L 180 46 L 155 44 Z" style="fill-opacity:0.30;"/>
+  <path class="a" d="M 155 28 L 180 30 L 175 38 L 180 46 L 155 44 Z"/>
+
+  <!-- price tag -->
+  <path class="c" d="M 30 105 L 30 130 L 40 138 L 50 130 L 50 105 Z"/>
+  <circle class="c fill-g" cx="40" cy="113" r="2"/>
+
+  <text class="mono-a" x="45" y="190">SHOP · TODO</text>
+</svg>

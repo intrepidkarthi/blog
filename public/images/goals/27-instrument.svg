@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Learn a musical instrument">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #ffb454; stroke: none; }
+  </style>
+
+  <!-- guitar body -->
+  <path class="a fill-a"
+        d="M 105 175 Q 60 175 55 140 Q 50 110 75 105 Q 90 102 95 90 L 105 75 Q 110 70 115 75 L 125 90 Q 130 102 145 105 Q 170 110 165 140 Q 160 175 115 175 Z"
+        style="fill-opacity:0.10;"/>
+  <path class="a"
+        d="M 105 175 Q 60 175 55 140 Q 50 110 75 105 Q 90 102 95 90 L 105 75 Q 110 70 115 75 L 125 90 Q 130 102 145 105 Q 170 110 165 140 Q 160 175 115 175 Z"/>
+
+  <!-- sound hole -->
+  <circle class="g fill-g" cx="110" cy="140" r="14" style="fill-opacity:0.18;"/>
+  <circle class="g" cx="110" cy="140" r="14"/>
+  <circle class="d" cx="110" cy="140" r="9"/>
+
+  <!-- bridge -->
+  <rect class="g" x="100" y="160" width="20" height="4"/>
+
+  <!-- neck -->
+  <rect class="g" x="105" y="25" width="14" height="60"/>
+  <!-- frets -->
+  <line class="d" x1="105" y1="38" x2="119" y2="38"/>
+  <line class="d" x1="105" y1="50" x2="119" y2="50"/>
+  <line class="d" x1="105" y1="62" x2="119" y2="62"/>
+  <line class="d" x1="105" y1="74" x2="119" y2="74"/>
+
+  <!-- strings -->
+  <line class="g" x1="108" y1="25" x2="108" y2="162"/>
+  <line class="g" x1="112" y1="25" x2="112" y2="162"/>
+  <line class="g" x1="116" y1="25" x2="116" y2="162"/>
+
+  <!-- headstock -->
+  <path class="a" d="M 102 25 L 122 25 L 124 18 L 100 18 Z"/>
+  <circle class="dot-a a fill-a" cx="98"  cy="22" r="2"/>
+  <circle class="dot-a a fill-a" cx="126" cy="22" r="2"/>
+
+  <!-- music notes -->
+  <text class="mono-a" x="40" y="55" style="font-size:18px;">♪</text>
+  <text class="mono-a" x="160" y="80" style="font-size:14px;">♫</text>
+
+  <text class="mono-a" x="50" y="195">LEARN · TODO</text>
+</svg>
