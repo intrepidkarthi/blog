@@ -1,23 +1,23 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import RelatedPosts from "../../components/RelatedPosts.astro";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
   const all = await getCollection("posts", ({ data }) => !data.draft);
   return all.map((post) => ({
-    params: { slug: post.data.slug ?? post.slug },
+    params: { slug: post.data.slug ?? post.id },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 const date = post.data.date;
 const dateStr = date.toLocaleDateString("en-GB", {
   year: "numeric", month: "long", day: "numeric",
 });
-const slug = post.data.slug ?? post.slug;
+const slug = post.data.slug ?? post.id;
 const ogImage = `/og/${slug}.svg`;
 ---
 

@@ -1,10 +1,12 @@
 import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
 
 const posts = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.md", base: "./src/content/posts" }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    slug: z.string().optional(),
     excerpt: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
@@ -28,19 +30,21 @@ const posts = defineCollection({
 });
 
 const pages = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.md", base: "./src/content/pages" }),
   schema: z.object({
     title: z.string(),
+    slug: z.string().optional(),
     description: z.string().optional(),
     data: z.string().optional(),
   }),
 });
 
 const notes = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.md", base: "./src/content/notes" }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    slug: z.string().optional(),
     excerpt: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),

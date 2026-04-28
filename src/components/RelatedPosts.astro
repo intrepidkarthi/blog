@@ -14,7 +14,7 @@ const all = await getCollection("posts", ({ data }) => !data.draft);
 
 // Score each post by tag overlap + recency proximity to current
 const scored = all
-  .filter((p) => (p.data.slug ?? p.slug) !== currentSlug)
+  .filter((p) => (p.data.slug ?? p.id) !== currentSlug)
   .map((p) => {
     const overlap = (p.data.tags ?? []).filter((t) =>
       currentTags.includes(t),
@@ -39,7 +39,7 @@ const scored = all
     <div class="related-list">
       {scored.map(({ post: p }) => (
         <PostCard
-          href={`/writing/${p.data.slug ?? p.slug}`}
+          href={`/writing/${p.data.slug ?? p.id}`}
           date={p.data.date}
           title={p.data.title}
           tags={p.data.tags}

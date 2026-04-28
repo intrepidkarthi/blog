@@ -14,7 +14,7 @@ export async function GET(context) {
         title: p.data.title,
         pubDate: p.data.date,
         description: p.data.excerpt ?? "",
-        link: `/writing/${p.data.slug ?? p.slug}/`,
+        link: `/writing/${p.data.slug ?? p.id}/`,
         author: "intrepidkarthi@gmail.com (Karthikeyan NG)",
         categories: p.data.tags,
       })),

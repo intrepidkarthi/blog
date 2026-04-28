@@ -29,7 +29,7 @@ const years = Object.keys(byYear).sort((a, b) => b.localeCompare(a));
         </h2>
         {byYear[y].map((p) => (
           <PostCard
-            href={`/writing/${p.data.slug ?? p.slug}`}
+            href={`/writing/${p.data.slug ?? p.id}`}
             date={p.data.date}
             title={p.data.title}
             tags={p.data.tags}

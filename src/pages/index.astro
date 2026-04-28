@@ -69,7 +69,7 @@ const recent = all
 
       {recent.map((p) => (
         <PostCard
-          href={`/writing/${p.data.slug ?? p.slug}`}
+          href={`/writing/${p.data.slug ?? p.id}`}
           date={p.data.date}
           title={p.data.title}
           tags={p.data.tags}
