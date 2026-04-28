@@ -139,4 +139,44 @@ If you have a blog older than ten years and you have not personally verified tha
 
 ---
 
-If you remember reading any of these — particularly the 2010 trip posts or the *Mangatha* review — and have a copy in an old browser cache or an RSS reader's archive, [drop me a line](/contact). I'd like to put them back.
+## addendum — the count is bigger than 58
+
+After publishing this I went back through the original `public_html/` dump more carefully and found a fuller `sitemap.xml` dated **March 18, 2014**. It contains **122 post URLs** in total — not 85. Doing the arithmetic against what came through in the database (27 surviving posts) and what was on this site at publish time, the real lost-post count is closer to **~95**, not 58. Breakdown of the additional URLs the deeper scan surfaced:
+
+```
+2007/12         ▸  4 posts (about-madurai, getting-bored-at-home,
+                            memory-leak, my-book-app)
+2008/01         ▸  1 post  (yo-yo-robo-on-d-track)
+2009/04-12      ▸ 22 posts (technical: Python time calculator,
+                            random-numbers in MySQL, Scheme programs
+                            set 1/2/3, "what happens when you enter
+                            a URL", how AJAX works, reverse a
+                            linked list, session vs cookie, storing
+                            fonts in SQL Server, …)
+                  + a TCS-training-era set: tcs-days-starts,
+                    hyderabad-session, kerala-session, gemini-info-way,
+                    valley-beach-trip, then-mala-water-falls-trip
+                  + movie reviews: aadhavan, vettaikaran
+2010/01-02      ▸  4 Tamil-language posts (URLs UTF-8 encoded;
+                    "எனது முதல் தமிழ் படைப்பு / my first Tamil work",
+                    "உலக காதலர்களுக்கு / to the world's lovers",
+                    "என்னவள் யாரோ / who is my beloved",
+                    "நண்பா நண்பா / friend friend")
+2013/02-11      ▸  7 NEW (kindle-fire-debugging, copying-contacts-
+                            nokia-android, survival-of-the-fittest,
+                            rabbitmq-setup-android, frequent-wlan-
+                            disconnection-ubuntu-12-04, problems-of-
+                            india, ban-bang-bangalore, one-day-at-
+                            techcrunch-hackathon)
+2014/01         ▸  2 posts (plans-2014, vodafone-is-reading-smsmms)
+```
+
+Plus three pages — `/about-intrepidkarthi/`, `/wishlist/`, `/domains-for-sale/` — that the WordPress install had as standalone pages and that didn't make it either.
+
+The 2009-09 batch is particularly bittersweet. Nine short technical posts, all of them written during the TCS training period in Chennai, all of them the kind of "I just learned something, here is the explanation" piece that I would still write today. *How AJAX works. Reverse a linked list. What happens when you enter a URL in the browser.* The genre that became Stack Overflow content for an entire generation of Indian engineers. I was writing it in real time and the entire batch is gone.
+
+Same lesson, sharper version: **the archive doesn't tell you it's incomplete until you go looking.** The first count was 58 because I stopped digging at the cPanel SQL dump. The real count is ~95 because the sitemap reaches deeper. There are probably more URLs in the Wayback Machine that aren't in any sitemap I have. I don't know. I won't know until I look.
+
+---
+
+If you remember reading any of these — particularly the 2010 trip posts, the 2010 Tamil poetry, the *Mangatha* review, or any of the 2009-09 technical pieces — and have a copy in an old browser cache or an RSS reader's archive, [drop me a line](/contact). I'd like to put them back.

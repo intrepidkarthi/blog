@@ -1,350 +1,850 @@
 [
   {
-    "url": "http://intrepidkarthi.com/blog/2010/02/google/",
-    "year": "2010",
-    "month": "02",
-    "slug": "google"
+    "url": "http://www.intrepidkarthi.com/2007/12/getting-bored-at-home/",
+    "year": "2007",
+    "month": "12",
+    "slug": "getting-bored-at-home",
+    "decoded_slug": "getting-bored-at-home",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/02/i-love-this-lyrics/",
-    "year": "2010",
-    "month": "02",
-    "slug": "i-love-this-lyrics"
+    "url": "http://www.intrepidkarthi.com/2007/12/memory-leak/",
+    "year": "2007",
+    "month": "12",
+    "slug": "memory-leak",
+    "decoded_slug": "memory-leak",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/02/movie-review-my-name-is-khan/",
-    "year": "2010",
-    "month": "02",
-    "slug": "movie-review-my-name-is-khan"
+    "url": "http://www.intrepidkarthi.com/2007/12/my-book-app/",
+    "year": "2007",
+    "month": "12",
+    "slug": "my-book-app",
+    "decoded_slug": "my-book-app",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/03/movie-review-vinnai-thandi-varuvaya/",
+    "url": "http://www.intrepidkarthi.com/2008/01/yo-yo-robo-on-d-track/",
+    "year": "2008",
+    "month": "01",
+    "slug": "yo-yo-robo-on-d-track",
+    "decoded_slug": "yo-yo-robo-on-d-track",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2008/11/blogging-starts/",
+    "year": "2008",
+    "month": "11",
+    "slug": "blogging-starts",
+    "decoded_slug": "blogging-starts",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/01/vhn-school-reunion/",
+    "year": "2009",
+    "month": "01",
+    "slug": "vhn-school-reunion",
+    "decoded_slug": "vhn-school-reunion",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/02/toss-inaugration/",
+    "year": "2009",
+    "month": "02",
+    "slug": "toss-inaugration",
+    "decoded_slug": "toss-inaugration",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/03/fossconf-2009/",
+    "year": "2009",
+    "month": "03",
+    "slug": "fossconf-2009",
+    "decoded_slug": "fossconf-2009",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/04/running-time-calculator-using-python/",
+    "year": "2009",
+    "month": "04",
+    "slug": "running-time-calculator-using-python",
+    "decoded_slug": "running-time-calculator-using-python",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/05/post-after-a-long-time/",
+    "year": "2009",
+    "month": "05",
+    "slug": "post-after-a-long-time",
+    "decoded_slug": "post-after-a-long-time",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/06/generating-random-number-using-mysql-query/",
+    "year": "2009",
+    "month": "06",
+    "slug": "generating-random-number-using-mysql-query",
+    "decoded_slug": "generating-random-number-using-mysql-query",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/07/gemini-info-way/",
+    "year": "2009",
+    "month": "07",
+    "slug": "gemini-info-way",
+    "decoded_slug": "gemini-info-way",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/automatic-synonym-generator/",
+    "year": "2009",
+    "month": "09",
+    "slug": "automatic-synonym-generator",
+    "decoded_slug": "automatic-synonym-generator",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/converting-a-string-to-upper-case/",
+    "year": "2009",
+    "month": "09",
+    "slug": "converting-a-string-to-upper-case",
+    "decoded_slug": "converting-a-string-to-upper-case",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/difference-between-session-and-cookie/",
+    "year": "2009",
+    "month": "09",
+    "slug": "difference-between-session-and-cookie",
+    "decoded_slug": "difference-between-session-and-cookie",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/how-ajax-works/",
+    "year": "2009",
+    "month": "09",
+    "slug": "how-ajax-works",
+    "decoded_slug": "how-ajax-works",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/how-memory-leak-occurs/",
+    "year": "2009",
+    "month": "09",
+    "slug": "how-memory-leak-occurs",
+    "decoded_slug": "how-memory-leak-occurs",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/how-to-calculate-the-no-of-bits-in-an-integer/",
+    "year": "2009",
+    "month": "09",
+    "slug": "how-to-calculate-the-no-of-bits-in-an-integer",
+    "decoded_slug": "how-to-calculate-the-no-of-bits-in-an-integer",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/reverse-a-linked-list/",
+    "year": "2009",
+    "month": "09",
+    "slug": "reverse-a-linked-list",
+    "decoded_slug": "reverse-a-linked-list",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/storing-fonts-into-sql-server-database/",
+    "year": "2009",
+    "month": "09",
+    "slug": "storing-fonts-into-sql-server-database",
+    "decoded_slug": "storing-fonts-into-sql-server-database",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/09/what-happens-when-i-enter-a-url-in-the-web-browser/",
+    "year": "2009",
+    "month": "09",
+    "slug": "what-happens-when-i-enter-a-url-in-the-web-browser",
+    "decoded_slug": "what-happens-when-i-enter-a-url-in-the-web-browser",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/10/movie-review-aadhavan/",
+    "year": "2009",
+    "month": "10",
+    "slug": "movie-review-aadhavan",
+    "decoded_slug": "movie-review-aadhavan",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/10/scheme-language-basic-programs-set-1/",
+    "year": "2009",
+    "month": "10",
+    "slug": "scheme-language-basic-programs-set-1",
+    "decoded_slug": "scheme-language-basic-programs-set-1",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/10/scheme-language-basic-programs-set-2/",
+    "year": "2009",
+    "month": "10",
+    "slug": "scheme-language-basic-programs-set-2",
+    "decoded_slug": "scheme-language-basic-programs-set-2",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/10/scheme-language-basic-programs-set-3/",
+    "year": "2009",
+    "month": "10",
+    "slug": "scheme-language-basic-programs-set-3",
+    "decoded_slug": "scheme-language-basic-programs-set-3",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/10/tcs-days-starts/",
+    "year": "2009",
+    "month": "10",
+    "slug": "tcs-days-starts",
+    "decoded_slug": "tcs-days-starts",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/11/then-mala-water-falls-trip/",
+    "year": "2009",
+    "month": "11",
+    "slug": "then-mala-water-falls-trip",
+    "decoded_slug": "then-mala-water-falls-trip",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/11/valley-beach-trip/",
+    "year": "2009",
+    "month": "11",
+    "slug": "valley-beach-trip",
+    "decoded_slug": "valley-beach-trip",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/12/hyderabad-session/",
+    "year": "2009",
+    "month": "12",
+    "slug": "hyderabad-session",
+    "decoded_slug": "hyderabad-session",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/12/kerala-session/",
+    "year": "2009",
+    "month": "12",
+    "slug": "kerala-session",
+    "decoded_slug": "kerala-session",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2009/12/movie-review-vettaikaran/",
+    "year": "2009",
+    "month": "12",
+    "slug": "movie-review-vettaikaran",
+    "decoded_slug": "movie-review-vettaikaran",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2010/01/%e0%ae%8e%e0%ae%a9%e0%ae%a4%e0%af%81-%e0%ae%ae%e0%af%81%e0%ae%a4%e0%ae%b2%e0%af%8d-%e0%ae%a4%e0%ae%ae%e0%ae%bf%e0%ae%b4%e0%af%8d-%e0%ae%aa%e0%ae%9f%e0%af%88%e0%ae%aa%e0%af%8d%e0%ae%aa%e0%af%81/",
+    "year": "2010",
+    "month": "01",
+    "slug": "%e0%ae%8e%e0%ae%a9%e0%ae%a4%e0%af%81-%e0%ae%ae%e0%af%81%e0%ae%a4%e0%ae%b2%e0%af%8d-%e0%ae%a4%e0%ae%ae%e0%ae%bf%e0%ae%b4%e0%af%8d-%e0%ae%aa%e0%ae%9f%e0%af%88%e0%ae%aa%e0%af%8d%e0%ae%aa%e0%af%81",
+    "decoded_slug": "எனது-முதல்-தமிழ்-படைப்பு",
+    "is_tamil": true
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2010/02/%e0%ae%89%e0%ae%b2%e0%ae%95-%e0%ae%95%e0%ae%be%e0%ae%a4%e0%ae%b2%e0%ae%b0%e0%af%8d%e0%ae%95%e0%ae%b3%e0%af%81%e0%ae%95%e0%af%8d%e0%ae%95%e0%af%81/",
+    "year": "2010",
+    "month": "02",
+    "slug": "%e0%ae%89%e0%ae%b2%e0%ae%95-%e0%ae%95%e0%ae%be%e0%ae%a4%e0%ae%b2%e0%ae%b0%e0%af%8d%e0%ae%95%e0%ae%b3%e0%af%81%e0%ae%95%e0%af%8d%e0%ae%95%e0%af%81",
+    "decoded_slug": "உலக-காதலர்களுக்கு",
+    "is_tamil": true
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2010/02/%e0%ae%8e%e0%ae%a9%e0%af%8d%e0%ae%a9%e0%ae%b5%e0%ae%b3%e0%af%8d-%e0%ae%af%e0%ae%be%e0%ae%b0%e0%af%8b/",
+    "year": "2010",
+    "month": "02",
+    "slug": "%e0%ae%8e%e0%ae%a9%e0%af%8d%e0%ae%a9%e0%ae%b5%e0%ae%b3%e0%af%8d-%e0%ae%af%e0%ae%be%e0%ae%b0%e0%af%8b",
+    "decoded_slug": "என்னவள்-யாரோ",
+    "is_tamil": true
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2010/02/%e0%ae%a8%e0%ae%a3%e0%af%8d%e0%ae%aa%e0%ae%be-%e0%ae%a8%e0%ae%a3%e0%af%8d%e0%ae%aa%e0%ae%be/",
+    "year": "2010",
+    "month": "02",
+    "slug": "%e0%ae%a8%e0%ae%a3%e0%af%8d%e0%ae%aa%e0%ae%be-%e0%ae%a8%e0%ae%a3%e0%af%8d%e0%ae%aa%e0%ae%be",
+    "decoded_slug": "நண்பா-நண்பா",
+    "is_tamil": true
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2010/02/i-love-this-lyrics/",
+    "year": "2010",
+    "month": "02",
+    "slug": "i-love-this-lyrics",
+    "decoded_slug": "i-love-this-lyrics",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2010/02/movie-review-my-name-is-khan/",
+    "year": "2010",
+    "month": "02",
+    "slug": "movie-review-my-name-is-khan",
+    "decoded_slug": "movie-review-my-name-is-khan",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2010/03/movie-review-vinnai-thandi-varuvaya/",
     "year": "2010",
     "month": "03",
-    "slug": "movie-review-vinnai-thandi-varuvaya"
+    "slug": "movie-review-vinnai-thandi-varuvaya",
+    "decoded_slug": "movie-review-vinnai-thandi-varuvaya",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/03/oracle-functions/",
+    "url": "http://www.intrepidkarthi.com/2010/03/oracle-functions/",
     "year": "2010",
     "month": "03",
-    "slug": "oracle-functions"
+    "slug": "oracle-functions",
+    "decoded_slug": "oracle-functions",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/05/computers-without-harddisk/",
+    "url": "http://www.intrepidkarthi.com/2010/05/computers-without-harddisk/",
     "year": "2010",
     "month": "05",
-    "slug": "computers-without-harddisk"
+    "slug": "computers-without-harddisk",
+    "decoded_slug": "computers-without-harddisk",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/05/movie-review-sura/",
+    "url": "http://www.intrepidkarthi.com/2010/05/movie-review-sura/",
     "year": "2010",
     "month": "05",
-    "slug": "movie-review-sura"
+    "slug": "movie-review-sura",
+    "decoded_slug": "movie-review-sura",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/06/movie-review-ravanan/",
+    "url": "http://www.intrepidkarthi.com/2010/06/movie-review-ravanan/",
     "year": "2010",
     "month": "06",
-    "slug": "movie-review-ravanan"
+    "slug": "movie-review-ravanan",
+    "decoded_slug": "movie-review-ravanan",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/07/lonely-trip-to-mantralayam/",
+    "url": "http://www.intrepidkarthi.com/2010/07/lonely-trip-to-mantralayam/",
     "year": "2010",
     "month": "07",
-    "slug": "lonely-trip-to-mantralayam"
+    "slug": "lonely-trip-to-mantralayam",
+    "decoded_slug": "lonely-trip-to-mantralayam",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/09/orissa-trip/",
+    "url": "http://www.intrepidkarthi.com/2010/09/orissa-trip/",
     "year": "2010",
     "month": "09",
-    "slug": "orissa-trip"
+    "slug": "orissa-trip",
+    "decoded_slug": "orissa-trip",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/10/movie-review-endhiranrobo/",
+    "url": "http://www.intrepidkarthi.com/2010/10/movie-review-endhiranrobo/",
     "year": "2010",
     "month": "10",
-    "slug": "movie-review-endhiranrobo"
+    "slug": "movie-review-endhiranrobo",
+    "decoded_slug": "movie-review-endhiranrobo",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/10/older-designs/",
+    "url": "http://www.intrepidkarthi.com/2010/10/older-designs/",
     "year": "2010",
     "month": "10",
-    "slug": "older-designs"
+    "slug": "older-designs",
+    "decoded_slug": "older-designs",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/10/srisailam-trip/",
+    "url": "http://www.intrepidkarthi.com/2010/10/srisailam-trip/",
     "year": "2010",
     "month": "10",
-    "slug": "srisailam-trip"
+    "slug": "srisailam-trip",
+    "decoded_slug": "srisailam-trip",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2010/12/nagarjuna-sagar-trip/",
+    "url": "http://www.intrepidkarthi.com/2010/12/nagarjuna-sagar-trip/",
     "year": "2010",
     "month": "12",
-    "slug": "nagarjuna-sagar-trip"
+    "slug": "nagarjuna-sagar-trip",
+    "decoded_slug": "nagarjuna-sagar-trip",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/01/mumbai-trip-on-new-year-2011/",
+    "url": "http://www.intrepidkarthi.com/2011/01/mumbai-trip-on-new-year-2011/",
     "year": "2011",
     "month": "01",
-    "slug": "mumbai-trip-on-new-year-2011"
+    "slug": "mumbai-trip-on-new-year-2011",
+    "decoded_slug": "mumbai-trip-on-new-year-2011",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/03/jai-telangana/",
+    "url": "http://www.intrepidkarthi.com/2011/03/jai-telangana/",
     "year": "2011",
     "month": "03",
-    "slug": "jai-telangana"
+    "slug": "jai-telangana",
+    "decoded_slug": "jai-telangana",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/04/running-out-of-time/",
+    "url": "http://www.intrepidkarthi.com/2011/04/running-out-of-time/",
     "year": "2011",
     "month": "04",
-    "slug": "running-out-of-time"
+    "slug": "running-out-of-time",
+    "decoded_slug": "running-out-of-time",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/06/coaching-session-for-school-students/",
+    "url": "http://www.intrepidkarthi.com/2011/06/coaching-session-for-school-students/",
     "year": "2011",
     "month": "06",
-    "slug": "coaching-session-for-school-students"
+    "slug": "coaching-session-for-school-students",
+    "decoded_slug": "coaching-session-for-school-students",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/07/norton-ninja-security-suite-for-your-android/",
+    "url": "http://www.intrepidkarthi.com/2011/07/tada-falls-trip-ubbalamadugu-falls/",
     "year": "2011",
     "month": "07",
-    "slug": "norton-ninja-security-suite-for-your-android"
+    "slug": "tada-falls-trip-ubbalamadugu-falls",
+    "decoded_slug": "tada-falls-trip-ubbalamadugu-falls",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/07/tada-falls-trip-ubbalamadugu-falls/",
-    "year": "2011",
-    "month": "07",
-    "slug": "tada-falls-trip-ubbalamadugu-falls"
-  },
-  {
-    "url": "http://intrepidkarthi.com/blog/2011/08/blog-with-simple-and-clean-look/",
+    "url": "http://www.intrepidkarthi.com/2011/08/blog-with-simple-and-clean-look/",
     "year": "2011",
     "month": "08",
-    "slug": "blog-with-simple-and-clean-look"
+    "slug": "blog-with-simple-and-clean-look",
+    "decoded_slug": "blog-with-simple-and-clean-look",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/08/kailasakona-waterfalls-trip/",
+    "url": "http://www.intrepidkarthi.com/2011/08/kailasakona-waterfalls-trip/",
     "year": "2011",
     "month": "08",
-    "slug": "kailasakona-waterfalls-trip"
+    "slug": "kailasakona-waterfalls-trip",
+    "decoded_slug": "kailasakona-waterfalls-trip",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/08/piracy-easy-loop-hole-for-virus/",
+    "url": "http://www.intrepidkarthi.com/2011/08/piracy-easy-loop-hole-for-virus/",
     "year": "2011",
     "month": "08",
-    "slug": "piracy-easy-loop-hole-for-virus"
+    "slug": "piracy-easy-loop-hole-for-virus",
+    "decoded_slug": "piracy-easy-loop-hole-for-virus",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/09/anna-hazare-co-an-hawk-eye-view/",
+    "url": "http://www.intrepidkarthi.com/2011/09/anna-hazare-co-an-hawk-eye-view/",
     "year": "2011",
     "month": "09",
-    "slug": "anna-hazare-co-an-hawk-eye-view"
+    "slug": "anna-hazare-co-an-hawk-eye-view",
+    "decoded_slug": "anna-hazare-co-an-hawk-eye-view",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/09/information-retrieval-from-social-web/",
+    "url": "http://www.intrepidkarthi.com/2011/09/information-retrieval-from-social-web/",
     "year": "2011",
     "month": "09",
-    "slug": "information-retrieval-from-social-web"
+    "slug": "information-retrieval-from-social-web",
+    "decoded_slug": "information-retrieval-from-social-web",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/09/movie-review-mangatha/",
+    "url": "http://www.intrepidkarthi.com/2011/09/movie-review-mangatha/",
     "year": "2011",
     "month": "09",
-    "slug": "movie-review-mangatha"
+    "slug": "movie-review-mangatha",
+    "decoded_slug": "movie-review-mangatha",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/09/the-world-after-you-die/",
+    "url": "http://www.intrepidkarthi.com/2011/09/the-world-after-you-die/",
     "year": "2011",
     "month": "09",
-    "slug": "the-world-after-you-die"
+    "slug": "the-world-after-you-die",
+    "decoded_slug": "the-world-after-you-die",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/09/time-is-running-flying-and-swimming/",
+    "url": "http://www.intrepidkarthi.com/2011/09/time-is-running-flying-and-swimming/",
     "year": "2011",
     "month": "09",
-    "slug": "time-is-running-flying-and-swimming"
+    "slug": "time-is-running-flying-and-swimming",
+    "decoded_slug": "time-is-running-flying-and-swimming",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/10/266/",
+    "url": "http://www.intrepidkarthi.com/2011/10/266/",
     "year": "2011",
     "month": "10",
-    "slug": "266"
+    "slug": "266",
+    "decoded_slug": "266",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/10/batch-script-for-taking-periodic-mysql-dumps/",
+    "url": "http://www.intrepidkarthi.com/2011/10/batch-script-for-taking-periodic-mysql-dumps/",
     "year": "2011",
     "month": "10",
-    "slug": "batch-script-for-taking-periodic-mysql-dumps"
+    "slug": "batch-script-for-taking-periodic-mysql-dumps",
+    "decoded_slug": "batch-script-for-taking-periodic-mysql-dumps",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/10/i-was-always-on-facebook/",
+    "url": "http://www.intrepidkarthi.com/2011/10/i-was-always-on-facebook/",
     "year": "2011",
     "month": "10",
-    "slug": "i-was-always-on-facebook"
+    "slug": "i-was-always-on-facebook",
+    "decoded_slug": "i-was-always-on-facebook",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/10/issue-with-wordpress/",
+    "url": "http://www.intrepidkarthi.com/2011/10/issue-with-wordpress/",
     "year": "2011",
     "month": "10",
-    "slug": "issue-with-wordpress"
+    "slug": "issue-with-wordpress",
+    "decoded_slug": "issue-with-wordpress",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/10/its-time-for-art-work/",
+    "url": "http://www.intrepidkarthi.com/2011/10/its-time-for-art-work/",
     "year": "2011",
     "month": "10",
-    "slug": "its-time-for-art-work"
+    "slug": "its-time-for-art-work",
+    "decoded_slug": "its-time-for-art-work",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/10/one-word-one-day/",
+    "url": "http://www.intrepidkarthi.com/2011/10/one-word-one-day/",
     "year": "2011",
     "month": "10",
-    "slug": "one-word-one-day"
+    "slug": "one-word-one-day",
+    "decoded_slug": "one-word-one-day",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/10/self-social-media-policy/",
+    "url": "http://www.intrepidkarthi.com/2011/10/self-social-media-policy/",
     "year": "2011",
     "month": "10",
-    "slug": "self-social-media-policy"
+    "slug": "self-social-media-policy",
+    "decoded_slug": "self-social-media-policy",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2011/12/nothing-devnull/",
+    "url": "http://www.intrepidkarthi.com/2011/12/nothing-devnull/",
     "year": "2011",
     "month": "12",
-    "slug": "nothing-devnull"
+    "slug": "nothing-devnull",
+    "decoded_slug": "nothing-devnull",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/02/12-12-12/",
+    "url": "http://www.intrepidkarthi.com/2012/02/12-12-12/",
     "year": "2012",
     "month": "02",
-    "slug": "12-12-12"
+    "slug": "12-12-12",
+    "decoded_slug": "12-12-12",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/02/hiding-your-name-in-lovers-photo/",
+    "url": "http://www.intrepidkarthi.com/2012/02/hiding-your-name-in-lovers-photo/",
     "year": "2012",
     "month": "02",
-    "slug": "hiding-your-name-in-lovers-photo"
+    "slug": "hiding-your-name-in-lovers-photo",
+    "decoded_slug": "hiding-your-name-in-lovers-photo",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/02/its-now-karthikeyan-b-e-m-b-a/",
+    "url": "http://www.intrepidkarthi.com/2012/02/its-now-karthikeyan-b-e-m-b-a/",
     "year": "2012",
     "month": "02",
-    "slug": "its-now-karthikeyan-b-e-m-b-a"
+    "slug": "its-now-karthikeyan-b-e-m-b-a",
+    "decoded_slug": "its-now-karthikeyan-b-e-m-b-a",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/02/security-as-a-service-paper-presentation/",
+    "url": "http://www.intrepidkarthi.com/2012/02/security-as-a-service-paper-presentation/",
     "year": "2012",
     "month": "02",
-    "slug": "security-as-a-service-paper-presentation"
+    "slug": "security-as-a-service-paper-presentation",
+    "decoded_slug": "security-as-a-service-paper-presentation",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/03/beware-of-using-the-f-word/",
+    "url": "http://www.intrepidkarthi.com/2012/03/%e0%ae%8e%e0%ae%a4%e0%ae%bf%e0%ae%b0%e0%af%8d-%e0%ae%b5%e0%af%80%e0%ae%9f%e0%af%8d%e0%ae%9f%e0%af%81-%e0%ae%9c%e0%ae%a9%e0%af%8d%e0%ae%a9%e0%ae%b2%e0%af%8d/",
     "year": "2012",
     "month": "03",
-    "slug": "beware-of-using-the-f-word"
+    "slug": "%e0%ae%8e%e0%ae%a4%e0%ae%bf%e0%ae%b0%e0%af%8d-%e0%ae%b5%e0%af%80%e0%ae%9f%e0%af%8d%e0%ae%9f%e0%af%81-%e0%ae%9c%e0%ae%a9%e0%af%8d%e0%ae%a9%e0%ae%b2%e0%af%8d",
+    "decoded_slug": "எதிர்-வீட்டு-ஜன்னல்",
+    "is_tamil": true
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/03/coaching-class-to-school-students/",
+    "url": "http://www.intrepidkarthi.com/2012/03/%e0%ae%8f%e0%ae%a9%e0%af%8d-%e0%ae%87%e0%ae%aa%e0%af%8d%e0%ae%aa%e0%ae%9f%e0%ae%bf-%e0%ae%95%e0%ae%b2%e0%af%8d%e0%ae%b2%e0%ae%be%e0%ae%95%e0%ae%bf%e0%ae%aa%e0%af%8d-%e0%ae%aa%e0%af%8b%e0%ae%a9/",
     "year": "2012",
     "month": "03",
-    "slug": "coaching-class-to-school-students"
+    "slug": "%e0%ae%8f%e0%ae%a9%e0%af%8d-%e0%ae%87%e0%ae%aa%e0%af%8d%e0%ae%aa%e0%ae%9f%e0%ae%bf-%e0%ae%95%e0%ae%b2%e0%af%8d%e0%ae%b2%e0%ae%be%e0%ae%95%e0%ae%bf%e0%ae%aa%e0%af%8d-%e0%ae%aa%e0%af%8b%e0%ae%a9",
+    "decoded_slug": "ஏன்-இப்படி-கல்லாகிப்-போன",
+    "is_tamil": true
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/03/crazy-reply-for-a-bug-report/",
+    "url": "http://www.intrepidkarthi.com/2012/03/%e0%ae%95%e0%ae%a9%e0%ae%b5%e0%af%81%e0%ae%95%e0%ae%b3%e0%af%8d-%e0%ae%ae%e0%af%86%e0%ae%af%e0%af%8d%e0%ae%aa%e0%af%8d%e0%ae%aa%e0%ae%9f/",
     "year": "2012",
     "month": "03",
-    "slug": "crazy-reply-for-a-bug-report"
+    "slug": "%e0%ae%95%e0%ae%a9%e0%ae%b5%e0%af%81%e0%ae%95%e0%ae%b3%e0%af%8d-%e0%ae%ae%e0%af%86%e0%ae%af%e0%af%8d%e0%ae%aa%e0%af%8d%e0%ae%aa%e0%ae%9f",
+    "decoded_slug": "கனவுகள்-மெய்ப்பட",
+    "is_tamil": true
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/03/making-code-open-source/",
+    "url": "http://www.intrepidkarthi.com/2012/03/%e0%ae%a4%e0%ae%a9%e0%ae%bf%e0%ae%ae%e0%af%88/",
     "year": "2012",
     "month": "03",
-    "slug": "making-code-open-source"
+    "slug": "%e0%ae%a4%e0%ae%a9%e0%ae%bf%e0%ae%ae%e0%af%88",
+    "decoded_slug": "தனிமை",
+    "is_tamil": true
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/04/openshift-from-redhat/",
+    "url": "http://www.intrepidkarthi.com/2012/03/%e0%ae%ae%e0%ae%a9%e0%ae%bf%e0%ae%a4-%e0%ae%95%e0%ae%9f%e0%ae%b5%e0%af%81%e0%ae%b3%e0%af%8d/",
+    "year": "2012",
+    "month": "03",
+    "slug": "%e0%ae%ae%e0%ae%a9%e0%ae%bf%e0%ae%a4-%e0%ae%95%e0%ae%9f%e0%ae%b5%e0%af%81%e0%ae%b3%e0%af%8d",
+    "decoded_slug": "மனித-கடவுள்",
+    "is_tamil": true
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2012/03/beware-of-using-the-f-word/",
+    "year": "2012",
+    "month": "03",
+    "slug": "beware-of-using-the-f-word",
+    "decoded_slug": "beware-of-using-the-f-word",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2012/03/coaching-class-to-school-students/",
+    "year": "2012",
+    "month": "03",
+    "slug": "coaching-class-to-school-students",
+    "decoded_slug": "coaching-class-to-school-students",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2012/03/crazy-reply-for-a-bug-report/",
+    "year": "2012",
+    "month": "03",
+    "slug": "crazy-reply-for-a-bug-report",
+    "decoded_slug": "crazy-reply-for-a-bug-report",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2012/03/making-code-open-source/",
+    "year": "2012",
+    "month": "03",
+    "slug": "making-code-open-source",
+    "decoded_slug": "making-code-open-source",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2012/04/cygwin_child_info_fork_abort-address-space_issue/",
     "year": "2012",
     "month": "04",
-    "slug": "openshift-from-redhat"
+    "slug": "cygwin_child_info_fork_abort-address-space_issue",
+    "decoded_slug": "cygwin_child_info_fork_abort-address-space_issue",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/04/trip-to-ooty/",
+    "url": "http://www.intrepidkarthi.com/2012/04/openshift-from-redhat/",
     "year": "2012",
     "month": "04",
-    "slug": "trip-to-ooty"
+    "slug": "openshift-from-redhat",
+    "decoded_slug": "openshift-from-redhat",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/05/an-alternative-attitude/",
+    "url": "http://www.intrepidkarthi.com/2012/04/trip-to-ooty/",
+    "year": "2012",
+    "month": "04",
+    "slug": "trip-to-ooty",
+    "decoded_slug": "trip-to-ooty",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2012/05/an-alternative-attitude/",
     "year": "2012",
     "month": "05",
-    "slug": "an-alternative-attitude"
+    "slug": "an-alternative-attitude",
+    "decoded_slug": "an-alternative-attitude",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/05/firefox-banned-on-windows-8/",
+    "url": "http://www.intrepidkarthi.com/2012/05/firefox-banned-on-windows-8/",
     "year": "2012",
     "month": "05",
-    "slug": "firefox-banned-on-windows-8"
+    "slug": "firefox-banned-on-windows-8",
+    "decoded_slug": "firefox-banned-on-windows-8",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/06/presentation-on-foss-and-lamp-architecture/",
+    "url": "http://www.intrepidkarthi.com/2012/06/reality-is-a-bullshit-really/",
     "year": "2012",
     "month": "06",
-    "slug": "presentation-on-foss-and-lamp-architecture"
+    "slug": "reality-is-a-bullshit-really",
+    "decoded_slug": "reality-is-a-bullshit-really",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/06/reality-is-a-bullshit-really/",
+    "url": "http://www.intrepidkarthi.com/2012/06/running-out-of-money-time-and-sleep-for-the-month/",
     "year": "2012",
     "month": "06",
-    "slug": "reality-is-a-bullshit-really"
+    "slug": "running-out-of-money-time-and-sleep-for-the-month",
+    "decoded_slug": "running-out-of-money-time-and-sleep-for-the-month",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/06/running-out-of-money-time-and-sleep-for-the-month/",
-    "year": "2012",
-    "month": "06",
-    "slug": "running-out-of-money-time-and-sleep-for-the-month"
-  },
-  {
-    "url": "http://intrepidkarthi.com/blog/2012/07/india-and-indian-educational-system/",
+    "url": "http://www.intrepidkarthi.com/2012/07/india-and-indian-educational-system/",
     "year": "2012",
     "month": "07",
-    "slug": "india-and-indian-educational-system"
+    "slug": "india-and-indian-educational-system",
+    "decoded_slug": "india-and-indian-educational-system",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/07/mongo-db-with-php-using-xampp-in-windows/",
+    "url": "http://www.intrepidkarthi.com/2012/07/mongo-db-with-php-using-xampp-in-windows/",
     "year": "2012",
     "month": "07",
-    "slug": "mongo-db-with-php-using-xampp-in-windows"
+    "slug": "mongo-db-with-php-using-xampp-in-windows",
+    "decoded_slug": "mongo-db-with-php-using-xampp-in-windows",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/07/the-books-i-read/",
+    "url": "http://www.intrepidkarthi.com/2012/07/the-books-i-read/",
     "year": "2012",
     "month": "07",
-    "slug": "the-books-i-read"
+    "slug": "the-books-i-read",
+    "decoded_slug": "the-books-i-read",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/08/missing-time/",
+    "url": "http://www.intrepidkarthi.com/2012/08/missing-time/",
     "year": "2012",
     "month": "08",
-    "slug": "missing-time"
+    "slug": "missing-time",
+    "decoded_slug": "missing-time",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/09/from-microsoft-windows-8-appfest-contest/",
+    "url": "http://www.intrepidkarthi.com/2012/09/from-microsoft-windows-8-appfest-contest/",
     "year": "2012",
     "month": "09",
-    "slug": "from-microsoft-windows-8-appfest-contest"
+    "slug": "from-microsoft-windows-8-appfest-contest",
+    "decoded_slug": "from-microsoft-windows-8-appfest-contest",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2012/09/oorukku-pudhusa-new-to-the-city/",
+    "url": "http://www.intrepidkarthi.com/2012/09/oorukku-pudhusa-new-to-the-city/",
     "year": "2012",
     "month": "09",
-    "slug": "oorukku-pudhusa-new-to-the-city"
+    "slug": "oorukku-pudhusa-new-to-the-city",
+    "decoded_slug": "oorukku-pudhusa-new-to-the-city",
+    "is_tamil": false
   },
   {
-    "url": "http://intrepidkarthi.com/blog/2013/01/india-and-its-culture/",
+    "url": "http://www.intrepidkarthi.com/2013/01/india-and-its-culture/",
     "year": "2013",
     "month": "01",
-    "slug": "india-and-its-culture"
+    "slug": "india-and-its-culture",
+    "decoded_slug": "india-and-its-culture",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2013/02/connecting-kindle-fire-and-kindle-fire-hd-in-usb-debugging-mode/",
+    "year": "2013",
+    "month": "02",
+    "slug": "connecting-kindle-fire-and-kindle-fire-hd-in-usb-debugging-mode",
+    "decoded_slug": "connecting-kindle-fire-and-kindle-fire-hd-in-usb-debugging-mode",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2013/02/copying-contacts-from-nokia-symbian-mobile-to-android-mobile/",
+    "year": "2013",
+    "month": "02",
+    "slug": "copying-contacts-from-nokia-symbian-mobile-to-android-mobile",
+    "decoded_slug": "copying-contacts-from-nokia-symbian-mobile-to-android-mobile",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2013/03/survival-of-the-fittest/",
+    "year": "2013",
+    "month": "03",
+    "slug": "survival-of-the-fittest",
+    "decoded_slug": "survival-of-the-fittest",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2013/05/rabbitmq-setup-in-android/",
+    "year": "2013",
+    "month": "05",
+    "slug": "rabbitmq-setup-in-android",
+    "decoded_slug": "rabbitmq-setup-in-android",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2013/07/frequent-wlan-disconnection-in-ubuntu-12-04/",
+    "year": "2013",
+    "month": "07",
+    "slug": "frequent-wlan-disconnection-in-ubuntu-12-04",
+    "decoded_slug": "frequent-wlan-disconnection-in-ubuntu-12-04",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2013/08/problems-of-india/",
+    "year": "2013",
+    "month": "08",
+    "slug": "problems-of-india",
+    "decoded_slug": "problems-of-india",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2013/10/ban-bang-bangalore/",
+    "year": "2013",
+    "month": "10",
+    "slug": "ban-bang-bangalore",
+    "decoded_slug": "ban-bang-bangalore",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2013/11/one-day-at-techcrunch-hackathon/",
+    "year": "2013",
+    "month": "11",
+    "slug": "one-day-at-techcrunch-hackathon",
+    "decoded_slug": "one-day-at-techcrunch-hackathon",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2014/01/plans-2014/",
+    "year": "2014",
+    "month": "01",
+    "slug": "plans-2014",
+    "decoded_slug": "plans-2014",
+    "is_tamil": false
+  },
+  {
+    "url": "http://www.intrepidkarthi.com/2014/01/vodafone-is-reading-smsmms/",
+    "year": "2014",
+    "month": "01",
+    "slug": "vodafone-is-reading-smsmms",
+    "decoded_slug": "vodafone-is-reading-smsmms",
+    "is_tamil": false
   }
 ]
