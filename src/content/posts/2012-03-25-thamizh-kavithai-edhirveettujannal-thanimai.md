@@ -28,7 +28,11 @@ This one came out almost in a single sitting. I think the best ones usually do.
 
 ## கடவுள் (God) and பெண் (Girl)
 
-Two more from this month, illustrated as `god.jpg` and `girl.jpg` in the gallery. Each a few lines. Each about a thing too big for the few lines.
+Two more from this month. Each a few lines. Each about a thing too big for the few lines.
+
+![கடவுள் (God) — illustration](/images/articles/thamizh-kavithai/god.jpg)
+
+![பெண் (Girl) — illustration](/images/articles/thamizh-kavithai/girl.jpg)
 
 I keep a folder of these — most don't survive a second reading. The ones that do, I post.
 
