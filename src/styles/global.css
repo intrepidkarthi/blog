@@ -162,3 +162,40 @@ a:hover { color: var(--green-bright); }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--line-bright); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--green-dim); }
+
+/* ----------------------------------------------------------------
+ * Mobile / small-screen adjustments — apply across all pages
+ * ---------------------------------------------------------------- */
+@media (max-width: 700px) {
+  html, body { font-size: 13.5px; }
+  .prose { font-size: 15.5px; line-height: 1.7; }
+  .prose h1 { font-size: 28px; }
+  .prose h2 { font-size: 22px; }
+  .prose h3 { font-size: 18px; }
+  .prose pre { padding: 12px 14px; font-size: 12.5px; }
+  .prose blockquote { margin: 1em 0; padding: 0.4em 0.8em; }
+  .prose ul, .prose ol { padding-left: 1.3em; }
+  /* Inline code on mobile: slightly bigger so it's readable */
+  .prose code { font-size: 0.9em; }
+}
+@media (max-width: 480px) {
+  .prose { font-size: 15px; }
+  .prose h1 { font-size: 26px; }
+  .prose h2 { font-size: 20px; }
+}
+
+/* Touch targets: ensure tappable elements are at least ~40px */
+@media (max-width: 700px) and (pointer: coarse) {
+  a, button { min-height: 36px; }
+}
+
+/* Tap highlight (iOS Safari) — match the green theme */
+* { -webkit-tap-highlight-color: rgba(78, 255, 124, 0.15); }
+
+/* Prevent content from going under iOS notch in landscape */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}

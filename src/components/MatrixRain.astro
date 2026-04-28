@@ -12,18 +12,36 @@
     transition: opacity 0.5s;
   }
   #matrix-canvas.boost { opacity: 0.55; }
+  /* Mobile: dim it further to save battery and reduce CPU load */
+  @media (max-width: 700px) {
+    #matrix-canvas { opacity: 0.04; }
+    #matrix-canvas.boost { opacity: 0.4; }
+  }
+  /* Respect user motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    #matrix-canvas { display: none; }
+  }
 </style>
 
 <script is:inline>
   (() => {
     const c = document.getElementById("matrix-canvas");
     if (!c) return;
+    // Skip entirely if the user prefers reduced motion
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      c.style.display = "none";
+      return;
+    }
     const ctx = c.getContext("2d");
     const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノ01ARTHIK01";
     let drops = [];
+    // Mobile: wider columns (less density), slower frame rate to save battery
+    const isMobile = window.innerWidth < 700;
+    const colWidth = isMobile ? 22 : 14;
+    const frameMs = isMobile ? 110 : 60;
     function resize() {
       c.width = window.innerWidth; c.height = window.innerHeight;
-      drops = Array(Math.floor(c.width / 14)).fill(1);
+      drops = Array(Math.floor(c.width / colWidth)).fill(1);
     }
     resize();
     window.addEventListener("resize", resize);
@@ -31,14 +49,14 @@
       ctx.fillStyle = "rgba(3,6,4,0.06)";
       ctx.fillRect(0, 0, c.width, c.height);
       ctx.fillStyle = "#4eff7c";
-      ctx.font = "14px monospace";
+      ctx.font = `${isMobile ? 12 : 14}px monospace`;
       for (let i = 0; i < drops.length; i++) {
         const ch = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(ch, i * 14, drops[i] * 14);
-        if (drops[i] * 14 > c.height && Math.random() > 0.975) drops[i] = 0;
+        ctx.fillText(ch, i * colWidth, drops[i] * colWidth);
+        if (drops[i] * colWidth > c.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
     }
-    setInterval(draw, 60);
+    setInterval(draw, frameMs);
   })();
 </script>

@@ -31,4 +31,16 @@ const { file = "~/intrepidkarthi/home", mode = "NORMAL" } = Astro.props;
   .seg.file { color: var(--ink); flex: 1; }
   .seg.live { color: var(--green); }
   .seg.right { color: var(--dim); }
+
+  /* Mobile: drop noisy segments to keep the bar single-line */
+  @media (max-width: 700px) {
+    .seg { padding: 5px 10px; }
+    .seg.right + .seg.right { display: none; } /* keep first right segment only */
+    .seg.branch { display: none; }
+  }
+  @media (max-width: 480px) {
+    .seg.right { display: none; }
+    .seg.live { display: none; }
+    .seg.file { font-size: 10.5px; }
+  }
 </style>

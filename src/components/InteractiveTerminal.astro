@@ -54,6 +54,13 @@
     z-index: 50;
   }
   .terminal.collapsed { height: 36px; }
+  /* Mobile: smaller expanded height so the shell doesn't eat half the viewport */
+  @media (max-width: 700px) {
+    .terminal { height: 220px; }
+  }
+  @media (max-width: 480px) {
+    .terminal { height: 180px; }
+  }
 
   .term-bar {
     background: var(--bg2);
@@ -101,6 +108,12 @@
   }
   @media (max-width: 700px) {
     .term-bar .hint-text, .term-bar .kb-hint { display: none; }
+    .term-bar { padding: 7px 12px; font-size: 11px; gap: 8px; }
+  }
+  @media (max-width: 480px) {
+    .term-bar .label { display: none; }
+    .term-bar .prompt-prefix { font-size: 10.5px; }
+    .term-body { padding: 10px 14px; font-size: 12px; }
   }
 
   .term-body {

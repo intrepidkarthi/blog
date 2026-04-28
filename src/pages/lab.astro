@@ -124,10 +124,17 @@ const lab = labRaw as { sections: Section[] };
 
   .grid {
     display: grid; gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
-  @media (max-width: 600px) {
-    .grid { grid-template-columns: 1fr; }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; gap: 16px; }
+  }
+  @media (max-width: 480px) {
+    .card-img { min-height: 140px; padding: 12px; }
+    .card-img img { max-width: 200px; }
+    .card-body { padding: 14px 16px 12px; }
+    .highlights .hi { grid-template-columns: 80px 1fr; gap: 6px; }
+    .section-title { font-size: 22px; }
   }
 
   .card {

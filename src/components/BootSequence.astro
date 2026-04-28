@@ -17,6 +17,17 @@
     font-size: 13px; line-height: 1.6;
     transition: opacity .5s ease;
   }
+  @media (max-width: 700px) {
+    #boot { padding: 20px 16px; font-size: 11.5px; }
+    #boot .ascii { font-size: 11px !important; }
+    #boot .progress-line { flex-wrap: wrap; gap: 6px; }
+    #boot .progress-line .lbl { width: auto; flex: 1; min-width: 60%; font-size: 11px; }
+    #boot .progress-line .bar { max-width: 100px; }
+  }
+  @media (max-width: 480px) {
+    #boot { padding: 16px 12px; font-size: 10.5px; }
+    #boot .ascii { font-size: 8.5px !important; }
+  }
   #boot.fade { opacity: 0; pointer-events: none; }
   #boot .l { white-space: pre; min-height: 1.6em; }
   #boot .ok { color: var(--green-bright); }
