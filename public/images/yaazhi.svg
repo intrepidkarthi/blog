@@ -49,8 +49,32 @@
      inkscape:window-maximized="0"
      inkscape:showpageshadow="2"
      inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1" /><defs
-     id="defs6" /><g
+     inkscape:deskcolor="#d1d1d1" /><defs id="defs6">
+    <filter id="beam-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <style>
+    /* Beam: a short bright segment moves along every path outline */
+    @keyframes beam-trace {
+      0%   { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -2000; }
+    }
+    .beam-path {
+      stroke: #b8ffc8 !important;
+      stroke-width: 3 !important;
+      stroke-opacity: 1 !important;
+      fill: none !important;
+      stroke-dasharray: 40 1960;
+      animation: beam-trace 5s linear infinite;
+      filter: url(#beam-glow);
+    }
+  </style><g
      id="g5175"
      transform="translate(4.0312507,0.12304222)"
      style="stroke:#4eff7c;stroke-opacity:0.8;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"><g
@@ -216,4 +240,9 @@
          inkscape:connector-curvature="0"
          id="path3359"
          d="m 254.94608,520.83218 c 4.57719,8.3709 11.25655,17.50936 20.412,19.67091 0,0 -8.27394,-15.43581 -10.71131,-21.99783 -4.5784,-12.32622 2.74135,-25.78542 8.57716,-36.65365 -1.57596,-5.61166 -5.89166,-6.91013 -9.49888,-9.60056 -9.98274,12.37963 -16.45508,34.27863 -8.77897,48.58113 z"
-         style="fill:#4eff7c;fill-opacity:0.3;fill-rule:evenodd;stroke:#4eff7c;stroke-width:2.81473845;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.8;stroke-dasharray:none" /></g></g></svg>
+         style="fill:#4eff7c;fill-opacity:0.3;fill-rule:evenodd;stroke:#4eff7c;stroke-width:2.81473845;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.8;stroke-dasharray:none" /></g></g>
+
+  <!-- Beam overlay: clones of main groups with animated stroke -->
+  <use href="#g5175" class="beam-path" />
+  <use href="#layer1" class="beam-path" />
+</svg>
