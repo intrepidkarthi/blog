@@ -143,18 +143,27 @@
   // --- Platform detection ---
   function findPlatforms() {
     const platforms = [];
+    // Only look inside .main content — skip nav, terminal, statusbar
+    const mainEl = document.querySelector("#app .main");
+    if (!mainEl) return platforms;
+    const mainRect = mainEl.getBoundingClientRect();
+
     const selectors = "h1, h2, h3, p, li, time, code, td, th";
-    const els = document.querySelectorAll("#app .main " + selectors);
+    const els = mainEl.querySelectorAll(selectors);
     const seen = new Set();
 
     for (const el of els) {
       if (!el.offsetParent) continue;
+      // Skip if inside nav, terminal, or interactive elements
+      if (el.closest("nav, [id*=terminal], [id*=status], footer, aside")) continue;
       const text = el.textContent?.trim();
       if (!text || text.length < 3) continue;
 
       const rect = el.getBoundingClientRect();
       if (rect.width < 40 || rect.height < 10 || rect.height > 50) continue;
-      if (rect.top < 40 || rect.bottom > window.innerHeight - 60) continue;
+      // Must be within main content area, not in nav/status zones
+      if (rect.top < mainRect.top + 10) continue;
+      if (rect.bottom > window.innerHeight - 80) continue;
 
       const key = Math.round(rect.bottom / 6) + ":" + Math.round(rect.left / 15);
       if (seen.has(key)) continue;
