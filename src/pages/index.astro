@@ -45,11 +45,6 @@ const recent = all
         </div>
       </div>
 
-      <!-- Yaazhi: mythical guardian from Tamil temple pillars (Madurai roots) -->
-      <div class="yaazhi-bg" aria-hidden="true">
-        <img src="/images/yaazhi.svg" alt="" class="yaazhi" loading="lazy" decoding="async" />
-      </div>
-
       <div class="bio-tagline">
         <div class="line"><span class="tip">▸</span> Engineer, author, speaker. Builder-architect by reflex.</div>
         <div class="line"><span class="tip">▸</span> Full-time trader on perpetual futures markets.</div>
@@ -85,6 +80,11 @@ const recent = all
         → browse the full archive · {all.length} posts since 2008
       </a>
     </section>
+  </div>
+
+  <!-- Yaazhi: mythical guardian from Tamil temple pillars (Madurai roots) -->
+  <div class="yaazhi-bg" aria-hidden="true">
+    <img src="/images/yaazhi.svg" alt="" class="yaazhi" loading="lazy" decoding="async" />
   </div>
 </BaseLayout>
 
@@ -135,21 +135,23 @@ const recent = all
   .palette { display: flex; gap: 4px; margin-top: 12px; }
   .palette span { width: 18px; height: 12px; }
 
-  .col-bio { position: relative; }
   .yaazhi-bg {
-    position: absolute;
-    bottom: 0;
-    right: -10px;
+    position: fixed;
+    right: 20px;
+    bottom: 60px;
     pointer-events: none;
-    z-index: 0;
-    opacity: 0.06;
+    z-index: 2;
+    opacity: 0.07;
   }
   .yaazhi {
-    width: 180px;
-    height: auto;
-    filter: drop-shadow(0 0 8px rgba(78, 255, 124, 0.15));
+    height: 50vh;
+    width: auto;
+    filter: drop-shadow(0 0 12px rgba(78, 255, 124, 0.2));
   }
-  .bio-block, .bio-tagline, .col-head { position: relative; z-index: 1; }
+  @media (max-width: 900px) {
+    .yaazhi-bg { right: 10px; bottom: 80px; opacity: 0.05; }
+    .yaazhi { height: 40vh; }
+  }
 
   .bio-tagline {
     margin-top: 14px; padding-top: 14px;
