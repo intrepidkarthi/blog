@@ -45,6 +45,11 @@ const recent = all
         </div>
       </div>
 
+      <!-- Yaazhi: mythical guardian from Tamil temple pillars (Madurai roots) -->
+      <div class="yaazhi-bg" aria-hidden="true">
+        <img src="/images/yaazhi.svg" alt="" class="yaazhi" loading="lazy" decoding="async" />
+      </div>
+
       <div class="bio-tagline">
         <div class="line"><span class="tip">▸</span> Engineer, author, speaker. Builder-architect by reflex.</div>
         <div class="line"><span class="tip">▸</span> Full-time trader on perpetual futures markets.</div>
@@ -129,6 +134,23 @@ const recent = all
   }
   .palette { display: flex; gap: 4px; margin-top: 12px; }
   .palette span { width: 18px; height: 12px; }
+
+  .col-bio { position: relative; }
+  .yaazhi-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.08;
+  }
+  .yaazhi {
+    width: 220px;
+    height: auto;
+    filter: drop-shadow(0 0 12px rgba(78, 255, 124, 0.2));
+  }
+  .bio-block, .bio-tagline, .col-head { position: relative; z-index: 1; }
 
   .bio-tagline {
     margin-top: 14px; padding-top: 14px;

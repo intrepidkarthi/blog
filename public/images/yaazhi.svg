@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" fill="none">
+  <!-- Yaazhi: mythical lion-dragon guardian from Tamil temple pillars -->
+  <!-- Stylized as a single-stroke silhouette for the cyberdeck aesthetic -->
+  <g stroke="#4eff7c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7">
+    <!-- Ornate mane / crest -->
+    <path d="M100 18 C90 12, 78 14, 74 22 C70 28, 72 36, 68 32 C62 26, 54 28, 56 36 C58 42, 54 40, 50 36 C44 30, 38 34, 42 42"/>
+    <path d="M100 18 C110 12, 122 14, 126 22 C130 28, 128 36, 132 32 C138 26, 146 28, 144 36 C142 42, 146 40, 150 36 C156 30, 162 34, 158 42"/>
+
+    <!-- Head - lion face -->
+    <path d="M42 42 C38 50, 40 58, 48 62 C42 60, 36 64, 38 72 L44 76"/>
+    <path d="M158 42 C162 50, 160 58, 152 62 C158 60, 164 64, 162 72 L156 76"/>
+
+    <!-- Eyes -->
+    <circle cx="78" cy="52" r="4" fill="#4eff7c" opacity="0.5"/>
+    <circle cx="122" cy="52" r="4" fill="#4eff7c" opacity="0.5"/>
+    <circle cx="78" cy="52" r="1.5" fill="#030604"/>
+    <circle cx="122" cy="52" r="1.5" fill="#030604"/>
+
+    <!-- Snout / open jaw -->
+    <path d="M44 76 C50 82, 60 86, 72 84 C80 82, 90 78, 100 80 C110 78, 120 82, 128 84 C140 86, 150 82, 156 76"/>
+    <!-- Upper jaw detail -->
+    <path d="M72 84 C78 90, 84 88, 88 84"/>
+    <path d="M112 84 C118 88, 122 90, 128 84"/>
+    <!-- Fangs -->
+    <path d="M68 84 L64 96 L72 90"/>
+    <path d="M132 84 L136 96 L128 90"/>
+    <!-- Lower jaw -->
+    <path d="M64 96 C74 106, 86 110, 100 108 C114 110, 126 106, 136 96"/>
+    <!-- Tongue -->
+    <path d="M92 100 C96 112, 100 116, 104 112 C108 108, 104 100, 100 102" stroke="#ff5f87" opacity="0.5"/>
+
+    <!-- Neck -->
+    <path d="M44 76 C42 86, 44 96, 48 106"/>
+    <path d="M156 76 C158 86, 156 96, 152 106"/>
+
+    <!-- Body - muscular torso -->
+    <path d="M48 106 C40 120, 36 136, 40 150 C42 158, 38 164, 34 170"/>
+    <path d="M152 106 C160 120, 164 136, 160 150 C158 158, 162 164, 166 170"/>
+
+    <!-- Front legs -->
+    <path d="M48 106 C54 118, 52 132, 48 146 C46 154, 44 162, 46 172 L54 178"/>
+    <path d="M152 106 C146 118, 148 132, 152 146 C154 154, 156 162, 154 172 L146 178"/>
+    <!-- Claws -->
+    <path d="M46 172 L40 176 M46 172 L44 178 M54 178 L58 182"/>
+    <path d="M154 172 L160 176 M154 172 L156 178 M146 178 L142 182"/>
+
+    <!-- Hind legs -->
+    <path d="M40 150 C34 158, 30 168, 34 178 L42 184"/>
+    <path d="M160 150 C166 158, 170 168, 166 178 L158 184"/>
+    <!-- Hind claws -->
+    <path d="M34 178 L28 182 M34 178 L32 184 M42 184 L46 188"/>
+    <path d="M166 178 L172 182 M166 178 L168 184 M158 184 L154 188"/>
+
+    <!-- Tail - ornate curling upward -->
+    <path d="M34 170 C24 160, 18 148, 20 136 C22 124, 28 116, 24 108 C20 100, 24 90, 32 86 C38 84, 40 88, 36 92"/>
+    <path d="M166 170 C176 160, 182 148, 180 136 C178 124, 172 116, 176 108 C180 100, 176 90, 168 86 C162 84, 160 88, 164 92"/>
+
+    <!-- Decorative body patterns - temple pillar style -->
+    <path d="M70 110 C80 106, 90 108, 100 106 C110 108, 120 106, 130 110" opacity="0.4"/>
+    <path d="M66 124 C80 118, 90 120, 100 118 C110 120, 120 118, 134 124" opacity="0.4"/>
+    <path d="M62 138 C78 132, 92 134, 100 132 C108 134, 122 132, 138 138" opacity="0.4"/>
+
+    <!-- Crown / third eye -->
+    <path d="M88 28 C92 20, 100 16, 100 16 C100 16, 108 20, 112 28" stroke="#ffb454" opacity="0.6"/>
+    <circle cx="100" cy="32" r="3" stroke="#ffb454" fill="#ffb454" opacity="0.3"/>
+  </g>
+
+  <!-- Base / pedestal - temple style -->
+  <g stroke="#4eff7c" stroke-width="1" opacity="0.4">
+    <line x1="20" y1="192" x2="180" y2="192"/>
+    <line x1="16" y1="196" x2="184" y2="196"/>
+    <line x1="12" y1="200" x2="188" y2="200"/>
+  </g>
+
+  <!-- Label -->
+  <text x="100" y="216" text-anchor="middle" fill="#4eff7c" opacity="0.35" font-family="monospace" font-size="10">யாழி · yaazhi</text>
+</svg>
