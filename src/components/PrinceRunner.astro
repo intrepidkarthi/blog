@@ -10,6 +10,7 @@
     inset: 0;
     z-index: 50;
     pointer-events: none;
+    cursor: default;
   }
   @media (prefers-reduced-motion: reduce) {
     #prince-canvas { display: none; }
@@ -220,6 +221,7 @@
   }
 
   function land(pl) {
+    spawnLandParticles(P.x, pl.y);
     P.onPlatform = pl; P.y = pl.y; P.vy = 0; P.state = "running"; P.it = 0;
     P.visited.unshift(pl);
     if (P.visited.length > 8) P.visited.pop();
@@ -303,10 +305,147 @@
     }
   }
 
+  // --- Landing particles ---
+  let particles = [];
+  function spawnLandParticles(x, y) {
+    for (let i = 0; i < 8; i++) {
+      const angle = -Math.PI * Math.random(); // upward semicircle
+      const speed = 0.8 + Math.random() * 2;
+      particles.push({
+        x, y: y - 1,
+        vx: Math.cos(angle) * speed * (0.5 + Math.random()),
+        vy: Math.sin(angle) * speed,
+        life: 30 + Math.random() * 25,
+        age: 0,
+        size: Math.random() < 0.3 ? 2 : 1,
+      });
+    }
+  }
+  function updateAndDrawParticles() {
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const pt = particles[i];
+      pt.age++;
+      if (pt.age > pt.life) { particles.splice(i, 1); continue; }
+      pt.x += pt.vx;
+      pt.y += pt.vy;
+      pt.vy += 0.06; // gentle gravity
+      pt.vx *= 0.98;
+      const a = 1 - pt.age / pt.life;
+      ctx.fillStyle = `rgba(78,255,124,${a * 0.7})`;
+      ctx.shadowColor = COLOR;
+      ctx.shadowBlur = 2;
+      ctx.fillRect(Math.round(pt.x), Math.round(pt.y), pt.size, pt.size);
+    }
+    ctx.shadowBlur = 0;
+  }
+
+  // --- Speech bubbles ---
+  const SAYINGS = [
+    "hello!", "nice code", "hmm...", "whoa!", "10k steps!", "yolo",
+    "wagmi", "gm!", "brb", "lol", "*yawn*", "wen moon?", "ship it!",
+    "boring...", "oops", "wow", "let's go!", "vibes", "haha",
+    "hold on!", "easy!", "not bad", "ugh", "smooth", "epic!",
+    "fire!", "zoom!", "sup?", "hey!", "tamil > *",
+  ];
+  let bubble = null; // { text, x, y, age, maxAge }
+  let bubbleCooldown = 0;
+
+  function maybeSay() {
+    if (bubble || bubbleCooldown > 0) return;
+    // ~0.3% chance per frame while running/idle ≈ every ~5-8 seconds
+    if (Math.random() > 0.003) return;
+    const text = SAYINGS[Math.floor(Math.random() * SAYINGS.length)];
+    bubble = { text, x: P.x, y: P.y - 22, age: 0, maxAge: 90 + text.length * 4 };
+    bubbleCooldown = 300; // min ~5 seconds between bubbles
+  }
+  function updateAndDrawBubble() {
+    if (bubbleCooldown > 0) bubbleCooldown--;
+    if (!bubble) return;
+    bubble.age++;
+    // Follow prince position with slight lag
+    bubble.x += (P.x - bubble.x) * 0.15;
+    bubble.y += ((P.y - 26) - bubble.y) * 0.15;
+    if (bubble.age > bubble.maxAge) { bubble = null; return; }
+
+    const fadeIn = Math.min(bubble.age / 8, 1);
+    const fadeOut = bubble.age > bubble.maxAge - 15 ? (bubble.maxAge - bubble.age) / 15 : 1;
+    const alpha = fadeIn * fadeOut;
+
+    const tx = bubble.text;
+    ctx.font = "8px monospace";
+    const tw = ctx.measureText(tx).width;
+    const bx = bubble.x - tw / 2 - 4;
+    const by = bubble.y - 10;
+
+    // Bubble background
+    ctx.fillStyle = `rgba(3,6,4,${alpha * 0.85})`;
+    ctx.strokeStyle = `rgba(78,255,124,${alpha * 0.6})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(bx, by, tw + 8, 14, 3);
+    ctx.fill();
+    ctx.stroke();
+
+    // Tiny tail
+    ctx.fillStyle = `rgba(3,6,4,${alpha * 0.85})`;
+    ctx.beginPath();
+    ctx.moveTo(bubble.x - 2, by + 14);
+    ctx.lineTo(bubble.x + 2, by + 14);
+    ctx.lineTo(bubble.x, by + 18);
+    ctx.fill();
+
+    // Text
+    ctx.fillStyle = `rgba(78,255,124,${alpha})`;
+    ctx.fillText(tx, bx + 4, by + 10);
+  }
+
+  // --- Cursor reaction ---
+  let mouseX = -999, mouseY = -999;
+  document.addEventListener("mousemove", (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+  document.addEventListener("mouseleave", () => { mouseX = -999; mouseY = -999; });
+
+  function cursorReaction() {
+    if (mouseX < 0) return;
+    const dx = P.x - mouseX;
+    const dy = P.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    // If cursor is very close (< 60px), panic and run/jump away
+    if (dist < 60 && (P.state === "running" || P.state === "idle")) {
+      // Run away from cursor
+      P.facingRight = dx > 0; // face away from cursor
+      P.vx = (P.facingRight ? 1 : -1) * RS * 2.5;
+      P.state = "running";
+
+      // If very close, jump!
+      if (dist < 30) {
+        P.vy = JF * 1.2;
+        P.state = "jumping";
+        P.onPlatform = null;
+        P.vx = (P.facingRight ? 1 : -1) * RS * 2;
+        // Scared speech
+        if (!bubble && bubbleCooldown <= 0) {
+          const scared = ["aah!", "whoa!", "hey!", "!!!", "nooo", "eek!", "run!"];
+          bubble = { text: scared[Math.floor(Math.random()*scared.length)], x:P.x, y:P.y-22, age:0, maxAge:50 };
+          bubbleCooldown = 200;
+        }
+      }
+    }
+    // If cursor is medium distance (60-120px), just look at it (face toward cursor)
+    else if (dist < 120 && P.state === "idle") {
+      P.facingRight = mouseX > P.x;
+    }
+  }
+
   // --- Update ---
   function update() {
     P.ft++;
     if (P.ft >= FD) { P.ft=0; P.frame=(P.frame+1)%4; }
+
+    // Cursor reaction (before state checks)
+    cursorReaction();
+    // Speech bubbles
+    if (P.state === "running" || P.state === "idle") maybeSay();
 
     // === ENTERING (run in from side) ===
     if (P.state === "entering") {
@@ -401,6 +540,7 @@
   function loop() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
     drawFootprints();
+    updateAndDrawParticles();
     update();
 
     let spr;
@@ -432,6 +572,7 @@
     }
 
     drawSpr(spr,P.x,P.y);
+    updateAndDrawBubble();
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
