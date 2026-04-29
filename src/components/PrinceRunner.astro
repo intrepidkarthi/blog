@@ -1,6 +1,5 @@
 ---
-// Tiny pixel character that runs across text lines like platforms.
-// Inspired by Prince of Persia — lands on text, runs along it, jumps to another line.
+// Tiny pixel prince that runs on text like platforms. PoP-inspired.
 ---
 
 <canvas id="prince-canvas"></canvas>
@@ -21,466 +20,420 @@
 (() => {
   const canvas = document.getElementById("prince-canvas");
   if (!canvas) return;
-  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    canvas.style.display = "none";
-    return;
-  }
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const ctx = canvas.getContext("2d");
 
-  const S = 1.2;
-  const COLOR = "#4eff7c";
+  const S = 1.2, COLOR = "#4eff7c", TRAIL_COLOR = "rgba(78,255,124,0.12)";
 
-  // Bresenham line for pixel-perfect drawing
-  function drawLine(x0, y0, x1, y1, bx, by) {
-    const dx = Math.abs(x1-x0), dy = Math.abs(y1-y0);
-    const sx = x0<x1?1:-1, sy = y0<y1?1:-1;
-    let err = dx-dy;
-    while (true) {
-      ctx.fillRect(Math.round(bx+x0*S), Math.round(by+y0*S), Math.ceil(S), Math.ceil(S));
-      if (x0===x1 && y0===y1) break;
-      const e2 = 2*err;
-      if (e2 > -dy) { err -= dy; x0 += sx; }
-      if (e2 < dx) { err += dx; y0 += sy; }
+  // Bresenham pixel line
+  function drawPx(x0,y0,x1,y1,bx,by) {
+    const dx=Math.abs(x1-x0),dy=Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1;
+    let err=dx-dy;
+    while(true) {
+      ctx.fillRect(Math.round(bx+x0*S),Math.round(by+y0*S),Math.ceil(S),Math.ceil(S));
+      if(x0===x1&&y0===y1) break;
+      const e2=2*err;
+      if(e2>-dy){err-=dy;x0+=sx}
+      if(e2<dx){err+=dx;y0+=sy}
     }
   }
 
-  // Head outline (shared)
-  const head = [
-    [0,-17, 1,-18],[1,-18, 2,-18],[2,-18, 3,-17],[3,-17, 3,-16],
-    [3,-16, 2,-15],[2,-15, 1,-15],[1,-15, 0,-16],[0,-16, 0,-17],
-    [1,-15, 1,-14], // neck
-  ];
-  const headHigh = [
-    [0,-19, 1,-20],[1,-20, 2,-20],[2,-20, 3,-19],[3,-19, 3,-18],
-    [3,-18, 2,-17],[2,-17, 1,-17],[1,-17, 0,-18],[0,-18, 0,-19],
-    [1,-17, 1,-16],
-  ];
+  // Shared head parts
+  const H=[
+    [0,-17,1,-18],[1,-18,2,-18],[2,-18,3,-17],[3,-17,3,-16],
+    [3,-16,2,-15],[2,-15,1,-15],[1,-15,0,-16],[0,-16,0,-17],[1,-15,1,-14]];
+  const HH=[
+    [0,-19,1,-20],[1,-20,2,-20],[2,-20,3,-19],[3,-19,3,-18],
+    [3,-18,2,-17],[2,-17,1,-17],[1,-17,0,-18],[0,-18,0,-19],[1,-17,1,-16]];
 
-  // === SPRITES ===
-
-  // Run (4 frames)
-  const runRight = [
-    { lines: [...head, [1,-14,1,-8],
-      [1,-13,3,-12],[3,-12,5,-13], [1,-12,-1,-13],[-1,-13,-2,-12],
-      [1,-8,3,-5],[3,-5,4,-2],[4,-2,5,0], [1,-8,-1,-5],[-1,-5,-2,-2],[-2,-2,-3,0]]},
-    { lines: [...head, [1,-14,1,-8],
-      [1,-13,3,-13],[3,-13,4,-12], [1,-12,-1,-12],[-1,-12,-2,-13],
-      [1,-8,1,-4],[1,-4,1,0], [1,-8,2,-4],[2,-4,2,0]]},
-    { lines: [...head, [1,-14,1,-8],
-      [1,-13,-1,-12],[-1,-12,-3,-13], [1,-12,3,-13],[3,-13,4,-12],
-      [1,-8,3,-5],[3,-5,4,-2],[4,-2,5,0], [1,-8,-1,-5],[-1,-5,-2,-2],[-2,-2,-3,0]]},
-    { lines: [...head, [1,-14,1,-8],
-      [1,-13,-1,-12],[-1,-12,-2,-13], [1,-12,3,-13],[3,-13,4,-12],
-      [1,-8,1,-4],[1,-4,1,0], [1,-8,2,-4],[2,-4,2,0]]},
+  // === SPRITES (all hollow line art) ===
+  const run=[
+    {l:[...H,[1,-14,1,-8],[1,-13,3,-12],[3,-12,5,-13],[1,-12,-1,-13],[-1,-13,-2,-12],
+      [1,-8,3,-5],[3,-5,5,0],[1,-8,-1,-5],[-1,-5,-3,0]]},
+    {l:[...H,[1,-14,1,-8],[1,-13,3,-13],[3,-13,4,-12],[1,-12,-1,-12],[-1,-12,-2,-13],
+      [1,-8,1,-4],[1,-4,1,0],[1,-8,2,-4],[2,-4,2,0]]},
+    {l:[...H,[1,-14,1,-8],[1,-13,-1,-12],[-1,-12,-3,-13],[1,-12,3,-13],[3,-13,4,-12],
+      [1,-8,3,-5],[3,-5,5,0],[1,-8,-1,-5],[-1,-5,-3,0]]},
+    {l:[...H,[1,-14,1,-8],[1,-13,-1,-12],[-1,-12,-2,-13],[1,-12,3,-13],[3,-13,4,-12],
+      [1,-8,1,-4],[1,-4,1,0],[1,-8,2,-4],[2,-4,2,0]]},
   ];
 
-  // Jump (arms reaching up)
-  const jumpUp = { lines: [...headHigh, [1,-16,1,-10],
-    [1,-15,-1,-17],[-1,-17,-2,-19], [1,-15,3,-17],[3,-17,4,-19],
-    [1,-10,3,-9],[3,-9,4,-10], [1,-10,-1,-9],[-1,-9,-2,-10]]};
+  const jumpSpr={l:[...HH,[1,-16,1,-10],
+    [1,-15,-1,-17],[-1,-17,-2,-19],[1,-15,3,-17],[3,-17,4,-19],
+    [1,-10,3,-9],[3,-9,4,-10],[1,-10,-1,-9],[-1,-9,-2,-10]]};
 
-  // Idle: standing, looking around
-  const idleStand = { lines: [...head, [1,-14,1,-8],
-    [1,-13,3,-12],[3,-12,4,-11], [1,-12,-1,-11],[-1,-11,-2,-10],
-    [1,-8,2,-4],[2,-4,2,0], [1,-8,0,-4],[0,-4,0,0]]};
+  // Idle: standing
+  const idleStand={l:[...H,[1,-14,1,-8],
+    [1,-13,3,-12],[3,-12,4,-11],[1,-12,-1,-11],[-1,-11,-2,-10],
+    [1,-8,2,-4],[2,-4,2,0],[1,-8,0,-4],[0,-4,0,0]]};
 
-  // Idle: scratching head
-  const idleScratch = { lines: [...head, [1,-14,1,-8],
-    [1,-14,2,-16],[2,-16,3,-17], // right hand on head
-    [1,-12,-1,-11],[-1,-11,-2,-10],
-    [1,-8,2,-4],[2,-4,2,0], [1,-8,0,-4],[0,-4,0,0]]};
+  // Idle: scratch head
+  const idleScratch={l:[...H,[1,-14,1,-8],
+    [1,-14,2,-16],[2,-16,3,-17],[1,-12,-1,-11],[-1,-11,-2,-10],
+    [1,-8,2,-4],[2,-4,2,0],[1,-8,0,-4],[0,-4,0,0]]};
 
-  // Idle: looking down (peering off edge)
-  const idlePeer = { lines: [
-    // head tilted forward/down
-    [1,-16, 2,-17],[2,-17, 3,-17],[3,-17, 4,-16],[4,-16, 4,-15],
-    [4,-15, 3,-14],[3,-14, 2,-14],[2,-14, 1,-15],[1,-15, 1,-16],
-    [2,-14, 2,-13],
-    [2,-13,2,-8],
-    [2,-12,4,-11],[4,-11,5,-10], [2,-11,0,-10],[0,-10,-1,-9],
-    [2,-8,3,-4],[3,-4,3,0], [2,-8,1,-4],[1,-4,1,0]]};
+  // Idle: peer off edge (leaning forward)
+  const idlePeer={l:[
+    [1,-16,2,-17],[2,-17,3,-17],[3,-17,4,-16],[4,-16,4,-15],
+    [4,-15,3,-14],[3,-14,2,-14],[2,-14,1,-15],[1,-15,1,-16],[2,-14,2,-13],
+    [2,-13,2,-8],[2,-12,4,-11],[4,-11,5,-10],[2,-11,0,-10],[0,-10,-1,-9],
+    [2,-8,3,-4],[3,-4,3,0],[2,-8,1,-4],[1,-4,1,0]]};
 
-  // Sitting (rest)
-  const idleSit = { lines: [...head, [1,-14,1,-10],
-    [1,-12,3,-11],[3,-11,4,-10], [1,-11,-1,-10],[-1,-10,-2,-9],
-    [1,-10,3,-9],[3,-9,5,-9], // legs out front
-    [1,-10,-1,-9],[-1,-9,-3,-9]]};
+  // Idle: sit
+  const idleSit={l:[...H,[1,-14,1,-10],
+    [1,-12,3,-11],[3,-11,4,-10],[1,-11,-1,-10],[-1,-10,-2,-9],
+    [1,-10,3,-9],[3,-9,5,-9],[1,-10,-1,-9],[-1,-9,-3,-9]]};
 
-  // Climb grab
-  const climbGrab = { lines: [...head, [1,-14,1,-8],
-    [1,-14,-1,-16],[-1,-16,-2,-17], [1,-14,3,-16],[3,-16,4,-17],
-    [1,-8,0,-5],[0,-5,-1,-3], [1,-8,2,-5],[2,-5,3,-3]]};
-
-  // Climb pull up
-  const climbPull = { lines: [...headHigh, [1,-16,1,-10],
-    [1,-14,-1,-13],[-1,-13,-3,-13], [1,-14,3,-13],[3,-13,5,-13],
-    [1,-10,2,-8],[2,-8,1,-6], [1,-10,0,-8],[0,-8,1,-6]]};
-
-  // Flip frame (mid-air somersault)
-  const flipFrames = [
-    { lines: [...headHigh, [1,-16,1,-10], [1,-15,-2,-14], [1,-15,4,-14],
-      [1,-10,0,-7], [1,-10,2,-7]]},
-    // upside down-ish
-    { lines: [[0,-6,1,-5],[1,-5,2,-5],[2,-5,3,-6],[3,-6,3,-7],
-      [3,-7,2,-8],[2,-8,1,-8],[1,-8,0,-7],[0,-7,0,-6],
-      [1,-8,1,-9],[1,-9,1,-15],
-      [1,-10,-1,-11], [1,-10,3,-11],
-      [1,-15,0,-17],[0,-17,-1,-18], [1,-15,2,-17],[2,-17,3,-18]]},
-    { lines: [...headHigh, [1,-16,1,-10], [1,-15,-2,-14], [1,-15,4,-14],
-      [1,-10,0,-7], [1,-10,2,-7]]},
+  // Idle: wave at viewer!
+  const idleWave=[
+    {l:[...H,[1,-14,1,-8],
+      [1,-14,3,-16],[3,-16,4,-18],[4,-18,5,-17], // arm up waving
+      [1,-12,-1,-11],[-1,-11,-2,-10],
+      [1,-8,2,-4],[2,-4,2,0],[1,-8,0,-4],[0,-4,0,0]]},
+    {l:[...H,[1,-14,1,-8],
+      [1,-14,3,-16],[3,-16,4,-18],[4,-18,3,-19], // arm up other pos
+      [1,-12,-1,-11],[-1,-11,-2,-10],
+      [1,-8,2,-4],[2,-4,2,0],[1,-8,0,-4],[0,-4,0,0]]},
   ];
 
-  function mirrorSprite(spr) {
-    return { lines: spr.lines.map(([x1,y1,x2,y2]) => [-x1,y1,-x2,y2]) };
-  }
+  // Idle: pushups!
+  const pushup=[
+    // down
+    {l:[[5,-5,6,-6],[6,-6,7,-6],[7,-6,8,-5],[8,-5,8,-4],[8,-4,7,-3],[7,-3,6,-3],[6,-3,5,-4],[5,-4,5,-5],
+      [6,-3,5,-3],[5,-3,1,-3],[1,-3,-2,-3], // body horizontal
+      [-2,-3,-3,-4],[-3,-4,-4,-3], // arm down (bent)
+      [1,-3,1,-1],[1,-1,1,0], // leg
+      [-1,-3,-1,-1],[-1,-1,-1,0]]},
+    // up
+    {l:[[5,-7,6,-8],[6,-8,7,-8],[7,-8,8,-7],[8,-7,8,-6],[8,-6,7,-5],[7,-5,6,-5],[6,-5,5,-6],[5,-6,5,-7],
+      [6,-5,5,-5],[5,-5,1,-5],[1,-5,-2,-5],
+      [-2,-5,-3,-3],[-3,-3,-4,-1], // arm straight
+      [1,-5,1,-2],[1,-2,1,0],
+      [-1,-5,-1,-2],[-1,-2,-1,0]]},
+  ];
 
-  const runLeft = runRight.map(mirrorSprite);
-  const jumpUpLeft = mirrorSprite(jumpUp);
-  const climbGrabLeft = mirrorSprite(climbGrab);
-  const climbPullLeft = mirrorSprite(climbPull);
-  const idlePeerLeft = mirrorSprite(idlePeer);
+  // Idle: dance!
+  const dance=[
+    {l:[...H,[1,-14,1,-8],
+      [1,-13,4,-14],[4,-14,5,-16], // arm up right
+      [1,-12,-2,-13],[-2,-13,-3,-15], // arm up left
+      [1,-8,3,-6],[3,-6,5,-5], // leg kick right
+      [1,-8,0,-4],[0,-4,0,0]]},
+    {l:[...H,[1,-14,1,-8],
+      [1,-13,-2,-14],[-2,-14,-3,-16], // arm up left
+      [1,-12,4,-13],[4,-13,5,-15], // arm up right
+      [1,-8,-1,-6],[-1,-6,-3,-5], // leg kick left
+      [1,-8,2,-4],[2,-4,2,0]]},
+  ];
 
-  // --- Platform detection ---
+  // Climb
+  const climbGrab={l:[...H,[1,-14,1,-8],
+    [1,-14,-1,-16],[-1,-16,-2,-17],[1,-14,3,-16],[3,-16,4,-17],
+    [1,-8,0,-5],[0,-5,-1,-3],[1,-8,2,-5],[2,-5,3,-3]]};
+  const climbPull={l:[...HH,[1,-16,1,-10],
+    [1,-14,-1,-13],[-1,-13,-3,-13],[1,-14,3,-13],[3,-13,5,-13],
+    [1,-10,2,-8],[2,-8,1,-6],[1,-10,0,-8],[0,-8,1,-6]]};
+
+  // Flip
+  const flip=[
+    {l:[...HH,[1,-16,1,-10],[1,-15,-2,-14],[1,-15,4,-14],[1,-10,0,-7],[1,-10,2,-7]]},
+    {l:[[0,-6,1,-5],[1,-5,2,-5],[2,-5,3,-6],[3,-6,3,-7],[3,-7,2,-8],[2,-8,1,-8],[1,-8,0,-7],[0,-7,0,-6],
+      [1,-8,1,-15],[1,-10,-1,-11],[1,-10,3,-11],[1,-15,0,-17],[1,-15,2,-17]]},
+    {l:[...HH,[1,-16,1,-10],[1,-15,-2,-14],[1,-15,4,-14],[1,-10,0,-7],[1,-10,2,-7]]},
+  ];
+
+  // Enter from side: running in
+  const enterRun = run;
+
+  function mirror(spr){return{l:spr.l.map(([a,b,c,d])=>[-a,b,-c,d])}}
+
+  const runL=run.map(mirror), jumpL=mirror(jumpSpr);
+  const climbGrabL=mirror(climbGrab), climbPullL=mirror(climbPull);
+  const idlePeerL=mirror(idlePeer);
+
+  // --- Footprint trail ---
+  let footprints = []; // {x, y, age}
+
+  // --- Platforms ---
   function findPlatforms() {
-    const platforms = [];
-    // Only look inside .main content — skip nav, terminal, statusbar
-    const mainEl = document.querySelector("#app .main");
-    if (!mainEl) return platforms;
-    const mainRect = mainEl.getBoundingClientRect();
+    const out = [];
+    const main = document.querySelector("#app .main");
+    if (!main) return out;
+    const mR = main.getBoundingClientRect();
 
-    const selectors = "h1, h2, h3, p, li, time, code, td, th";
-    const els = mainEl.querySelectorAll(selectors);
+    // Get individual text nodes via Range for precise line positions
+    const walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => {
+        if (!n.textContent.trim()) return NodeFilter.FILTER_REJECT;
+        const p = n.parentElement;
+        if (!p || !p.offsetParent) return NodeFilter.FILTER_REJECT;
+        if (p.closest("nav,[id*=terminal],[id*=status],footer,script,style,canvas")) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const range = document.createRange();
     const seen = new Set();
+    let node;
+    while (node = walker.nextNode()) {
+      range.selectNodeContents(node);
+      const rects = range.getClientRects();
+      for (const r of rects) {
+        if (r.width < 50 || r.height < 8 || r.height > 40) continue;
+        if (r.bottom < mR.top + 20 || r.bottom > window.innerHeight - 70) continue;
+        if (r.top < 50) continue; // skip anything near very top
 
-    for (const el of els) {
-      if (!el.offsetParent) continue;
-      // Skip if inside nav, terminal, or interactive elements
-      if (el.closest("nav, [id*=terminal], [id*=status], footer, aside")) continue;
-      const text = el.textContent?.trim();
-      if (!text || text.length < 3) continue;
+        const key = Math.round(r.bottom/8)+":"+Math.round(r.left/20);
+        if (seen.has(key)) continue;
+        seen.add(key);
 
-      const rect = el.getBoundingClientRect();
-      if (rect.width < 40 || rect.height < 10 || rect.height > 50) continue;
-      // Must be within main content area, not in nav/status zones
-      if (rect.top < mainRect.top + 10) continue;
-      if (rect.bottom > window.innerHeight - 80) continue;
-
-      const key = Math.round(rect.bottom / 6) + ":" + Math.round(rect.left / 15);
-      if (seen.has(key)) continue;
-      seen.add(key);
-
-      platforms.push({
-        x: rect.left,
-        y: rect.bottom,
-        w: rect.width,
-      });
+        out.push({ x: r.left, y: r.bottom, w: r.width });
+      }
     }
-    return platforms;
+    return out;
   }
 
   // --- State ---
   let platforms = [];
-  let prince = {
-    x: 100, y: 200, vx: 0, vy: 0,
-    facingRight: true,
-    onPlatform: null,
-    frame: 0, frameTimer: 0,
-    state: "falling",
-    climbTimer: 0, climbTarget: null,
-    idleTimer: 0, idleType: 0,
-    flipFrame: 0, flipTimer: 0,
-    visitedPlatforms: [],
+  const P = {
+    x:0, y:0, vx:0, vy:0, facingRight:true, onPlatform:null,
+    frame:0, ft:0, state:"entering",
+    ct:0, cTarget:null, // climb
+    it:0, iType:0, iSubFrame:0, // idle
+    ff:0, fft:0, // flip
+    visited:[], enterX:0,
   };
 
-  const GRAVITY = 0.15;
-  const JUMP_FORCE = -4.2;
-  const RUN_SPEED = 0.7;
-  const FRAME_DELAY = 14;
-  const CLIMB_DURATION = 35;
-  const PULLUP_DURATION = 18;
+  const G=0.15, JF=-4.0, RS=0.65, FD=16, CD=35, PD=18;
 
-  // Pick a platform biased toward ones NOT recently visited and far away
-  function pickNextPlatform(current) {
-    const valid = platforms.filter(p => p !== current && p.w > 40);
-    if (!valid.length) return null;
-
-    const p = prince;
-    // Score: prefer distance + not recently visited
-    const scored = valid.map(plat => {
-      const dist = Math.abs(plat.y - (current ? current.y : p.y)) + Math.abs(plat.x + plat.w/2 - p.x);
-      const recentIdx = p.visitedPlatforms.indexOf(plat);
-      const recency = recentIdx >= 0 ? (5 - recentIdx) * 80 : 0; // penalty for recent
-      return { plat, score: dist - recency + Math.random() * 100 };
-    });
-    scored.sort((a, b) => b.score - a.score);
-    // Pick from top 3
-    const top = scored.slice(0, Math.min(3, scored.length));
-    return top[Math.floor(Math.random() * top.length)].plat;
+  function pickPlat(excl) {
+    const ok = platforms.filter(p => p !== excl && p.w > 40);
+    if (!ok.length) return null;
+    // Weight by distance from current + not recently visited
+    const scored = ok.map(p => {
+      const d = Math.abs(p.y - P.y) * 1.5 + Math.abs(p.x + p.w/2 - P.x);
+      const ri = P.visited.indexOf(p);
+      const penalty = ri >= 0 ? (8-ri)*60 : 0;
+      return { p, s: d - penalty + Math.random()*150 };
+    }).sort((a,b) => b.s - a.s);
+    return scored[Math.min(Math.floor(Math.random()*3), scored.length-1)].p;
   }
 
-  function landOnPlatform(plat) {
-    prince.onPlatform = plat;
-    prince.y = plat.y;
-    prince.vy = 0;
-    prince.state = "running";
-    prince.idleTimer = 0;
-    // Track visited
-    prince.visitedPlatforms.unshift(plat);
-    if (prince.visitedPlatforms.length > 6) prince.visitedPlatforms.pop();
-
-    if (prince.x < plat.x + plat.w / 2) {
-      prince.facingRight = true;
-      prince.vx = RUN_SPEED;
-    } else {
-      prince.facingRight = false;
-      prince.vx = -RUN_SPEED;
-    }
+  function land(pl) {
+    P.onPlatform = pl; P.y = pl.y; P.vy = 0; P.state = "running"; P.it = 0;
+    P.visited.unshift(pl);
+    if (P.visited.length > 8) P.visited.pop();
+    P.facingRight = P.x < pl.x + pl.w/2;
+    P.vx = P.facingRight ? RS : -RS;
   }
 
-  function startClimb(plat) {
-    prince.state = "climbing";
-    prince.climbTimer = 0;
-    prince.climbTarget = plat;
-    prince.vx = 0;
-    prince.vy = 0;
-    prince.x = Math.max(plat.x + 6, Math.min(plat.x + plat.w - 6, prince.x));
-    prince.y = plat.y;
+  function climb(pl) {
+    P.state="climbing"; P.ct=0; P.cTarget=pl; P.vx=0; P.vy=0;
+    P.x = Math.max(pl.x+6, Math.min(pl.x+pl.w-6, P.x));
   }
 
-  function jump(targetPlat) {
-    // Vary jump force based on vertical distance
-    const dy = targetPlat ? (prince.y - targetPlat.y) : 0;
-    prince.vy = dy > 50 ? JUMP_FORCE * 1.4 : JUMP_FORCE;
-    prince.state = "jumping";
-    prince.onPlatform = null;
-
-    // Randomly do a flip (20% chance)
-    if (Math.random() < 0.2) {
-      prince.state = "flipping";
-      prince.flipFrame = 0;
-      prince.flipTimer = 0;
-      prince.vy = JUMP_FORCE * 1.2;
-    }
-
-    if (targetPlat) {
-      prince.facingRight = targetPlat.x + targetPlat.w / 2 > prince.x;
-      const dx = (targetPlat.x + targetPlat.w / 2) - prince.x;
-      prince.vx = Math.sign(dx) * Math.min(Math.abs(dx) / 40, RUN_SPEED * 2.5);
+  function jump(target) {
+    const dy = target ? (P.y - target.y) : 30;
+    P.vy = dy > 60 ? JF*1.5 : JF;
+    P.state = Math.random()<0.15 ? "flipping" : "jumping";
+    P.onPlatform = null; P.ff=0; P.fft=0;
+    if (target) {
+      P.facingRight = target.x + target.w/2 > P.x;
+      const dx = (target.x + target.w/2) - P.x;
+      P.vx = Math.sign(dx) * Math.min(Math.abs(dx)/45, RS*2.5);
     }
   }
 
   function startIdle() {
-    prince.state = "idle";
-    prince.idleTimer = 0;
-    prince.vx = 0;
-    // Pick random idle behavior
-    const r = Math.random();
-    if (r < 0.25) prince.idleType = 0; // stand and look
-    else if (r < 0.45) prince.idleType = 1; // scratch head
-    else if (r < 0.65) prince.idleType = 2; // peer off edge
-    else if (r < 0.80) prince.idleType = 3; // sit and rest
-    else prince.idleType = 4; // turn around
+    P.state="idle"; P.it=0; P.vx=0; P.iSubFrame=0;
+    const r=Math.random();
+    P.iType = r<0.15?0 : r<0.28?1 : r<0.40?2 : r<0.50?3 : r<0.65?4 : r<0.78?5 : r<0.88?6 : 7;
+    // 0=stand, 1=scratch, 2=peer, 3=sit, 4=turnaround, 5=wave, 6=pushups, 7=dance
   }
 
   // --- Init ---
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
+  function resize() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   resize();
   window.addEventListener("resize", resize);
 
-  function refreshPlatforms() { platforms = findPlatforms(); }
-  refreshPlatforms();
-  let scrollTimer;
-  window.addEventListener("scroll", () => {
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(refreshPlatforms, 150);
-  }, { passive: true });
-  setInterval(refreshPlatforms, 3000);
+  function refresh() { platforms = findPlatforms(); }
+  let sT;
+  window.addEventListener("scroll",()=>{clearTimeout(sT);sT=setTimeout(refresh,150)},{passive:true});
+  setInterval(refresh, 2500);
 
+  // Delayed start: enter from left side running onto first platform
   setTimeout(() => {
-    const p = pickNextPlatform(null);
-    if (p) { prince.x = p.x + p.w * 0.3; landOnPlatform(p); }
-  }, 1500);
+    refresh();
+    if (platforms.length) {
+      const pl = platforms[Math.floor(Math.random()*Math.min(platforms.length,5))];
+      P.x = -20;
+      P.y = pl.y;
+      P.vx = RS * 2;
+      P.facingRight = true;
+      P.onPlatform = pl;
+      P.state = "entering";
+      P.enterX = pl.x + 30;
+    }
+  }, 2000);
 
   // --- Draw ---
-  function drawSprite(sprite, x, y) {
+  function drawSpr(spr, x, y) {
     ctx.fillStyle = COLOR;
     ctx.shadowColor = COLOR;
     ctx.shadowBlur = 3;
-    for (const [x1, y1, x2, y2] of sprite.lines) {
-      drawLine(x1, y1, x2, y2, x, y);
-    }
+    for (const seg of spr.l) drawPx(seg[0],seg[1],seg[2],seg[3],x,y);
     ctx.shadowBlur = 0;
+  }
+
+  // --- Footprints ---
+  function addFootprint() {
+    if (P.state==="running" && P.frame%2===0) {
+      footprints.push({x:P.x, y:P.y, age:0});
+      if (footprints.length > 30) footprints.shift();
+    }
+  }
+  function drawFootprints() {
+    for (let i=footprints.length-1; i>=0; i--) {
+      const fp = footprints[i];
+      fp.age++;
+      if (fp.age > 120) { footprints.splice(i,1); continue; }
+      const a = 1 - fp.age/120;
+      ctx.fillStyle = `rgba(78,255,124,${a*0.15})`;
+      ctx.fillRect(fp.x-1, fp.y-1, 3, 2);
+    }
   }
 
   // --- Update ---
   function update() {
-    const p = prince;
+    P.ft++;
+    if (P.ft >= FD) { P.ft=0; P.frame=(P.frame+1)%4; }
 
-    p.frameTimer++;
-    if (p.frameTimer >= FRAME_DELAY) {
-      p.frameTimer = 0;
-      p.frame = (p.frame + 1) % 4;
+    // === ENTERING (run in from side) ===
+    if (P.state === "entering") {
+      P.x += P.vx;
+      if (P.x >= P.enterX) {
+        P.vx = RS;
+        P.state = "running";
+      }
+      addFootprint();
+      return;
     }
 
     // === CLIMBING ===
-    if (p.state === "climbing") {
-      p.climbTimer++;
-      if (p.climbTimer > CLIMB_DURATION + PULLUP_DURATION) {
-        landOnPlatform(p.climbTarget);
-        p.climbTarget = null;
-      }
+    if (P.state === "climbing") {
+      P.ct++;
+      if (P.ct > CD + PD) { land(P.cTarget); P.cTarget=null; }
       return;
     }
 
     // === IDLE ===
-    if (p.state === "idle") {
-      p.idleTimer++;
-      const duration = p.idleType === 3 ? 180 : (p.idleType === 2 ? 90 : 70);
-      if (p.idleTimer > duration) {
-        if (p.idleType === 4) {
-          // Turn around and resume
-          p.facingRight = !p.facingRight;
-          p.vx = p.facingRight ? RUN_SPEED : -RUN_SPEED;
-          p.state = "running";
-        } else if (p.idleType === 2 && Math.random() < 0.5) {
-          // After peering, sometimes jump off!
-          const target = pickNextPlatform(p.onPlatform);
-          if (target) jump(target);
-          else { p.state = "running"; p.vx = p.facingRight ? RUN_SPEED : -RUN_SPEED; }
-        } else {
-          p.state = "running";
-          p.vx = p.facingRight ? RUN_SPEED : -RUN_SPEED;
+    if (P.state === "idle") {
+      P.it++;
+      P.iSubFrame++;
+      const dur = P.iType===3?150 : P.iType===6?100 : P.iType===7?90 : P.iType===5?80 : P.iType===2?70 : 55;
+      if (P.it > dur) {
+        if (P.iType===4) { P.facingRight=!P.facingRight; }
+        if (P.iType===2 && Math.random()<0.6) {
+          // After peering, leap off!
+          const t=pickPlat(P.onPlatform);
+          if(t){jump(t);return;}
         }
+        P.state="running";
+        P.vx = P.facingRight ? RS : -RS;
       }
       return;
     }
 
     // === RUNNING ===
-    if (p.state === "running" && p.onPlatform) {
-      p.x += p.vx;
+    if (P.state === "running" && P.onPlatform) {
+      P.x += P.vx;
+      addFootprint();
+      const pl = P.onPlatform;
 
-      const plat = p.onPlatform;
-
-      // Near end of platform
-      if (p.x < plat.x + 3 || p.x > plat.x + plat.w - 3) {
+      // Near end of platform?
+      if (P.x < pl.x + 4 || P.x > pl.x + pl.w - 4) {
         const r = Math.random();
-        if (r < 0.3) {
-          // Peer off edge before jumping
-          startIdle();
-          p.idleType = 2;
-          return;
-        }
-        // Jump to next
-        const target = pickNextPlatform(plat);
-        if (target) jump(target);
-        else { p.facingRight = !p.facingRight; p.vx = -p.vx; } // no target, turn around
+        if (r < 0.25) { startIdle(); P.iType=2; return; } // peer off edge
+        if (r < 0.35) { P.facingRight=!P.facingRight; P.vx=-P.vx; return; } // turn around
+        const t=pickPlat(pl);
+        if(t) jump(t); else { P.facingRight=!P.facingRight; P.vx=-P.vx; }
         return;
       }
 
-      // Random behaviors while running
+      // Random mid-run behaviors
       const r = Math.random();
-      if (r < 0.003) {
-        // Random stop for idle
-        startIdle();
-      } else if (r < 0.005) {
-        // Random jump mid-platform
-        const target = pickNextPlatform(plat);
-        if (target) jump(target);
-      } else if (r < 0.006) {
-        // Change speed briefly
-        p.vx = (p.facingRight ? 1 : -1) * RUN_SPEED * (0.4 + Math.random() * 1.2);
-      }
+      if (r < 0.004) { startIdle(); }
+      else if (r < 0.007) { const t=pickPlat(pl); if(t) jump(t); }
+      else if (r < 0.009) { P.vx=(P.facingRight?1:-1)*RS*(0.3+Math.random()*1.4); } // speed change
       return;
     }
 
-    // === AIRBORNE (jumping / falling / flipping) ===
-    p.vy += GRAVITY;
-    p.x += p.vx;
-    p.y += p.vy;
+    // === AIRBORNE ===
+    P.vy += G;
+    P.x += P.vx;
+    P.y += P.vy;
 
-    if (p.state === "flipping") {
-      p.flipTimer++;
-      if (p.flipTimer % 8 === 0) {
-        p.flipFrame = (p.flipFrame + 1) % 3;
-      }
-      if (p.vy > 0) p.state = "falling";
+    if (P.state==="flipping") {
+      P.fft++;
+      if (P.fft%7===0) P.ff=(P.ff+1)%3;
+      if (P.vy>0) P.state="falling";
     } else {
-      if (p.vy > 0) p.state = "falling";
+      if (P.vy>0) P.state="falling";
     }
 
-    // Check landing or climb
-    for (const plat of platforms) {
-      const inX = p.x > plat.x - 6 && p.x < plat.x + plat.w + 6;
-      if (!inX) continue;
-
-      // Landing on top
-      if (p.vy > 0 && p.y >= plat.y && p.y - p.vy < plat.y + 8) {
-        landOnPlatform(plat);
-        return;
-      }
-
-      // Climb: near platform from below, slowing down
-      if (p.vy > -1 && p.vy < 2 && p.y > plat.y && p.y < plat.y + 22) {
-        startClimb(plat);
-        return;
-      }
+    for (const pl of platforms) {
+      if (P.x < pl.x-6 || P.x > pl.x+pl.w+6) continue;
+      // Land on top
+      if (P.vy>0 && P.y>=pl.y && P.y-P.vy<pl.y+8) { land(pl); return; }
+      // Climb from below
+      if (P.vy>-1 && P.vy<2 && P.y>pl.y && P.y<pl.y+20) { climb(pl); return; }
     }
 
-    // Off screen reset
-    if (p.y > window.innerHeight + 50 || p.x < -100 || p.x > window.innerWidth + 100) {
-      const target = pickNextPlatform(null);
-      if (target) { p.x = target.x + target.w * 0.3; landOnPlatform(target); }
-      else { p.x = window.innerWidth / 2; p.y = 100; p.vy = 0; p.state = "falling"; }
+    // Off screen
+    if (P.y>window.innerHeight+50 || P.x<-120 || P.x>window.innerWidth+120) {
+      const t=pickPlat(null);
+      if(t){P.x=t.x+t.w*0.3;land(t);}
+      else{P.x=window.innerWidth/2;P.y=100;P.vy=0;P.state="falling";}
     }
   }
 
   // --- Render ---
   function loop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    drawFootprints();
     update();
 
-    const p = prince;
-    let sprite;
-
-    if (p.state === "climbing") {
-      if (p.climbTimer < CLIMB_DURATION) {
-        sprite = p.facingRight ? climbGrab : climbGrabLeft;
-        const progress = p.climbTimer / CLIMB_DURATION;
-        drawSprite(sprite, p.x, p.climbTarget.y + 12 * (1 - progress));
+    let spr;
+    if (P.state==="entering") {
+      spr = (P.facingRight?run:runL)[P.frame];
+    } else if (P.state==="climbing") {
+      if (P.ct<CD) {
+        spr=P.facingRight?climbGrab:climbGrabL;
+        drawSpr(spr,P.x,P.cTarget.y+12*(1-P.ct/CD)); return requestAnimationFrame(loop);
       } else {
-        sprite = p.facingRight ? climbPull : climbPullLeft;
-        const progress = (p.climbTimer - CLIMB_DURATION) / PULLUP_DURATION;
-        drawSprite(sprite, p.x, p.climbTarget.y + 4 * (1 - progress));
+        spr=P.facingRight?climbPull:climbPullL;
+        drawSpr(spr,P.x,P.cTarget.y+4*(1-(P.ct-CD)/PD)); return requestAnimationFrame(loop);
       }
-    } else if (p.state === "flipping") {
-      sprite = flipFrames[p.flipFrame];
-      drawSprite(sprite, p.x, p.y);
-    } else if (p.state === "jumping") {
-      sprite = p.facingRight ? jumpUp : jumpUpLeft;
-      drawSprite(sprite, p.x, p.y);
-    } else if (p.state === "falling") {
-      sprite = p.facingRight ? jumpUp : jumpUpLeft;
-      drawSprite(sprite, p.x, p.y);
-    } else if (p.state === "idle") {
-      if (p.idleType === 0) sprite = idleStand;
-      else if (p.idleType === 1) sprite = p.frameTimer < 7 ? idleScratch : idleStand; // alternate
-      else if (p.idleType === 2) sprite = p.facingRight ? idlePeer : idlePeerLeft;
-      else if (p.idleType === 3) sprite = idleSit;
-      else sprite = idleStand; // turn around uses standing
-      drawSprite(sprite, p.x, p.y);
+    } else if (P.state==="flipping") {
+      spr=flip[P.ff];
+    } else if (P.state==="jumping"||P.state==="falling") {
+      spr=P.facingRight?jumpSpr:jumpL;
+    } else if (P.state==="idle") {
+      if (P.iType===0) spr=idleStand;
+      else if (P.iType===1) spr=P.iSubFrame%30<15?idleScratch:idleStand;
+      else if (P.iType===2) spr=P.facingRight?idlePeer:idlePeerL;
+      else if (P.iType===3) spr=idleSit;
+      else if (P.iType===4) spr=idleStand;
+      else if (P.iType===5) spr=idleWave[P.iSubFrame%20<10?0:1]; // wave
+      else if (P.iType===6) spr=pushup[P.iSubFrame%24<12?0:1]; // pushups
+      else spr=dance[P.iSubFrame%16<8?0:1]; // dance
     } else {
-      // Running
-      const frames = p.facingRight ? runRight : runLeft;
-      sprite = frames[p.frame];
-      drawSprite(sprite, p.x, p.y);
+      spr=(P.facingRight?run:runL)[P.frame];
     }
 
+    drawSpr(spr,P.x,P.y);
     requestAnimationFrame(loop);
   }
-
   requestAnimationFrame(loop);
 })();
 </script>
