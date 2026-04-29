@@ -355,7 +355,7 @@
     // ~0.3% chance per frame while running/idle ≈ every ~5-8 seconds
     if (Math.random() > 0.003) return;
     const text = SAYINGS[Math.floor(Math.random() * SAYINGS.length)];
-    bubble = { text, x: P.x, y: P.y - 22, age: 0, maxAge: 90 + text.length * 4 };
+    bubble = { text, x: P.x, y: P.y - 22, age: 0, maxAge: 160 + text.length * 6 };
     bubbleCooldown = 300; // min ~5 seconds between bubbles
   }
   function updateAndDrawBubble() {
@@ -364,7 +364,7 @@
     bubble.age++;
     // Follow prince position with slight lag
     bubble.x += (P.x - bubble.x) * 0.15;
-    bubble.y += ((P.y - 26) - bubble.y) * 0.15;
+    bubble.y += ((P.y - 34) - bubble.y) * 0.12;
     if (bubble.age > bubble.maxAge) { bubble = null; return; }
 
     const fadeIn = Math.min(bubble.age / 8, 1);
@@ -372,31 +372,39 @@
     const alpha = fadeIn * fadeOut;
 
     const tx = bubble.text;
-    ctx.font = "8px monospace";
+    ctx.font = "bold 10px monospace";
     const tw = ctx.measureText(tx).width;
-    const bx = bubble.x - tw / 2 - 4;
-    const by = bubble.y - 10;
+    const bx = bubble.x - tw / 2 - 6;
+    const by = bubble.y - 14;
+    const bw = tw + 12;
+    const bh = 18;
 
     // Bubble background
-    ctx.fillStyle = `rgba(3,6,4,${alpha * 0.85})`;
-    ctx.strokeStyle = `rgba(78,255,124,${alpha * 0.6})`;
-    ctx.lineWidth = 1;
+    ctx.fillStyle = `rgba(3,6,4,${alpha * 0.92})`;
+    ctx.strokeStyle = `rgba(78,255,124,${alpha * 0.8})`;
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.roundRect(bx, by, tw + 8, 14, 3);
+    ctx.roundRect(bx, by, bw, bh, 4);
     ctx.fill();
     ctx.stroke();
 
-    // Tiny tail
-    ctx.fillStyle = `rgba(3,6,4,${alpha * 0.85})`;
+    // Tail pointing down to character
+    ctx.fillStyle = `rgba(3,6,4,${alpha * 0.92})`;
+    ctx.strokeStyle = `rgba(78,255,124,${alpha * 0.8})`;
     ctx.beginPath();
-    ctx.moveTo(bubble.x - 2, by + 14);
-    ctx.lineTo(bubble.x + 2, by + 14);
-    ctx.lineTo(bubble.x, by + 18);
+    ctx.moveTo(bubble.x - 3, by + bh);
+    ctx.lineTo(bubble.x + 3, by + bh);
+    ctx.lineTo(bubble.x, by + bh + 5);
+    ctx.closePath();
     ctx.fill();
+    ctx.stroke();
 
-    // Text
+    // Text with glow
+    ctx.shadowColor = COLOR;
+    ctx.shadowBlur = 4;
     ctx.fillStyle = `rgba(78,255,124,${alpha})`;
-    ctx.fillText(tx, bx + 4, by + 10);
+    ctx.fillText(tx, bx + 6, by + 13);
+    ctx.shadowBlur = 0;
   }
 
   // --- Cursor reaction ---
@@ -426,8 +434,8 @@
         // Scared speech
         if (!bubble && bubbleCooldown <= 0) {
           const scared = ["aah!", "whoa!", "hey!", "!!!", "nooo", "eek!", "run!"];
-          bubble = { text: scared[Math.floor(Math.random()*scared.length)], x:P.x, y:P.y-22, age:0, maxAge:50 };
-          bubbleCooldown = 200;
+          bubble = { text: scared[Math.floor(Math.random()*scared.length)], x:P.x, y:P.y-22, age:0, maxAge:150 };
+          bubbleCooldown = 250;
         }
       }
     }
