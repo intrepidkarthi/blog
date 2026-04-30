@@ -88,6 +88,8 @@
   document.addEventListener("keydown", (e) => {
     // Don't capture if typing in input/textarea
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    // Only capture single printable characters
+    if (e.key.length !== 1) return;
     keyBuffer += e.key.toLowerCase();
     if (keyBuffer.length > MAX_BUF) keyBuffer = keyBuffer.slice(-MAX_BUF);
 

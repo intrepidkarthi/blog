@@ -292,6 +292,9 @@
 <span class="accent">ai/ml</span>    gpu · models · tokenize &lt;text&gt; · embed &lt;text&gt; · params
 <span class="accent">stats</span>    streak · setup · bookshelf · neofetch · uptime · date · pwd
 <span class="accent">style</span>    theme · matrix · clear
+<span class="accent">secrets</span>  <span class="dim">type</span> hello · 1947 · madurai <span class="dim">anywhere on the page</span>
+             <span class="dim">click name · triple-click palette · hover "16+ years"</span>
+             <span class="dim">click yaazhi 10× · sudo rm -rf / · visit at 3:33 AM</span>
 
 <span class="dim">tip: tabs above are clickable. press 1-6 to navigate. TAB autocompletes.</span>`;
       },
@@ -591,6 +594,48 @@
 
       // ---------- xkcd / pop ----------
       // 'make me a sandwich'
+
+      // ---------- easter eggs ----------
+      hello() {
+        window.dispatchEvent(new CustomEvent("ee-hello"));
+        return '<span class="accent">👋 hello friend!</span>';
+      },
+      "1947"() {
+        const flag = document.getElementById("ee-1947");
+        if (flag) { flag.classList.add("show"); setTimeout(() => flag.classList.remove("show"), 1500); }
+        return '<span class="accent">🇮🇳 jai hind!</span>';
+      },
+      madurai() {
+        const el = document.getElementById("ee-madurai");
+        if (el) {
+          el.textContent = `
+            /\\
+           /  \\
+          / || \\
+         /  ||  \\
+        / |||||  \\
+       /  ||||||  \\
+      /   |||||||  \\
+     / || |||||||| \\
+    /  |||||||||||||\\
+   /   ||||||||||||||\\
+  /    |||||||||||||||\\
+ /=====================\\
+ |  M E E N A K S H I  |
+ |    A M M A N         |
+ |   T E M P L E       |
+ |     மதுரை            |
+ |  _    _    _    _    |
+ | |_|  |_|  |_|  |_|  |
+ |______________________|
+ |=====|  ____  |=======|
+ |=====| |    | |=======|
+ ========|    |==========`;
+          el.classList.add("show");
+          setTimeout(() => el.classList.remove("show"), 4000);
+        }
+        return '<span class="accent">🛕 madurai meenakshi amman temple</span>\n<span class="dim">the city that never sleeps (before 10 PM)</span>';
+      },
 
       sudo(arg) {
         if (arg && arg.match(/rm\s+(-rf|-r\s+-f|-fr)\s+\/\s*$/)) {
