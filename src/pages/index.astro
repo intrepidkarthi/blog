@@ -45,7 +45,7 @@ const recent = all
           <div class="row"><span class="k">trophies</span><span class="v">18× hackathon · 1× TEDx</span></div>
           <div class="row"><span class="k">streak</span><span class="v"><span class="accent">3+ years</span> <a href="https://x.com/search?q=%23healthywealthy+from%3Aintrepidkarthi&f=live" target="_blank" rel="noopener" class="hw-link">#healthywealthy</a> · 10k+ steps daily</span></div>
           <div class="row"><span class="k">stack</span><span class="v">crypto · AI · trading · stablecoins</span></div>
-          <div class="row"><span class="k">mission</span><span class="v"><span class="accent">$3M FIRE life</span></span></div>
+          <div class="row"><span class="k">mission</span><span class="v"><span class="accent">$3M FIRE life</span> · <span class="accent">build Jarvis</span></span></div>
           <div class="palette" id="ee-palette">
             <span style="background:#030604"></span>
             <span style="background:#4eff7c"></span>
@@ -227,7 +227,7 @@ const recent = all
     10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
     20%, 40%, 60%, 80% { transform: translateX(3px); }
   }
-  .yaazhi.roar {
+  :global(.yaazhi.roar) {
     animation: ee-shake 0.4s ease;
     filter: drop-shadow(0 0 20px rgba(78,255,124,0.6)) !important;
     opacity: 0.4 !important;
@@ -235,7 +235,7 @@ const recent = all
 </style>
 
 <script is:inline>
-(() => {
+document.addEventListener("DOMContentLoaded", () => {
   // === Click name to cycle scripts ===
   const nameEl = document.getElementById("ee-name");
   if (nameEl) {
@@ -287,5 +287,5 @@ const recent = all
       }
     });
   }
-})();
+});
 </script>

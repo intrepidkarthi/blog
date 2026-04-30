@@ -228,5 +228,13 @@
     "status": "todo",
     "note": "Multi-day road convoy with friends — bikes or cars, single arrow on the map, fuel stops as the only forced pauses.",
     "image": "/images/goals/28-convoy.svg"
+  },
+  {
+    "id": 29,
+    "title": "Build a home AI assistant like Jarvis",
+    "category": "Build",
+    "status": "todo",
+    "note": "A personal AI that runs the house — voice-controlled, context-aware, integrated with lights, security, calendar, trading alerts. Iron Man's Jarvis, but real and self-hosted.",
+    "image": "/images/goals/29-jarvis.svg"
   }
 ]

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#4eff7c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Home outline -->
+  <path d="M60 15 L105 45 L105 100 L15 100 L15 45 Z" opacity="0.3"/>
+  <path d="M60 15 L15 45" opacity="0.3"/>
+  <!-- AI circle/arc reactor in center -->
+  <circle cx="60" cy="62" r="20" opacity="0.5"/>
+  <circle cx="60" cy="62" r="14" opacity="0.4"/>
+  <circle cx="60" cy="62" r="6" fill="#4eff7c" opacity="0.2"/>
+  <!-- Pulse rings -->
+  <circle cx="60" cy="62" r="26" opacity="0.2" stroke-dasharray="4 4"/>
+  <circle cx="60" cy="62" r="32" opacity="0.12" stroke-dasharray="2 6"/>
+  <!-- Connection lines to house corners (smart home) -->
+  <line x1="60" y1="42" x2="60" y2="25" opacity="0.3" stroke-dasharray="2 3"/>
+  <line x1="40" y1="62" x2="22" y2="62" opacity="0.3" stroke-dasharray="2 3"/>
+  <line x1="80" y1="62" x2="98" y2="62" opacity="0.3" stroke-dasharray="2 3"/>
+  <line x1="60" y1="82" x2="60" y2="95" opacity="0.3" stroke-dasharray="2 3"/>
+  <!-- Small device dots -->
+  <circle cx="22" cy="62" r="2.5" fill="#4eff7c" opacity="0.3"/>
+  <circle cx="98" cy="62" r="2.5" fill="#4eff7c" opacity="0.3"/>
+  <circle cx="60" cy="95" r="2.5" fill="#4eff7c" opacity="0.3"/>
+  <circle cx="60" cy="25" r="2.5" fill="#4eff7c" opacity="0.3"/>
+  <!-- Voice wave at top -->
+  <path d="M50 108 Q55 104 60 108 Q65 112 70 108" opacity="0.4"/>
+  <path d="M46 112 Q53 106 60 112 Q67 118 74 112" opacity="0.25"/>
+</svg>
