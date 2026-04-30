@@ -228,9 +228,8 @@ const recent = all
     20%, 40%, 60%, 80% { transform: translateX(3px); }
   }
   :global(.yaazhi.roar) {
-    animation: ee-shake 0.4s ease;
-    filter: drop-shadow(0 0 20px rgba(78,255,124,0.6)) !important;
-    opacity: 0.4 !important;
+    filter: drop-shadow(0 0 30px rgba(78,255,124,0.8)) drop-shadow(0 0 60px rgba(78,255,124,0.4)) !important;
+    transition: filter 0.3s, opacity 0.3s;
   }
 </style>
 
@@ -276,13 +275,39 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(yTimer);
       yTimer = setTimeout(() => { yClicks = 0; }, 3000);
       if (yClicks >= 10) {
+        // Roar! Yaazhi glows bright and shakes
+        const bg = yaazhi.parentElement;
+        bg.style.transition = "opacity 0.3s";
+        bg.style.opacity = "0.5";
         yaazhi.classList.add("roar");
-        // Screen flash
+
+        // Screen shake
+        document.body.style.transition = "none";
+        let shakeCount = 0;
+        const shakeInterval = setInterval(() => {
+          const x = (Math.random() - 0.5) * 8;
+          const y = (Math.random() - 0.5) * 6;
+          document.body.style.transform = `translate(${x}px, ${y}px)`;
+          shakeCount++;
+          if (shakeCount > 15) {
+            clearInterval(shakeInterval);
+            document.body.style.transform = "";
+          }
+        }, 40);
+
+        // Green flash that lingers
         const flash = document.createElement("div");
-        flash.style.cssText = "position:fixed;inset:0;background:rgba(78,255,124,0.15);z-index:200;pointer-events:none;transition:opacity 0.5s";
+        flash.style.cssText = "position:fixed;inset:0;background:rgba(78,255,124,0.2);z-index:200;pointer-events:none;transition:opacity 1.5s";
         document.body.appendChild(flash);
-        setTimeout(() => { flash.style.opacity = "0"; }, 100);
-        setTimeout(() => { flash.remove(); yaazhi.classList.remove("roar"); }, 600);
+        setTimeout(() => { flash.style.opacity = "0"; }, 800);
+        setTimeout(() => { flash.remove(); }, 2500);
+
+        // Reset yaazhi after
+        setTimeout(() => {
+          yaazhi.classList.remove("roar");
+          bg.style.opacity = "";
+        }, 1500);
+
         yClicks = 0;
       }
     });
