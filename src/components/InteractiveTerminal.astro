@@ -284,19 +284,70 @@
     // ---------- commands ----------
     const COMMANDS = {
       help() {
-        return `<span class="info">commands</span>
+        return `<span class="info">available commands</span>
 
-<span class="accent">nav</span>      whoami · writing · lab · mission · about · contact · ls · cd
-<span class="accent">files</span>    cat &lt;file&gt; (ambitions.md, wishlist.md, now.md)
-<span class="accent">crypto</span>   btc · eth · sol · gas · fear · greed · funding · block · whales · liq
-<span class="accent">ai/ml</span>    gpu · models · tokenize &lt;text&gt; · embed &lt;text&gt; · params
-<span class="accent">stats</span>    streak · setup · bookshelf · neofetch · uptime · date · pwd
-<span class="accent">style</span>    theme · matrix · clear
-<span class="accent">secrets</span>  <span class="dim">type</span> hello · 1947 · madurai <span class="dim">anywhere on the page</span>
-             <span class="dim">click name · triple-click palette · hover "16+ years"</span>
-             <span class="dim">click yaazhi 10× · sudo rm -rf / · visit at 3:33 AM</span>
+<span class="accent">navigation</span>
+  whoami        about me
+  writing       go to blog
+  lab           go to lab
+  mission       go to goals
+  about         go to bio
+  contact       go to contact
+  home          go to home
+  ls            list all pages
+  cd &lt;page&gt;     navigate to a page
 
-<span class="dim">tip: tabs above are clickable. press 1-6 to navigate. TAB autocompletes.</span>`;
+<span class="accent">files</span>
+  cat &lt;file&gt;    read a file (ambitions.md  wishlist.md  now.md)
+
+<span class="accent">crypto</span>
+  btc           bitcoin price + stats
+  eth           ethereum price
+  sol           solana price
+  gas           gas tracker
+  fear          fear &amp; greed index
+  funding       funding rates
+  block         block height + halving
+  whales        whale movements
+  liq           liquidation data
+
+<span class="accent">ai / ml</span>
+  gpu           gpu specs
+  models        model comparison
+  tokenize &lt;text&gt;   tokenize input
+  embed &lt;text&gt;      generate embeddings
+  params        parameter counts
+
+<span class="accent">info</span>
+  streak        healthywealthy streak
+  setup         dev setup / stack
+  bookshelf     reading list
+  neofetch      system info
+  uptime        how long I have been shipping
+  date          current date
+  pwd           current directory
+
+<span class="accent">style</span>
+  theme         cycle color theme
+  matrix        boost the matrix rain
+  clear         clear the terminal
+
+<span class="accent">fun</span>
+  hello         say hello
+  1947          jai hind
+  madurai       meenakshi temple
+  sudo rm -rf / try it and see
+  echo &lt;text&gt;   echo text back
+
+<span class="accent">easter eggs</span> <span class="dim">(try these on the home page)</span>
+  <span class="dim">type hello / 1947 / madurai anywhere (not in terminal)</span>
+  <span class="dim">click the name to cycle scripts</span>
+  <span class="dim">triple-click the color palette to toggle retro theme</span>
+  <span class="dim">hover over "16+ years" for a timeline</span>
+  <span class="dim">click the yaazhi 10 times for a surprise</span>
+  <span class="dim">visit at 3:33 AM</span>
+
+<span class="dim">tips: press / to focus terminal  |  TAB to autocomplete  |  ESC to close</span>`;
       },
       whoami() {
         unlockAchievement("whoami", "Identified", "You met Karthik");
