@@ -286,68 +286,70 @@
       help() {
         return `<span class="info">available commands</span>
 
-<span class="accent">navigation</span>
-  whoami        about me
-  writing       go to blog
-  lab           go to lab
-  mission       go to goals
-  about         go to bio
-  contact       go to contact
-  home          go to home
-  ls            list all pages
-  cd &lt;page&gt;     navigate to a page
+<table>
+<tr><td colspan="2"><span class="accent">── navigation ──</span></td></tr>
+<tr><td class="k">whoami</td><td class="v">about me</td></tr>
+<tr><td class="k">writing</td><td class="v">go to blog</td></tr>
+<tr><td class="k">lab</td><td class="v">go to lab</td></tr>
+<tr><td class="k">mission</td><td class="v">go to goals</td></tr>
+<tr><td class="k">about</td><td class="v">go to bio</td></tr>
+<tr><td class="k">contact</td><td class="v">go to contact</td></tr>
+<tr><td class="k">home</td><td class="v">go to home</td></tr>
+<tr><td class="k">ls</td><td class="v">list all pages</td></tr>
+<tr><td class="k">cd &lt;page&gt;</td><td class="v">navigate to a page</td></tr>
 
-<span class="accent">files</span>
-  cat &lt;file&gt;    read a file (ambitions.md  wishlist.md  now.md)
+<tr><td colspan="2"><span class="accent">── files ──</span></td></tr>
+<tr><td class="k">cat &lt;file&gt;</td><td class="v">read a file (ambitions.md, wishlist.md, now.md)</td></tr>
 
-<span class="accent">crypto</span>
-  btc           bitcoin price + stats
-  eth           ethereum price
-  sol           solana price
-  gas           gas tracker
-  fear          fear &amp; greed index
-  funding       funding rates
-  block         block height + halving
-  whales        whale movements
-  liq           liquidation data
+<tr><td colspan="2"><span class="accent">── crypto ──</span></td></tr>
+<tr><td class="k">btc</td><td class="v">bitcoin price + stats</td></tr>
+<tr><td class="k">eth</td><td class="v">ethereum price</td></tr>
+<tr><td class="k">sol</td><td class="v">solana price</td></tr>
+<tr><td class="k">gas</td><td class="v">gas tracker</td></tr>
+<tr><td class="k">fear</td><td class="v">fear &amp; greed index</td></tr>
+<tr><td class="k">funding</td><td class="v">funding rates</td></tr>
+<tr><td class="k">block</td><td class="v">block height + halving</td></tr>
+<tr><td class="k">whales</td><td class="v">whale movements</td></tr>
+<tr><td class="k">liq</td><td class="v">liquidation data</td></tr>
 
-<span class="accent">ai / ml</span>
-  gpu           gpu specs
-  models        model comparison
-  tokenize &lt;text&gt;   tokenize input
-  embed &lt;text&gt;      generate embeddings
-  params        parameter counts
+<tr><td colspan="2"><span class="accent">── ai / ml ──</span></td></tr>
+<tr><td class="k">gpu</td><td class="v">gpu specs</td></tr>
+<tr><td class="k">models</td><td class="v">model comparison</td></tr>
+<tr><td class="k">tokenize &lt;text&gt;</td><td class="v">tokenize input</td></tr>
+<tr><td class="k">embed &lt;text&gt;</td><td class="v">generate embeddings</td></tr>
+<tr><td class="k">params</td><td class="v">parameter counts</td></tr>
 
-<span class="accent">info</span>
-  streak        healthywealthy streak
-  setup         dev setup / stack
-  bookshelf     reading list
-  neofetch      system info
-  uptime        how long I have been shipping
-  date          current date
-  pwd           current directory
+<tr><td colspan="2"><span class="accent">── info ──</span></td></tr>
+<tr><td class="k">streak</td><td class="v">healthywealthy streak</td></tr>
+<tr><td class="k">setup</td><td class="v">dev setup / stack</td></tr>
+<tr><td class="k">bookshelf</td><td class="v">reading list</td></tr>
+<tr><td class="k">neofetch</td><td class="v">system info</td></tr>
+<tr><td class="k">uptime</td><td class="v">how long I have been shipping</td></tr>
+<tr><td class="k">date</td><td class="v">current date</td></tr>
+<tr><td class="k">pwd</td><td class="v">current directory</td></tr>
 
-<span class="accent">style</span>
-  theme         cycle color theme
-  matrix        boost the matrix rain
-  clear         clear the terminal
+<tr><td colspan="2"><span class="accent">── style ──</span></td></tr>
+<tr><td class="k">theme</td><td class="v">cycle color theme</td></tr>
+<tr><td class="k">matrix</td><td class="v">boost the matrix rain</td></tr>
+<tr><td class="k">clear</td><td class="v">clear the terminal</td></tr>
 
-<span class="accent">fun</span>
-  hello         say hello
-  1947          jai hind
-  madurai       meenakshi temple
-  sudo rm -rf / try it and see
-  echo &lt;text&gt;   echo text back
+<tr><td colspan="2"><span class="accent">── fun ──</span></td></tr>
+<tr><td class="k">hello</td><td class="v">say hello</td></tr>
+<tr><td class="k">1947</td><td class="v">jai hind</td></tr>
+<tr><td class="k">madurai</td><td class="v">meenakshi temple</td></tr>
+<tr><td class="k">sudo rm -rf /</td><td class="v">try it and see</td></tr>
+<tr><td class="k">echo &lt;text&gt;</td><td class="v">echo text back</td></tr>
+</table>
 
-<span class="accent">easter eggs</span> <span class="dim">(try these on the home page)</span>
-  <span class="dim">type hello / 1947 / madurai anywhere (not in terminal)</span>
-  <span class="dim">click the name to cycle scripts</span>
-  <span class="dim">triple-click the color palette to toggle retro theme</span>
-  <span class="dim">hover over "16+ years" for a timeline</span>
-  <span class="dim">click the yaazhi 10 times for a surprise</span>
-  <span class="dim">visit at 3:33 AM</span>
+<span class="accent">── easter eggs ──</span> <span class="dim">(on the home page)</span>
+<span class="dim">  type hello / 1947 / madurai anywhere on the page</span>
+<span class="dim">  click the name to cycle scripts</span>
+<span class="dim">  triple-click the color palette for retro theme</span>
+<span class="dim">  hover "16+ years" for a timeline</span>
+<span class="dim">  click yaazhi 10 times for a surprise</span>
+<span class="dim">  visit at 3:33 AM</span>
 
-<span class="dim">tips: press / to focus terminal  |  TAB to autocomplete  |  ESC to close</span>`;
+<span class="dim">tips: / = focus  |  TAB = autocomplete  |  ESC = close</span>`;
       },
       whoami() {
         unlockAchievement("whoami", "Identified", "You met Karthik");
