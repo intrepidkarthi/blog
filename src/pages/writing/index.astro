@@ -38,6 +38,10 @@ const years = Object.keys(byYear).sort((a, b) => b.localeCompare(a));
         ))}
       </section>
     ))}
+
+    <div class="ee-bottom-msg">
+      <span class="dim">$ </span>you scrolled all the way down? <span class="accent">respect.</span>
+    </div>
   </div>
 </BaseLayout>
 
@@ -68,4 +72,17 @@ const years = Object.keys(byYear).sort((a, b) => b.localeCompare(a));
     color: var(--dim); font-size: 14px; font-family: var(--font-mono);
     margin-left: 8px;
   }
+  .ee-bottom-msg {
+    margin-top: 48px;
+    padding: 16px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--dim);
+    font-family: var(--font-mono);
+    border-top: 1px dashed var(--line);
+    opacity: 0.4;
+    transition: opacity 0.5s;
+  }
+  .ee-bottom-msg:hover { opacity: 1; }
+  .ee-bottom-msg .accent { color: var(--amber); }
 </style>

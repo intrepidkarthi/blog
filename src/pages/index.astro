@@ -22,19 +22,31 @@ const recent = all
 
       <div class="bio-block">
         <div class="bio-info">
-          <h2>Karthikeyan <span class="h">NG</span></h2>
+          <h2 id="ee-name" style="cursor:pointer">Karthikeyan <span class="h">NG</span></h2>
           <div class="sep">────────────────────</div>
           <div class="row"><span class="k">role</span><span class="v"><span class="accent">Engineer · Author · Speaker</span></span></div>
           <div class="row"><span class="k">trading</span><span class="v">full-time on <span class="accent">perpetual futures</span></span></div>
           <div class="row"><span class="k">building</span><span class="v"><a href="https://feaws.xyz" class="accent">feaws</a> · <a href="https://getdailyvox.com" class="accent">DailyVox</a></span></div>
           <div class="row"><span class="k">based</span><span class="v">Madurai → Bengaluru → Dubai</span></div>
-          <div class="row"><span class="k">uptime</span><span class="v">16+ years shipping</span></div>
+          <div class="row" id="ee-uptime"><span class="k">uptime</span><span class="v">16+ years shipping</span>
+            <div class="timeline">
+              <span class="yr">2007</span> <span class="ev">first blog post</span><br>
+              <span class="yr">2009</span> <span class="ev">FOSSConf · first talk</span><br>
+              <span class="yr">2012</span> <span class="ev">Windows 8 AppFest</span><br>
+              <span class="yr">2015</span> <span class="ev">hackathon streak begins</span><br>
+              <span class="yr">2017</span> <span class="ev">TEDx speaker</span><br>
+              <span class="yr">2018</span> <span class="ev">2 books published</span><br>
+              <span class="yr">2022</span> <span class="ev">CTO @ Pi42 (crypto exchange)</span><br>
+              <span class="yr">2025</span> <span class="ev">full-time trader · feaws.xyz</span><br>
+              <span class="yr">2026</span> <span class="ev">DailyVox · this site</span>
+            </div>
+          </div>
           <div class="row"><span class="k">books</span><span class="v">2 (Mobile ML &amp; AI Projects)</span></div>
           <div class="row"><span class="k">trophies</span><span class="v">18× hackathon · 1× TEDx</span></div>
           <div class="row"><span class="k">streak</span><span class="v"><span class="accent">3+ years</span> <a href="https://x.com/search?q=%23healthywealthy+from%3Aintrepidkarthi&f=live" target="_blank" rel="noopener" class="hw-link">#healthywealthy</a> · 10k+ steps daily</span></div>
           <div class="row"><span class="k">stack</span><span class="v">crypto · AI · trading · stablecoins</span></div>
           <div class="row"><span class="k">mission</span><span class="v"><span class="accent">$3M FIRE life</span></span></div>
-          <div class="palette">
+          <div class="palette" id="ee-palette">
             <span style="background:#030604"></span>
             <span style="background:#4eff7c"></span>
             <span style="background:#5fd7ff"></span>
@@ -84,7 +96,7 @@ const recent = all
 
   <!-- Yaazhi: mythical guardian from Tamil temple pillars (Madurai roots) -->
   <div class="yaazhi-bg" aria-hidden="true">
-    <img src="/images/yaazhi.svg" alt="" class="yaazhi" loading="lazy" decoding="async" />
+    <img src="/images/yaazhi.svg" alt="" class="yaazhi" id="ee-yaazhi" loading="lazy" decoding="async" />
   </div>
 </BaseLayout>
 
@@ -132,7 +144,6 @@ const recent = all
   .bio-info .row .v .hw-link:hover {
     color: var(--green-bright);
   }
-  .palette { display: flex; gap: 4px; margin-top: 12px; }
   .palette span { width: 18px; height: 12px; }
 
   .yaazhi-bg {
@@ -147,7 +158,28 @@ const recent = all
     height: 50vh;
     width: auto;
     display: block;
+    pointer-events: auto;
+    cursor: pointer;
   }
+  #ee-uptime { position: relative; cursor: help; }
+  #ee-uptime .timeline {
+    display: none;
+    position: absolute;
+    left: 0; top: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line-bright);
+    padding: 8px 12px;
+    font-size: 10px;
+    line-height: 1.7;
+    color: var(--ink);
+    white-space: nowrap;
+    z-index: 10;
+    margin-top: 4px;
+  }
+  #ee-uptime:hover .timeline { display: block; }
+  .timeline .yr { color: var(--amber); }
+  .timeline .ev { color: var(--green-bright); }
+  .palette { display: flex; gap: 4px; margin-top: 12px; cursor: pointer; }
   @media (max-width: 900px) {
     .yaazhi-bg { right: 10px; bottom: 80px; opacity: 0.07; }
     .yaazhi { height: 40vh; }
@@ -178,4 +210,82 @@ const recent = all
     border-color: var(--green); color: var(--green-bright);
     background: var(--bg2);
   }
+
+  /* Amber retro theme toggle */
+  :global(html.retro-amber) :global(*) {
+    --green: #ffb454 !important;
+    --green-bright: #ffd080 !important;
+    --green-dim: #8a6020 !important;
+    --green-glow: rgba(255,180,84,0.3) !important;
+    --cyan: #ff8c42 !important;
+    --amber: #4eff7c !important;
+  }
+
+  /* Yaazhi shake */
+  @keyframes ee-shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+  }
+  .yaazhi.roar {
+    animation: ee-shake 0.4s ease;
+    filter: drop-shadow(0 0 20px rgba(78,255,124,0.6)) !important;
+    opacity: 0.4 !important;
+  }
 </style>
+
+<script is:inline>
+(() => {
+  // === Click name to cycle scripts ===
+  const nameEl = document.getElementById("ee-name");
+  if (nameEl) {
+    const names = [
+      'Karthikeyan <span class="h">NG</span>',
+      '<span class="h">கார்த்திகேயன்</span> NG',
+      '<span class="h">intrepid</span>karthi',
+      'Karthik <span class="h">NG</span>',
+    ];
+    let nameIdx = 0;
+    nameEl.addEventListener("click", () => {
+      nameIdx = (nameIdx + 1) % names.length;
+      nameEl.innerHTML = names[nameIdx];
+    });
+  }
+
+  // === Triple-click palette → amber retro theme ===
+  const palette = document.getElementById("ee-palette");
+  if (palette) {
+    let clickCount = 0, clickTimer;
+    palette.addEventListener("click", () => {
+      clickCount++;
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { clickCount = 0; }, 500);
+      if (clickCount >= 3) {
+        document.documentElement.classList.toggle("retro-amber");
+        clickCount = 0;
+      }
+    });
+  }
+
+  // === Click Yaazhi 10 times → roar ===
+  const yaazhi = document.getElementById("ee-yaazhi");
+  if (yaazhi) {
+    let yClicks = 0, yTimer;
+    yaazhi.addEventListener("click", () => {
+      yClicks++;
+      clearTimeout(yTimer);
+      yTimer = setTimeout(() => { yClicks = 0; }, 3000);
+      if (yClicks >= 10) {
+        yaazhi.classList.add("roar");
+        // Screen flash
+        const flash = document.createElement("div");
+        flash.style.cssText = "position:fixed;inset:0;background:rgba(78,255,124,0.15);z-index:200;pointer-events:none;transition:opacity 0.5s";
+        document.body.appendChild(flash);
+        setTimeout(() => { flash.style.opacity = "0"; }, 100);
+        setTimeout(() => { flash.remove(); yaazhi.classList.remove("roar"); }, 600);
+        yClicks = 0;
+      }
+    });
+  }
+})();
+</script>

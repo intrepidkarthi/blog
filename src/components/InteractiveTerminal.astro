@@ -592,7 +592,20 @@
       // ---------- xkcd / pop ----------
       // 'make me a sandwich'
 
-      sudo() { return '<span class="err">▸ permission denied. (this is a static page on the internet.)</span>'; },
+      sudo(arg) {
+        if (arg && arg.match(/rm\s+(-rf|-r\s+-f|-fr)\s+\/\s*$/)) {
+          setTimeout(() => {
+            document.body.style.transition = "opacity 1s";
+            document.body.style.opacity = "0";
+            setTimeout(() => {
+              document.body.style.opacity = "1";
+              append('<span class="accent">nice try 😏</span>\n<span class="dim">you really thought that would work on a static site?</span>');
+            }, 1500);
+          }, 300);
+          return '<span class="err">▸ deleting everything...</span>';
+        }
+        return '<span class="err">▸ permission denied. (this is a static page on the internet.)</span>';
+      },
       clear() { out.innerHTML = ""; return null; },
       cls() { return COMMANDS.clear(); },
       echo(arg) { return arg || ""; },

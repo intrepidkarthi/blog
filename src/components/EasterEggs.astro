@@ -1,0 +1,238 @@
+---
+// Easter eggs: keyboard secrets, time-based events, hidden interactions
+---
+
+<!-- Madurai temple ASCII overlay -->
+<div id="ee-madurai" class="ee-overlay" aria-hidden="true"></div>
+<!-- 1947 flag flash -->
+<div id="ee-1947" class="ee-overlay ee-flag" aria-hidden="true"></div>
+<!-- 3:33 AM sleep overlay -->
+<div id="ee-sleep" class="ee-overlay ee-sleep" aria-hidden="true">
+  <div class="sleep-text">go to bed.<br><span class="dim">it's 3:33 AM.</span></div>
+</div>
+<!-- Birthday confetti canvas -->
+<canvas id="ee-confetti" class="ee-overlay" aria-hidden="true"></canvas>
+
+<style>
+  .ee-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .ee-overlay.show { opacity: 1; }
+
+  /* Madurai temple ASCII */
+  #ee-madurai {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(3,6,4,0.92);
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    line-height: 1.2;
+    color: #4eff7c;
+    white-space: pre;
+    text-shadow: 0 0 6px rgba(78,255,124,0.4);
+  }
+
+  /* 1947 flag flash */
+  .ee-flag {
+    background: linear-gradient(
+      180deg,
+      rgba(255,153,51,0.25) 0%,
+      rgba(255,153,51,0.25) 33%,
+      rgba(255,255,255,0.15) 33%,
+      rgba(255,255,255,0.15) 66%,
+      rgba(19,136,8,0.25) 66%,
+      rgba(19,136,8,0.25) 100%
+    );
+    transition: opacity 0.3s;
+  }
+
+  /* 3:33 AM sleep */
+  .ee-sleep {
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .ee-sleep .sleep-text {
+    font-family: var(--font-vt, monospace);
+    font-size: 28px;
+    color: #4eff7c;
+    text-align: center;
+    text-shadow: 0 0 12px rgba(78,255,124,0.5);
+    animation: ee-pulse 3s ease-in-out infinite;
+  }
+  .ee-sleep .dim { font-size: 16px; color: rgba(78,255,124,0.4); }
+  @keyframes ee-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* Birthday confetti */
+  #ee-confetti { pointer-events: none; }
+</style>
+
+<script is:inline>
+(() => {
+  // === Keyboard buffer for secret words ===
+  let keyBuffer = "";
+  const MAX_BUF = 20;
+
+  document.addEventListener("keydown", (e) => {
+    // Don't capture if typing in input/textarea
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    keyBuffer += e.key.toLowerCase();
+    if (keyBuffer.length > MAX_BUF) keyBuffer = keyBuffer.slice(-MAX_BUF);
+
+    checkSecrets();
+  });
+
+  function checkSecrets() {
+    // --- "hello" → prince waves ---
+    if (keyBuffer.endsWith("hello")) {
+      keyBuffer = "";
+      window.dispatchEvent(new CustomEvent("ee-hello"));
+    }
+
+    // --- "1947" → Indian flag flash ---
+    if (keyBuffer.endsWith("1947")) {
+      keyBuffer = "";
+      const flag = document.getElementById("ee-1947");
+      flag.classList.add("show");
+      setTimeout(() => flag.classList.remove("show"), 1500);
+    }
+
+    // --- "madurai" → ASCII Meenakshi temple ---
+    if (keyBuffer.endsWith("madurai")) {
+      keyBuffer = "";
+      showMadurai();
+    }
+  }
+
+  // === Madurai ASCII temple ===
+  function showMadurai() {
+    const el = document.getElementById("ee-madurai");
+    el.textContent = `
+            /\\
+           /  \\
+          / || \\
+         /  ||  \\
+        / |||||  \\
+       /  ||||||  \\
+      /   |||||||  \\
+     / || |||||||| \\
+    /  |||||||||||||\\
+   /   ||||||||||||||\\
+  /    |||||||||||||||\\
+ /=====================\\
+ |  M E E N A K S H I  |
+ |    A M M A N         |
+ |   T E M P L E       |
+ |     மதுரை            |
+ |  _    _    _    _    |
+ | |_|  |_|  |_|  |_|  |
+ | |_|  |_|  |_|  |_|  |
+ |______________________|
+ |=====|  ____  |=======|
+ |=====| |    | |=======|
+ |=====| |    | |=======|
+ ========|    |==========`;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 4000);
+  }
+
+  // === 3:33 AM sleep mode ===
+  function checkSleepMode() {
+    const now = new Date();
+    if (now.getHours() === 3 && now.getMinutes() === 33) {
+      const el = document.getElementById("ee-sleep");
+      el.classList.add("show");
+      // Dim the whole site
+      const app = document.getElementById("app");
+      if (app) {
+        app.style.transition = "filter 2s";
+        app.style.filter = "brightness(0.3)";
+      }
+      // Click to dismiss
+      el.addEventListener("click", () => {
+        el.classList.remove("show");
+        if (app) app.style.filter = "";
+      }, { once: true });
+    }
+  }
+  // Check on load and every minute
+  checkSleepMode();
+  setInterval(checkSleepMode, 60000);
+
+  // === Birthday confetti (Dec 12) ===
+  function checkBirthday() {
+    const now = new Date();
+    if (now.getMonth() === 11 && now.getDate() === 12) { // Dec = 11
+      startConfetti();
+    }
+  }
+
+  function startConfetti() {
+    const c = document.getElementById("ee-confetti");
+    c.classList.add("show");
+    c.style.opacity = "1";
+    const ctx = c.getContext("2d");
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+
+    const colors = ["#ff5f87","#ffb454","#4eff7c","#5fd7ff","#c780ff","#ffffff"];
+    const pieces = [];
+    for (let i = 0; i < 80; i++) {
+      pieces.push({
+        x: Math.random() * c.width,
+        y: -10 - Math.random() * c.height,
+        w: 4 + Math.random() * 6,
+        h: 3 + Math.random() * 4,
+        vy: 0.8 + Math.random() * 2,
+        vx: (Math.random() - 0.5) * 1.5,
+        rot: Math.random() * Math.PI * 2,
+        rotV: (Math.random() - 0.5) * 0.1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+      });
+    }
+
+    let frame = 0;
+    function drawConfetti() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      frame++;
+      for (const p of pieces) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.rotV;
+        if (p.y > c.height + 20) {
+          p.y = -10;
+          p.x = Math.random() * c.width;
+        }
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+        ctx.restore();
+      }
+      // Run for 15 seconds then fade
+      if (frame < 900) {
+        requestAnimationFrame(drawConfetti);
+      } else {
+        c.style.transition = "opacity 2s";
+        c.style.opacity = "0";
+      }
+    }
+    requestAnimationFrame(drawConfetti);
+  }
+
+  checkBirthday();
+})();
+</script>

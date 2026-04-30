@@ -264,6 +264,19 @@
   setInterval(refresh, 2500);
 
   // Delayed start: enter from left side running onto first platform
+  // Easter egg: "hello" typed → prince waves and says hello
+  window.addEventListener("ee-hello", () => {
+    P.state = "idle";
+    P.iType = 5; // wave
+    P.it = 0;
+    P.iSubFrame = 0;
+    P.vx = 0;
+    if (!bubble && bubbleCooldown <= 0) {
+      bubble = { text: "hello friend!", x: P.x, y: P.y - 34, age: 0, maxAge: 180 };
+      bubbleCooldown = 300;
+    }
+  });
+
   setTimeout(() => {
     refresh();
     if (platforms.length) {
