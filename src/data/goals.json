@@ -269,5 +269,21 @@
     "status": "todo",
     "note": "21.1 km — no shortcuts, no pausing. Just legs, lungs, and a finish line that earns itself.",
     "image": "/images/goals/33-half-marathon.svg"
+  },
+  {
+    "id": 34,
+    "title": "Launch a fund / manage external capital",
+    "category": "Build",
+    "status": "in-progress",
+    "note": "Already building a quant trading hobby project. The next step is formalizing it — external capital, real AUM, audited returns.",
+    "image": "/images/goals/34-quant-fund.svg"
+  },
+  {
+    "id": 35,
+    "title": "Write and publish a book in Tamil",
+    "category": "Build",
+    "status": "todo",
+    "note": "Two English books done. Now write one in the mother tongue — fiction, essays, or tech, doesn't matter. Tamil deserves the ink.",
+    "image": "/images/goals/35-tamil-book.svg"
   }
 ]
