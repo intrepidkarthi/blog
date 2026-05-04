@@ -261,5 +261,13 @@
     "status": "todo",
     "note": "Mosquito Bay in Puerto Rico, Vaadhoo in Maldives — any bay where every stroke paints light.",
     "image": "/images/goals/32-bioluminescent.svg"
+  },
+  {
+    "id": 33,
+    "title": "Run a half marathon",
+    "category": "Adventure",
+    "status": "todo",
+    "note": "21.1 km — no shortcuts, no pausing. Just legs, lungs, and a finish line that earns itself.",
+    "image": "/images/goals/33-half-marathon.svg"
   }
 ]
