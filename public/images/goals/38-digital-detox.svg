@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="15-day solo sabbatical with no screens">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-p { fill: #ff5f87; stroke: #ff5f87; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+  </style>
+
+  <!-- phone with X -->
+  <rect class="d" x="80" y="45" width="40" height="70" rx="4"/>
+  <line class="p" x1="90" y1="60" x2="110" y2="100" style="stroke-width:3;"/>
+  <line class="p" x1="110" y1="60" x2="90" y2="100" style="stroke-width:3;"/>
+  <!-- signal waves crossed out -->
+  <path class="d" d="M 125 50 Q 135 45 130 55" style="opacity:0.4;"/>
+  <path class="d" d="M 130 45 Q 142 38 136 52" style="opacity:0.4;"/>
+  <line class="p" x1="123" y1="55" x2="140" y2="38" style="stroke-width:1.5;opacity:0.6;"/>
+
+  <!-- nature elements replacing screens -->
+  <!-- mountain -->
+  <path class="g" d="M 15 165 L 45 125 L 60 145 L 75 120 L 105 165"/>
+  <!-- snow cap -->
+  <path class="a" d="M 70 128 L 75 120 L 80 128" style="fill:rgba(255,180,84,0.2);"/>
+  <!-- tree -->
+  <line class="d" x1="130" y1="165" x2="130" y2="140"/>
+  <path class="g" d="M 120 150 L 130 130 L 140 150"/>
+  <path class="g" d="M 122 158 L 130 138 L 138 158"/>
+  <!-- another tree -->
+  <line class="d" x1="155" y1="165" x2="155" y2="145"/>
+  <path class="g" d="M 147 155 L 155 138 L 163 155"/>
+
+  <!-- sun rising -->
+  <path class="a" d="M 15 120 Q 35 100 55 120" style="fill:rgba(255,180,84,0.08);"/>
+  <line class="a" x1="35" y1="100" x2="35" y2="92" style="opacity:0.4;"/>
+  <line class="a" x1="22" y1="105" x2="17" y2="100" style="opacity:0.4;"/>
+  <line class="a" x1="48" y1="105" x2="53" y2="100" style="opacity:0.4;"/>
+
+  <!-- 15 DAYS text -->
+  <text x="50" y="30" style="font-family:'JetBrains Mono',monospace;font-size:22px;fill:#5fd7ff;stroke:none;font-weight:bold;">15 DAYS</text>
+
+  <!-- ground -->
+  <line class="d" x1="10" y1="165" x2="190" y2="165"/>
+
+  <!-- bird silhouettes -->
+  <path class="d" d="M 160 85 Q 165 80 170 85" style="opacity:0.5;"/>
+  <path class="d" d="M 170 78 Q 174 74 178 78" style="opacity:0.4;"/>
+
+  <text class="mono" x="48" y="188">// unplug fully</text>
+</svg>

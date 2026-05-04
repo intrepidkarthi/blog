@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Get a patent granted">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+  </style>
+
+  <!-- document -->
+  <rect class="g" x="50" y="30" width="100" height="130" style="fill:rgba(78,255,124,0.03);"/>
+  <!-- fold corner -->
+  <path class="g" d="M 130 30 L 150 30 L 150 50" style="fill:none;"/>
+  <path class="d" d="M 130 30 L 130 50 L 150 50" style="fill:rgba(42,140,68,0.1);"/>
+  <!-- header bar -->
+  <rect class="a" x="50" y="30" width="100" height="18" style="fill:rgba(255,180,84,0.1);"/>
+  <text x="72" y="43" style="font-family:'JetBrains Mono',monospace;font-size:9px;fill:#ffb454;stroke:none;letter-spacing:2px;">PATENT</text>
+
+  <!-- text lines -->
+  <line class="d" x1="60" y1="62" x2="140" y2="62"/>
+  <line class="d" x1="60" y1="72" x2="130" y2="72"/>
+  <line class="d" x1="60" y1="82" x2="135" y2="82"/>
+  <line class="d" x1="60" y1="92" x2="125" y2="92"/>
+
+  <!-- seal / stamp circle -->
+  <circle class="a" cx="115" cy="130" r="18" style="fill:rgba(255,180,84,0.08);"/>
+  <circle class="a" cx="115" cy="130" r="13"/>
+  <!-- star inside seal -->
+  <polygon class="fill-a" points="115,120 117,126 124,126 119,130 121,137 115,133 109,137 111,130 106,126 113,126" style="fill-opacity:0.5;"/>
+
+  <!-- lightbulb (invention) -->
+  <circle class="c" cx="35" cy="80" r="12"/>
+  <line class="c" x1="31" y1="92" x2="39" y2="92"/>
+  <line class="c" x1="32" y1="96" x2="38" y2="96"/>
+  <path class="c" d="M 31 80 Q 35 70 39 80"/>
+  <!-- rays -->
+  <line class="c" x1="35" y1="64" x2="35" y2="58" style="opacity:0.5;"/>
+  <line class="c" x1="22" y1="72" x2="18" y2="68" style="opacity:0.5;"/>
+  <line class="c" x1="48" y1="72" x2="52" y2="68" style="opacity:0.5;"/>
+  <line class="c" x1="20" y1="84" x2="16" y2="84" style="opacity:0.5;"/>
+  <line class="c" x1="50" y1="84" x2="54" y2="84" style="opacity:0.5;"/>
+
+  <text class="mono" x="40" y="190">// intellectual IP</text>
+</svg>
