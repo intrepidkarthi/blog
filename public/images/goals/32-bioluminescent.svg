@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Swim in a bioluminescent bay">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .glow { fill: #4eff7c; stroke: none; opacity: 0.6; }
+    .glow-c { fill: #5fd7ff; stroke: none; opacity: 0.5; }
+  </style>
+
+  <!-- night sky -->
+  <circle class="glow" cx="30" cy="25" r="1"/>
+  <circle class="glow" cx="75" cy="15" r="1"/>
+  <circle class="glow" cx="120" cy="22" r="1"/>
+  <circle class="glow" cx="165" cy="18" r="1"/>
+  <circle class="glow" cx="50" cy="35" r="0.8"/>
+  <circle class="glow" cx="145" cy="30" r="0.8"/>
+  <!-- water surface -->
+  <path class="c" d="M 10 95 Q 40 88 70 95 Q 100 102 130 95 Q 160 88 190 95"/>
+  <!-- swimmer - head -->
+  <circle class="a" cx="100" cy="90" r="6"/>
+  <!-- swimmer - arm stroke -->
+  <path class="a" d="M 106 92 Q 118 82 125 90"/>
+  <path class="a" d="M 94 92 Q 82 88 78 95"/>
+  <!-- bioluminescent particles -->
+  <circle class="glow-c" cx="60" cy="115" r="2.5"/>
+  <circle class="glow-c" cx="85" cy="130" r="1.8"/>
+  <circle class="glow-c" cx="110" cy="120" r="2"/>
+  <circle class="glow-c" cx="140" cy="110" r="2.2"/>
+  <circle class="glow-c" cx="45" cy="135" r="1.5"/>
+  <circle class="glow-c" cx="130" cy="140" r="1.8"/>
+  <circle class="glow-c" cx="75" cy="145" r="2"/>
+  <circle class="glow-c" cx="155" cy="130" r="1.5"/>
+  <circle class="glow-c" cx="95" cy="155" r="1.2"/>
+  <circle class="glow-c" cx="120" cy="150" r="1.8"/>
+  <circle class="glow" cx="65" cy="160" r="1"/>
+  <circle class="glow" cx="145" cy="155" r="1.2"/>
+  <!-- ripple rings around swimmer -->
+  <ellipse class="c" cx="100" cy="98" rx="20" ry="4" style="opacity:0.3;"/>
+  <ellipse class="c" cx="100" cy="100" rx="30" ry="5" style="opacity:0.2;"/>
+  <text class="mono" x="42" y="190">// living light</text>
+</svg>

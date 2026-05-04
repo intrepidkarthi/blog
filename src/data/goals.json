@@ -236,5 +236,30 @@
     "status": "todo",
     "note": "A personal AI that runs the house — voice-controlled, context-aware, integrated with lights, security, calendar, trading alerts. Iron Man's Jarvis, but real and self-hosted.",
     "image": "/images/goals/29-jarvis.svg"
+  },
+  {
+    "id": 30,
+    "title": "Build my own windmill",
+    "category": "Build",
+    "status": "todo",
+    "note": "A small-scale windmill — designed, built, and spinning. Off-grid energy that I can point at and say I made that.",
+    "image": "/images/goals/30-windmill.svg"
+  },
+  {
+    "id": 31,
+    "title": "Give a TEDx talk",
+    "category": "Lead",
+    "status": "done",
+    "year": 2017,
+    "note": "TEDxSOAUniversity, 2017. Stood on the red circle, shared ideas worth spreading.",
+    "image": "/images/goals/31-tedx.svg"
+  },
+  {
+    "id": 32,
+    "title": "Swim in a bioluminescent bay",
+    "category": "Adventure",
+    "status": "todo",
+    "note": "Mosquito Bay in Puerto Rico, Vaadhoo in Maldives — any bay where every stroke paints light.",
+    "image": "/images/goals/32-bioluminescent.svg"
   }
 ]
