@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import RelatedPosts from "../../components/RelatedPosts.astro";
+import ShareBar from "../../components/ShareBar.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -70,9 +71,13 @@ const ogImage = `/og/${slug}.svg`;
       )}
     </header>
 
+    <ShareBar title={post.data.title} />
+
     <div class="prose">
       <Content />
     </div>
+
+    <ShareBar title={post.data.title} />
 
     <RelatedPosts
       currentSlug={slug}

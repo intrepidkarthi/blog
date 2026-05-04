@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ShareBar from "../components/ShareBar.astro";
 import goalsRaw from "../data/goals.json";
 
 interface Goal {
@@ -43,6 +44,8 @@ const counts = goals.reduce<Record<string, number>>((acc, g) => {
     <h1><span class="hash">#</span>mission</h1>
     <p class="lede">A working list, not a bucket list. {goals.length} items in different stages of progress. Updated when reality catches up.</p>
 
+    <ShareBar title="Mission — Karthikeyan NG" />
+
     <div class="legend">
       {Object.entries(counts).map(([status, n]) => (
         <span class={`pill pill-${status}`}>
@@ -54,10 +57,13 @@ const counts = goals.reduce<Record<string, number>>((acc, g) => {
 
     <div class="grid">
       {sorted.map((g) => (
-        <article class={`card card-${g.status}`}>
+        <article class={`card card-${g.status}`} id={`goal-${g.id}`}>
           <div class="card-head">
             <span class="num">#{String(g.id).padStart(2, "0")}</span>
             <span class="cat">{g.category}</span>
+            <button class="card-link" data-id={g.id} title="Copy link to this goal" aria-label="Copy link to this goal">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+            </button>
           </div>
           <h3>{g.title}</h3>
           <div class="badges">
@@ -143,10 +149,6 @@ const counts = goals.reduce<Record<string, number>>((acc, g) => {
   .card-deferred { border-left-color: var(--pink); }
   .card-done-failed { border-left-color: var(--pink); }
 
-  .card-head {
-    display: flex; gap: 8px; align-items: baseline;
-    margin-bottom: 4px;
-  }
   .num { color: var(--dim); font-size: 11px; letter-spacing: 2px; }
   .cat { color: var(--amber); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; }
 
@@ -186,4 +188,58 @@ const counts = goals.reduce<Record<string, number>>((acc, g) => {
     font-size: 13px; color: var(--ink); line-height: 1.5;
     margin-top: 4px;
   }
+
+  .card-head {
+    display: flex; gap: 8px; align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .card-link {
+    margin-left: auto;
+    background: none;
+    border: 1px solid transparent;
+    color: var(--dim);
+    cursor: pointer;
+    padding: 2px 4px;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .card:hover .card-link { opacity: 1; }
+  .card-link:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+  }
+  .card-link.copied {
+    color: var(--green);
+    border-color: var(--green);
+    opacity: 1;
+  }
+
+  .card.highlight {
+    border-left-color: var(--amber) !important;
+    box-shadow: 0 0 12px rgba(255,180,84,0.15);
+  }
 </style>
+
+<script>
+  // Copy link for individual goal cards
+  document.querySelectorAll('.card-link').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const id = btn.getAttribute('data-id');
+      const url = `${window.location.origin}/mission#goal-${id}`;
+      await navigator.clipboard.writeText(url);
+      btn.classList.add('copied');
+      setTimeout(() => btn.classList.remove('copied'), 1500);
+    });
+  });
+
+  // Scroll to and highlight card if URL has a hash
+  const hash = window.location.hash;
+  if (hash?.startsWith('#goal-')) {
+    const card = document.querySelector(hash);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('highlight');
+      setTimeout(() => card.classList.remove('highlight'), 3000);
+    }
+  }
+</script>
