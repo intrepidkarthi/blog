@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Visit 10+ countries">
+  <style>
+    .g { stroke: #4eff7c; }
+    .a { stroke: #ffb454; }
+    .p { stroke: #ff5f87; }
+    .c { stroke: #5fd7ff; }
+    .d { stroke: #2a8c44; }
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .fill-g { fill: #4eff7c; stroke: #4eff7c; }
+    .fill-a { fill: #ffb454; stroke: #ffb454; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #4eff7c; stroke: none; }
+    .big { font-family: 'JetBrains Mono', monospace; font-size: 38px; fill: #ffb454; stroke: none; font-weight: bold; }
+  </style>
+
+  <!-- globe circle -->
+  <circle class="g" cx="100" cy="100" r="55"/>
+  <!-- latitude lines -->
+  <ellipse class="d" cx="100" cy="100" rx="55" ry="20" style="opacity:0.4;"/>
+  <ellipse class="d" cx="100" cy="80" rx="45" ry="12" style="opacity:0.3;"/>
+  <ellipse class="d" cx="100" cy="120" rx="45" ry="12" style="opacity:0.3;"/>
+  <!-- longitude lines -->
+  <ellipse class="d" cx="100" cy="100" rx="20" ry="55" style="opacity:0.4;"/>
+  <ellipse class="d" cx="100" cy="100" rx="40" ry="55" style="opacity:0.3;"/>
+  <!-- meridian -->
+  <line class="d" x1="100" y1="45" x2="100" y2="155" style="opacity:0.3;"/>
+
+  <!-- pin markers (countries visited) -->
+  <circle class="fill-a" cx="75" cy="85" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="110" cy="78" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="95" cy="105" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="120" cy="95" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="85" cy="118" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="130" cy="108" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="68" cy="100" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="108" cy="120" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="90" cy="90" r="3" style="fill-opacity:0.7;"/>
+  <circle class="fill-a" cx="115" cy="112" r="3" style="fill-opacity:0.7;"/>
+
+  <!-- 10+ text -->
+  <text class="big" x="30" y="40">10+</text>
+
+  <!-- passport stamp style -->
+  <rect class="c" x="120" y="150" width="55" height="22" style="fill:rgba(95,215,255,0.05);"/>
+  <text x="127" y="164" style="font-family:'JetBrains Mono',monospace;font-size:9px;fill:#5fd7ff;stroke:none;letter-spacing:1px;">STAMPED</text>
+
+  <text class="mono" x="35" y="190">// passport heavy</text>
+</svg>

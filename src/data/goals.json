@@ -309,5 +309,23 @@
     "status": "todo",
     "note": "15 days, no phone, no laptop, no screens. Just a journal, a backpack, and silence. Reset the operating system.",
     "image": "/images/goals/38-digital-detox.svg"
+  },
+  {
+    "id": 39,
+    "title": "Ride a bike above 10,000 feet",
+    "category": "Adventure",
+    "status": "done",
+    "year": 2018,
+    "note": "Khardung La pass, 18,380 ft. Thin air, frozen hands, prayer flags at the top. The engine and your lungs both struggle equally.",
+    "image": "/images/goals/39-high-altitude-ride.svg"
+  },
+  {
+    "id": 40,
+    "title": "Visit 10+ countries",
+    "category": "Travel",
+    "status": "done",
+    "year": 2025,
+    "note": "Passport stamps past double digits. Each country rewires a small assumption you didn't know you had.",
+    "image": "/images/goals/40-ten-countries.svg"
   }
 ]
