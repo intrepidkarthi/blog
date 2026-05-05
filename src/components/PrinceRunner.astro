@@ -12,7 +12,7 @@
     pointer-events: none;
     cursor: default;
   }
-  @media (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: reduce), (max-width: 768px) {
     #prince-canvas { display: none; }
   }
 </style>
@@ -22,6 +22,7 @@
   const canvas = document.getElementById("prince-canvas");
   if (!canvas) return;
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (window.innerWidth <= 768) return;
   const ctx = canvas.getContext("2d");
 
   const S = 1.2, COLOR = "#4eff7c", TRAIL_COLOR = "rgba(78,255,124,0.12)";
