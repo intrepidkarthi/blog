@@ -129,6 +129,15 @@ const defaultJsonLd =
     <meta name="apple-mobile-web-app-title" content="intrepidkarthi" />
     <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PF0JKSVS9C"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-PF0JKSVS9C');
+    </script>
+
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={author} />

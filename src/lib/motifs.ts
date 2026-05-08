@@ -239,6 +239,64 @@ const motifs: Record<string, Motif> = {
       <path d="M 0 20 L -60 50" fill="none" stroke="${A}" stroke-width="2"/>
       <path d="M -60 -30 L 0 0 L 60 -30" fill="none" stroke="${D}" stroke-width="1.5" stroke-dasharray="3 3"/>
     `),
+
+  // ---------- WordPress / CMS migration ----------
+  "broken-cms": (cx, cy, s = 1) =>
+    t(cx, cy, s, `
+      <!-- cracked monitor -->
+      <rect x="-80" y="-80" width="160" height="110" fill="none" stroke="${P}" stroke-width="3" rx="4"/>
+      <line x1="-30" y1="-80" x2="10" y2="-20" stroke="${P}" stroke-width="2" opacity="0.7"/>
+      <line x1="10" y1="-20" x2="-5" y2="30" stroke="${P}" stroke-width="2" opacity="0.7"/>
+      <line x1="10" y1="-20" x2="30" y2="10" stroke="${P}" stroke-width="1.5" opacity="0.5"/>
+      <!-- wp-admin text, struck through -->
+      <text x="0" y="-30" fill="${P}" font-family="JetBrains Mono, monospace" font-size="18" text-anchor="middle" opacity="0.8">wp-admin</text>
+      <line x1="-50" y1="-35" x2="50" y2="-35" stroke="${P}" stroke-width="2.5"/>
+      <!-- database icon with X -->
+      <ellipse cx="0" cy="5" rx="35" ry="10" fill="none" stroke="${P}" stroke-width="2" opacity="0.6"/>
+      <line x1="-12" y1="-2" x2="12" y2="12" stroke="${P}" stroke-width="2.5"/>
+      <line x1="12" y1="-2" x2="-12" y2="12" stroke="${P}" stroke-width="2.5"/>
+      <!-- monitor stand -->
+      <line x1="-20" y1="30" x2="20" y2="30" stroke="${P}" stroke-width="2"/>
+      <line x1="0" y1="30" x2="0" y2="45" stroke="${P}" stroke-width="2"/>
+      <line x1="-30" y1="45" x2="30" y2="45" stroke="${P}" stroke-width="2"/>
+      <!-- scattered plugin blocks -->
+      <rect x="-75" y="55" width="20" height="14" fill="none" stroke="${D}" stroke-width="1.5" transform="rotate(-8 -65 62)"/>
+      <rect x="-40" y="60" width="20" height="14" fill="none" stroke="${D}" stroke-width="1.5" transform="rotate(5 -30 67)"/>
+      <rect x="20" y="55" width="20" height="14" fill="none" stroke="${D}" stroke-width="1.5" transform="rotate(-12 30 62)"/>
+      <rect x="55" y="60" width="20" height="14" fill="none" stroke="${D}" stroke-width="1.5" transform="rotate(10 65 67)"/>
+      <text x="0" y="90" fill="${D}" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">18 years</text>
+    `),
+
+  "static-deploy": (cx, cy, s = 1) =>
+    t(cx, cy, s, `
+      <!-- markdown file -->
+      <rect x="-80" y="-90" width="55" height="65" fill="none" stroke="${G}" stroke-width="2.5" rx="3"/>
+      <line x1="-70" y1="-75" x2="-40" y2="-75" stroke="${A}" stroke-width="2"/>
+      <line x1="-70" y1="-63" x2="-35" y2="-63" stroke="${D}" stroke-width="1.5"/>
+      <line x1="-70" y1="-53" x2="-45" y2="-53" stroke="${D}" stroke-width="1.5"/>
+      <line x1="-70" y1="-43" x2="-38" y2="-43" stroke="${D}" stroke-width="1.5"/>
+      <text x="-52" y="-80" fill="${G}" font-family="JetBrains Mono, monospace" font-size="8">.md</text>
+      <!-- arrow down to git -->
+      <line x1="-52" y1="-22" x2="-52" y2="5" stroke="${G}" stroke-width="2"/>
+      <path d="M -58 0 L -52 10 L -46 0" fill="${G}"/>
+      <!-- git icon -->
+      <circle cx="-52" cy="22" r="12" fill="none" stroke="${A}" stroke-width="2.5"/>
+      <text x="-52" y="27" fill="${A}" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="middle">git</text>
+      <!-- arrow to CDN -->
+      <line x1="-38" y1="22" x2="10" y2="22" stroke="${G}" stroke-width="2"/>
+      <path d="M 5 16 L 15 22 L 5 28" fill="${G}"/>
+      <!-- CDN / edge nodes -->
+      <circle cx="35" cy="-5" r="10" fill="none" stroke="${C}" stroke-width="2"/>
+      <circle cx="55" cy="22" r="10" fill="none" stroke="${C}" stroke-width="2"/>
+      <circle cx="35" cy="49" r="10" fill="none" stroke="${C}" stroke-width="2"/>
+      <line x1="35" y1="5" x2="45" y2="15" stroke="${D}" stroke-width="1.5"/>
+      <line x1="45" y1="29" x2="35" y2="39" stroke="${D}" stroke-width="1.5"/>
+      <text x="35" y="-2" fill="${C}" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">CDN</text>
+      <text x="55" y="25" fill="${C}" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">CDN</text>
+      <text x="35" y="52" fill="${C}" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle">CDN</text>
+      <!-- build time label -->
+      <text x="-10" y="85" fill="${G}" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">~8s build</text>
+    `),
 };
 
 const fallback: string[] = ["code-brackets"];
@@ -258,6 +316,8 @@ const RULES: Array<[string[], string]> = [
   [["travel", "trip", "papanasam", "kutladampatti", "fossconf"], "mountain"],
   [["india", "madurai", "bengaluru", "chennai"], "globe"],
   [["movies", "movie", "review"], "film"],
+  [["wordpress", "cpanel", "phpmyadmin", "migration"], "broken-cms"],
+  [["astro", "vercel", "static", "deploy", "infrastructure"], "static-deploy"],
   [["career", "leadership", "leader", "meta"], "calendar"],
   [["pandemic", "personal", "now", "life"], "cube"],
   [["tech", "engineering", "code", "dev", "frontend", "backend"], "code-brackets"],
