@@ -108,22 +108,6 @@
     "image": "/images/goals/13-hackathons.svg"
   },
   {
-    "id": 14,
-    "title": "Ship a personal hack that goes viral",
-    "category": "Build",
-    "status": "todo",
-    "note": "A weekend-built thing that hits the front page and stays useful past the news cycle.",
-    "image": "/images/goals/14-viral.svg"
-  },
-  {
-    "id": 15,
-    "title": "Own a 7-seater SUV",
-    "category": "Live",
-    "status": "deferred",
-    "note": "On the list more out of family-trip optionality than need. Currently no need — re-evaluating.",
-    "image": "/images/goals/15-suv.svg"
-  },
-  {
     "id": 16,
     "title": "Run an LLM on a local home machine",
     "category": "Build",
@@ -222,14 +206,6 @@
     "image": "/images/goals/27-instrument.svg"
   },
   {
-    "id": 28,
-    "title": "Ride a long-haul convoy trip",
-    "category": "Adventure",
-    "status": "todo",
-    "note": "Multi-day road convoy with friends — bikes or cars, single arrow on the map, fuel stops as the only forced pauses.",
-    "image": "/images/goals/28-convoy.svg"
-  },
-  {
     "id": 29,
     "title": "Build a home AI assistant like Jarvis",
     "category": "Build",
@@ -319,5 +295,13 @@
     "year": 2025,
     "note": "Passport stamps past double digits. Each country rewires a small assumption you didn't know you had.",
     "image": "/images/goals/40-ten-countries.svg"
+  },
+  {
+    "id": 41,
+    "title": "Build a large library at home",
+    "category": "Build",
+    "status": "todo",
+    "note": "Floor-to-ceiling shelves, a reading chair, good light. The kind of room where you lose hours and don't mind.",
+    "image": "/images/goals/41-library.svg"
   }
 ]
