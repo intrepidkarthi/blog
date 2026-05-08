@@ -1,5 +1,5 @@
 ---
-title: "Why I left WordPress after 18 years — and how this blog is built now"
+title: "18 Years of WordPress. I'm Done."
 date: 2026-05-09
 slug: why-i-left-wordpress-after-18-years
 excerpt: "After 18 years on WordPress — through plugin rot, database corruption, spam floods, and one too many 'critical update' emails — I rebuilt intrepidkarthi.com from scratch on Astro, Markdown, and Vercel. Here is the full architecture, the migration story, and why I should have done this a decade ago."
