@@ -25,7 +25,7 @@ I had completely forgotten this.
 
 Read those two strings together. *"I like the way I am. Earth is a nice place to enjoy our life."*
 
-That is not a brand. It is not a positioning statement. It is not even particularly grammatical. It is a twenty-year-old in a hostel room in Madurai writing the first sincere thing he can think of into a `Settings → General` form, and clicking *Save*.
+That is not a brand. It is not a positioning statement. It is not even particularly grammatical. It is a twenty-year-old in a college computer center in Madurai writing the first sincere thing he can think of into a `Settings → General` form, and clicking *Save*.
 
 I find I'm not embarrassed by it. The phrasing is awkward and the punctuation is off, but the actual claim is — *I like the way I am, and the world is a place to enjoy* — fine. There are people decades older than that twenty-year-old whose blog tagline is some version of *"Hustle harder. Sleep when you're dead."* and the contrast does not flatter them.
 
