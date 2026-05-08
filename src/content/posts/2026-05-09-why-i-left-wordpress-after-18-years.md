@@ -6,7 +6,7 @@ excerpt: "After 18 years on WordPress — through plugin rot, database corruptio
 tags: [meta, architecture, astro, wordpress, blogging, infrastructure, vercel]
 ---
 
-I started this blog in December 2007 on WordPress. The first post was *"Let us walk on 2008"* — written from the college computer center in Madurai. I didn't even have a credit card back then — I borrowed one from my friend's dad to pay for the FastWebHost plan. The blog's name was [*"I like the way I am"*](/writing/i-like-the-way-i-am-the-blogs-original-name).
+I started this blog in December 2007 on WordPress. The first post was *"Let us walk on 2008"* — written from the college computer center in Madurai. I didn't have a credit card back then — I borrowed one from my friend's dad to pay for the FastWebHost plan. The blog's name was [*"I like the way I am"*](/writing/i-like-the-way-i-am-the-blogs-original-name).
 
 For the next eighteen years, WordPress was the engine. Through college, Symantec, GazeMatic, Chumbak, nference, Pi42 — every time I wanted to put words on the internet, it went through `wp-admin`.
 
