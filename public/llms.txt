@@ -1,0 +1,41 @@
+# intrepidkarthi.com
+
+> Personal website of Karthikeyan NG (Karthik) — engineer, author, speaker, and full-time trader on perpetual futures markets.
+
+## About
+
+Karthik is a builder-architect with 16+ years shipping software. Based between Bengaluru and Dubai. His work spans crypto infrastructure, AI/ML, trading systems, and product engineering.
+
+Career highlights: CTO at Pi42 (crypto exchange), Director of Engineering at nference (healthcare AI on 2.5PB data), Head of Tech at Chumbak, founder of GazeMatic (420k+ downloads). Published two ML books with Packt in 2018. TEDx speaker (2017). 18+ hackathon wins.
+
+## Current Projects
+
+- [feaws.xyz](https://feaws.xyz): Quantitative trading lab for Bitcoin/crypto. 70% accuracy on 30 test windows. Public whitepaper + live trades. Stack: Python, Polymarket API, GDELT, sentiment analysis.
+- [DailyVox](https://intrepidkarthi.com/writing/dailyvox-why-i-built-a-voice-journal-that-stays-on-your-phone/): Offline AI voice diary for iOS. 100% on-device, zero cloud, AES-256-GCM encryption.
+- [VisionPay.com](https://visionpay.com): Stablecoin settlement infrastructure.
+- [1wealth.ai](https://1wealth.ai): Crypto fintech infrastructure.
+
+## Published Books
+
+- [Mobile Artificial Intelligence Projects](https://intrepidkarthi.com/lab/) (Packt, 2018): TensorFlow Lite + Core ML, end-to-end mobile AI projects.
+- [Machine Learning for Mobile Applications](https://intrepidkarthi.com/lab/) (Packt, 2018): Mental models and architecture decisions for mobile ML.
+
+## Pages
+
+- [Home](https://intrepidkarthi.com/): Bio and recent blog posts
+- [About](https://intrepidkarthi.com/about/): Full professional background, career timeline, education
+- [Mission](https://intrepidkarthi.com/mission/): 41 life goals across build, adventure, travel, learn, lead categories with progress tracking
+- [Lab](https://intrepidkarthi.com/lab/): Active projects, books, and past work
+- [Writing](https://intrepidkarthi.com/writing/): Blog archive — 98 posts since 2008
+- [Contact](https://intrepidkarthi.com/contact/): Email, mentoring, advisory, social links
+
+## Writing Topics
+
+Karthik writes about crypto and stablecoins, trading systems, product building, AI/ML, hackathons, personal reflections, and tech tutorials. The blog archive spans from 2008 to present.
+
+## Contact
+
+- Email: intrepidkarthi@gmail.com
+- Twitter: [@intrepidkarthi](https://twitter.com/intrepidkarthi)
+- GitHub: [intrepidkarthi](https://github.com/intrepidkarthi)
+- LinkedIn: [intrepidkarthi](https://linkedin.com/in/intrepidkarthi)

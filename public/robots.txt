@@ -21,5 +21,8 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
+# LLM context
+# https://intrepidkarthi.com/llms.txt
+
 # Sitemap (Astro generates this automatically)
 Sitemap: https://intrepidkarthi.com/sitemap-index.xml
