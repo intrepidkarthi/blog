@@ -1,0 +1,271 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("posts", ({ data }) => !data.draft);
+const bySlug: Record<string, typeof all[0]> = {};
+for (const p of all) {
+  bySlug[p.data.slug ?? p.id] = p;
+}
+
+interface SeriesEntry { slug: string; }
+interface Series {
+  id: string;
+  title: string;
+  subtitle: string;
+  entries: SeriesEntry[];
+}
+
+const series: Series[] = [
+  {
+    id: "crypto-quant",
+    title: "crypto / quant infrastructure",
+    subtitle: "Perp matching engines, funding rates, liquidation cascades, backtest discipline, and the case for publishing your strategy. Anchored by the feaws lab.",
+    entries: [
+      { slug: "anatomy-of-a-perpetual-futures-matching-engine" },
+      { slug: "funding-rates-explained-without-the-handwaving" },
+      { slug: "the-cost-of-being-early-in-indian-crypto" },
+      { slug: "1-percent-tds-and-derivatives-volume" },
+      { slug: "latency-budgets-retail-prop-market-maker" },
+      { slug: "inr-margined-perps-why-they-had-to-exist" },
+      { slug: "funding-rate-arbitrage-in-practice" },
+      { slug: "liquidation-cascades-the-30-seconds-after-btc-drops-3" },
+      { slug: "polymarket-as-leading-indicator" },
+      { slug: "feaws-how-i-built-a-bitcoin-forecasting-engine-from-scratch" },
+      { slug: "feaws-whitepaper-explained" },
+      { slug: "why-backtests-lie-survivorship-look-ahead-bias-crypto" },
+      { slug: "the-case-for-publishing-your-strategy" },
+      { slug: "what-i-learned-from-running-a-public-pnl" },
+    ],
+  },
+  {
+    id: "on-device-ai",
+    title: "on-device AI / iOS (DailyVox)",
+    subtitle: "The Apple-native stack for a privacy-first voice journaling app: speech, NLP, encryption, sync, widgets, and the TwinEngine that builds a personality model on the phone.",
+    entries: [
+      { slug: "why-journaling-apps-die-after-60-days" },
+      { slug: "designing-for-honesty" },
+      { slug: "cold-start-ux-for-empty-journal-app" },
+      { slug: "building-a-second-brain-that-stays-on-your-phone" },
+      { slug: "from-writing-to-speaking-journal-modes" },
+      { slug: "sfspeechrecognizer-on-device-deep-dive" },
+      { slug: "nltagger-gotchas-nobody-warned-me" },
+      { slug: "coredata-cloudkit-encrypted-sync" },
+      { slug: "apple-intelligence-vs-openai-tradeoffs" },
+      { slug: "cryptokit-aes-256-gcm-in-ios-apps" },
+      { slug: "widgetkit-appintents-habit-forming-journaling" },
+      { slug: "why-data-not-collected-is-a-moat" },
+      { slug: "dailyvox-why-i-built-a-voice-journal-that-stays-on-your-phone" },
+      { slug: "the-twinengine-personality-model-on-device" },
+      { slug: "the-economics-of-on-device-ai" },
+    ],
+  },
+  {
+    id: "trading-psychology",
+    title: "trading psychology",
+    subtitle: "The behavioural side of trading. Position sizing math, the bull-market mistakes that repeat, journaling as a forcing function, and how to run a losing-week post-mortem.",
+    entries: [
+      { slug: "four-mistakes-every-bull-market-since-2017" },
+      { slug: "position-sizing-for-retail-the-math" },
+      { slug: "the-behaviour-gap-in-your-trade-journal" },
+      { slug: "why-leverage-feels-different-at-3am" },
+      { slug: "your-brain-vs-the-bull-run-taming-fomo-before-it-ruins-your-trades" },
+      { slug: "journaling-your-trades-the-meta-layer" },
+      { slug: "personal-post-mortem-on-a-losing-week" },
+    ],
+  },
+  {
+    id: "india-fintech",
+    title: "India fintech & regulation",
+    subtitle: "Five years of Indian crypto regulation, from the 2018 RBI ban through TDS, FIU registration, INR-margined perps, and the path to INR stablecoins.",
+    entries: [
+      { slug: "rbi-vs-crypto-exchange-timeline" },
+      { slug: "why-fiu-registration-changed-everything" },
+      { slug: "1-percent-tds-and-derivatives-volume" },
+      { slug: "indian-crypto-winter-was-regulatory-winter" },
+      { slug: "web3-in-india-after-1-percent-tds-what-survived" },
+      { slug: "indian-retail-vs-us-retail-trader-behaviour" },
+      { slug: "inr-stablecoins-when-how-who-block" },
+    ],
+  },
+  {
+    id: "blogging-infra",
+    title: "long-game blogging / personal infrastructure",
+    subtitle: "The WordPress → Astro migration, the 2022 webshell compromise, OG image pipelines, RSS, llms.txt, and the 18-year retrospective on the blog as a compounding asset.",
+    entries: [
+      { slug: "why-i-left-wordpress-after-18-years" },
+      { slug: "what-2022-webshell-compromise-taught-me" },
+      { slug: "migrating-without-losing-seo-juice-checklist" },
+      { slug: "og-image-pipeline-i-wish-someone-had-given-me" },
+      { slug: "llms-txt-in-practice" },
+      { slug: "rss-in-2026-best-channel-nobody-uses" },
+      { slug: "building-topical-authority-from-zero-traffic" },
+      { slug: "personal-site-as-compounding-asset" },
+    ],
+  },
+  {
+    id: "builder-philosophy",
+    title: "builder / philosophy",
+    subtitle: "Mission as a working list, publishing trades live, the home library, the 12/12 birthday checkpoint, healthywealthy at year three. Personal voice on long arcs.",
+    entries: [
+      { slug: "mission-as-a-working-list-not-a-bucket-list" },
+      { slug: "the-home-library-project" },
+      { slug: "why-i-publish-trades-live" },
+      { slug: "healthywealthy-at-year-three" },
+      { slug: "i-ve-been-writing-a-diary-for-20-years-then-i-couldn-t-anymore" },
+    ],
+  },
+  {
+    id: "ml-hackathons",
+    title: "ML / hackathon legacy",
+    subtitle: "Writing two ML books, the TEDx talk worth rewriting, the Google Indic Hackathon retrospective, and the hackathon-to-company pipeline.",
+    entries: [
+      { slug: "what-writing-two-ml-books-taught-me" },
+      { slug: "hackathon-to-product-to-company-pipeline" },
+      { slug: "google-indic-hackathon-retrospective" },
+      { slug: "tedx-rewrite-building-better-software" },
+      { slug: "from-insurance-fraud-to-crypto-fraud-signals" },
+      { slug: "from-hackathons-to-publishing-ml-books" },
+      { slug: "tedx-building-better-software" },
+      { slug: "insurance-fraud-detection-pipeline" },
+    ],
+  },
+];
+
+function dateOf(slug: string): Date | null {
+  const post = bySlug[slug];
+  return post ? post.data.date : null;
+}
+function titleOf(slug: string): string {
+  const post = bySlug[slug];
+  return post ? post.data.title : slug;
+}
+function fmtDate(d: Date | null): string {
+  if (!d) return "—";
+  return d.toISOString().slice(0, 10);
+}
+---
+
+<BaseLayout
+  title="Series"
+  description="Posts grouped into thematic reading orders. Pick a series and read top-to-bottom."
+  active="writing"
+  file="~/intrepidkarthi/series"
+>
+  <div class="content">
+    <div class="pre-title"><span class="arrow">$</span> ls ~/writing/series/</div>
+    <h1><span class="hash">#</span>series</h1>
+    <p class="lede">
+      The blog has 150+ posts. Most of them belong to a series — multiple posts on the same theme,
+      meant to be read in order. Each series below is a coherent reading list, sorted chronologically.
+    </p>
+
+    {series.map((s) => (
+      <section class="series-block" id={s.id}>
+        <h2 class="series-head">
+          <span class="hash">##</span> {s.title}
+          <span class="count">· {s.entries.filter((e) => bySlug[e.slug]).length} posts</span>
+        </h2>
+        <p class="series-sub">{s.subtitle}</p>
+
+        <ol class="series-list">
+          {s.entries.map((e, i) => {
+            const post = bySlug[e.slug];
+            if (!post) return null;
+            return (
+              <li class="series-item">
+                <span class="num">{String(i + 1).padStart(2, "0")}</span>
+                <a href={`/writing/${e.slug}`}>{titleOf(e.slug)}</a>
+                <span class="date">{fmtDate(dateOf(e.slug))}</span>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+    ))}
+
+    <div class="footer-note">
+      <span class="dim">→</span> Full chronological archive at <a href="/writing">/writing</a>.
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .content { max-width: 900px; }
+  .pre-title {
+    color: var(--dim); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .pre-title .arrow { color: var(--green); }
+  h1 {
+    font-family: var(--font-vt); font-size: 36px; line-height: 1;
+    color: var(--green-bright);
+    text-shadow: 0 0 6px var(--green-glow);
+    margin-bottom: 6px;
+  }
+  h1 .hash { color: var(--pink); margin-right: 8px; }
+  .lede {
+    color: var(--ink); margin-bottom: 36px;
+    max-width: 720px;
+  }
+
+  .series-block { margin-bottom: 48px; }
+  .series-head {
+    font-family: var(--font-vt); font-size: 24px;
+    color: var(--green-bright);
+    text-shadow: 0 0 4px var(--green-glow);
+    margin-bottom: 6px;
+    scroll-margin-top: 80px;
+  }
+  .series-head .hash { color: var(--pink); margin-right: 8px; }
+  .series-head .count {
+    color: var(--dim); font-family: var(--font-mono);
+    font-size: 13px; font-weight: 400;
+    text-shadow: none;
+    margin-left: 8px;
+  }
+  .series-sub {
+    color: var(--dim); font-size: 14px;
+    margin-bottom: 16px;
+    max-width: 720px;
+  }
+
+  .series-list {
+    list-style: none; padding: 0; margin: 0;
+    border-top: 1px dashed var(--line);
+  }
+  .series-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .series-item .num {
+    color: var(--dim); font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .series-item a {
+    color: var(--ink); text-decoration: none;
+    border-bottom: 1px dashed transparent;
+    font-size: 14px;
+  }
+  .series-item a:hover {
+    color: var(--green-bright); border-bottom-color: var(--green);
+  }
+  .series-item .date {
+    color: var(--dim); font-family: var(--font-mono);
+    font-size: 11px; white-space: nowrap;
+  }
+
+  .footer-note {
+    margin-top: 36px; padding-top: 18px;
+    border-top: 1px dashed var(--line-bright);
+    color: var(--dim); font-size: 13px;
+  }
+  .footer-note .dim { color: var(--green); }
+  .footer-note a { color: var(--cyan); text-decoration: none;
+    border-bottom: 1px dashed var(--cyan); }
+</style>

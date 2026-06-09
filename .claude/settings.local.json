@@ -22,7 +22,13 @@
       "Bash(find:*)",
       "Bash(npm list:*)",
       "Bash(npm audit:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebSearch",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "Read(//tmp/**)",
+      "Bash(grep -h \"^tags:\" /Users/karthikeyanng/CascadeProjects/intrepidkarthi/src/content/posts/*.md)",
+      "WebFetch(domain:intrepidkarthi.com)",
+      "WebFetch(domain:www.noahzender.com)"
     ]
   }
 }

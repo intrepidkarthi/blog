@@ -20,18 +20,88 @@ Career highlights: CTO at Pi42 (crypto exchange), Director of Engineering at nfe
 - [Mobile Artificial Intelligence Projects](https://intrepidkarthi.com/lab/) (Packt, 2018): TensorFlow Lite + Core ML, end-to-end mobile AI projects.
 - [Machine Learning for Mobile Applications](https://intrepidkarthi.com/lab/) (Packt, 2018): Mental models and architecture decisions for mobile ML.
 
+## High-priority writing
+
+### Crypto / quant infrastructure
+
+- [feaws — the quant lab is public, and so is the math](https://intrepidkarthi.com/writing/feaws-whitepaper-explained.md): Plain-English walkthrough of the feaws whitepaper. Five hypotheses, one engine, every trade public.
+- [feaws: how I built a Bitcoin forecasting engine from scratch](https://intrepidkarthi.com/writing/feaws-how-i-built-a-bitcoin-forecasting-engine-from-scratch.md): GARCH + ML + Merton jump diffusion + HMM regime detection, all walked through with numbers.
+- [Anatomy of a perpetual futures matching engine](https://intrepidkarthi.com/writing/anatomy-of-a-perpetual-futures-matching-engine.md): What actually happens between an order hitting the gateway and a fill landing on the wire.
+- [Funding rates, explained without the hand-waving](https://intrepidkarthi.com/writing/funding-rates-explained-without-the-handwaving.md): The formula, the cadence, and how to read funding as a regime indicator.
+- [Liquidation cascades — the 30 seconds after BTC drops 3%](https://intrepidkarthi.com/writing/liquidation-cascades-the-30-seconds-after-btc-drops-3.md): Why the cascade is structural, not panic, with the May 19 2021 walkthrough.
+- [Why backtests lie — survivorship and look-ahead bias in crypto tick data](https://intrepidkarthi.com/writing/why-backtests-lie-survivorship-look-ahead-bias-crypto.md): The seven biases that make backtests look better than reality.
+- [The case for publishing your strategy](https://intrepidkarthi.com/writing/the-case-for-publishing-your-strategy.md): Why transparency is the edge, not the leak. Five claims, one falsifiable test.
+- [INR-margined perps — why they had to exist](https://intrepidkarthi.com/writing/inr-margined-perps-why-they-had-to-exist.md): The structural currency risk hidden inside USDT-margined perps for Indian traders.
+- [What I learned from running a public PnL](https://intrepidkarthi.com/writing/what-i-learned-from-running-a-public-pnl.md): A year of publicly broadcast trading PnL — five lessons that do not show up in any trading book.
+
+### On-device AI / iOS infrastructure (DailyVox)
+
+- [DailyVox: why I built a voice journal that stays on your phone](https://intrepidkarthi.com/writing/dailyvox-why-i-built-a-voice-journal-that-stays-on-your-phone.md): The launch post. Nine Apple frameworks, zero third-party dependencies, "Data Not Collected" certification.
+- [SFSpeechRecognizer deep dive](https://intrepidkarthi.com/writing/sfspeechrecognizer-on-device-deep-dive.md): What `requiresOnDeviceRecognition = true` actually gets you. Architecture, latency, battery, gotchas.
+- [Apple Intelligence vs sending it to OpenAI — the actual tradeoffs](https://intrepidkarthi.com/writing/apple-intelligence-vs-openai-tradeoffs.md): Same task, two providers. Latency, cost, capability, privacy with numbers.
+- [Why "Data Not Collected" is a moat in 2026](https://intrepidkarthi.com/writing/why-data-not-collected-is-a-moat.md): Apple's strictest privacy label. What it actually requires and why the gap will widen.
+- [The TwinEngine — building a personality model entirely on-device](https://intrepidkarthi.com/writing/the-twinengine-personality-model-on-device.md): Architecture for a Twin that runs entirely on iPhone — extraction, aggregation, query layers.
+- [CoreData + CloudKit encrypted sync without trusting Apple](https://intrepidkarthi.com/writing/coredata-cloudkit-encrypted-sync.md): User-held keys, AES-256-GCM, iCloud Keychain key sync, conflict resolution.
+- [CryptoKit AES-256-GCM in iOS apps — what is easy, what is not](https://intrepidkarthi.com/writing/cryptokit-aes-256-gcm-in-ios-apps.md): Practical guide for shipping authenticated encryption correctly.
+- [The economics of on-device AI — zero API cost is not the same as free](https://intrepidkarthi.com/writing/the-economics-of-on-device-ai.md): Engineering cost, device-tier requirements, capability ceiling, marketing premium.
+
+### India fintech & regulation
+
+- [The RBI vs crypto exchange timeline — 2018 to today](https://intrepidkarthi.com/writing/rbi-vs-crypto-exchange-timeline.md): Four years of regulatory whiplash, in dates, with the operator-side cost of each step.
+- [Why FIU registration changed everything for Indian crypto](https://intrepidkarthi.com/writing/why-fiu-registration-changed-everything.md): The March 2023 gazette that brought VDAs under PMLA — what the market has not absorbed.
+- [The Indian crypto winter was actually a regulatory winter](https://intrepidkarthi.com/writing/indian-crypto-winter-was-regulatory-winter.md): Why the 2022-2024 Indian curve does not match the global one, and what the survivors look like.
+- [Web3 in India after the 1% TDS — what survived](https://intrepidkarthi.com/writing/web3-in-india-after-1-percent-tds-what-survived.md): The category-by-category survivor census of post-TDS Indian Web3.
+- [How Indian retail traders behave differently from US retail](https://intrepidkarthi.com/writing/indian-retail-vs-us-retail-trader-behaviour.md): Six measurable differences and what they mean for product decisions.
+- [INR stablecoins — when, how, who, and what could block them](https://intrepidkarthi.com/writing/inr-stablecoins-when-how-who-block.md): The mechanism, the candidate issuers, and the three blockers.
+
+### Trading psychology
+
+- [The four mistakes I have made in every bull market since 2017](https://intrepidkarthi.com/writing/four-mistakes-every-bull-market-since-2017.md): Same four cognitive defaults, same order, every cycle.
+- [Position sizing for retail — the math no one shows you](https://intrepidkarthi.com/writing/position-sizing-for-retail-the-math.md): Kelly, half-Kelly, and why 5% feels safe but is not.
+- [The behaviour gap — measure it in your own trade journal](https://intrepidkarthi.com/writing/the-behaviour-gap-in-your-trade-journal.md): How to compute your personal gap and what it reveals.
+- [Why leverage feels different at 3 AM](https://intrepidkarthi.com/writing/why-leverage-feels-different-at-3am.md): The physiological, structural, and behavioural cases for hard-coded position limits.
+
+### Long-game blogging / personal infrastructure
+
+- [18 Years of WordPress. I'm Done.](https://intrepidkarthi.com/writing/why-i-left-wordpress-after-18-years.md): Full migration story from WordPress to Astro + Markdown + Vercel.
+- [What the 2022 webshell compromise taught me about owning my archive](https://intrepidkarthi.com/writing/what-2022-webshell-compromise-taught-me.md): Own the content, do not rent the runtime.
+- [Personal site as compounding asset — the 18-year retrospective](https://intrepidkarthi.com/writing/personal-site-as-compounding-asset.md): What compounded, what did not, what to do differently.
+- [llms.txt in practice](https://intrepidkarthi.com/writing/llms-txt-in-practice.md): What it is, what to put in it, the current crawler landscape.
+- [Building topical authority from zero traffic](https://intrepidkarthi.com/writing/building-topical-authority-from-zero-traffic.md): The 3-5-7 framework and the 12-month compounding curve.
+
+### Builder philosophy
+
+- [Mission as a working list, not a bucket list](https://intrepidkarthi.com/writing/mission-as-a-working-list-not-a-bucket-list.md): Thirteen years of running this list and what it produced.
+- [Why I publish trades live](https://intrepidkarthi.com/writing/why-i-publish-trades-live.md): The asymmetry behind the choice and one warning about who it does not work for.
+- [The home library project — why physical books still win](https://intrepidkarthi.com/writing/the-home-library-project.md): 800 books, three layers of compounding, and why young families should build them.
+
+### ML / hackathon legacy
+
+- [What writing two ML books taught me about teaching ML](https://intrepidkarthi.com/writing/what-writing-two-ml-books-taught-me.md): Why the royalty was beside the point and the byproducts were the return.
+- [The TEDx talk I would rewrite today](https://intrepidkarthi.com/writing/tedx-rewrite-building-better-software.md): The 2017 Building Better Software talk revisited in 2024.
+- [Hackathon → product → company](https://intrepidkarthi.com/writing/hackathon-to-product-to-company-pipeline.md): The five-stage pipeline that actually works.
+
 ## Pages
 
 - [Home](https://intrepidkarthi.com/): Bio and recent blog posts
 - [About](https://intrepidkarthi.com/about/): Full professional background, career timeline, education
 - [Mission](https://intrepidkarthi.com/mission/): 41 life goals across build, adventure, travel, learn, lead categories with progress tracking
 - [Lab](https://intrepidkarthi.com/lab/): Active projects, books, and past work
-- [Writing](https://intrepidkarthi.com/writing/): Blog archive — 98 posts since 2008
+- [Writing](https://intrepidkarthi.com/writing/): Blog archive — 152 posts since 2007
+- [Series](https://intrepidkarthi.com/series/): Posts grouped into thematic reading orders
 - [Contact](https://intrepidkarthi.com/contact/): Email, mentoring, advisory, social links
 
 ## Writing Topics
 
-Karthik writes about crypto and stablecoins, trading systems, product building, AI/ML, hackathons, personal reflections, and tech tutorials. The blog archive spans from 2008 to present.
+Karthik writes about crypto and stablecoins, perpetual futures, quantitative trading, on-device AI on iOS, India fintech regulation, trading psychology, ML/AI books, hackathons, personal infrastructure, and long-form retrospectives. The blog archive spans from 2007 to present.
+
+## Excluded
+
+- /admin/
+- /draft/
+- /preview/
+- /cdn-cgi/
+- /internal/
 
 ## Contact
 
