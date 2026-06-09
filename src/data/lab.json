@@ -47,7 +47,7 @@
           "url_label": "intrepidkarthi.com/minecraft",
           "year": 2025,
           "image": "/images/lab/06-minecraft.svg",
-          "summary": "A voxel sandbox built from scratch for my daughter Adyah. Custom WebGL engine, no game libraries. Build, survive nights, fight mobs, find 5 golden stars. Saves locally. Runs in any browser and as an Electron desktop app.",
+          "summary": "A voxel sandbox built from scratch for my son Adyah. Custom WebGL engine, no game libraries. Build, survive nights, fight mobs, find 5 golden stars. Saves locally. Runs in any browser and as an Electron desktop app.",
           "highlights": [
             { "k": "engine", "v": "custom WebGL voxel · no game libraries" },
             { "k": "platforms", "v": "browser + Electron desktop (macOS, Windows)" },
