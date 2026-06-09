@@ -5,7 +5,7 @@ import ShareBar from "../../components/ShareBar.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-  const all = await getCollection("posts", ({ data }) => !data.draft);
+  const all = await getCollection("posts", ({ data }) => !data.draft && data.date <= new Date());
   return all.map((post) => ({
     params: { slug: post.data.slug ?? post.id },
     props: { post },

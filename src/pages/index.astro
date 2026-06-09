@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
-const all = await getCollection("posts", ({ data }) => !data.draft);
+const all = await getCollection("posts", ({ data }) => !data.draft && data.date <= new Date());
 const recent = all
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 8);

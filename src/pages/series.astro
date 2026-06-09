@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
-const all = await getCollection("posts", ({ data }) => !data.draft);
+const all = await getCollection("posts", ({ data }) => !data.draft && data.date <= new Date());
 const bySlug: Record<string, typeof all[0]> = {};
 for (const p of all) {
   bySlug[p.data.slug ?? p.id] = p;
