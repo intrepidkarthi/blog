@@ -80,6 +80,17 @@ Career highlights: CTO at Pi42 (crypto exchange), Director of Engineering at nfe
 - [What writing two ML books taught me about teaching ML](https://intrepidkarthi.com/writing/what-writing-two-ml-books-taught-me.md): Why the royalty was beside the point and the byproducts were the return.
 - [The TEDx talk I would rewrite today](https://intrepidkarthi.com/writing/tedx-rewrite-building-better-software.md): The 2017 Building Better Software talk revisited in 2024.
 - [Hackathon → product → company](https://intrepidkarthi.com/writing/hackathon-to-product-to-company-pipeline.md): The five-stage pipeline that actually works.
+- [Swiggy hackathon — real-time anomaly dashboards before they were standard](https://intrepidkarthi.com/writing/swiggy-hackathon-real-time-anomaly-dashboards.md): Kafka + Apache Storm + PostgreSQL geospatial in a weekend.
+- [pipelineDB and what choosing dead infrastructure teaches you](https://intrepidkarthi.com/writing/pipelinedb-and-choosing-dead-infrastructure.md): When the database that powered your project gets acquired and EOLed.
+- [PPDM — privacy-preserving data mining before differential privacy was mainstream](https://intrepidkarthi.com/writing/ppdm-privacy-preserving-data-mining-before-differential-privacy.md): K-anonymity, generalisation, perturbation, anatomisation — the 2018 toolkit.
+- [Teaching 50 hours of full-stack engineering](https://intrepidkarthi.com/writing/teaching-50-hours-of-full-stack-engineering.md): What worked, what didn't, and what I'd cut today.
+
+### engineering archive
+
+- [Twelve hours setting up RabbitMQ on Ubuntu for an Android chat app](https://intrepidkarthi.com/writing/twelve-hours-setting-up-rabbitmq-on-ubuntu-for-android.md): 2013 mobile messaging infrastructure before FCM was usable.
+- [The four device IDs on Android — what changed since 2013](https://intrepidkarthi.com/writing/the-four-device-ids-on-android.md): Secure Android ID, GSF, UUID, IMEI — what each was for and what happened to it.
+- [Porting sdp-transform to Java for WebRTC on Android](https://intrepidkarthi.com/writing/porting-sdp-transform-to-java-for-webrtc-android.md): The Java port of the JS/C++ SDP parser for WebRTC.
+- [Why I built another Go microservices boilerplate in 2025](https://intrepidkarthi.com/writing/why-i-built-another-go-microservices-boilerplate-in-2025.md): gRPC + REST + Kafka + sqlc + the specific opinions baked in.
 
 ## Pages
 
