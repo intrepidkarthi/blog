@@ -37,6 +37,23 @@
             { "k": "models", "v": "on-device speech-to-text + on-device LLM" },
             { "k": "pricing", "v": "free, no upsell" }
           ]
+        },
+        {
+          "id": "minecraft",
+          "name": "minecrAft",
+          "tagline": "Voxel building & survival game, made for Adyah",
+          "status": "active",
+          "url": "/minecraft/",
+          "url_label": "intrepidkarthi.com/minecraft",
+          "year": 2025,
+          "image": "/images/lab/06-minecraft.svg",
+          "summary": "A voxel sandbox built from scratch for my daughter Adyah. Custom WebGL engine, no game libraries. Build, survive nights, fight mobs, find 5 golden stars. Saves locally. Runs in any browser and as an Electron desktop app.",
+          "highlights": [
+            { "k": "engine", "v": "custom WebGL voxel · no game libraries" },
+            { "k": "platforms", "v": "browser + Electron desktop (macOS, Windows)" },
+            { "k": "controls", "v": "WASD · mouse · E inventory · 1-9 hotbar" },
+            { "k": "made for", "v": "Adyah" }
+          ]
         }
       ]
     },
