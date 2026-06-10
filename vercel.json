@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/writing/onthego-civic-tech-hackathon",
+      "destination": "/writing/onthego-civic-accountability-at-mobilesparks-2015",
+      "permanent": true
+    }
+  ]
+}

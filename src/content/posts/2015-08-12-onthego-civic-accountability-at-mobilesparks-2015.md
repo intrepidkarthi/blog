@@ -73,6 +73,12 @@ The team. Vinay Venu and I have stayed in touch since 2015. Prasanna Venkatraman
 
 That is the durable output of a hackathon. The code dies. The team relationships, if they survive the weekend, can compound for years.
 
+## what I would build differently now
+
+Three things age poorly in a 2015 civic-tech app. The centralized stack — Parse died; today the whole backend belongs on something like Supabase, and the spin-up would take 4 hours, not 36. The lack of verifiability — a 2015 photo + GPS could be faked; today you can hash and timestamp the submission cheaply on a public chain, so citizens get a tamper-proof receipt and politicians cannot quietly delete unflattering posts. And the missing model layer — today the photo classifier should auto-tag the issue, the location mapper should resolve to the correct ward and councillor, and a small model should summarize each politician's open-vs-closed scoreboard monthly. None of that needs humans anymore.
+
+The product idea is, if anything, more relevant now than it was then. The execution rails just got a thousand times better. The lesson that did transfer from the weekend: the only feature that matters is the one you can demo in 90 seconds. That muscle has been more useful in years of CTO work than any architecture textbook.
+
 ## the close
 
 OnTheGo did not change Indian civic accountability. The repo sits on GitHub as evidence that the idea was tried. The seven stars it has accumulated since 2015 are mostly people googling around "MobileSparks 2015" or "Make For India app" and finding it.
