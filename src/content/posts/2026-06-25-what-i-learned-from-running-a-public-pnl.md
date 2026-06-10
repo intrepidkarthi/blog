@@ -2,11 +2,11 @@
 title: "what I learned from running a public PnL"
 date: 2026-06-25
 slug: what-i-learned-from-running-a-public-pnl
-excerpt: "A year of publicly-broadcast trading PnL. The good months were teaching moments. The bad months were better. Five lessons that do not show up in any trading book."
+excerpt: "Three years of a public trade log, now a live PnL dashboard on feaws. The good months were teaching moments. The bad months were better. Five lessons that do not show up in any trading book."
 tags: [feaws, trading, transparency, pnl, lessons]
 ---
 
-I have run a publicly-broadcast PnL on the feaws system for a year now. Every trade is logged, every position size is visible, every drawdown is on the public dashboard. There is nowhere to hide.
+I have published my trades for three years now — first as a manual public log, and since early 2026 as a live PnL on the feaws dashboard. Every trade is logged, every position size is visible, every drawdown is public. There is nowhere to hide.
 
 The strategy itself I have written about elsewhere. The technical mechanics are not the interesting part. The interesting part is what running it in public has taught me about my own behaviour, the behaviour of the audience, and the structural differences between private and public trading.
 
@@ -16,7 +16,7 @@ Five lessons, in rough order of how much they surprised me.
 
 The most common worry from operators considering a public PnL is "if I publish my trades, people will copy me, the strategy will get crowded, the edge will disappear."
 
-After a year, the audience-copying effect is much smaller than I expected. Most of the readers do not trade. Of the ones who do trade, most do not have the infrastructure to act on the signal at the relevant speed. Of the ones who can act, most do not size meaningfully enough to move the market. The compound result is that publishing the trades has not noticeably degraded the strategy's edge.
+Three years in, the audience-copying effect is much smaller than I expected. Most of the readers do not trade. Of the ones who do trade, most do not have the infrastructure to act on the signal at the relevant speed. Of the ones who can act, most do not size meaningfully enough to move the market. The compound result is that publishing the trades has not noticeably degraded the strategy's edge.
 
 What I underestimated was how much the audience's *interest* differs from their *action*. People read the trades because they are interesting. They do not trade them because trading is hard and they have other things to do.
 
@@ -30,15 +30,15 @@ The first time I had a losing month in public, I had calibrated for the disappoi
 
 The temptation to spin the loss is the temptation that destroys public traders. The discipline is to publish the loss the same way you publish the wins — with the timestamp, the size, the reason — and let the readers form their own opinion.
 
-A year in, the disappointment-vs-visibility ratio has flipped. The losses still feel bad but they feel bad in a private way. The visibility part has become normal. The audience does not respond to losses the way I expected; they ask better questions, they spot patterns, they sometimes notice things I missed. The public layer turned out to be net-positive even on bad months.
+Three years in, the disappointment-vs-visibility ratio has flipped. The losses still feel bad but they feel bad in a private way. The visibility part has become normal. The audience does not respond to losses the way I expected; they ask better questions, they spot patterns, they sometimes notice things I missed. The public layer turned out to be net-positive even on bad months.
 
 ## 3. the discipline benefit is real
 
 The pre-commitment effect is real and meaningful. Every public trade requires entry price, stop, target, hypothesis, and size at the moment of entry. The act of typing these fields filters out the trades I would have entered without them.
 
-In the year before the public log, my trade journal (private) had entry and exit prices for maybe 60% of trades, hypotheses for maybe 30%, and emotional states for maybe 5%. The other fields, I told myself I would fill in later. Later never came.
+In the years before the public log, my trade journal (private) had entry and exit prices for maybe 60% of trades, hypotheses for maybe 30%, and emotional states for maybe 5%. The other fields, I told myself I would fill in later. Later never came.
 
-In the year of the public log, every closed trade has every field filled in, at the time of entry, with no later editing. The completeness of the data has produced post-trade analysis that is meaningfully better than anything I produced in 16 years of private trading.
+Since the log went public, every closed trade has every field filled in, at the time of entry, with no later editing. The completeness of the data has produced post-trade analysis that is meaningfully better than anything I produced in the six years of private trading that came before it.
 
 The discipline is downstream of the audience. The audience is the enforcement. I would not have produced this data set on my own discipline alone.
 
@@ -54,7 +54,7 @@ The third temptation is to stop publishing during the drawdown. To "take a break
 
 The honest response is to publish the drawdown the same way you publish the wins. Short. Factual. No editorialising. The audience reads the numbers; they form their own conclusions; the trader does not have to translate.
 
-A year in, I have had two stretches of meaningful drawdown (the longest was nine weeks). The temptations were strong each time. The pattern is the same each time. The right answer is the same each time.
+Across three years of the public log, I have had two stretches of meaningful drawdown (the longest was nine weeks). The temptations were strong each time. The pattern is the same each time. The right answer is the same each time.
 
 ## 5. the public log is a different trading career
 
@@ -70,10 +70,10 @@ On net, the new trader is a better trader. The trade-off is real but worth it. I
 
 ## the close
 
-A year of public PnL is enough to know that the trade-off works. The losses I have absorbed publicly have not destroyed my credibility. The wins I have published publicly have not made me a celebrity. The audience has been roughly stable in size and roughly stable in quality. The strategy still works.
+Three years of a public log are enough to know that the trade-off works. The losses I have absorbed publicly have not destroyed my credibility. The wins I have published publicly have not made me a celebrity. The audience has been roughly stable in size and roughly stable in quality. The strategy still works.
 
 The deeper change is in me. The public log made me a more disciplined, more deliberate, more honest trader than I was before. None of this shows up in the dashboard. All of it is the actual return on running the experiment.
 
 If you are considering a public PnL, run it for a year and reassess. The first three months will feel like exposure. Months four through six will feel like adaptation. Month seven onward will feel like the new normal. By month twelve you will have the data to know whether to continue.
 
-I am at month twelve. I am continuing.
+I am three years past that point. I am continuing.

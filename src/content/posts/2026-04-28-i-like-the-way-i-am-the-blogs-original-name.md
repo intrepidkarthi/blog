@@ -46,8 +46,8 @@ The blog name changed at least twice between then and now. From memory, the roug
 2013-2024 ▸ "intrepidkarthi" / various themes / no consistent tagline
 
 2026      ▸ this site
-              "Engineer · Author · Speaker · full-time perpetual
-               futures trader"
+              "Engineer · Author · Speaker · CTO & CISO ·
+               quant trading in public"
               cyberdeck terminal aesthetic
               built fresh from the recovered archive
 ```

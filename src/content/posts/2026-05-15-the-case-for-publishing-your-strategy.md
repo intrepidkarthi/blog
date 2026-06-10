@@ -72,7 +72,7 @@ Three real costs:
 
 ## the feaws case
 
-Feaws publishes the whitepaper, the hypotheses, the trades, the PnL, the failure modes. Two years in, the strategy still works. The number of copycats is small. The strategy's edge is intact. The credential value of the public artifact already exceeds the strategy's lifetime PnL by an order of magnitude — measured by job offers, advisory invitations, and the number of conversations with the kinds of people whose conversations compound.
+Feaws publishes the whitepaper, the hypotheses, the trades, the PnL, the failure modes. The hypotheses have been running since late 2025; the lab went fully public in April 2026. Before that, I ran the manual version of the same discipline — a public trade log, posted at entry — for three years. Across both, the pattern holds: the number of copycats is small, the edge is intact, and the credential value of the public artifact already exceeds the strategy's lifetime PnL by an order of magnitude — measured by job offers, advisory invitations, and the number of conversations with the kinds of people whose conversations compound.
 
 The closed-system version of the same strategy would have produced the same PnL and none of the second-order returns. The open version produces both. The asymmetry compounded.
 

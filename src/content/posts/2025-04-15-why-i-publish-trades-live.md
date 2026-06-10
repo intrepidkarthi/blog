@@ -3,23 +3,23 @@ title: "why I publish trades live"
 date: 2025-04-15
 slug: why-i-publish-trades-live
 excerpt: "Most traders hide their losses. I publish mine in real time. Here is the asymmetry that makes it the right call, with one warning about who it does not work for."
-tags: [trading, transparency, feaws, philosophy, accountability]
+tags: [trading, transparency, philosophy, accountability]
 ---
 
 Most traders hide their losses. They post the wins on Twitter, they whisper the losses to a co-founder, and they show selectively curated PnL charts when raising money or selling courses. This is the standard architecture of the retail trading-content economy. It has been the standard architecture since before there were Twitter accounts.
 
-I publish my trades live. Every entry, every exit, with timestamps. The winners and the losers, in the same feed, with no curation between them. This is the explicit design of feaws. It is also a structural choice that almost no one else makes, which means I get asked about it often.
+I publish my trades live. Every entry, every exit, with timestamps. The winners and the losers, in the same feed, with no curation between them. This has been my practice since early 2023 — a public trade log, posted at entry, before the outcome is known. It is a structural choice that almost no one else makes, which means I get asked about it often.
 
 Here is the asymmetry behind the choice, and one warning about who the strategy does not work for.
 
 ## what "publish live" actually means
 
-The feaws system writes every trading signal to a public log within seconds of the signal firing. The log shows:
+Every trade goes into the public log at entry, not after the outcome is known. Each entry shows:
 
 ```
 timestamp             │ exact UTC time
-hypothesis            │ which of the five fired
-signal                │ the input that triggered (Polymarket delta, GDELT score, etc.)
+thesis                │ why the trade exists
+signal                │ the input that triggered it (sentiment, flows, funding, news)
 position              │ direction, size, instrument
 expected hold         │ time horizon
 stop / target         │ pre-committed exits
@@ -45,13 +45,13 @@ The trader-side asymmetry is sharper. Publishing trades does four things to the 
 
 ## the credibility effect
 
-I did not start publishing trades for credibility. The credibility was a byproduct. Two years into feaws, the credibility effect has become more valuable than I expected.
+I did not start publishing trades for credibility. The credibility was a byproduct. Two years into publishing trades publicly, the credibility effect has become more valuable than I expected.
 
 Three things happened.
 
 First, the people who matter — other quants, founders, investors — read the public log and form opinions of my judgment from it. The opinion they form is much more accurate than the opinion they would have formed from a marketing page. They see the bad weeks. They see the good weeks. They see how I handled drawdowns. The opinion they form is therefore more durable.
 
-Second, the public log made me legible to the kinds of conversations I wanted to have. Several of the most important professional relationships I have formed since 2023 started with "I have been following your feaws feed for six months." Those people were watching a signal that I did not realise I was sending.
+Second, the public log made me legible to the kinds of conversations I wanted to have. Several of the most important professional relationships I have formed since 2023 started with "I have been following your trade log for six months." Those people were watching a signal that I did not realise I was sending.
 
 Third, the credibility transfers. Even on topics unrelated to trading — engineering, hiring, the blog itself — the public-trading log is now part of how I get evaluated. The act of having done one thing transparently for a sustained period serves as evidence of how I would do other things.
 
@@ -85,7 +85,7 @@ If you publish trades primarily for the marketing benefit, the strategy fails. I
 
 ## the close
 
-Three years into running a publicly-tracked trading system, I am a meaningfully better trader than I was before. Not because the strategy got better — the strategy is roughly the same. Because the public record made my failures more expensive, my pre-commitments stronger, and my rule-modification faster.
+Two years into running a publicly-tracked trade log, I am a meaningfully better trader than I was before. Not because the strategy got better — the strategy is roughly the same. Because the public record made my failures more expensive, my pre-commitments stronger, and my rule-modification faster.
 
 The strategy I publish is the strategy I am willing to defend in public for the next ten years. The strategies I am not willing to defend are not strategies I should be running anyway.
 

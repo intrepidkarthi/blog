@@ -3,12 +3,12 @@ title: "Polymarket as a leading indicator — when it works, when it does not"
 date: 2025-09-18
 slug: polymarket-as-leading-indicator
 excerpt: "Polymarket consensus on 'BTC above $X by date Y' sometimes leads spot price by 24-48 hours. Sometimes it lags. The difference is measurable and tradeable."
-tags: [polymarket, prediction-markets, btc, feaws, signals, leading-indicator]
+tags: [polymarket, prediction-markets, btc, signals, leading-indicator]
 ---
 
 Polymarket has emerged, in 2024-2025, as one of the few public prediction-market venues with enough volume to produce statistically meaningful signal. The platform's odds on crypto-relevant events — "BTC above $X by date Y," "ETF approved before Q3," "Fed cuts rates at next meeting" — move in real time as participants put money down.
 
-The interesting question for a quant strategy is whether those odds movements lead spot price, lag it, or are uncorrelated. The answer, based on 18 months of running this as part of feaws's H1 hypothesis, is "all three, depending on the event type." The trick is knowing when.
+The interesting question for a quant strategy is whether those odds movements lead spot price, lag it, or are uncorrelated. The answer, based on 18 months of tracking this signal in my own trading, is "all three, depending on the event type." The trick is knowing when.
 
 Here is the data.
 
@@ -42,7 +42,7 @@ Three categories where Polymarket lags or is uncorrelated.
 
 ## the signal threshold
 
-For feaws's H1 hypothesis, the operational threshold is *15% absolute delta in the implied probability over 24 hours*. That is, the YES price moves by more than 15 cents (out of 100) within a single day.
+The operational threshold I trade on is *15% absolute delta in the implied probability over 24 hours*. That is, the YES price moves by more than 15 cents (out of 100) within a single day.
 
 The threshold is empirical, not theoretical. Below 15% delta, the signal is too noisy to act on. Above 25%, the signal is usually triggering on something that has already started to move in spot, so the lead time is short. The 15-25% band is the sweet spot — large enough to be meaningful, small enough to still be ahead of spot.
 
@@ -61,7 +61,7 @@ All three filters together reduce signal frequency to roughly 2-4 trades per mon
 
 ## backtest results
 
-The H1 hypothesis backtested on data from January 2024 through July 2025:
+The hypothesis backtested on data from January 2024 through July 2025:
 
 ```
 trades                  │ 38 closed positions
@@ -83,7 +83,7 @@ Three things I have learned running the strategy out-of-sample over the past 9 m
 
 **The "lag" categories are correlated with overall market regime.** During trending markets, Polymarket leads on most categories. During choppy markets, it lags on most. The signal works better in directional regimes than in mean-reverting ones.
 
-**The signal degrades fast if you do not filter for event type.** Naive implementation that treats all Polymarket markets as equivalent produces near-coin-flip results. The category filter is doing most of the work. Subscribers who copy the H1 logic without the category filter underperform.
+**The signal degrades fast if you do not filter for event type.** Naive implementation that treats all Polymarket markets as equivalent produces near-coin-flip results. The category filter is doing most of the work. Anyone who copies the threshold logic without the category filter underperforms.
 
 ## the close
 
@@ -91,6 +91,6 @@ Polymarket is a useful leading indicator on the categories where it has structur
 
 The trick to using it well is the category filter. The trick to building a strategy around it is layered confirmation. Most retail attempts at "Polymarket signal" trading fail because they apply the signal uniformly across event types. The signal is not uniform. The strategy needs to match.
 
-The H1 hypothesis in feaws is the practical version of this. It is not a get-rich-quick play. It is a modest, consistent edge that compounds when run with discipline and disappears when run carelessly. The infrastructure to run it correctly is most of the work. The signal itself is the easy part.
+The threshold-plus-filters approach above is the practical version of this. It is not a get-rich-quick play. It is a modest, consistent edge that compounds when run with discipline and disappears when run carelessly. The infrastructure to run it correctly is most of the work. The signal itself is the easy part.
 
 This is the shape of most retail-accessible quant edges in 2025. The signal is public. The execution is the moat.

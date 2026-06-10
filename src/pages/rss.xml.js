@@ -6,7 +6,7 @@ export async function GET(context) {
   return rss({
     title: "intrepidkarthi",
     description:
-      "Karthikeyan NG — Engineer, Author, Speaker. Full-time perpetual futures trader. Crypto + AI infrastructure since 2008.",
+      "Karthikeyan NG — Engineer, Author, Speaker. CTO & CISO building stablecoin settlement infrastructure. Quant trading in public at feaws.xyz. Crypto + AI infrastructure since 2008.",
     site: context.site,
     items: posts
       .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())

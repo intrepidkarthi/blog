@@ -1,6 +1,6 @@
 # intrepidkarthi.com
 
-> Personal website of Karthikeyan NG (Karthik) — engineer, author, speaker, and full-time trader on perpetual futures markets.
+> Personal website of Karthikeyan NG (Karthik) — engineer, author, speaker. CTO & CISO building stablecoin settlement infrastructure; quant trading in public at feaws.xyz.
 
 ## About
 
@@ -10,10 +10,9 @@ Career highlights: CTO at Pi42 (crypto exchange), Director of Engineering at nfe
 
 ## Current Projects
 
-- [feaws.xyz](https://feaws.xyz): Quantitative trading lab for Bitcoin/crypto. 70% accuracy on 30 test windows. Public whitepaper + live trades. Stack: Python, Polymarket API, GDELT, sentiment analysis.
-- [DailyVox](https://intrepidkarthi.com/writing/dailyvox-why-i-built-a-voice-journal-that-stays-on-your-phone/): Offline AI voice diary for iOS. 100% on-device, zero cloud, AES-256-GCM encryption.
-- [VisionPay.com](https://visionpay.com): Stablecoin settlement infrastructure.
-- [1wealth.ai](https://1wealth.ai): Crypto fintech infrastructure.
+- Vision: Stablecoin settlement infrastructure — CTO & CISO (day job).
+- [feaws.xyz](https://feaws.xyz): Quantitative trading lab for Bitcoin/crypto (weekend project). 70% accuracy on 30 test windows. Public whitepaper + live trades. Stack: Python, Polymarket API, GDELT, sentiment analysis.
+- [DailyVox](https://intrepidkarthi.com/writing/dailyvox-why-i-built-a-voice-journal-that-stays-on-your-phone/): Offline AI voice diary for iOS (personal project). 100% on-device, zero cloud, AES-256-GCM encryption.
 
 ## Published Books
 
