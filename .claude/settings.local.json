@@ -28,7 +28,19 @@
       "Read(//tmp/**)",
       "Bash(grep -h \"^tags:\" /Users/karthikeyanng/CascadeProjects/intrepidkarthi/src/content/posts/*.md)",
       "WebFetch(domain:intrepidkarthi.com)",
-      "WebFetch(domain:www.noahzender.com)"
+      "WebFetch(domain:www.noahzender.com)",
+      "Read(//private/tmp/**)",
+      "Bash(rm -rf intrepidkarthi-profile)",
+      "Bash(gh repo *)",
+      "Bash(awk '{print $9, $5}')",
+      "Bash(grep -iE \"public|minecraft|\\\\.js$\")",
+      "Bash(openssl rand *)",
+      "Bash(claude update *)",
+      "Bash(brew uninstall *)",
+      "Bash(brew install *)",
+      "Bash(brew list *)",
+      "Bash(brew info *)",
+      "Bash(claude --version)"
     ]
   }
 }
