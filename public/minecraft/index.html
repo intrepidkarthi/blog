@@ -1,175 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>minecrAft — Adyah's World</title>
-<link rel="stylesheet" href="/minecraft/styles.css?v=23">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>minecrAft — Adyah's World</title>
+  <link rel="stylesheet" href="/minecraft/styles.css">
 </head>
 <body>
-<canvas id="game"></canvas>
-<div id="cross"></div>
+  <canvas id="game"></canvas>
 
-<!-- top-left readout -->
-<div id="readout">
-  <div id="ro-coords">x 0  y 0  z 0</div>
-  <div id="ro-meta">Plains · Day 1 · 06:00</div>
-  <div id="ro-fps">— fps · — chunks</div>
-</div>
+  <!-- HUD -->
+  <div id="crosshair"><span></span><span></span></div>
+  <div id="hud"></div>
+  <div id="actiontext"></div>
+  <div id="toast"></div>
+  <div id="vignette"></div>
+  <div id="watertint"></div>
+  <div id="debug"></div>
 
-<!-- quest tracker -->
-<div id="quest" style="display:none"></div>
+  <!-- overlays -->
+  <div id="screen"></div>
+  <div id="cursorstack"></div>
+  <div id="tooltip"></div>
 
-<!-- boss health bar -->
-<div id="bossbar" style="display:none"><div class="bbname">🐉 The Dragon</div><div class="bbtrack"><div class="bbfill"></div></div></div>
-
-<!-- breaking progress ring under crosshair -->
-<div id="breakwrap"><div id="breakbar"></div></div>
-
-<!-- bottom HUD: bars + hotbar -->
-<div id="hud">
-  <div id="bars">
-    <div id="healthbar" class="bar"></div>
-    <div id="hungerbar" class="bar"></div>
-    <div id="armorbar" class="bar"></div>
-  </div>
-  <div id="hotbar"></div>
-</div>
-
-<div id="helditem"></div>
-<div id="modepill">SURVIVAL · NORMAL</div>
-<div id="toast"></div>
-<div id="hitflash"></div>
-<div id="vignette"></div>
-
-<!-- Inventory + crafting -->
-<div id="inv" class="modal hidden">
-  <div class="panel inv-panel">
-    <div class="inv-cols">
-      <div>
-        <h3>Inventory</h3>
-        <div id="backpack" class="grid"></div>
-        <h4 class="hb-label">Hotbar</h4>
-        <div id="invhotbar" class="grid"></div>
-      </div>
-      <div>
-        <h3>Crafting</h3>
-        <p class="muted">Click a recipe you have materials for. Some need a Crafting Table or Furnace nearby.</p>
-        <div id="recipes" class="recipes"></div>
-      </div>
-    </div>
-    <div class="inv-foot muted">E or Esc to close · drag not needed — click an item to move it between Inventory and Hotbar</div>
-  </div>
-</div>
-
-<!-- Start / New world -->
-<div id="overlay" class="modal">
-  <div class="panel start">
-    <div class="start-head">
-      <div class="logo">minecr<span>A</span>ft</div>
-      <div class="tag">Adyah's World — an open survival sandbox</div>
-    </div>
-
-    <div id="start-main">
-      <div class="btnrow">
-        <button class="primary" id="continueBtn" style="display:none">Continue</button>
-        <button class="primary" id="newBtn">New World</button>
-      </div>
-      <div id="savemeta" class="muted"></div>
-    </div>
-
-    <div id="start-new" class="hidden">
-      <div class="field">
-        <label>World name</label>
-        <input id="worldName" type="text" maxlength="24" value="Adyah's World" />
-      </div>
-      <div class="field">
-        <label>Mode</label>
-        <div class="seg" id="segMode">
-          <button data-v="survival" class="on">Survival</button>
-          <button data-v="creative">Creative</button>
-        </div>
-        <div class="hint" id="modeHint">Gather, craft, eat, and survive the nights.</div>
-      </div>
-      <div class="field" id="diffField">
-        <label>Difficulty</label>
-        <div class="seg" id="segDiff">
-          <button data-v="peaceful">Peaceful</button>
-          <button data-v="easy">Easy</button>
-          <button data-v="normal" class="on">Normal</button>
-          <button data-v="hard">Hard</button>
-        </div>
-        <div class="hint" id="diffHint">Hostile mobs at night, balanced damage &amp; hunger.</div>
-      </div>
-      <div class="btnrow">
-        <button class="ghost" id="backBtn">Back</button>
-        <button class="primary" id="createBtn">Create &amp; Play</button>
-      </div>
-    </div>
-
-    <div class="controls muted">
-      <span><b>WASD</b> move</span><span><b>Space</b> jump</span><span><b>Shift</b> sprint/down</span>
-      <span><b>Mouse</b> look</span><span><b>L/R click</b> mine/place</span><span><b>E</b> inventory</span>
-      <span><b>1–9</b> hotbar</span><span><b>F</b> fly (creative)</span><span><b>Esc</b> pause</span>
+  <div id="playoverlay">
+    <div class="playcard">
+      <h1>minecr<span>A</span>ft</h1>
+      <p>Click to play</p>
+      <small>W A S D move &nbsp;·&nbsp; mouse look &nbsp;·&nbsp; E inventory &nbsp;·&nbsp; Esc pause</small>
     </div>
   </div>
-</div>
 
-<!-- Pause -->
-<div id="pause" class="modal hidden">
-  <div class="panel pause">
-    <h2>Paused</h2>
-    <div id="pause-stats" class="muted"></div>
-    <div class="field">
-      <label>Render distance: <span id="rdVal">6</span> chunks</label>
-      <input id="rdSlider" type="range" min="3" max="12" value="6" />
-    </div>
-    <div class="btnrow">
-      <button class="primary" id="resumeBtn">Resume</button>
-      <button class="ghost" id="saveQuitBtn">Save &amp; Main Menu</button>
-    </div>
+  <div id="loading">
+    <h1>minecr<span>A</span>ft</h1>
+    <p>Building world…</p>
+    <div class="loadtrack"><div id="loadbar"></div></div>
   </div>
-</div>
 
-<!-- Death -->
-<div id="death" class="modal hidden">
-  <div class="panel death">
-    <h2>You died</h2>
-    <div id="deathmsg" class="muted">The night got the better of you.</div>
-    <div class="btnrow"><button class="primary" id="respawnBtn">Respawn</button></div>
-  </div>
-</div>
-
-<!-- Chest -->
-<div id="chestui" class="modal hidden">
-  <div class="panel inv-panel">
-    <h3 id="chesttitle">Chest</h3>
-    <div id="chestgrid" class="grid" style="margin-top:8px"></div>
-    <h4 class="hb-label">Your Inventory</h4>
-    <div id="chestplayer" class="grid"></div>
-    <div class="inv-foot muted">Click an item to move it. E / Esc to close.</div>
-    <div class="btnrow"><button class="ghost" id="chestClose">Close</button></div>
-  </div>
-</div>
-
-<!-- Furnace -->
-<div id="furnaceui" class="modal hidden">
-  <div class="panel inv-panel">
-    <h3>Furnace</h3>
-    <div class="furnrow">
-      <div class="fcolc"><div class="muted">Smelt</div><div class="fslot" id="f-input"></div><div class="muted" style="margin-top:8px">Fuel</div><div class="fslot" id="f-fuel"></div></div>
-      <div class="fcolc"><div class="fbar"><i id="f-prog"></i></div><div class="farrow">⬇</div></div>
-      <div class="fcolc"><div class="muted">Result</div><div class="fslot" id="f-output"></div></div>
-    </div>
-    <h4 class="hb-label">Your Inventory</h4>
-    <div id="furnplayer" class="grid"></div>
-    <div class="inv-foot muted">Click inventory items to load · click slots to take out. E / Esc to close.</div>
-    <div class="btnrow"><button class="ghost" id="furnClose">Close</button></div>
-  </div>
-</div>
-
-<script src="/minecraft/photos.js"></script>
-<script src="/minecraft/characters.js?v=23"></script>
-<script src="/minecraft/game.js?v=23"></script>
+  <script type="module" src="/minecraft/js/main.js"></script>
 </body>
 </html>
