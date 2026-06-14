@@ -12,12 +12,9 @@ canvas { image-rendering: pixelated; }
 
 /* ---------- HUD ---------- */
 #hud { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: none; }
-.bar { display: flex; gap: 1px; height: 18px; }
-.bar.hearts, .bar.hunger, .bar.air { width: 396px; }
-.hearts { justify-content: flex-start; }
-.hunger { justify-content: flex-end; }
-.bar.air { justify-content: flex-end; }
-.heart, .drum, .bubble { width: 18px; height: 18px; display: inline-block; background-size: contain; background-repeat: no-repeat; }
+.bar { display: flex; gap: 2px; height: 22px; }
+.bar.hearts, .bar.hunger, .bar.air { width: auto; }
+.heart, .drum, .bubble { width: 22px; height: 22px; display: inline-block; background-size: contain; background-repeat: no-repeat; }
 .heart.full  { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 9"><path fill="%23e02a2a" stroke="%23300" stroke-width=".6" d="M4.5 8 1 4.5C0 3.5 0 2 1.2 1.2 2.2.5 3.6.8 4.5 2 5.4.8 6.8.5 7.8 1.2 9 2 9 3.5 8 4.5Z"/></svg>'); }
 .heart.half  { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 9"><path fill="%23501818" stroke="%23300" stroke-width=".6" d="M4.5 8 1 4.5C0 3.5 0 2 1.2 1.2 2.2.5 3.6.8 4.5 2 5.4.8 6.8.5 7.8 1.2 9 2 9 3.5 8 4.5Z"/><path fill="%23e02a2a" d="M4.5 8 1 4.5C0 3.5 0 2 1.2 1.2 2.2.5 3.6.8 4.5 2Z"/></svg>'); }
 .heart.empty { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 9"><path fill="%23501818" stroke="%23300" stroke-width=".6" d="M4.5 8 1 4.5C0 3.5 0 2 1.2 1.2 2.2.5 3.6.8 4.5 2 5.4.8 6.8.5 7.8 1.2 9 2 9 3.5 8 4.5Z"/></svg>'); }
@@ -36,7 +33,8 @@ canvas { image-rendering: pixelated; }
 .slot .durfill { height: 100%; }
 
 /* ---------- text bits ---------- */
-#actiontext { position: fixed; bottom: 86px; left: 50%; transform: translateX(-50%); color: #fff; text-shadow: 1px 1px 0 #000; font-size: 15px; z-index: 6; pointer-events: none; }
+#actiontext { position: fixed; bottom: 170px; left: 50%; transform: translateX(-50%); color: #fff; text-shadow: 2px 2px 0 #000; font: 700 17px 'Segoe UI', sans-serif; z-index: 6; pointer-events: none; background: rgba(0,0,0,.55); padding: 6px 18px; border-radius: 6px; white-space: nowrap; }
+#actiontext:empty { display: none; }
 #toast { position: fixed; top: 18%; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, .65); color: #ffe27a; padding: 8px 18px; border-radius: 6px; font-size: 16px; font-weight: 600; opacity: 0; transition: opacity .3s; z-index: 30; pointer-events: none; }
 #toast.show { opacity: 1; }
 #debug { position: fixed; top: 8px; left: 8px; color: #fff; background: rgba(0, 0, 0, .45); font: 12px/1.5 monospace; padding: 6px 10px; white-space: pre; display: none; z-index: 30; pointer-events: none; border-radius: 4px; }
@@ -87,6 +85,38 @@ canvas { image-rendering: pixelated; }
 .helprow { display: flex; justify-content: space-between; gap: 18px; font-size: 13.5px; color: #333; }
 .helprow b { color: #1a1a1a; }
 
+/* ---------- Help (tutorial) sections ---------- */
+.panel.help { max-width: 560px; max-height: 84vh; overflow-y: auto; align-items: stretch; padding: 18px 22px; }
+.panel.help .ptitle { text-align: center; font-size: 22px; }
+.helpsection { background: #b8b8b8; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 10px 12px; margin: 6px 0; }
+.helphdr { font: 700 15px 'Segoe UI', sans-serif; color: #1a1a1a; margin-bottom: 6px; }
+.helpsteps { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 8px; }
+.helpstep { display: flex; gap: 10px; align-items: flex-start; }
+.stepnum { width: 22px; height: 22px; flex-shrink: 0; background: #4a7a4a; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 700 13px sans-serif; }
+.steptext { font-size: 13.5px; color: #1a1a1a; line-height: 1.35; }
+.steptext b { display: block; }
+.subtext { color: #555; font-size: 12.5px; }
+
+/* unlimited stack indicator */
+.slot .count.inf { color: #ffe27a; font-size: 18px; right: 3px; bottom: -2px; }
+
+/* ---------- XP bar (above hotbar) ---------- */
+.bar.xp { width: 360px; height: 9px; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.35); position: relative; margin-top: 14px; }
+.bar.xp .xp-fill { height: 100%; background: linear-gradient(#7ade45, #4aa825); width: 0%; transition: width .25s; }
+.bar.xp .lvl-text { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); color: #7ade45; font: 700 13px 'Segoe UI', sans-serif; text-shadow: 1px 1px 0 #000; pointer-events: none; }
+
+/* ---------- locked inventory slots ---------- */
+.panel .slot.locked { background: #555; border-color: #444 #6a6a6a #6a6a6a #444; cursor: not-allowed; opacity: 0.55; position: relative; }
+.panel .slot.locked::after { content: '🔒'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; opacity: 0.8; }
+
+/* ---------- skills overlay ---------- */
+.panel.skills { min-width: 540px; }
+.perkgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin: 8px 0; }
+.perk { background: #b0b0b0; border: 2px solid; border-color: #fff #555 #555 #fff; padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; }
+.perktitle { font-weight: 700; font-size: 14px; color: #1a1a1a; }
+.perkdesc { font-size: 12px; color: #333; }
+.mbtn.owned { background: #4a7a4a; cursor: default; }
+
 /* ---------- play / loading ---------- */
 #playoverlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(8, 10, 24, .55); z-index: 60; cursor: pointer; }
 .playcard { text-align: center; color: #fff; }
@@ -94,6 +124,8 @@ canvas { image-rendering: pixelated; }
 .playcard h1 span, #loading h1 span { color: #6ddf4a; }
 .playcard p { font-size: 22px; margin: 12px 0 6px; }
 .playcard small { color: #bbb; }
+.playhints { margin-top: 14px; color: #d8d8d8; font-size: 15px; line-height: 1.7; background: rgba(0,0,0,.45); padding: 14px 22px; border-radius: 8px; display: inline-block; text-align: left; }
+.playhints b { color: #fff; }
 #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: linear-gradient(#0b1020, #15203c); color: #fff; z-index: 70; }
 .loadtrack { width: 320px; height: 12px; background: #222; border: 2px solid #555; border-radius: 6px; overflow: hidden; }
 #loadbar { height: 100%; width: 0%; background: #6ddf4a; transition: width .2s; }

@@ -11,6 +11,8 @@ import { Particles } from './particles.js';
 import { GameAudio } from './audio.js';
 import { UI, iconFor } from './ui.js';
 import { itemDef, breakSeconds, canHarvest, attackDamage, smeltResult, fuelValue, ITEMS } from './items.js';
+import { Achievements } from './achievements.js';
+import { Progression } from './progression.js';
 
 const HAS_API = !!(window.gameAPI && window.gameAPI.isElectron);
 const Store = {
@@ -27,7 +29,7 @@ const loadingBar = document.getElementById('loadbar');
 const playOverlay = document.getElementById('playoverlay');
 const canvas = document.getElementById('game');
 
-let world, renderer, player, ui, entities, particles, audio;
+let world, renderer, player, ui, entities, particles, audio, achievements, progression;
 let timeOfDay = 0.02;
 let saveData = null;
 let running = false;
@@ -51,6 +53,9 @@ async function boot() {
   ui = new UI(audio);
   ui.renderDist = renderer.renderDist;
   entities = new Entities(world, renderer.scene, player, particles, audio);
+  achievements = new Achievements(ui, audio);
+  progression = new Progression(ui, audio, player, entities);
+  ui.onCraft = () => achievements.onCraft();
 
   // spawn point
   let spawn;
@@ -63,17 +68,26 @@ async function boot() {
     player.spawn = sp.spawn ? { x: sp.spawn[0], y: sp.spawn[1], z: sp.spawn[2] } : { ...player.pos };
     ui.deserialize(saveData.ui);
     entities.deserialize(saveData.drops);
+    achievements.deserialize(saveData.ach);
+    progression.deserialize(saveData.prog);
   } else {
     spawn = world.gen.findSpawn();
     player.pos = { ...spawn };
     player.spawn = { ...spawn };
-    // starter kit for Adyah: pickaxe first (default selected mines stone),
-    // then axe (wood), sword (mobs), torches, apples.
-    ui.inv[0] = { id: 'wood_pickaxe', count: 1, dur: ITEMS.wood_pickaxe.tool.dura };
-    ui.inv[1] = { id: 'wood_axe',     count: 1, dur: ITEMS.wood_axe.tool.dura };
-    ui.inv[2] = { id: 'wood_sword',   count: 1, dur: ITEMS.wood_sword.tool.dura };
-    ui.inv[3] = { id: B.TORCH,        count: 8 };
-    ui.inv[4] = { id: 'apple',        count: 5 };
+    // starter kit for Adyah. Marked `unlimited: true` so blocks never
+    // deplete and tools never break — Adyah can keep building forever.
+    // Anything he picks up later behaves normally.
+    const kit = (id, count) => ({ id, count, unlimited: true });
+    const tool = (id) => ({ id, count: 1, dur: ITEMS[id].tool.dura, unlimited: true });
+    ui.inv[0] = tool('wood_pickaxe');
+    ui.inv[1] = tool('wood_axe');
+    ui.inv[2] = tool('wood_sword');
+    ui.inv[3] = kit(B.TORCH,      64);
+    ui.inv[4] = kit('apple',      10);
+    ui.inv[5] = kit(B.OAK_PLANKS, 64);
+    ui.inv[6] = kit(B.DIRT,       64);
+    ui.inv[7] = kit(B.COBBLE,     64);
+    ui.inv[8] = kit(B.OAK_LOG,    64);
   }
   ui.updateHotbar(); ui.updateHUD(player);
 
@@ -126,6 +140,7 @@ document.addEventListener('keydown', (e) => {
     else { ui.open('pause'); document.exitPointerLock(); }
     return;
   }
+  if (e.code === 'KeyK' && !ui.isOpen()) { ui.open('skills'); document.exitPointerLock(); return; }
   if (ui.isOpen() && ui.overlay !== 'pause') {
     if (e.code === 'KeyE') ui.close();
     return;
@@ -133,6 +148,8 @@ document.addEventListener('keydown', (e) => {
   if (ui.isOpen()) return;
   if (e.code === 'KeyE') { ui.open('inventory'); document.exitPointerLock(); }
   if (e.code === 'KeyF') { player.flying = !player.flying; ui.toast(player.flying ? 'Flying: ON' : 'Flying: OFF'); }
+  if (e.code === 'KeyR') rightClick();              // keyboard alternative for placement / use
+  if (e.code === 'KeyB') { mouseDown[0] = true; swingT = 0; }  // keyboard alternative for mine / attack
   if (e.code === 'KeyM') { const m = audio.toggleMute(); ui.toast(m ? 'Sound muted' : 'Sound on'); }
   if (e.code === 'F3') { debugOn = !debugOn; ui.showDebug(debugOn); }
   if (e.code === 'KeyQ') dropSelected();
@@ -144,6 +161,7 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('keyup', (e) => {
   keys[e.code] = false;
   if (e.code === 'KeyW') wantSprint = false;
+  if (e.code === 'KeyB') mouseDown[0] = false;
 });
 window.addEventListener('wheel', (e) => {
   if (!ui || ui.isOpen()) return;
@@ -152,10 +170,13 @@ window.addEventListener('wheel', (e) => {
 });
 document.addEventListener('mousedown', (e) => {
   if (!running || ui.isOpen()) return;
-  if (document.pointerLockElement !== canvas) return;
+  // Allow gameplay clicks even without pointer-lock (Mac trackpad can lose it easily).
+  // The play overlay covers the canvas before first play, so we won't accidentally fire then.
   mouseDown[e.button] = true;
   if (e.button === 2) rightClick();
   if (e.button === 0) { swingT = 0; }
+  // If pointer-lock isn't active, this click can re-acquire it transparently
+  if (document.pointerLockElement !== canvas) canvas.requestPointerLock();
 });
 document.addEventListener('mouseup', (e) => { mouseDown[e.button] = false; });
 document.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -166,15 +187,29 @@ document.addEventListener('mousemove', (e) => {
   player.pitch = Math.max(-Math.PI / 2 + 0.01, Math.min(Math.PI / 2 - 0.01, player.pitch));
 });
 
+playOverlay.addEventListener('mousedown', (e) => {
+  // Swallow this click so the document handler below doesn't also count it as a
+  // mine/place. The user clicked to resume; they didn't mean to swing.
+  e.stopPropagation();
+});
+let firstLaunch = true;
 playOverlay.addEventListener('click', () => {
   playOverlay.style.display = 'none';
+  // First-launch tutorial: show help dialog if this is a fresh world
+  if (firstLaunch && !saveData) {
+    firstLaunch = false;
+    ui.open('pause'); ui.overlay = 'help'; ui._refreshOverlay();
+    return;
+  }
   canvas.requestPointerLock();
   audio._ensure();
 });
 document.addEventListener('pointerlockchange', () => {
-  // Esc during pointer lock is swallowed by the browser → treat unlock as "pause"
+  // Pointer-lock can drop for many reasons on macOS (Esc, focus loss, gesture). Don't
+  // jam the user into a pause menu — show the click-to-resume overlay instead so a
+  // single click puts them back in the game.
   if (document.pointerLockElement !== canvas && ui && !ui.isOpen() && running && !player.dead) {
-    ui.open('pause');
+    playOverlay.style.display = 'flex';
   }
 });
 
@@ -186,6 +221,7 @@ function uiClosed() {
 // ============================================================ interaction
 let mineTarget = null, mineProgress = 0, mineTime = 0;
 let debugOn = false;
+let hintedPlace = false;
 
 function eyeRay() {
   const e = player.eyePos(), d = player.lookDir();
@@ -194,7 +230,7 @@ function eyeRay() {
 
 function rightClick() {
   const { e, d } = eyeRay();
-  const hit = world.raycast(e.x, e.y, e.z, d.x, d.y, d.z, 5);
+  const hit = world.raycast(e.x, e.y, e.z, d.x, d.y, d.z, player.reach);
   const held = ui.selected();
 
   // interactive blocks
@@ -233,7 +269,12 @@ function rightClick() {
   }
 
   // place block
-  if (typeof held.id !== 'number' || !hit) return;
+  if (typeof held.id !== 'number') {
+    // tool/item selected — gentle one-time hint that placement needs a block in hand
+    if (hit && !hintedPlace) { ui.toast('📦 Press 6, 7, 8 or 9 to pick a block to place'); hintedPlace = true; }
+    return;
+  }
+  if (!hit) return;
   const px = hit.x + hit.face[0], py = hit.y + hit.face[1], pz = hit.z + hit.face[2];
   const targetId = world.getBlock(px, py, pz);
   if (!blockDef(targetId).replaceable) return;
@@ -257,6 +298,7 @@ function rightClick() {
   world.setBlock(px, py, pz, held.id);
   ui.consumeSelected();
   audio.play('place');
+  achievements.onPlace(held.id);
   swingT = 0;
 }
 
@@ -284,7 +326,7 @@ function doMining(dt) {
     const blockHit = world.raycast(e.x, e.y, e.z, d.x, d.y, d.z, 3.6);
     if (mobHit && (!blockHit || mobHit.dist < blockHit.dist)) {
       const held = ui.selected();
-      entities.hitMob(mobHit.mob, attackDamage(held), d.x, d.z);
+      entities.hitMob(mobHit.mob, attackDamage(held) + (player.attackBonus || 0), d.x, d.z);
       if (held && typeof held.id === 'string' && ITEMS[held.id] && ITEMS[held.id].tool) ui.damageSelectedTool();
       attackCd = 0.35;
       swingT = 0;
@@ -294,7 +336,7 @@ function doMining(dt) {
     }
   }
 
-  const hit = world.raycast(e.x, e.y, e.z, d.x, d.y, d.z, 5);
+  const hit = world.raycast(e.x, e.y, e.z, d.x, d.y, d.z, player.reach);
   if (!hit) { mineTarget = null; mineProgress = 0; renderer.setCrack(null, 0); return; }
   const def = blockDef(hit.id);
   if (def.hardness < 0 && !player.flying) { renderer.setCrack(null, 0); return; }
@@ -334,6 +376,8 @@ function breakBlock(hit, def) {
   world.setBlock(hit.x, hit.y, hit.z, B.AIR);
   particles.blockBreak(hit.x, hit.y, hit.z, hit.id);
   audio.play('break', def.sound);
+  achievements.onBreak(hit.id);
+  progression.onBreakOre(hit.id);
 
   // drops
   if (!player.flying) {
@@ -429,6 +473,23 @@ function tickFurnaces(dt) {
 }
 let furnaceUiT = 0;
 
+function actionHintFor(held) {
+  if (!held) return '✋ Press 1–9 to pick an item';
+  if (typeof held.id === 'number') {
+    if (held.id === B.TORCH) return '🔥 Right-click or R to place a torch';
+    return '🧱 Right-click or R to place a block';
+  }
+  const d = ITEMS[held.id];
+  if (d && d.food)  return '🍎 Right-click or R to eat';
+  if (d && d.tool) {
+    if (d.tool.cls === 'pickaxe') return '⛏️  Hold left-click or B to mine stone';
+    if (d.tool.cls === 'axe')     return '🪓 Hold left-click or B to chop wood';
+    if (d.tool.cls === 'sword')   return '⚔️  Left-click or B to attack monsters';
+    if (d.tool.cls === 'shovel')  return '🥄 Hold left-click or B to dig dirt';
+  }
+  return '';
+}
+
 // ============================================================ view model (held item)
 let vmGroup = null, vmMesh = null, vmHeld = null;
 function makeHeldMesh(id) {
@@ -493,7 +554,9 @@ function buildSave() {
     ui: ui.serialize(),
     edits: [...world.edits],
     containers: [...world.containers],
-    drops: entities.serialize()
+    drops: entities.serialize(),
+    ach: achievements.serialize(),
+    prog: progression.serialize()
   };
 }
 let saveTimer = 0;
@@ -557,6 +620,7 @@ function loop(now) {
     tickFurnaces(dt);
     entities.dayFactor = renderer.sky.dayFactor;
     entities.update(dt, isNight);
+    achievements.onTick(timeOfDay);
 
     // death
     if (player.dead && ui.overlay !== 'death') {
@@ -572,7 +636,7 @@ function loop(now) {
     // highlight
     if (!ui.isOpen()) {
       const { e, d } = eyeRay();
-      renderer.setHighlight(world.raycast(e.x, e.y, e.z, d.x, d.y, d.z, 5));
+      renderer.setHighlight(world.raycast(e.x, e.y, e.z, d.x, d.y, d.z, player.reach));
     } else renderer.setHighlight(null);
   }
 
@@ -595,6 +659,9 @@ function loop(now) {
 
   // underwater tint
   document.getElementById('watertint').style.display = player.headInWater ? 'block' : 'none';
+
+  // persistent action hint based on selected item
+  ui.setAction(actionHintFor(ui.selected()));
 
   renderer.render();
 
@@ -627,6 +694,7 @@ boot().then(() => {
     canvas.requestPointerLock();
   };
   ui.onRenderDist = (v) => { renderer.renderDist = v; };
-  entities.onPickup = (stack) => ui.addToInventory(stack);
+  entities.onPickup = (stack) => { achievements.onPickup(stack.id); return ui.addToInventory(stack); };
+  entities.onMobKill = (type) => { achievements.onMobKill(type); progression.onMobKill(type); };
   entities.onExplosion = explode;
 });
