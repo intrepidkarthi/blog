@@ -38,6 +38,58 @@ function box(w, h, d, tex) {
   return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
 }
 
+// Adyah's family villagers — real character art used as billboard sprites.
+// A simple labelled figure shows instantly; the real photo from
+// ../assets/characters/<who>_villager.png swaps in once it loads (and if the
+// file is missing/blocked, the figure stays — villagers are never invisible).
+const FAMILY = ['adyah', 'mom', 'dad', 'aarav'];
+const FAMILY_COLOR = { adyah: '#8e44ad', mom: '#c0392b', dad: '#2c3e50', aarav: '#16a085' };
+// Where the character art lives, relative to the page. Desktop (Electron) loads
+// src/index.html with assets one level up; a web build keeps assets/ alongside
+// index.html. Either way a missing file just falls back to a drawn figure.
+const ASSET_BASE = (typeof window !== 'undefined' && window.gameAPI && window.gameAPI.isElectron) ? '../assets/' : 'assets/';
+const charTexCache = new Map();
+let villagerSeq = 0;
+function drawFallbackChar(c, who) {
+  c.clearRect(0, 0, 256, 256);
+  c.fillStyle = FAMILY_COLOR[who] || '#777';        // robe/body
+  c.fillRect(70, 120, 116, 130);
+  c.fillStyle = '#e8b98f'; c.beginPath(); c.arc(128, 90, 46, 0, Math.PI * 2); c.fill();  // head
+  c.fillStyle = '#fff'; c.font = 'bold 34px sans-serif'; c.textAlign = 'center';
+  c.fillText(who.charAt(0).toUpperCase() + who.slice(1), 128, 210);
+}
+function familyTexture(who) {
+  if (charTexCache.has(who)) return charTexCache.get(who);
+  const cv = document.createElement('canvas'); cv.width = cv.height = 256;
+  const c = cv.getContext('2d');
+  drawFallbackChar(c, who);
+  const tex = new THREE.CanvasTexture(cv);
+  tex.magFilter = THREE.LinearFilter; tex.minFilter = THREE.LinearMipmapLinearFilter;
+  const img = new Image();
+  img.onload = () => { c.clearRect(0, 0, 256, 256); c.drawImage(img, 0, 0, 256, 256); tex.needsUpdate = true; };
+  img.src = `${ASSET_BASE}characters/${who}_villager.png`;
+  charTexCache.set(who, tex);
+  return tex;
+}
+
+// Boss monsters — same billboard trick using ../assets/characters/monster_<name>.png
+const monsterTexCache = new Map();
+function monsterTexture(name) {
+  if (monsterTexCache.has(name)) return monsterTexCache.get(name);
+  const cv = document.createElement('canvas'); cv.width = cv.height = 256;
+  const c = cv.getContext('2d');
+  c.fillStyle = '#7a1f1f'; c.beginPath(); c.arc(128, 128, 96, 0, Math.PI * 2); c.fill();   // menacing fallback
+  c.fillStyle = '#ffd23a'; c.fillRect(86, 104, 28, 16); c.fillRect(142, 104, 28, 16);       // eyes
+  c.fillStyle = '#2a0a0a'; c.fillRect(94, 110, 12, 8); c.fillRect(150, 110, 12, 8);
+  const tex = new THREE.CanvasTexture(cv);
+  tex.magFilter = THREE.LinearFilter; tex.minFilter = THREE.LinearMipmapLinearFilter;
+  const img = new Image();
+  img.onload = () => { c.clearRect(0, 0, 256, 256); c.drawImage(img, 0, 0, 256, 256); tex.needsUpdate = true; };
+  img.src = `${ASSET_BASE}characters/monster_${name}.png`;
+  monsterTexCache.set(name, tex);
+  return tex;
+}
+
 // ------------------------------------------------------------- mob definitions
 const px = 1 / 16; // 1 mc-pixel in blocks
 
@@ -49,10 +101,111 @@ const MOB_DEFS = {
   pig: { hp: 10, speed: 1.8, h: 0.9, hw: 0.4, drops: [['porkchop', 1, 2]] },
   cow: { hp: 10, speed: 1.6, h: 1.35, hw: 0.45, drops: [['beef', 1, 2]] },
   sheep: { hp: 8, speed: 1.6, h: 1.25, hw: 0.42, drops: [[B.WOOL, 1, 1]] },
-  chicken: { hp: 4, speed: 1.6, h: 0.7, hw: 0.25, drops: [['chicken', 1, 1], ['feather', 0, 1]] }
+  chicken: { hp: 4, speed: 1.6, h: 0.7, hw: 0.25, drops: [['chicken', 1, 1], ['feather', 0, 1]] },
+  // friendly people — wander the plains, never attack, drop nothing
+  villager: { hp: 20, speed: 1.3, h: 1.92, hw: 0.32, friendly: true, drops: [] },
+  // quest bosses — big, tough, chase the player; spawned only by the adventure
+  boss: { hp: 70, hostile: true, speed: 2.3, dmg: 4, h: 2.6, hw: 0.6, drops: [], boss: true },
+  dragon: { hp: 130, hostile: true, speed: 2.7, dmg: 5, h: 3.4, hw: 0.9, drops: [], boss: true }
 };
 
-function buildModel(type) {
+// ---------------------------------------------------------------------------
+// Adventure creatures — a big data-driven roster so quests can mix & match.
+// kind: how it's drawn. tier: how the adventure picks it (small/mid/elite/boss).
+// Stats stay light so a kid can win; bosses are the billboard art creatures.
+// ---------------------------------------------------------------------------
+const ENEMIES = {
+  // ---- small humanoids (fast, weak) ----
+  goblin:    { name: 'Goblin',     kind: 'humanoid', tier: 'small', hp: 12, dmg: 2, speed: 3.1, h: 1.4, hw: 0.3, skin: 0x6aa84e, shirt: 0x6b4a2a, pants: 0x4a3320, hostile: true, drops: [['rotten_flesh', 0, 1]] },
+  imp:       { name: 'Imp',        kind: 'humanoid', tier: 'small', hp: 10, dmg: 2, speed: 3.3, h: 1.2, hw: 0.28, skin: 0xc0392b, shirt: 0x7a1f1f, pants: 0x5a1515, hostile: true, drops: [['coal', 0, 1]] },
+  kobold:    { name: 'Kobold',     kind: 'humanoid', tier: 'small', hp: 12, dmg: 2, speed: 3.0, h: 1.3, hw: 0.3, skin: 0xb5793a, shirt: 0x5a4030, pants: 0x402c20, hostile: true, drops: [['bone', 0, 1]] },
+  bandit:    { name: 'Bandit',     kind: 'humanoid', tier: 'small', hp: 14, dmg: 3, speed: 2.9, h: 1.7, hw: 0.3, skin: 0xc8a07a, shirt: 0x33312e, pants: 0x4a3320, hostile: true, drops: [['gold_ingot', 0, 1]] },
+  // ---- mid humanoids ----
+  orc:        { name: 'Orc',        kind: 'humanoid', tier: 'mid', hp: 24, dmg: 4, speed: 2.6, h: 2.0, hw: 0.35, skin: 0x4f7a3a, shirt: 0x5a3a22, pants: 0x3a2618, hostile: true, drops: [['rotten_flesh', 1, 2]] },
+  zombie_brute: { name: 'Zombie Brute', kind: 'humanoid', tier: 'mid', hp: 28, dmg: 4, speed: 2.2, h: 2.1, hw: 0.36, skin: 0x4e7e6a, shirt: 0x3a5a8a, pants: 0x2a3a5a, burns: true, hostile: true, drops: [['rotten_flesh', 1, 3]] },
+  skeleton_warrior: { name: 'Skeleton Warrior', kind: 'humanoid', tier: 'mid', hp: 22, dmg: 4, speed: 2.8, h: 1.9, hw: 0.3, skin: 0xdadada, shirt: 0x8a8a8a, pants: 0x6a6a6a, burns: true, hostile: true, drops: [['bone', 1, 2]] },
+  frost_zombie: { name: 'Frost Walker', kind: 'humanoid', tier: 'mid', hp: 26, dmg: 3, speed: 2.4, h: 2.0, hw: 0.35, skin: 0x6aa0c8, shirt: 0x3a5a7a, pants: 0x2a4055, hostile: true, drops: [['rotten_flesh', 1, 2]] },
+  // ---- elite humanoids (big, tough) ----
+  troll:      { name: 'Troll',      kind: 'humanoid', tier: 'elite', hp: 45, dmg: 5, speed: 2.1, h: 2.6, hw: 0.45, skin: 0x7a8a5a, shirt: 0x4a3a2a, pants: 0x3a2e20, hostile: true, drops: [['iron_ingot', 1, 2]] },
+  golem:      { name: 'Stone Golem', kind: 'humanoid', tier: 'elite', hp: 55, dmg: 5, speed: 1.9, h: 2.7, hw: 0.5, skin: 0x9a9a9a, shirt: 0x7a7a7a, pants: 0x6a6a6a, hostile: true, drops: [['iron_ingot', 1, 3]] },
+  wraith:     { name: 'Wraith',     kind: 'humanoid', tier: 'elite', hp: 38, dmg: 5, speed: 3.0, h: 2.2, hw: 0.35, skin: 0x3a2e4a, shirt: 0x241c33, pants: 0x16101f, hostile: true, drops: [['redstone', 1, 2]] },
+  dark_knight: { name: 'Dark Knight', kind: 'humanoid', tier: 'elite', hp: 50, dmg: 6, speed: 2.5, h: 2.2, hw: 0.36, skin: 0x2a2a33, shirt: 0x44444f, pants: 0x33333a, hostile: true, drops: [['iron_ingot', 1, 2]] },
+  // ---- slimes (bouncy cubes) ----
+  green_slime: { name: 'Green Slime', kind: 'slime', tier: 'small', hp: 12, dmg: 2, speed: 2.4, h: 0.9, hw: 0.4, color: 0x5fbf4a, hostile: true, drops: [['string', 0, 1]] },
+  blue_slime:  { name: 'Frost Slime', kind: 'slime', tier: 'mid', hp: 20, dmg: 3, speed: 2.2, h: 1.1, hw: 0.5, color: 0x4aa0e0, hostile: true, drops: [['string', 0, 2]] },
+  magma_slime: { name: 'Magma Slime', kind: 'slime', tier: 'mid', hp: 22, dmg: 4, speed: 2.0, h: 1.1, hw: 0.5, color: 0xe06a2a, hostile: true, drops: [['coal', 1, 2]] },
+  king_slime:  { name: 'Slime King', kind: 'slime', tier: 'elite', hp: 48, dmg: 4, speed: 1.8, h: 1.8, hw: 0.8, color: 0x7fcf5a, hostile: true, drops: [['gunpowder', 1, 2]] },
+  // ---- beasts (four-legged) ----
+  dire_wolf:  { name: 'Dire Wolf',  kind: 'beast', tier: 'mid', hp: 18, dmg: 4, speed: 3.6, h: 1.0, hw: 0.4, color: 0x6a6a72, hostile: true, drops: [['bone', 1, 2]] },
+  boar:       { name: 'Wild Boar',  kind: 'beast', tier: 'small', hp: 14, dmg: 3, speed: 3.0, h: 0.95, hw: 0.42, color: 0x8a6a55, hostile: true, drops: [['porkchop', 1, 2]] },
+  cave_beast: { name: 'Cave Beast', kind: 'beast', tier: 'elite', hp: 40, dmg: 5, speed: 2.8, h: 1.4, hw: 0.55, color: 0x4a3a4a, hostile: true, drops: [['redstone', 1, 2]] },
+  // ---- boss billboards (your monster art) ----
+  ogre_boss:    { name: 'Ogre',       kind: 'billboard', tier: 'boss', hp: 70, dmg: 5, speed: 2.3, h: 2.6, hw: 0.6, monster: 'ogre', spriteW: 3.0, spriteH: 3.2, hostile: true, boss: true, drops: [['diamond', 1, 2]] },
+  demon_boss:   { name: 'Demon',      kind: 'billboard', tier: 'boss', hp: 85, dmg: 6, speed: 2.6, h: 2.8, hw: 0.65, monster: 'demon', spriteW: 3.2, spriteH: 3.4, hostile: true, boss: true, drops: [['diamond', 1, 2]] },
+  alien_boss:   { name: 'Alien',      kind: 'billboard', tier: 'boss', hp: 75, dmg: 5, speed: 3.0, h: 2.5, hw: 0.6, monster: 'alien', spriteW: 3.0, spriteH: 3.2, hostile: true, boss: true, drops: [['diamond', 1, 2]] },
+  slimeking_boss: { name: 'Slime King', kind: 'billboard', tier: 'boss', hp: 90, dmg: 4, speed: 2.0, h: 3.0, hw: 0.8, monster: 'slimeking', spriteW: 3.6, spriteH: 3.6, hostile: true, boss: true, drops: [['diamond', 1, 2]] },
+  spider_giant: { name: 'Giant Spider', kind: 'billboard', tier: 'boss', hp: 70, dmg: 5, speed: 3.2, h: 2.0, hw: 0.7, monster: 'spider', spriteW: 3.4, spriteH: 2.8, hostile: true, boss: true, drops: [['string', 2, 4]] },
+  dragon_boss:  { name: 'Dragon',     kind: 'billboard', tier: 'boss', hp: 130, dmg: 6, speed: 2.7, h: 3.4, hw: 0.9, monster: 'dragon', spriteW: 4.4, spriteH: 4.6, hostile: true, boss: true, drops: [['diamond', 2, 3]] }
+};
+Object.assign(MOB_DEFS, ENEMIES);
+export const ENEMY_IDS = Object.keys(ENEMIES);
+export function enemiesByTier(tier) { return ENEMY_IDS.filter(id => ENEMIES[id].tier === tier); }
+export function enemiesByKind(kind) { return ENEMY_IDS.filter(id => ENEMIES[id].kind === kind); }
+export function enemyKind(id) { return ENEMIES[id] ? ENEMIES[id].kind : null; }
+export function enemyName(id) { return ENEMIES[id] ? ENEMIES[id].name : 'Monster'; }
+
+// ---- generic, data-driven enemy models (humanoid / slime / beast / billboard) ----
+function buildEnemyModel(def) {
+  const g = new THREE.Group();
+  const parts = {};
+  const face = (k, b, d) => skinTex(k, b, 0.12, d);
+  const s = def.scale || (def.h / 2);
+  if (def.kind === 'humanoid') {
+    const headT = face('en_head_' + def.skin, def.skin);
+    const faceT = face('en_face_' + def.skin, def.skin, (c) => {
+      c.fillStyle = '#1a1a1a'; c.fillRect(3, 6, 3, 2); c.fillRect(10, 6, 3, 2);
+      c.fillStyle = '#c41818'; c.fillRect(4, 7, 1, 1); c.fillRect(11, 7, 1, 1);
+      c.fillStyle = '#3a1010'; c.fillRect(6, 11, 4, 2);
+    });
+    const head = new THREE.Mesh(new THREE.BoxGeometry(8 * px * s, 8 * px * s, 8 * px * s),
+      [headT, headT, headT, headT, headT, faceT].map(t => new THREE.MeshBasicMaterial({ map: t })));
+    head.position.y = 28 * px * s; g.add(head); parts.head = head;
+    const body = box(8 * px * s, 12 * px * s, 4 * px * s, face('en_body_' + def.shirt, def.shirt)); body.position.y = 18 * px * s; g.add(body);
+    const armT = face('en_arm_' + def.skin, def.skin), legT = face('en_leg_' + def.pants, def.pants);
+    for (const sd of [-1, 1]) {
+      const arm = box(4 * px * s, 12 * px * s, 4 * px * s, armT); arm.geometry.translate(0, -5 * px * s, 0); arm.position.set(sd * 6 * px * s, 23 * px * s, 0); g.add(arm); parts['arm' + sd] = arm;
+      const leg = box(4 * px * s, 12 * px * s, 4 * px * s, legT); leg.geometry.translate(0, -6 * px * s, 0); leg.position.set(sd * 2 * px * s, 12 * px * s, 0); g.add(leg); parts['leg' + sd] = leg;
+    }
+  } else if (def.kind === 'slime') {
+    const t = face('slime_' + def.color, def.color, (c) => {
+      c.fillStyle = '#1a1a1a'; c.fillRect(4, 6, 2, 2); c.fillRect(10, 6, 2, 2);
+    });
+    const w = 11 * px * s;
+    const body = box(w, 8 * px * s, w, t); body.position.y = 4 * px * s; g.add(body); parts.body = body;
+  } else if (def.kind === 'beast') {
+    const t = face('beast_' + def.color, def.color);
+    const body = box(12 * px * s, 8 * px * s, 16 * px * s, t); body.position.y = 9 * px * s; g.add(body);
+    const head = new THREE.Mesh(new THREE.BoxGeometry(8 * px * s, 8 * px * s, 8 * px * s),
+      [t, t, t, t, t, face('beast_face_' + def.color, def.color, (c) => { c.fillStyle = '#c01010'; c.fillRect(3, 5, 2, 2); c.fillRect(11, 5, 2, 2); })].map(m => new THREE.MeshBasicMaterial({ map: m })));
+    head.position.set(0, 11 * px * s, -10 * px * s); g.add(head); parts.head = head;
+    let i = 0;
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      const leg = box(3 * px * s, 8 * px * s, 3 * px * s, t); leg.geometry.translate(0, -4 * px * s, 0);
+      leg.position.set(sx * 4 * px * s, 5 * px * s, sz * 5 * px * s); g.add(leg); parts['leg' + (i++)] = leg;
+    }
+  } else { // billboard
+    const mat = new THREE.SpriteMaterial({ map: monsterTexture(def.monster), transparent: true, alphaTest: 0.4 });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(def.spriteW || 2.8, def.spriteH || 3.0, 1);
+    sprite.position.y = def.h * 0.5;
+    g.add(sprite);
+  }
+  return { group: g, parts };
+}
+
+function buildModel(type, opts = {}) {
+  const edef = MOB_DEFS[type];
+  if (edef && edef.kind) return buildEnemyModel(edef);
   const g = new THREE.Group();
   const parts = {};
   const face = (key, base, deco) => skinTex(key, base, 0.12, deco);
@@ -90,6 +243,24 @@ function buildModel(type) {
       leg.position.set(s * 2 * px, 12 * px, 0);
       g.add(leg); parts['leg' + s] = leg;
     }
+  } else if (type === 'villager') {
+    // Adyah's family — rendered as camera-facing billboards from their real art.
+    const who = opts.who || FAMILY[villagerSeq++ % FAMILY.length];
+    const mat = new THREE.SpriteMaterial({ map: familyTexture(who), transparent: true, alphaTest: 0.4 });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(1.7, 1.9, 1);
+    sprite.position.y = 0.95;
+    g.add(sprite);
+    g.userData.who = who;
+  } else if (type === 'boss' || type === 'dragon') {
+    const monster = opts.monster || (type === 'dragon' ? 'dragon' : 'ogre');
+    const big = type === 'dragon';
+    const mat = new THREE.SpriteMaterial({ map: monsterTexture(monster), transparent: true, alphaTest: 0.4 });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(big ? 4.4 : 3.0, big ? 4.6 : 3.2, 1);
+    sprite.position.y = big ? 2.1 : 1.5;
+    g.add(sprite);
+    g.userData.monster = monster;
   } else if (type === 'creeper') {
     const skinT = face('creeper_skin', 0x4ea84e, null);
     const faceT = face('creeper_face', 0x4ea84e, (c) => {
@@ -195,9 +366,9 @@ export class Entities {
   }
 
   // ---------- spawning ----------
-  spawnMob(type, x, y, z) {
+  spawnMob(type, x, y, z, opts = {}) {
     const def = MOB_DEFS[type];
-    const { group, parts } = buildModel(type);
+    const { group, parts } = buildModel(type, opts);
     group.position.set(x, y, z);
     this.scene.add(group);
     const mob = {
@@ -207,10 +378,25 @@ export class Entities {
       hp: def.hp, onGround: false, hitWall: false,
       state: 'wander', stateT: this.rng() * 4, targetYaw: this.rng() * Math.PI * 2,
       walkPhase: 0, attackCd: 0, hurtT: 0, dying: 0, fuse: -1, fleeT: 0,
-      burnT: 0, aggro: false, fallStart: null
+      burnT: 0, aggro: false, fallStart: null,
+      quest: opts.quest || null, who: opts.who || null, maxHp: def.hp
     };
     this.mobs.push(mob);
     return mob;
+  }
+
+  // quest helper: find a living mob tagged with a quest id (e.g. 'boss', 'aarav')
+  findQuestMob(tag) { return this.mobs.find(m => m.quest === tag && m.dying <= 0) || null; }
+
+  // nearest story villager to a point (for forgiving, aim-free talking)
+  nearestQuestVillager(x, z, range) {
+    let best = null, bd = range;
+    for (const m of this.mobs) {
+      if (m.type !== 'villager' || !m.quest || m.dying > 0) continue;
+      const dd = Math.hypot(m.pos.x - x, m.pos.z - z);
+      if (dd < bd) { bd = dd; best = m; }
+    }
+    return best;
   }
 
   dropItem(stack, x, y, z, vel) {
@@ -290,6 +476,19 @@ export class Entities {
         for (let i = 0; i < n; i++) this.spawnMob(type, x + 0.5 + (this.rng() - .5) * 3, y + 1, z + 0.5 + (this.rng() - .5) * 3);
       }
     }
+    // friendly villagers wander the plains by day — keep a few around and close
+    // enough that the player always has people to find.
+    const villagers = this.mobs.filter(m => m.type === 'villager').length;
+    if (!isNight && villagers < 5) {
+      const ang = this.rng() * Math.PI * 2, d = 12 + this.rng() * 22;
+      const x = Math.floor(p.pos.x + Math.cos(ang) * d), z = Math.floor(p.pos.z + Math.sin(ang) * d);
+      const y = this.world.surfaceY(x, z) + 1;
+      const g = this.world.getBlock(x, y - 1, z);
+      if (y > 1 && (g === B.GRASS || g === B.SAND) && this._effLight(x, y, z) > 8) {
+        const n = 1 + (this.rng() * 2 | 0);
+        for (let i = 0; i < n; i++) this.spawnMob('villager', x + 0.5 + (this.rng() - .5) * 3, y, z + 0.5 + (this.rng() - .5) * 3);
+      }
+    }
   }
 
   _updateMobs(dt, isNight) {
@@ -302,8 +501,11 @@ export class Entities {
       const dist3 = Math.hypot(dx, dy, dz);
 
       // despawn far hostiles
-      if (def.hostile && dist > 80) { this._removeMob(i); continue; }
-      if (m.pos.y < -10) { this._removeMob(i); continue; }
+      if (def.hostile && dist > 80 && !m.quest) { this._removeMob(i); continue; }
+      // anything that falls into the void is gone — even quest/adventure mobs,
+      // otherwise an enemy that falls down a hole would keep an adventure
+      // un-winnable forever. (Story mobs are placed on solid ground.)
+      if (m.pos.y < -30) { this._removeMob(i); continue; }
 
       // dying animation
       if (m.dying > 0) {
@@ -339,7 +541,12 @@ export class Entities {
       const hostileNow = def.hostile === true || (def.hostile === 'night' && (isNight || this._effLight(Math.floor(m.pos.x), Math.floor(m.pos.y), Math.floor(m.pos.z)) < 8)) || m.aggro;
       let desiredYaw = m.targetYaw, speed = 0;
 
-      if (m.fleeT > 0) {
+      if (m.quest && def.friendly) {
+        // story people (Mom, Aarav) stand still and face the player so a young
+        // kid can always walk up and talk to them — they never wander or flee.
+        desiredYaw = Math.atan2(dx, dz);
+        speed = 0;
+      } else if (m.fleeT > 0) {
         desiredYaw = Math.atan2(-dx, -dz);
         speed = def.speed * 1.4;
       } else if (def.hostile && hostileNow && dist3 < 18 && !p.dead) {
@@ -553,6 +760,8 @@ export class Entities {
 
   _hurtMob(m, dmg, kb) {
     if (m.dying > 0) return;
+    // friendly villagers can't be killed — they just startle and scurry off
+    if (m.def.friendly) { m.fleeT = 5; this.audio.play('animalHurt'); return; }
     m.hp -= dmg;
     m.hurtT = 0.35;
     if (kb) { m.vel.x += kb.x * 7; m.vel.z += kb.z * 7; m.vel.y = 5; }

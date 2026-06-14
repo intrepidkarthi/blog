@@ -12,6 +12,17 @@ function el(tag, cls, parent) {
   return e;
 }
 
+// Build a new stack object from a source stack, carrying over the bits that
+// must never be lost when a kid drags / splits / shift-clicks items around the
+// inventory: the durability AND the `unlimited` flag. Dropping `unlimited` here
+// is exactly how Adyah's infinite starter kit used to silently run out.
+function packStack(src, count) {
+  const o = { id: src.id, count };
+  if (src.dur !== undefined) o.dur = src.dur;
+  if (src.unlimited) o.unlimited = true;
+  return o;
+}
+
 // ---------------------------------------------------------------- icons
 const iconCache = new Map();
 export function iconFor(id) {
@@ -64,7 +75,7 @@ export class UI {
     this.onClose = null;
     this.onCraft = null;    // () => void  (set by main.js)
     this.world = null;
-    this.mainRows = 1;      // main-inventory rows unlocked (1..3); progression updates this
+    this.mainRows = 3;      // all main-inventory rows always available (no level gating)
     this.progression = null;
 
     this._buildHUD();
@@ -189,8 +200,7 @@ export class UI {
     }
     for (let i = 0; i < cap; i++) {
       if (!this.inv[i]) {
-        this.inv[i] = { id: stack.id, count: Math.min(ms, remaining) };
-        if (stack.dur !== undefined) this.inv[i].dur = stack.dur;
+        this.inv[i] = packStack(stack, Math.min(ms, remaining));
         remaining -= this.inv[i].count;
         if (remaining <= 0) { this.updateHotbar(); this._refreshOverlay(); return 0; }
       }
@@ -223,6 +233,13 @@ export class UI {
       this.cursorEl.style.top = e.clientY + 'px';
       this._tooltipMove(e);
     });
+    // touch: held item follows the finger while an inventory screen is open
+    document.addEventListener('touchmove', (e) => {
+      if (!this.cursor || !this.overlay) return;
+      const t = e.touches[0]; if (!t) return;
+      this.cursorEl.style.left = t.clientX + 'px';
+      this.cursorEl.style.top = t.clientY + 'px';
+    }, { passive: true });
   }
 
   isOpen() { return this.overlay !== null; }
@@ -299,17 +316,12 @@ export class UI {
       }
     }
 
-    // player inventory section — only unlocked rows are slottable
+    // player inventory section — all rows are always available
     el('div', 'ptitle small', panel).textContent = '';
     const cap = 9 + this.mainRows * 9;
     const main = el('div', 'grid g9', panel);
     for (let i = 9; i < cap; i++) {
       this._slot(main, () => this.inv[i], (s) => { this.inv[i] = s; }, 'invmain');
-    }
-    // show locked rows as dim placeholders so the player knows more is coming
-    for (let i = cap; i < 36; i++) {
-      const d = el('div', 'slot locked', main);
-      d.title = 'Locked — level up to unlock more slots';
     }
     const hot = el('div', 'grid g9 hotrow', panel);
     for (let i = 0; i < 9; i++) {
@@ -349,62 +361,84 @@ export class UI {
     } while (all && made < 64);
   }
 
-  _slot(parent, get, set, kind) {
-    const div = el('div', 'slot', parent);
-    const render = () => this.renderSlotInto(div, get());
-    render();
-    div.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      const cur = this.cursor;
-      const s = get();
-      if (kind === 'craftout') {
-        if (e.button === 0) this._takeCraft(e.shiftKey);
-        this._renderCursor(); this._refreshOverlay();
-        return;
+  // Core slot interaction, shared by mouse and touch.
+  // button: 0 = pick up / place / merge, 2 = split half / place one.
+  _slotAction(button, shift, get, set, kind) {
+    const cur = this.cursor;
+    const s = get();
+    if (kind === 'craftout') {
+      if (button === 0) this._takeCraft(shift);
+      this._renderCursor(); this._refreshOverlay();
+      return;
+    }
+    if (shift && button === 0 && s && set) {
+      // quick-move
+      set(null);
+      const left = this._quickMove(s, kind);
+      if (left > 0) { s.count = left; set(s); }
+      this.updateHotbar(); this._refreshOverlay();
+      return;
+    }
+    if (button === 0) {
+      // left: swap / merge
+      const curIsTool = typeof cur?.id === 'string' && ITEMS[cur.id] && ITEMS[cur.id].tool;
+      if (cur && s && cur.id === s.id && !curIsTool) {
+        const ms = maxStack(s.id);
+        const take = Math.min(ms - s.count, cur.count);
+        s.count += take; cur.count -= take;
+        if (cur.count <= 0) this.cursor = null;
+        set(s);
+      } else {
+        if (set || !cur) { this.cursor = s; if (set) set(cur); }
       }
-      if (e.shiftKey && e.button === 0 && s && set) {
-        // quick-move
-        set(null);
-        const left = this._quickMove(s, kind);
-        if (left > 0) { s.count = left; set(s); }
-        this.updateHotbar(); this._refreshOverlay();
-        return;
-      }
-      if (e.button === 0) {
-        // left: swap / merge
-        const curIsTool = typeof cur?.id === 'string' && ITEMS[cur.id] && ITEMS[cur.id].tool;
-        if (cur && s && cur.id === s.id && !curIsTool) {
-          const ms = maxStack(s.id);
-          const take = Math.min(ms - s.count, cur.count);
-          s.count += take; cur.count -= take;
-          if (cur.count <= 0) this.cursor = null;
-          set(s);
+    } else if (button === 2) {
+      if (cur) {
+        // place one
+        if (kind === 'furnfuel' && fuelValue(cur.id) <= 0) return;
+        if (!s) { set && set(packStack(cur, 1)); if (!cur.unlimited) cur.count--; }
+        else if (s.id === cur.id && s.count < maxStack(s.id)) { s.count++; if (!cur.unlimited) cur.count--; set(s); }
+        if (cur.count <= 0) this.cursor = null;
+      } else if (s) {
+        // split half — an infinite stack keeps the full kit and stays put
+        if (s.unlimited) {
+          this.cursor = packStack(s, s.count);
         } else {
-          if (set || !cur) { this.cursor = s; if (set) set(cur); }
-        }
-      } else if (e.button === 2) {
-        if (cur) {
-          // place one
-          if (kind === 'furnfuel' && fuelValue(cur.id) <= 0) return;
-          if (!s) { set && set({ id: cur.id, count: 1, dur: cur.dur }); cur.count--; }
-          else if (s.id === cur.id && s.count < maxStack(s.id)) { s.count++; cur.count--; set(s); }
-          if (cur.count <= 0) this.cursor = null;
-        } else if (s) {
-          // split half
           const half = Math.ceil(s.count / 2);
-          this.cursor = { id: s.id, count: half, dur: s.dur };
+          this.cursor = packStack(s, half);
           s.count -= half;
           set && set(s.count > 0 ? s : null);
         }
       }
-      this.audio.play('click');
-      this._renderCursor();
-      this.updateHotbar();
-      this._refreshOverlay();
-    });
+    }
+    this.audio.play('click');
+    this._renderCursor();
+    this.updateHotbar();
+    this._refreshOverlay();
+  }
+
+  _slot(parent, get, set, kind) {
+    const div = el('div', 'slot', parent);
+    const render = () => this.renderSlotInto(div, get());
+    render();
+    div.addEventListener('mousedown', (e) => { e.preventDefault(); this._slotAction(e.button, e.shiftKey, get, set, kind); });
     div.addEventListener('contextmenu', e => e.preventDefault());
     div.addEventListener('mouseenter', () => { const s = get(); if (s) this._tooltipShow(itemName(s.id)); });
     div.addEventListener('mouseleave', () => { this.elTooltip.style.display = 'none'; });
+    // touch: tap = pick up / place, long-press = split half / place one.
+    let lpTimer = null, handled = false;
+    div.addEventListener('touchstart', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      const t = e.changedTouches[0];
+      this.cursorEl.style.left = t.clientX + 'px'; this.cursorEl.style.top = t.clientY + 'px';
+      handled = false;
+      lpTimer = setTimeout(() => { handled = true; this._slotAction(2, false, get, set, kind); }, 450);
+    }, { passive: false });
+    div.addEventListener('touchend', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      clearTimeout(lpTimer);
+      if (!handled) this._slotAction(0, false, get, set, kind);
+    }, { passive: false });
+    div.addEventListener('touchcancel', () => clearTimeout(lpTimer));
     return div;
   }
 
@@ -422,7 +456,7 @@ export class UI {
         if (t && t.id === s.id && t.count < ms) { const take = Math.min(ms - t.count, remaining); t.count += take; remaining -= take; }
       }
       for (let i = 0; i < 27 && remaining > 0; i++) {
-        if (!slots[i]) { slots[i] = { id: s.id, count: remaining, dur: s.dur }; remaining = 0; }
+        if (!slots[i]) { slots[i] = packStack(s, remaining); remaining = 0; }
       }
       return remaining;
     }
@@ -436,7 +470,7 @@ export class UI {
       if (t && t.id === s.id && t.count < ms) { const take = Math.min(ms - t.count, remaining); t.count += take; remaining -= take; }
     }
     for (let i = range[0]; i < range[1] && remaining > 0; i++) {
-      if (!this.inv[i]) { this.inv[i] = { id: s.id, count: remaining, dur: s.dur }; remaining = 0; }
+      if (!this.inv[i]) { this.inv[i] = packStack(s, remaining); remaining = 0; }
     }
     return remaining;
   }
@@ -575,7 +609,8 @@ export class UI {
       ['Right click or R', 'Place block / use / eat'],
       ['1–9 / scroll', 'Choose hotbar item'],
       ['E', 'Inventory & 2×2 crafting'], ['K', 'Skills & perks'], ['Q', 'Drop item'],
-      ['F', 'Toggle fly'], ['M', 'Mute'], ['F3', 'Debug info'], ['Esc', 'Pause']
+      ['F', 'Toggle fly'], ['Space (flying)', 'Fly up'], ['Shift (flying)', 'Fly down'],
+      ['M', 'Mute'], ['F3', 'Debug info'], ['Esc', 'Pause']
     ];
     const tbl = el('div', 'helptable', keysBox);
     for (const [k, v] of rows) {

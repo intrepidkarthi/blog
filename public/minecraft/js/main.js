@@ -13,6 +13,7 @@ import { UI, iconFor } from './ui.js';
 import { itemDef, breakSeconds, canHarvest, attackDamage, smeltResult, fuelValue, ITEMS } from './items.js';
 import { Achievements } from './achievements.js';
 import { Progression } from './progression.js';
+import { Quests } from './quests.js';
 
 const HAS_API = !!(window.gameAPI && window.gameAPI.isElectron);
 const Store = {
@@ -29,10 +30,125 @@ const loadingBar = document.getElementById('loadbar');
 const playOverlay = document.getElementById('playoverlay');
 const canvas = document.getElementById('game');
 
-let world, renderer, player, ui, entities, particles, audio, achievements, progression;
+let world, renderer, player, ui, entities, particles, audio, achievements, progression, quests;
 let timeOfDay = 0.02;
 let saveData = null;
 let running = false;
+
+// ============================================================ touch controls
+// On-screen FPS controls for tablets/phones: left thumb-stick to move, drag the
+// screen to look, and tap buttons to mine / use / jump / descend / fly / inventory.
+function setupTouchControls() {
+  document.body.classList.add('is-touch');   // enlarges slots etc. via CSS
+  const root = document.createElement('div'); root.id = 'tc'; document.body.appendChild(root);
+  const mk = (id, cls, txt) => { const e = document.createElement('div'); e.id = id; e.className = 'tc-ctl ' + cls; if (txt) e.textContent = txt; root.appendChild(e); return e; };
+  const joy = mk('tc-joy', '');
+  const thumb = document.createElement('div'); thumb.id = 'tc-thumb'; joy.appendChild(thumb);
+  const bMine = mk('tc-mine', 'tc-btn', '⛏️');
+  const bUse  = mk('tc-use', 'tc-btn', '✋');
+  const bJump = mk('tc-jump', 'tc-btn', '⤴️');
+  const bDown = mk('tc-down', 'tc-btn', '⬇️');
+  const bFly  = mk('tc-fly', 'tc-btn small', '🕊️');
+  const bInv  = mk('tc-inv', 'tc-btn small', '🎒');
+  const bClose = mk('tc-close', 'tc-btn', '✕');   // shown only while a screen is open
+
+  const R = 62;                 // joystick radius
+  const LOOK_SENS = 0.0042;     // drag-to-look sensitivity (rad per px)
+  let joyId = null, joyCx = 0, joyCy = 0, lookId = null, lookX = 0, lookY = 0;
+
+  const setMove = (dx, dy) => {
+    keys['KeyW'] = keys['KeyS'] = keys['KeyA'] = keys['KeyD'] = false;
+    const mag = Math.hypot(dx, dy);
+    if (mag > 0.3 * R) {
+      if (dy < -0.4 * R) keys['KeyW'] = true;
+      if (dy >  0.4 * R) keys['KeyS'] = true;
+      if (dx < -0.4 * R) keys['KeyA'] = true;
+      if (dx >  0.4 * R) keys['KeyD'] = true;
+      wantSprint = (mag > 0.9 * R && keys['KeyW']);
+    } else wantSprint = false;
+  };
+  const resetJoy = () => { joyId = null; thumb.style.transform = ''; setMove(0, 0); wantSprint = false; };
+
+  const hold = (el, on, off) => {
+    el.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); on(); }, { passive: false });
+    const end = (e) => { if (e) e.preventDefault(); off(); };
+    el.addEventListener('touchend', end, { passive: false });
+    el.addEventListener('touchcancel', end);
+  };
+  const tap = (el, fn) => el.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); fn(); }, { passive: false });
+
+  hold(bMine, () => { mouseDown[0] = true; swingT = 0; }, () => { mouseDown[0] = false; });
+  hold(bJump, () => { keys['Space'] = true; }, () => { keys['Space'] = false; });
+  hold(bDown, () => { keys['ShiftLeft'] = true; }, () => { keys['ShiftLeft'] = false; });
+  tap(bUse, () => rightClick());
+  tap(bFly, () => { player.flying = !player.flying; ui.toast(player.flying ? '🕊️ Flying — ⤴️ up, ⬇️ down' : 'Flying off'); });
+  tap(bInv, () => ui.open('inventory'));
+  tap(bClose, () => ui.close());
+
+  joy.addEventListener('touchstart', (e) => {
+    e.preventDefault(); e.stopPropagation();
+    const t = e.changedTouches[0]; joyId = t.identifier;
+    const r = joy.getBoundingClientRect(); joyCx = r.left + r.width / 2; joyCy = r.top + r.height / 2;
+  }, { passive: false });
+
+  // any touch that isn't on a control becomes the "look" finger
+  document.addEventListener('touchstart', (e) => {
+    for (const t of e.changedTouches) {
+      if (t.target.closest && t.target.closest('.tc-ctl')) continue;
+      if (lookId === null) { lookId = t.identifier; lookX = t.clientX; lookY = t.clientY; }
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    for (const t of e.changedTouches) {
+      if (t.identifier === joyId) {
+        e.preventDefault();
+        let dx = t.clientX - joyCx, dy = t.clientY - joyCy;
+        const m = Math.hypot(dx, dy); if (m > R) { dx = dx / m * R; dy = dy / m * R; }
+        thumb.style.transform = `translate(${dx}px, ${dy}px)`;
+        setMove(dx, dy);
+      } else if (t.identifier === lookId) {
+        e.preventDefault();
+        if (!ui.isOpen() && !(quests && quests.blocking())) {
+          player.yaw -= (t.clientX - lookX) * LOOK_SENS;
+          player.pitch -= (t.clientY - lookY) * LOOK_SENS;
+          player.pitch = Math.max(-Math.PI / 2 + 0.01, Math.min(Math.PI / 2 - 0.01, player.pitch));
+        }
+        lookX = t.clientX; lookY = t.clientY;
+      }
+    }
+  }, { passive: false });
+
+  const onEnd = (e) => {
+    for (const t of e.changedTouches) {
+      if (t.identifier === joyId) resetJoy();
+      if (t.identifier === lookId) lookId = null;
+    }
+  };
+  document.addEventListener('touchend', onEnd, { passive: true });
+  document.addEventListener('touchcancel', onEnd, { passive: true });
+
+  // tap a hotbar slot to select it
+  ui.hotSlots.forEach((slot, i) => {
+    slot.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); ui.sel = i; ui.updateHotbar(); }, { passive: false });
+  });
+}
+
+// A full house-building palette — every existing building block, infinite, so
+// Adyah can make walls, windows, roofs, floors and decoration without crafting.
+const BUILDER_KIT = [
+  B.STONE, B.SPRUCE_PLANKS, B.BIRCH_PLANKS, B.GLASS, B.DOOR, B.BRICKS, B.STONE_BRICKS,
+  B.SANDSTONE, B.MOSSY_COBBLE, B.WOOL, B.GLOWSTONE, B.BOOKSHELF, B.SAND
+];
+function giveBuilderKit() {
+  for (const id of BUILDER_KIT) {
+    if (ui.inv.some(s => s && s.id === id)) continue;     // already have it
+    const slot = ui.inv.findIndex(s => !s);
+    if (slot < 0) break;                                  // inventory full
+    ui.inv[slot] = { id, count: 64, unlimited: true };
+  }
+  ui.updateHotbar();
+}
 
 async function boot() {
   saveData = await Store.load();
@@ -55,6 +171,7 @@ async function boot() {
   entities = new Entities(world, renderer.scene, player, particles, audio);
   achievements = new Achievements(ui, audio);
   progression = new Progression(ui, audio, player, entities);
+  quests = new Quests({ player, entities, ui, world, audio, progression, lockPointer: () => { if (!TOUCH) canvas.requestPointerLock(); } });
   ui.onCraft = () => achievements.onCraft();
 
   // spawn point
@@ -70,6 +187,7 @@ async function boot() {
     entities.deserialize(saveData.drops);
     achievements.deserialize(saveData.ach);
     progression.deserialize(saveData.prog);
+    quests.deserialize(saveData.quest);
   } else {
     spawn = world.gen.findSpawn();
     player.pos = { ...spawn };
@@ -88,7 +206,10 @@ async function boot() {
     ui.inv[6] = kit(B.DIRT,       64);
     ui.inv[7] = kit(B.COBBLE,     64);
     ui.inv[8] = kit(B.OAK_LOG,    64);
+    giveBuilderKit();
   }
+  // grant the building palette once to existing worlds too
+  if (saveData && !saveData.builderKit) giveBuilderKit();
   ui.updateHotbar(); ui.updateHUD(player);
 
   // pregenerate spawn area with progress bar
@@ -113,10 +234,34 @@ async function boot() {
   // settle player on ground
   if (!saveData) player.pos.y = world.surfaceY(Math.floor(player.pos.x), Math.floor(player.pos.z)) + 1.2;
 
+  // kick off (or restore) Adyah's adventure
+  if (saveData) quests.resume();
+  else quests.init(player.spawn);
+
   loadingEl.style.display = 'none';
-  playOverlay.style.display = 'flex';
   running = true;
+  showModeSelect();
   requestAnimationFrame(loop);
+}
+
+// Start screen: pick Desktop or Tablet before entering the world.
+function showModeSelect() {
+  const sel = document.getElementById('modeselect');
+  const choose = (touch) => {
+    TOUCH = touch;
+    sel.style.display = 'none';
+    if (TOUCH) setupTouchControls();
+    playOverlay.style.display = 'flex';
+  };
+  // don't let clicks on this screen fall through to the game (mine/place)
+  sel.addEventListener('mousedown', (e) => e.stopPropagation());
+  const dBtn = document.getElementById('mode-desktop');
+  const tBtn = document.getElementById('mode-tablet');
+  dBtn.addEventListener('click', () => choose(false));
+  tBtn.addEventListener('click', () => choose(true));
+  // highlight the auto-detected option as a hint
+  (TOUCH_DETECTED ? tBtn : dBtn).classList.add('suggested');
+  sel.style.display = 'flex';
 }
 
 // ============================================================ input
@@ -124,6 +269,12 @@ const keys = {};
 let mouseDown = [false, false, false];
 let lastWTap = 0, wantSprint = false;
 let swingT = 1; // viewmodel swing timer
+// Control mode. Auto-detected as a default, but the player picks Desktop/Tablet
+// on the start screen, which sets TOUCH before the game begins.
+const TOUCH_DETECTED = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)
+  || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0)
+  || /[?&]touch=1/.test(location.search);
+let TOUCH = TOUCH_DETECTED;
 let attackCd = 0;
 
 document.addEventListener('keydown', (e) => {
@@ -147,7 +298,8 @@ document.addEventListener('keydown', (e) => {
   }
   if (ui.isOpen()) return;
   if (e.code === 'KeyE') { ui.open('inventory'); document.exitPointerLock(); }
-  if (e.code === 'KeyF') { player.flying = !player.flying; ui.toast(player.flying ? 'Flying: ON' : 'Flying: OFF'); }
+  if (e.code === 'KeyF') { player.flying = !player.flying; ui.toast(player.flying ? '🕊️ Flying: ON — Space = up, Shift = down' : 'Flying: OFF'); }
+  if (e.code === 'KeyG') { quests.debugStartAdventure(); ui.toast('🎲 Starting a random adventure!'); }  // test/spawn an adventure now
   if (e.code === 'KeyR') rightClick();              // keyboard alternative for placement / use
   if (e.code === 'KeyB') { mouseDown[0] = true; swingT = 0; }  // keyboard alternative for mine / attack
   if (e.code === 'KeyM') { const m = audio.toggleMute(); ui.toast(m ? 'Sound muted' : 'Sound on'); }
@@ -169,7 +321,8 @@ window.addEventListener('wheel', (e) => {
   ui.updateHotbar();
 });
 document.addEventListener('mousedown', (e) => {
-  if (!running || ui.isOpen()) return;
+  if (TOUCH) return;   // touch devices drive gameplay via the on-screen controls
+  if (!running || ui.isOpen() || (quests && quests.blocking())) return;
   // Allow gameplay clicks even without pointer-lock (Mac trackpad can lose it easily).
   // The play overlay covers the canvas before first play, so we won't accidentally fire then.
   mouseDown[e.button] = true;
@@ -178,7 +331,7 @@ document.addEventListener('mousedown', (e) => {
   // If pointer-lock isn't active, this click can re-acquire it transparently
   if (document.pointerLockElement !== canvas) canvas.requestPointerLock();
 });
-document.addEventListener('mouseup', (e) => { mouseDown[e.button] = false; });
+document.addEventListener('mouseup', (e) => { if (TOUCH) return; mouseDown[e.button] = false; });
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 document.addEventListener('mousemove', (e) => {
   if (!ui || document.pointerLockElement !== canvas || ui.isOpen()) return;
@@ -201,21 +354,21 @@ playOverlay.addEventListener('click', () => {
     ui.open('pause'); ui.overlay = 'help'; ui._refreshOverlay();
     return;
   }
-  canvas.requestPointerLock();
+  if (!TOUCH) canvas.requestPointerLock();
   audio._ensure();
 });
 document.addEventListener('pointerlockchange', () => {
   // Pointer-lock can drop for many reasons on macOS (Esc, focus loss, gesture). Don't
   // jam the user into a pause menu — show the click-to-resume overlay instead so a
   // single click puts them back in the game.
-  if (document.pointerLockElement !== canvas && ui && !ui.isOpen() && running && !player.dead) {
+  if (document.pointerLockElement !== canvas && ui && !ui.isOpen() && running && !player.dead && !(quests && quests.blocking())) {
     playOverlay.style.display = 'flex';
   }
 });
 
 // reacquire pointer lock when UI closes
 function uiClosed() {
-  if (!player.dead) canvas.requestPointerLock();
+  if (!player.dead && !TOUCH) canvas.requestPointerLock();
 }
 
 // ============================================================ interaction
@@ -230,6 +383,12 @@ function eyeRay() {
 
 function rightClick() {
   const { e, d } = eyeRay();
+  // talk to a villager: either the one we're aiming at, or — to be forgiving for
+  // a young kid — the nearest story villager (Mom/Aarav) we're standing next to.
+  const npc = entities.raycastMob(e.x, e.y, e.z, d.x, d.y, d.z, 4);
+  const talkMob = (npc && npc.mob.type === 'villager') ? npc.mob
+    : entities.nearestQuestVillager(player.pos.x, player.pos.z, 3.5);
+  if (talkMob) { quests.talkTo(talkMob); return; }
   const hit = world.raycast(e.x, e.y, e.z, d.x, d.y, d.z, player.reach);
   const held = ui.selected();
 
@@ -250,6 +409,16 @@ function rightClick() {
       if (!st) { st = { type: 'chest', slots: new Array(27).fill(null) }; world.containers.set(k, st); }
       ui.open('chest', { type: 'chest', slots: st.slots, pos: k });
       document.exitPointerLock(); return;
+    }
+    if (id === B.DOOR || id === B.DOOR_OPEN) {
+      // open/close the whole door (toggle both stacked halves)
+      const tgt = id === B.DOOR_OPEN ? B.DOOR : B.DOOR_OPEN;
+      for (const yy of [hit.y - 1, hit.y, hit.y + 1]) {
+        const b = world.getBlock(hit.x, yy, hit.z);
+        if (b === B.DOOR || b === B.DOOR_OPEN) world.setBlock(hit.x, yy, hit.z, tgt);
+      }
+      audio.play('place');
+      return;
     }
   }
 
@@ -294,6 +463,16 @@ function rightClick() {
     const overlapZ = Math.abs(player.pos.z - (pz + 0.5)) < 0.5 + player.hw;
     const overlapY = player.pos.y < py + 1 && player.pos.y + player.h > py;
     if (overlapX && overlapZ && overlapY) return;
+  }
+  if (held.id === B.DOOR) {
+    // doors are two blocks tall — place the bottom here and a top above it
+    world.setBlock(px, py, pz, B.DOOR);
+    if (blockDef(world.getBlock(px, py + 1, pz)).replaceable) world.setBlock(px, py + 1, pz, B.DOOR);
+    ui.consumeSelected();
+    audio.play('place');
+    achievements.onPlace(B.DOOR);
+    swingT = 0;
+    return;
   }
   world.setBlock(px, py, pz, held.id);
   ui.consumeSelected();
@@ -556,7 +735,9 @@ function buildSave() {
     containers: [...world.containers],
     drops: entities.serialize(),
     ach: achievements.serialize(),
-    prog: progression.serialize()
+    prog: progression.serialize(),
+    quest: quests.serialize(),
+    builderKit: true
   };
 }
 let saveTimer = 0;
@@ -593,7 +774,7 @@ function loop(now) {
       jump: keys['Space'], sneak: keys['ShiftLeft'] || keys['ShiftRight'],
       sprint: keys['ControlLeft'] || wantSprint
     };
-    if (ui.isOpen()) { for (const k in input) input[k] = false; }
+    if (ui.isOpen() || quests.blocking()) { for (const k in input) input[k] = false; }
 
     const hpBefore = player.hp;
     player.update(dt, input);
@@ -621,12 +802,15 @@ function loop(now) {
     entities.dayFactor = renderer.sky.dayFactor;
     entities.update(dt, isNight);
     achievements.onTick(timeOfDay);
+    quests.update(dt);
 
     // death
     if (player.dead && ui.overlay !== 'death') {
-      // drop inventory
+      // drop inventory on death — but NEVER the infinite starter kit. Adyah keeps
+      // his tools and building blocks through death; only gathered items spill out.
       for (let i = 0; i < 36; i++) {
-        if (ui.inv[i]) { entities.dropItem(ui.inv[i], player.pos.x, player.pos.y + 1, player.pos.z); ui.inv[i] = null; }
+        const it = ui.inv[i];
+        if (it && !it.unlimited) { entities.dropItem(it, player.pos.x, player.pos.y + 1, player.pos.z); ui.inv[i] = null; }
       }
       ui.updateHotbar();
       ui.open('death');
@@ -660,8 +844,22 @@ function loop(now) {
   // underwater tint
   document.getElementById('watertint').style.display = player.headInWater ? 'block' : 'none';
 
-  // persistent action hint based on selected item
-  ui.setAction(actionHintFor(ui.selected()));
+  // persistent action hint — if we're looking at a villager, prompt to talk;
+  // otherwise hint about the held item.
+  let talkNpc = null;
+  if (running && !ui.isOpen() && !quests.blocking() && !player.dead) {
+    const er = eyeRay();
+    const npc = entities.raycastMob(er.e.x, er.e.y, er.e.z, er.d.x, er.d.y, er.d.z, 4);
+    if (npc && npc.mob.type === 'villager') talkNpc = npc.mob;
+    else talkNpc = entities.nearestQuestVillager(player.pos.x, player.pos.z, 3.5);
+  }
+  if (talkNpc) {
+    const nm = talkNpc.who ? talkNpc.who.charAt(0).toUpperCase() + talkNpc.who.slice(1) : 'them';
+    ui.setAction(`🗨️ Right-click or press R to talk to ${nm}`);
+  } else {
+    ui.setAction(actionHintFor(ui.selected()));
+  }
+  if (TOUCH) document.body.classList.toggle('ui-open', ui.isOpen());
 
   renderer.render();
 
@@ -691,10 +889,10 @@ boot().then(() => {
     player.pos.y = world.surfaceY(Math.floor(player.pos.x), Math.floor(player.pos.z)) + 1.2;
     ui.close();
     ui.updateHUD(player);
-    canvas.requestPointerLock();
+    if (!TOUCH) canvas.requestPointerLock();
   };
   ui.onRenderDist = (v) => { renderer.renderDist = v; };
-  entities.onPickup = (stack) => { achievements.onPickup(stack.id); return ui.addToInventory(stack); };
-  entities.onMobKill = (type) => { achievements.onMobKill(type); progression.onMobKill(type); };
+  entities.onPickup = (stack) => { achievements.onPickup(stack.id); quests.onPickup(stack.id); return ui.addToInventory(stack); };
+  entities.onMobKill = (type) => { achievements.onMobKill(type); progression.onMobKill(type); quests.onMobKill(type); };
   entities.onExplosion = explode;
 });
