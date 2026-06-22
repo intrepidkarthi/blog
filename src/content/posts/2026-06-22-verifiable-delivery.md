@@ -10,7 +10,7 @@ I run engineering teams. For twenty-five years the bottleneck was the same: writ
 
 That cost is gone. At the India AI Impact Summit this February, Vinod Khosla said IT and BPO services will disappear, "almost certainly within the next five years." People heard a provocation. I heard an accurate read of where the cost curve went.
 
-Let me walk through how the machine got good, why generating code is now nearly free, why every gauge we used to measure software work just broke, and what replaces the discipline we built around the old bottleneck. The thing that replaces it is verification. I call it Verifiable Delivery.
+Here is the whole argument in one breath. The machine got good. Generating code is now nearly free. Every gauge we used to measure software work broke at the same time. And the discipline we built around the old bottleneck has to be rebuilt around a new one. That new one is verification. I call the discipline Verifiable Delivery.
 
 ## How the machine got good
 
