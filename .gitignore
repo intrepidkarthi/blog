@@ -48,6 +48,15 @@ pnpm-debug.log*
 # Local testing scratch
 /tmp-scratch/
 
+# Social / marketing artifacts — kept locally, never pushed
+verifiable-delivery-carousel-light.html
+verifiable-delivery-linkedin-post.md
+*-carousel.html
+*-carousel-light.html
+*-linkedin-post.md
+*-x-article.md
+*.docx
+
 # Python build artifacts
 __pycache__/
 *.pyc

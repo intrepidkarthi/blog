@@ -135,6 +135,101 @@ a:hover { color: var(--green-bright); }
   color: var(--ink);
   font-style: italic;
 }
+/* Flagship pull-quote — display emphasis for marquee lines */
+.prose .pull {
+  font-family: var(--font-vt);
+  font-size: 27px;
+  line-height: 1.25;
+  color: var(--green-bright);
+  text-shadow: 0 0 6px var(--green-glow);
+  border-left: 3px solid var(--green);
+  padding: 0.2em 0 0.2em 0.8em;
+  margin: 1.8em 0;
+  font-style: normal;
+}
+@media (max-width: 600px) { .prose .pull { font-size: 22px; } }
+
+/* Flagship stat callout row */
+.prose .stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 1.8em 0;
+}
+@media (max-width: 600px) { .prose .stat-row { grid-template-columns: 1fr; } }
+.prose .stat {
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--green);
+  background: var(--bg2);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.prose .stat-num {
+  font-family: var(--font-vt);
+  font-size: 38px;
+  line-height: 1;
+  color: var(--green-bright);
+  text-shadow: 0 0 6px var(--green-glow);
+}
+.prose .stat-label {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--dim);
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.8em 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.prose thead th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--cyan);
+  border-bottom: 1px solid var(--green-dim);
+  padding: 8px 12px;
+}
+.prose tbody td {
+  padding: 9px 12px;
+  border-bottom: 1px dashed var(--line);
+  color: var(--ink);
+  vertical-align: top;
+}
+.prose tbody tr:last-child td { border-bottom: none; }
+.prose tbody tr:hover td { background: rgba(78, 255, 124, 0.03); }
+.prose tbody td:first-child { color: var(--green-bright); }
+.prose tbody td strong { color: var(--green-bright); }
+@media (max-width: 600px) {
+  .prose table { font-size: 12.5px; }
+  .prose thead th, .prose tbody td { padding: 7px 8px; }
+}
+
+/* Architecture diagram figure */
+.prose .arch {
+  margin: 2em 0;
+  padding: 18px 16px 8px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--green);
+  background: var(--bg2);
+}
+.prose .arch svg { display: block; width: 100%; height: auto; }
+.prose .arch figcaption {
+  color: var(--dim);
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+}
+
 .prose ul, .prose ol { margin: 1em 0; padding-left: 1.6em; }
 .prose ul li, .prose ol li { margin: 0.4em 0; }
 .prose ul li::marker { color: var(--green); }

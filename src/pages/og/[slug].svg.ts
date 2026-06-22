@@ -44,9 +44,14 @@ export const GET: APIRoute = async ({ props }) => {
   const motifNames = pickMotifs(motifSeed);
   const motifSvg = renderMotifs(motifNames);
 
-  const titleLines = wrap(title, 22, 3);
-  const titleY = 270;
-  const lineH = 70;
+  const len = title.length;
+  let fontSize = 72, maxChars = 22, maxLines = 3, lineH = 70, titleY = 270;
+  if (len > 75) {
+    fontSize = 52; maxChars = 30; maxLines = 4; lineH = 58; titleY = 240;
+  } else if (len > 48) {
+    fontSize = 60; maxChars = 26; maxLines = 4; lineH = 64; titleY = 250;
+  }
+  const titleLines = wrap(title, maxChars, maxLines);
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
 <defs>
@@ -95,8 +100,8 @@ export const GET: APIRoute = async ({ props }) => {
 ${titleLines
   .map(
     (line, i) =>
-      `<text x="80" y="${titleY + i * lineH}" fill="#b8ffc8" font-family="VT323, monospace" font-size="72" filter="url(#glow)">${escapeXml(line)}</text>
-       <text x="80" y="${titleY + i * lineH}" fill="#4eff7c" font-family="VT323, monospace" font-size="72">${escapeXml(line)}</text>`
+      `<text x="80" y="${titleY + i * lineH}" fill="#b8ffc8" font-family="VT323, monospace" font-size="${fontSize}" filter="url(#glow)">${escapeXml(line)}</text>
+       <text x="80" y="${titleY + i * lineH}" fill="#4eff7c" font-family="VT323, monospace" font-size="${fontSize}">${escapeXml(line)}</text>`
   )
   .join("\n")}
 
