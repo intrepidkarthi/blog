@@ -1,0 +1,29 @@
+---
+title: "DeepSeek, Jevons, and the price of a token"
+date: 2025-02-10
+slug: deepseek-jevons-and-the-price-of-a-token
+excerpt: "DeepSeek shipped a frontier-grade reasoning model with open weights and a fraction of the assumed cost, and the market briefly lost its mind. The lasting lesson is not geopolitics. It is that generation is becoming ambient and nearly free, and cheaper generation does not shrink your verification bill. It grows it."
+tags: [ai, deepseek, jevons-paradox, token-economics, engineering-leadership]
+---
+
+Two weeks ago DeepSeek released R1, an open-weights reasoning model in the class of the expensive frontier systems, trained for a reported fraction of the assumed cost. The market reacted as if the sky were falling, wiped a stunning amount off chip valuations in a day, then mostly took it back. The geopolitics will be argued elsewhere. The thing worth keeping is simpler and more durable than the panic. The price of generating a unit of intelligence is collapsing, and it is collapsing faster than almost anyone budgeted for.
+
+This is the cost curve I said I would follow back in December 2022, and it just steepened.
+
+Put numbers on it. The price of a token has fallen more than 90% since 2023, by the reckoning of people who track this for a living. Epoch AI, measuring the cost of a fixed capability over time, finds inference prices dropping somewhere between 9x and 900x a year depending on the task, with a median that accelerated after the start of 2024. And R1 is the proof in public. Frontier-grade reasoning, the thing that was supposed to be a moat, shipped with open weights that anyone can run. Generation is not just getting cheap. It is becoming ambient, the way bandwidth did, the way storage did. Soon it is a utility you stop thinking about.
+
+I can feel this in my own week. Since January I have moved my work into Windsurf, an AI-first editor, and paired it with Wispr Flow, a voice tool that means I now speak my intent at the machine more than I type it. Gamma turns a few lines of outline into a finished deck. The generation half of my own job, writing the code, drafting the slides, producing the first version of anything, has dropped toward the floor on the same curve the token price is on. What stays on my desk is the other half, reading what came back and deciding whether it is right.
+
+It is not only my editor. On the side I keep shipping small products to feel the curve from the builder's end, not just the reviewer's. ReelMaya generates photoreal product videos and ad scenes for e-commerce, the kind of shoot that used to need a model, a photographer, and a studio day, now a few API calls. Costly is a luxury catalog. Both lean on fal.ai for the imagery, and I swap in whatever the newest image model is the week it ships, because the good ones now land every few weeks. Feaws is the other flavor, a bitcoin terminal that forecasts with a stack of quant models. Standing these up alone, in evenings, would have cost a team and a quarter three years ago. That is the collapse from the inside. And each one sharpens the same edge, because a fal.ai render that is subtly wrong and a forecast that is confidently off arrive just as polished as the right answer. The generating went free. The checking is still mine.
+
+The instinct in a cost collapse is to assume the total bill goes down. It does not, and the reason has a name. When Satya Nadella was asked about DeepSeek, he reached for Jevons paradox, and he was right to. Jevons observed in the 1860s that more efficient coal engines did not reduce coal consumption. They increased it, because efficiency made coal worth using for more things. Cheaper tokens do not mean you spend less on tokens. They mean you generate vastly more, and aggregate spend climbs even as the per-unit price falls off a cliff. Cheaper generation is not a smaller input. It is more generation, everywhere, all the time.
+
+Now run that through the argument this blog has been building for two years, because this is where it gets uncomfortable.
+
+Generation is the cheap half of building software. Verification is the expensive half, the deciding-whether-it-is-correct half, the half the model does not do for you. If Jevons says cheap generation produces an explosion in the volume of generation, then the volume of stuff that needs verifying explodes with it. The bill that grows is not the token bill. It is the verification bill, paid in reviewer hours, in incidents, in the slow accumulation of code no human fully understood. Every order of magnitude the tokens get cheaper is another order of magnitude of output arriving at the one stage in your pipeline that did not get cheaper at all.
+
+So the DeepSeek moment is not the cost saving everyone is celebrating. It is the cost relocation nobody is budgeting for. The money you save on generation does not stay saved. It moves downstream, out of the line item you can see and into the stages you do not measure, and it tends to arrive larger than it left.
+
+The honest counter, and it is a strong one this time. Jevons cuts the other way too, and not just for tokens. Cheaper software means more software gets built, and more software in the world needs more people around it, not fewer. The same logic that says cheap generation floods your review queue also says cheap generation creates demand for things that were never worth building before. I do not think the cheap-tokens story is straightforwardly bad for engineers. I think it is straightforwardly bad for anyone whose value was concentrated in the generation step alone, and straightforwardly good for anyone who can verify and decide.
+
+That is the line the next few years get sorted along, and DeepSeek just drew it in bright ink. Generation is becoming free and ambient. The scarce, paid, defensible work is everything downstream of generation. The token got cheap. The judgment did not. Watch which one your job is made of.
