@@ -502,22 +502,22 @@
     },
     {
       "source": "/blog/sitemap.xml",
-      "destination": "/sitemap.xml",
+      "destination": "/sitemap-index.xml",
       "permanent": true
     },
     {
       "source": "/blog/sitemap.xml/",
-      "destination": "/sitemap.xml",
+      "destination": "/sitemap-index.xml",
       "permanent": true
     },
     {
       "source": "/sitemap/xml",
-      "destination": "/sitemap.xml",
+      "destination": "/sitemap-index.xml",
       "permanent": true
     },
     {
       "source": "/sitemap/xml/",
-      "destination": "/sitemap.xml",
+      "destination": "/sitemap-index.xml",
       "permanent": true
     },
     {
@@ -533,6 +533,11 @@
     {
       "source": "/page/:n*",
       "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap-index.xml",
       "permanent": true
     },
     {
