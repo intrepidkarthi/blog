@@ -63,3 +63,12 @@ __pycache__/
 .venv/
 venv/
 .vercel
+
+# Internal — SEO research, dossiers, drafts, working artifacts; NEVER push to public repo
+seo-experiment/
+*-dossier.md
+*-blueprint.md
+all-articles.txt
+linkedin_*.md
+x-*-article.md
+x-visuals/
