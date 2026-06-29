@@ -536,12 +536,7 @@
       "permanent": true
     },
     {
-      "source": "/:y([0-9]{4})/:m([0-9]{2})/:d([0-9]{2})/:rest*",
-      "destination": "/writing",
-      "permanent": true
-    },
-    {
-      "source": "/:y([0-9]{4})/:m([0-9]{2})/:rest*",
+      "source": "/:path((?:19|20)[0-9]{2}/.*)",
       "destination": "/writing",
       "permanent": true
     }
