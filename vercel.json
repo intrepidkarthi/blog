@@ -211,6 +211,136 @@
       "permanent": true
     },
     {
+      "source": "/2009/06/28/generating-random-number-using-mysql-query",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/06/28/generating-random-number-using-mysql-query/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/09/27/converting-a-string-to-upper-case",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/09/27/converting-a-string-to-upper-case/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/09/27/reverse-a-linked-list",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/09/27/reverse-a-linked-list/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/09/28/how-to-calculate-the-no-of-bits-in-an-integer",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/09/28/how-to-calculate-the-no-of-bits-in-an-integer/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/10/28/scheme-language-basic-programs-set-1",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/10/28/scheme-language-basic-programs-set-1/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/10/28/scheme-language-basic-programs-set-2",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2009/10/28/scheme-language-basic-programs-set-2/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2010/10/07/movie-review-endhiranrobo",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2010/10/07/movie-review-endhiranrobo/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2011/10/13/i-was-always-on-facebook",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2011/10/13/i-was-always-on-facebook/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/04/29/cygwin_child_info_fork_abort-address-space_issue",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/04/29/cygwin_child_info_fork_abort-address-space_issue/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/05/12/firefox-banned-on-windows-8",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/05/12/firefox-banned-on-windows-8/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/05/15/an-alternative-attitude",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/05/15/an-alternative-attitude/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/06/19/running-out-of-money-time-and-sleep-for-the-month",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/06/19/running-out-of-money-time-and-sleep-for-the-month/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/06/26/reality-is-a-bullshit-really",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/06/26/reality-is-a-bullshit-really/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
       "source": "/2012/06/29/presentation-on-foss-and-lamp-architecture",
       "destination": "/writing/presentation-on-foss-and-lamp-architecture",
       "permanent": true
@@ -231,6 +361,36 @@
       "permanent": true
     },
     {
+      "source": "/2012/07/23/mongo-db-with-php-using-xampp-in-windows",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/07/23/mongo-db-with-php-using-xampp-in-windows/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/09/22/from-microsoft-windows-8-appfest-contest",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2012/09/22/from-microsoft-windows-8-appfest-contest/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2013/02/03/copying-contacts-from-nokia-symbian-mobile-to-android-mobile",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2013/02/03/copying-contacts-from-nokia-symbian-mobile-to-android-mobile/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
       "source": "/2013/05/26/rabbitmq-setup-in-android",
       "destination": "/writing/twelve-hours-setting-up-rabbitmq-on-ubuntu-for-android",
       "permanent": true
@@ -238,6 +398,16 @@
     {
       "source": "/2013/05/26/rabbitmq-setup-in-android/",
       "destination": "/writing/twelve-hours-setting-up-rabbitmq-on-ubuntu-for-android",
+      "permanent": true
+    },
+    {
+      "source": "/2013/07/08/frequent-wlan-disconnection-in-ubuntu-12-04",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2013/07/08/frequent-wlan-disconnection-in-ubuntu-12-04/",
+      "destination": "/writing",
       "permanent": true
     },
     {
@@ -258,6 +428,26 @@
     {
       "source": "/2014/07/03/what-did-i-learn-in-25-years/",
       "destination": "/writing/what-did-i-learn-in-25-years",
+      "permanent": true
+    },
+    {
+      "source": "/2023/01/15/an-overview-on-indian-tax-system",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2023/01/15/an-overview-on-indian-tax-system/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2023/01/15/available-income-tax-returns-forms-in-india",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2023/01/15/available-income-tax-returns-forms-in-india/",
+      "destination": "/writing",
       "permanent": true
     },
     {
@@ -331,17 +521,27 @@
       "permanent": true
     },
     {
+      "source": "/2007/12",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
+      "source": "/2007/12/",
+      "destination": "/writing",
+      "permanent": true
+    },
+    {
       "source": "/page/:n*",
       "destination": "/writing",
       "permanent": true
     },
     {
-      "source": "/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:rest*",
+      "source": "/:y([0-9]{4})/:m([0-9]{2})/:d([0-9]{2})/:rest*",
       "destination": "/writing",
       "permanent": true
     },
     {
-      "source": "/:year(\\d{4})/:month(\\d{2})/:rest*",
+      "source": "/:y([0-9]{4})/:m([0-9]{2})/:rest*",
       "destination": "/writing",
       "permanent": true
     }
