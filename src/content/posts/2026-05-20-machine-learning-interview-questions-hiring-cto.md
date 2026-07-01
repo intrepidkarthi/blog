@@ -16,7 +16,7 @@ Everyone can define overfitting. The follow-up is where it gets interesting, bec
 
 ## "Walk me through a project on your resume." Then: "Why not the simpler thing?"
 
-I would pick a project and ask why they made a specific modelling choice, and then ask why they had not done the obvious simpler thing instead. This is the single most revealing question I have, because it separates people who chose from people who followed. If the answer is a real tradeoff, "the simpler model underfit this particular pattern, so I paid for the complexity," we are having an engineer's conversation. If the answer is "that is what the tutorial used," the project was never theirs. I have written more about [what a project actually needs to signal](/writing/projects-that-get-you-hired); the interview is just me pressure-testing whether it does.
+I would pick a project and ask why they made a specific modelling choice, and then ask why they had not done the obvious simpler thing instead. This is the single most revealing question I have, because it separates people who chose from people who followed. If the answer is a real tradeoff, "the simpler model underfit this particular pattern, so I paid for the complexity," we are having an engineer's conversation. If the answer is "that is what the tutorial used," the project was never theirs. I have written more about [what a project actually needs to signal](/writing/projects-that-get-you-hired) and [the round-by-round shape of a data science interview in India](/writing/data-science-interview-questions-india); the interview is just me pressure-testing whether the project is real.
 
 ## "How would you know this model is getting worse in production?"
 
