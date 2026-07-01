@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageUrl = "https://intrepidkarthi.com/mobile-artificial-intelligence-projects";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Book",
+  name: "Mobile Artificial Intelligence Projects",
+  author: [
+    { "@type": "Person", name: "Karthikeyan NG", url: "https://intrepidkarthi.com" },
+    { "@type": "Person", name: "Arun Padmanabhan" },
+    { "@type": "Person", name: "Matt R. Cole" },
+  ],
+  isbn: "9781789344073",
+  bookFormat: "https://schema.org/Paperback",
+  publisher: { "@type": "Organization", name: "Packt Publishing" },
+  datePublished: "2019-03-06",
+  inLanguage: "en",
+  about: ["Machine Learning", "Mobile AI", "On-device AI", "Core ML", "TensorFlow Lite", "Computer Vision", "Natural Language Processing", "Deep Learning"],
+  url: pageUrl,
+  sameAs: [
+    "https://www.amazon.com/Mobile-Artificial-Intelligence-Projects-intelligence/dp/1789344077",
+    "https://www.packtpub.com/en-us/product/mobile-artificial-intelligence-projects-9781789344073",
+    "https://github.com/PacktPublishing/Mobile-Artificial-Intelligence-Projects",
+  ],
+};
+---
+
+<BaseLayout
+  title="Mobile Artificial Intelligence Projects"
+  description="The book I co-authored (Packt, 2019): seven hands-on projects building AI apps for Android and iOS with TensorFlow Lite, Core ML and PyTorch — computer vision, NLP, and on-device deep learning."
+  active="writing"
+  file="~/intrepidkarthi/mobile-artificial-intelligence-projects"
+  canonicalUrl={pageUrl}
+  jsonLd={jsonLd}
+>
+  <div class="content book-page">
+    <div class="pre-title"><span class="arrow">$</span> cat /books/mobile-artificial-intelligence-projects.md</div>
+    <h1><span class="hash">#</span>Mobile Artificial Intelligence Projects</h1>
+    <p class="lede">A book I co-authored, published by Packt in 2019. Seven hands-on projects that build real AI apps for Android and iOS, on the device.</p>
+
+    <p>I wrote <strong>Mobile Artificial Intelligence Projects</strong> with Arun Padmanabhan and Matt R. Cole. It is not a theory book. It is seven projects, and in each one you build and ship a working AI feature to a phone using TensorFlow Lite, Core ML, and PyTorch. Real-estate price prediction, recognising handwritten digits, predicting car damage from a photo, sentiment analysis, and more, all running on-device rather than calling a server. It is the second of my two mobile-AI books, following <a href="/machine-learning-projects-for-mobile-applications">Machine Learning Projects for Mobile Applications</a>, which is tighter on the model-to-device deployment path.</p>
+
+    <p>The reason it is structured as projects and not lectures is the same reason I still write about building things here: you do not learn machine learning by reading about it. You learn it by shipping something small and being wrong and fixing it. I argued that case at more length in <a href="/writing/best-books-to-learn-ai-ml">why you should read fewer ML books, not more</a> — advice I am comfortable giving about my own book.</p>
+
+    <h2><span class="hash">##</span> What it covers</h2>
+    <p>The seven projects walk through the core of applied mobile AI: computer vision, natural language processing, neural networks, and deep learning, each grounded in an app you can actually run. It is written for engineers who already know how to code and want to put AI on a mobile platform, on both Android and iOS, without a cloud dependency in the loop.</p>
+    <p>The complete source for every project is on Packt's GitHub: <a href="https://github.com/PacktPublishing/Mobile-Artificial-Intelligence-Projects" rel="noopener">PacktPublishing/Mobile-Artificial-Intelligence-Projects</a>.</p>
+
+    <h2><span class="hash">##</span> Where the ideas went next</h2>
+    <p>The book was 2019. On-device AI has moved a long way since, and I have kept shipping it. <a href="/writing/dailyvox-why-i-built-a-voice-journal-that-stays-on-your-phone">DailyVox</a> is a privacy-first on-device iOS app built on the same principle the book is about: the intelligence runs on your phone, not on my server. If you want the modern version of what the book teaches, that thread continues in <a href="/writing/privacy-first-on-device-ai-app-architecture">the on-device app architecture behind DailyVox</a>, <a href="/writing/on-device-ai-memory-privacy-first">on-device AI memory</a>, and <a href="/writing/the-economics-of-on-device-ai">the economics of on-device AI</a>.</p>
+
+    <h2><span class="hash">##</span> Get the book</h2>
+    <ul class="buy-links">
+      <li><a href="https://www.packtpub.com/en-us/product/mobile-artificial-intelligence-projects-9781789344073" rel="noopener">Packt (publisher)</a></li>
+      <li><a href="https://www.amazon.com/Mobile-Artificial-Intelligence-Projects-intelligence/dp/1789344077" rel="noopener">Amazon</a></li>
+      <li><a href="https://github.com/PacktPublishing/Mobile-Artificial-Intelligence-Projects" rel="noopener">Source code (GitHub)</a></li>
+    </ul>
+  </div>
+
+  <style>
+    .book-page h2 { margin-top: 2rem; }
+    .book-page .buy-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .book-page .buy-links li a {
+      display: inline-block; padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(120, 200, 160, 0.35); border-radius: 6px; text-decoration: none;
+    }
+    .book-page .buy-links li a:hover { border-color: #4ade80; color: #4ade80; }
+  </style>
+</BaseLayout>

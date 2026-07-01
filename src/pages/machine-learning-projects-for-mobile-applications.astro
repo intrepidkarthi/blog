@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageUrl = "https://intrepidkarthi.com/machine-learning-projects-for-mobile-applications";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Book",
+  name: "Machine Learning Projects for Mobile Applications",
+  alternateName: "Build Android and iOS applications using TensorFlow Lite and Core ML",
+  author: { "@type": "Person", name: "Karthikeyan NG", url: "https://intrepidkarthi.com" },
+  isbn: "9781788994590",
+  bookFormat: "https://schema.org/Paperback",
+  publisher: { "@type": "Organization", name: "Packt Publishing" },
+  datePublished: "2018-10-31",
+  inLanguage: "en",
+  about: ["Machine Learning", "Mobile Machine Learning", "On-device ML", "TensorFlow Lite", "Core ML", "Android", "iOS", "Deep Learning", "Computer Vision"],
+  url: pageUrl,
+  sameAs: [
+    "https://www.amazon.com/Machine-Learning-Projects-Mobile-Applications/dp/1788994590",
+    "https://www.packtpub.com/en-us/product/machine-learning-projects-for-mobile-applications-9781788994590",
+    "https://www.oreilly.com/library/view/machine-learning-projects/9781788994590/",
+  ],
+};
+---
+
+<BaseLayout
+  title="Machine Learning Projects for Mobile Applications"
+  description="My book (Packt): build Android and iOS applications using TensorFlow Lite and Core ML. Hands-on machine learning projects for mobile — image, text and video classification running on-device."
+  active="writing"
+  file="~/intrepidkarthi/machine-learning-projects-for-mobile-applications"
+  canonicalUrl={pageUrl}
+  jsonLd={jsonLd}
+>
+  <div class="content book-page">
+    <div class="pre-title"><span class="arrow">$</span> cat /books/machine-learning-projects-for-mobile-applications.md</div>
+    <h1><span class="hash">#</span>Machine Learning Projects for Mobile Applications</h1>
+    <p class="lede">My book on building Android and iOS applications with TensorFlow Lite and Core ML. Hands-on machine learning that runs on the device, not in the cloud.</p>
+
+    <p>I wrote <strong>Machine Learning Projects for Mobile Applications</strong> for Packt to answer a specific question: how do you take a trained model and actually run it inside a mobile app, on the phone, at a size and speed a real device can handle? It works through projects, image classification, text and video processing, and deep-learning tasks, each built end to end for Android and iOS using TensorFlow Lite and Core ML.</p>
+
+    <p>It is the earlier of my two mobile-AI books. I followed it with <a href="/mobile-artificial-intelligence-projects">Mobile Artificial Intelligence Projects</a>, which widens the same idea into seven projects spanning NLP, computer vision, and robotics. If you are choosing between them: this one is the tighter, model-to-mobile deployment focus; the later book is the broader project tour.</p>
+
+    <h2><span class="hash">##</span> What it covers</h2>
+    <p>The core is the part most tutorials skip: getting a model off your laptop and onto a phone. Converting and quantizing models for TensorFlow Lite and Core ML, running inference on-device, and handling the constraints, size, memory, latency, that a mobile target imposes and a cloud API lets you ignore. It is written for engineers who can already build a model and want it to ship on a device.</p>
+
+    <h2><span class="hash">##</span> Why on-device, and where it went next</h2>
+    <p>Both books are built on one conviction: the intelligence should run on the phone. That was a harder argument in 2018 than it is now, and I have kept building on it. <a href="/writing/dailyvox-why-i-built-a-voice-journal-that-stays-on-your-phone">DailyVox</a> is the current version, a privacy-first on-device iOS app, and the modern architecture behind it is written up in <a href="/writing/privacy-first-on-device-ai-app-architecture">the on-device AI app architecture</a> and <a href="/writing/the-economics-of-on-device-ai">the economics of on-device AI</a>. If you want my honest take on how to use books like this one, see <a href="/writing/best-books-to-learn-ai-ml">why you should read fewer ML books and build more</a>.</p>
+
+    <h2><span class="hash">##</span> Get the book</h2>
+    <ul class="buy-links">
+      <li><a href="https://www.packtpub.com/en-us/product/machine-learning-projects-for-mobile-applications-9781788994590" rel="noopener">Packt (publisher)</a></li>
+      <li><a href="https://www.amazon.com/Machine-Learning-Projects-Mobile-Applications/dp/1788994590" rel="noopener">Amazon</a></li>
+      <li><a href="https://www.oreilly.com/library/view/machine-learning-projects/9781788994590/" rel="noopener">O'Reilly</a></li>
+    </ul>
+  </div>
+
+  <style>
+    .book-page h2 { margin-top: 2rem; }
+    .book-page .buy-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .book-page .buy-links li a {
+      display: inline-block; padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(120, 200, 160, 0.35); border-radius: 6px; text-decoration: none;
+    }
+    .book-page .buy-links li a:hover { border-color: #4ade80; color: #4ade80; }
+  </style>
+</BaseLayout>
