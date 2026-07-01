@@ -6,7 +6,7 @@ excerpt: "I co-authored a machine learning book, so this will sound strange comi
 tags: [machine-learning, ai, books, learning, students]
 ---
 
-I co-authored a machine learning book, *Mobile Artificial Intelligence Projects*, published by Packt. So take what follows as coming from someone with an obvious conflict of interest who is going to argue against his own product category: most people trying to learn ML should read fewer books, not more.
+I have written two machine learning books for Packt, [Machine Learning Projects for Mobile Applications](/machine-learning-projects-for-mobile-applications) and [Mobile Artificial Intelligence Projects](/mobile-artificial-intelligence-projects). So take what follows as coming from someone with an obvious conflict of interest who is going to argue against his own product category: most people trying to learn ML should read fewer books, not more.
 
 Book-buying is the most comfortable procrastination this field offers. It feels like progress. You finish a chapter, you highlight a definition, you feel the warm sense of having learned something, and you have moved exactly nowhere, because ML is not a thing you learn by reading. It is a thing you learn by building and being wrong and fixing it. The book is scaffolding for the building. When the book becomes the activity instead of the scaffolding, it has turned into a very respectable way to avoid the hard part.
 
