@@ -21,6 +21,7 @@ interface Props {
   author?: string;
   tags?: string[];
   jsonLd?: unknown;
+  faqs?: { q: string; a: string }[];
   noindex?: boolean;
 }
 const {
@@ -36,6 +37,7 @@ const {
   author = "Karthikeyan NG",
   tags = [],
   jsonLd,
+  faqs = [],
   noindex = false,
 } = Astro.props;
 
@@ -114,6 +116,31 @@ const defaultJsonLd =
             },
           }
         : null;
+
+// AEO: when faqs are provided, emit an @graph combining the default schema with FAQPage
+const faqJsonLd =
+  faqs.length > 0
+    ? {
+        "@type": "FAQPage",
+        mainEntity: faqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      }
+    : null;
+function stripCtx(o: any) {
+  if (!o || typeof o !== "object") return o;
+  const rest: any = { ...o };
+  delete rest["@context"];
+  return rest;
+}
+const finalJsonLd = faqJsonLd
+  ? {
+      "@context": "https://schema.org",
+      "@graph": [...(defaultJsonLd ? [stripCtx(defaultJsonLd)] : []), faqJsonLd],
+    }
+  : defaultJsonLd;
 ---
 
 <!doctype html>
@@ -190,7 +217,7 @@ const defaultJsonLd =
 
     <!-- Structured data -->
     {defaultJsonLd && (
-      <script type="application/ld+json" set:html={JSON.stringify(defaultJsonLd)} />
+      <script type="application/ld+json" set:html={JSON.stringify(finalJsonLd)} />
     )}
 
     <!-- Fonts -->

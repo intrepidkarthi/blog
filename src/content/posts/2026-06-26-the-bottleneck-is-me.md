@@ -4,7 +4,18 @@ date: 2026-06-26
 slug: the-bottleneck-is-me
 excerpt: "Three and a half years of following one cost curve, and it has landed in my own chair with a physical symptom. I keep six to eight terminals open at once, agents generating in parallel, and the one thing everything queues behind is me deciding what is true. Generation went ambient. The bottleneck walked up the bench and sat down on me."
 tags: [ai, claude-code, agents, token-economics, engineering-leadership]
+faqs:
+  - q: "Is running multiple Claude Code agents in parallel worth it?"
+    a: "Yes, for well-isolated tasks, but the constraint moves to you. Parallel agents multiply throughput and token cost together, and most setups find 2 to 5 concurrent agents the sweet spot before coordination overhead wins. The real limit is not the agents; it is one human reviewing everything they produce in series."
+  - q: "How many Claude Code agents should I run in parallel?"
+    a: "Most effective setups run 2 to 5 at once. Beyond that, coordination cost and the token bill usually outweigh the parallelism, unless the tasks are very well isolated. The practical ceiling is your own attention: one person can only verify so much output."
+  - q: "What is the real bottleneck when running AI coding agents in parallel?"
+    a: "You are. Generation runs in parallel and cheaply; judging whether the output is correct runs in series through one human with one pair of eyes. The agents scale. Your review does not, which is why the bottleneck moves onto the person supervising them."
 ---
+
+**Short answer.** Yes, for well-isolated tasks, but the constraint moves onto you. Parallel agents multiply throughput and token cost together, and most people find 2 to 5 concurrent agents the sweet spot before coordination overhead wins. The real limit is not the agents. It is one human reviewing everything they produce, in series.
+
+## Is running multiple Claude Code agents in parallel worth it?
 
 For three and a half years I have written the same sentence on this blog. Generation got cheap. Verification became the work. This summer I am living the end state of my own argument, and it has a physical symptom. I keep six to eight terminals open at once.
 

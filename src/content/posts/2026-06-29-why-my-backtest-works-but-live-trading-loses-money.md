@@ -4,7 +4,18 @@ date: 2026-06-29
 slug: why-my-backtest-works-but-live-trading-loses-money
 excerpt: "I took a clean backtest live and the equity curve inverted inside a week. Same code, same market. After watching it happen from both sides of an exchange, I stopped calling it luck. The backtest and the live book are different games, and the gap has a fixed set of causes. Here they are in the order they cost me money."
 tags: [trading, quant, backtesting, crypto, feaws]
+faqs:
+  - q: "Why does my backtest work but live trading loses money?"
+    a: "Because the backtest and the live market are different games. The backtest assumed fills you will not get, ignored slippage, fees and funding, and was often overfit to a market regime that has since changed. Those costs are real live, so a strategy that looked profitable gross runs negative net."
+  - q: "How much worse is live trading than a backtest?"
+    a: "Live typically degrades backtest results by 10 to 20 percent or more once slippage, fees and funding are included. If a strategy only works before costs, it does not work. The net is where most edges die."
+  - q: "How do I make a backtest more realistic?"
+    a: "Subtract costs first, not last. Test on out-of-sample data the parameters never saw. Then forward-test small with real money, because paper trading removes the one variable that matters most: what you do when it is your own capital on the line."
 ---
+
+**Short answer.** Your backtest and the live market are different games. The backtest assumed fills, ignored slippage, fees and funding, and was often overfit to a regime that has since changed. Live, those costs are real, so a strategy that looked profitable before costs runs negative after them. The generating was cheap; the execution is where it dies.
+
+## Why does my backtest work but live trading loses money?
 
 The first time I ran a strategy from a clean backtest into live money, the curve inverted inside a week. Same code, same rules, same market. The backtest pointed up and to the right. The account went the other way. I have watched this happen to enough people since, from both sides of the screen, to stop calling it bad luck. The backtest and the live book are not the same game. The gap between them is structural, and it has a fixed set of causes. Here they are, roughly in the order they have cost me money.
 

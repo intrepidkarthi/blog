@@ -4,7 +4,18 @@ date: 2025-08-19
 slug: the-gauge-broke
 excerpt: "For two years I argued the feeling of AI speed had come apart from the fact of it, from watching my own teams. This summer it stopped being an anecdote. A controlled trial measured experienced developers feeling about 20% faster while running about 19% slower. The instrument we steer by reads backward."
 tags: [ai, productivity, metr, engineering-leadership, software-delivery]
+faqs:
+  - q: "Why does AI make experienced developers slower on large codebases?"
+    a: "Because AI speeds up typing, which was never the bottleneck for an expert in a codebase they already know. It adds overhead, prompting, waiting, and reviewing output that is often subtly wrong, at the stage that was already the expensive one. A controlled trial measured experienced developers feeling about 20 percent faster while running about 19 percent slower."
+  - q: "Does AI slow down all developers?"
+    a: "No. The METR trial's effect flips positive for juniors and for greenfield work. The slowdown is concentrated in experienced developers working in large codebases they already know well, where AI suggestions add review overhead without saving real time."
+  - q: "If AI makes developers slower, why does it feel faster?"
+    a: "The felt sense of speed and the measured reality came apart. Developers reported roughly 20 percent faster while the stopwatch showed about 19 percent slower. The gauge you steer by reads backward under exactly the conditions most real work happens in."
 ---
+
+**Short answer.** AI speeds up typing, which was never the bottleneck for an expert in a codebase they already know. It adds overhead, prompting, waiting, and reviewing output that is often subtly wrong, at the exact stage that was already expensive. A controlled trial measured experienced developers feeling about 20% faster while running about 19% slower.
+
+## Why does AI make experienced developers slower on large codebases?
 
 In December 2023 I wrote that the feeling of speed and the fact of speed had come apart on my teams, and I admitted it was an anecdote, a thing I saw but could not yet prove. This summer the anecdote got a stopwatch on it, and the result is worse than I guessed.
 

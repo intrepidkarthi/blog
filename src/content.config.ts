@@ -26,6 +26,7 @@ const posts = defineCollection({
     team: z.array(z.string()).optional(),
     amazon_links: z.array(z.string()).optional(),
     recovered_from: z.string().optional(),
+    faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
   }),
 });
 
