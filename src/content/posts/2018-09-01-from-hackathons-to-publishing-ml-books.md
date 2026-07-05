@@ -62,7 +62,7 @@ If you're early in your career and trying to figure out what to do on weekends:
 1. **Do hackathons.** Not for the prize money. For the forced exposure to whatever the sponsor's bleeding-edge stack is.
 2. **Take notes during.** Weekend hackathons don't compound unless you write down what you learned. (Confession: I lost 8–10 of mine because I didn't.)
 3. **When someone asks you to write or speak, say yes.** It will be twice as much work as you expected and three times as valuable.
-4. **Pick a niche where the official documentation is bad.** That's where the writing leverage lives. In 2018 it was mobile ML. In 2026 it's agent infrastructure.
+4. **Pick a niche where the official documentation is bad.** That's where the writing leverage lives. Right now that niche is mobile ML.
 
 The compounding from hackathons → talks → books → reputation → opportunities → company-building was real, but invisible at any given step. It only made sense in retrospect.
 

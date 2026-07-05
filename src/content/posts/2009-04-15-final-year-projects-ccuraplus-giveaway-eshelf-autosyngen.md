@@ -2,6 +2,7 @@
 title: "Final-year projects: CCura+, Give Away, eShelf, AutoSynGen"
 date: 2009-04-15
 slug: final-year-projects-ccuraplus-giveaway-eshelf-autosyngen
+noindex: true
 excerpt: "Four BE projects from the final year at TCE. Encryption, peer-to-peer file sharing, semantic search, and a synonym-based question generator that uses WordNet's synset graph."
 tags: [college, tce, final-year, cryptography, p2p, semantic-search, nlp, projects]
 ---

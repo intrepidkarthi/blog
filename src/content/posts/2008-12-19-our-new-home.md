@@ -2,6 +2,7 @@
 title: "Our new home"
 date: 2008-12-19
 slug: our-new-home
+noindex: true
 excerpt: "We have started to build a new home for us in Old kuyavar paayam road, nearer to my school. It is exactly opposite to the mariyamman temple there in the main ro…"
 tags: [journal]
 legacy: true

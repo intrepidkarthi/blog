@@ -2,6 +2,7 @@
 title: "Three Tamil poems for February — உலக காதலர்களுக்கு, என்னவள் யாரோ, நண்பா நண்பா"
 date: 2010-02-14
 slug: thamizh-kavithai-february-2010
+noindex: true
 excerpt: "Three short Tamil pieces from this month. One for the world's lovers, one for whoever my own happens to be, one for a friend. Putting them up together because they came out the same week and they're all asking some version of the same question."
 tags: [tamil, thamizh, kavithai, poetry, valentine, friendship, personal]
 ---

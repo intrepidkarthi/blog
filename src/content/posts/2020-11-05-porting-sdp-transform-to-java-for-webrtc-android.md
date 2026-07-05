@@ -104,7 +104,7 @@ In the WebRTC project I was building, the parser was used for:
 
 Without a structured parser, all of this would have been regex-based, fragile, and broken whenever WebRTC's SDP changed.
 
-## what I would do differently
+## what I would do differently in 2026
 
 Two things.
 

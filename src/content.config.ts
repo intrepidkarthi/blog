@@ -11,6 +11,7 @@ const posts = defineCollection({
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     legacy: z.boolean().default(false),
+    noindex: z.boolean().default(false),
     source: z.string().optional(),
     canonical_url: z.string().url().optional(),
     original_url: z.string().optional(),

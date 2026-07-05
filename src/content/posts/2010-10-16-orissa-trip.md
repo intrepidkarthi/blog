@@ -2,6 +2,7 @@
 title: "Orissa trip — Bhubaneswar, Konark, Puri"
 date: 2010-10-16
 slug: orissa-trip
+noindex: true
 excerpt: "Long weekend in Orissa — Bhubaneswar's temple cluster, Konark's sun temple at the coast, an overnight at Puri. Notes from the trip and twenty-four photos that survived."
 tags: [trip, orissa, bhubaneswar, konark, puri, travel, temple]
 ---

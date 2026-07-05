@@ -73,7 +73,7 @@ Cash-and-carry on a perp is mechanically simple. Long spot BTC. Short the equiva
 
 The trade has three real risks. One: spot/perp basis can blow out faster than funding can clear it (rare, but happened in March 2020). Two: the exchange holding the perp can become insolvent (FTX). Three: regulatory action against the venue can lock your collateral overnight.
 
-For most of 2021, the BTC perp basis trade returned 15-25% APR with very tight drawdowns. By 2024 the trade was crowded enough that the returns compressed to single digits, except during brief liquidation events. By 2026 it is a structural background trade — quietly compounding, not exciting, occasionally devastating if the venue catches a cold.
+For most of 2021, the BTC perp basis trade returned 15-25% APR with very tight drawdowns. By 2024 the trade was crowded enough that the returns compressed to single digits, except during brief liquidation events. From here the likely path is a structural background trade — quietly compounding, not exciting, occasionally devastating if the venue catches a cold.
 
 ## the takeaway
 

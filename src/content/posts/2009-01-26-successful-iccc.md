@@ -2,6 +2,7 @@
 title: "Successful iCCC"
 date: 2009-01-26
 slug: successful-iccc
+noindex: true
 excerpt: "We have started TecUthsav by conducting the first contest for it. Yes, we have successfully conducted iCCC(internet C Coding Carnival) regarding TecUthsav comin…"
 tags: [events]
 legacy: true

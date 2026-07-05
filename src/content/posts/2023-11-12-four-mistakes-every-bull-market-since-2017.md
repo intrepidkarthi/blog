@@ -6,7 +6,7 @@ excerpt: "Three crypto bull markets later, the mistakes have not changed shape. 
 tags: [crypto, trading, psychology, mistakes, bull-market]
 ---
 
-I have traded four crypto bull markets. 2017, 2021, the brief 2024, and whatever cycle is starting now. The mistakes do not change. Only the size of the loss does.
+I have traded three crypto bull markets. 2017, 2021, and whatever cycle is starting now. The mistakes do not change. Only the size of the loss does.
 
 The first time you make these, you think they are personal failures. By the third time you realise they are structural — the same four cognitive defaults firing in the same order, against the same incentive shape, every cycle. You can read about them in 1923 (*Reminiscences of a Stock Operator*), in 1949 (*The Intelligent Investor*), or in any honest trader's journal from any bull market in any asset class.
 
