@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Machines Learned to Talk — Cheatsheet — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Session 1 on one printable page: tokens, embeddings, attention, prediction — the mechanics behind every LLM.">
+<meta property="og:title" content="How Machines Learned to Talk — Cheatsheet">
+<meta property="og:description" content="Session 1 on one printable page: tokens, embeddings, attention, prediction — the mechanics behind every LLM.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#1D3AD1;--accentpale:#E3E9FF;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
+  <div class="kicker">Session 1 cheatsheet</div>
+  <h1>How Machines Learned to Talk</h1>
+  <p class="lead">Generative AI: Foundations and Applications · TCE</p>
+
+  <h2>The one idea</h2>
+  <blockquote style="background:var(--accentpale)">An LLM does exactly one thing: <strong>given text, predict the next token.</strong> Append it, repeat. Every essay, poem and program is generated one token at a time.</blockquote>
+
+  <h2>Three truths most people get wrong</h2>
+  <ol>
+    <li><strong>It's not a database.</strong> Nothing is stored or looked up — a model is a file of billions of learned numbers (<strong>parameters</strong>) that <em>compute</em> every reply fresh. That's why it can invent things.</li>
+    <li><strong>It's frozen while you use it.</strong> <strong>Training</strong> (adjust the knobs on trillions of tokens, once, for months) vs <strong>inference</strong> (your prompt flows through the frozen knobs, every chat). It does NOT learn from your conversation — though free-tier chats may train <em>future</em> versions, so never paste private data.</li>
+    <li><strong>It has no memory.</strong> The app re-sends your entire conversation into the context window on every turn. "Chat memory" is a product feature beside the model, not the model remembering.</li>
+  </ol>
+
+  <h2>Where the words live</h2>
+  <p>AI ⊃ Machine Learning ⊃ Deep Learning ⊃ Generative AI ⊃ <strong>LLMs</strong> (GPT, Gemini, Claude, Llama). And: ChatGPT is the <em>app</em>; GPT is the <em>model</em> inside — like WhatsApp vs the phone network.</p>
+
+  <h2>Eight words you now own</h2>
+  <table>
+    <thead>
+      <tr><th>Term</th><th>Meaning</th><th>Remember it as</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Token</td><td>The chunk a model actually reads (~¾ English word). You pay per token; context is measured in tokens. Tamil ≈ 3–5× more tokens than English today.</td><td>Lego bricks of language</td></tr>
+      <tr><td>Embedding</td><td>Token → list of numbers = coordinates in meaning-space. Similar meaning = nearby points.</td><td>GPS for meaning</td></tr>
+      <tr><td>Attention</td><td>Every word weighs every other word to resolve meaning ("it" → trophy or suitcase?). The engine of the Transformer — the T in GPT.</td><td>Words looking at each other</td></tr>
+      <tr><td>Prediction</td><td>The model scores every possible next token. That's the whole job.</td><td>Autocomplete with a PhD</td></tr>
+      <tr><td>Sampling / Temperature</td><td>It rolls dice over those scores. Low T = same answer every time (facts, code). High T = creative and risky (stories, names).</td><td>The creativity knob</td></tr>
+      <tr><td>Tuning</td><td>Pretraining (read everything) → instruction tuning (learn to answer) → RLHF (learn taste).</td><td>Parrot → finishing school</td></tr>
+      <tr><td>Parameter</td><td>One learned knob (the w and b in y&nbsp;=&nbsp;wx&nbsp;+&nbsp;b, times a trillion). A model = a file of them.</td><td>Knobs, not knowledge cards</td></tr>
+      <tr><td>Inference</td><td>Running the frozen model. No learning, no memory — just computation per request.</td><td>Cooking from a finished cookbook</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Why famous failures happen</h2>
+  <ul>
+    <li>"2 r's in strawberry" → it sees <strong>tokens, not letters</strong></li>
+    <li>Wrong big multiplication → it <strong>predicts digits</strong>, doesn't calculate (fix: tools, S5)</li>
+    <li>Doesn't know yesterday's news → <strong>knowledge cutoff</strong> (fix: RAG, S4)</li>
+    <li>Confident nonsense (<strong>hallucination</strong>) → trained for <em>plausible</em>, not <em>true</em> (fix: evaluation, S2)</li>
+  </ul>
+
+  <h2>Context window</h2>
+  <p>Everything — rules + history + documents + question + answer — must fit in one token-measured window (~128k–1M+). If your knowledge doesn't fit → Session 4 (RAG).</p>
+
+  <h2>The code that matters</h2>
+  <pre><code>%pip install -U google-genai            # once
+from google import genai
+
+client = genai.Client(api_key=KEY)      # key from aistudio.google.com — keep secret
+r = client.models.generate_content(
+    model="gemini-flash-latest",        # the free tier's current Flash (July 2026 → Gemini 3.5 Flash)
+    contents="Explain tokens like I'm 12")
+print(r.text)</code></pre>
+  <p>Temperature: <code>config=types.GenerateContentConfig(temperature=0.0)</code> · Count tokens: <code>client.models.count_tokens(model=..., contents=...)</code> · Pin a dated model id only if you need frozen behavior</p>
+
+  <h2>Free tier facts</h2>
+  <p>~10 requests/min, a few hundred a day per key (limits vary — check AI Studio) · no credit card · 429 error = slow down, retry · never share/commit your key · don't paste private data.</p>
+
+  <h2>Landscape in one line</h2>
+  <p>Closed APIs (GPT, Gemini, Claude) vs <strong>open weights</strong> you can download (Llama, DeepSeek, Qwen, Mistral) — we run one locally in Session 5. Names change monthly; <strong>the mechanics on this page don't.</strong></p>
+  <p><strong>Reasoning models</strong> (o-series, Gemini "thinking"): the third dial — <strong>think longer, not train bigger</strong>. Hidden scratchpad ≈ 10–50× tokens per answer; never for easy questions.</p>
+
+  <p><strong>Carry into Session 2:</strong> your 10-question expert test set (written in Lab 1). <strong>Overnight before Day 2:</strong> put 2–3 real documents (notes/PDFs) on your laptop — Day 2 you build "chat with my notes" over them.</p>
+
+  <footer class="foot">
+    <div style="margin-bottom:8px">deck: <a href="../presentations/session-1-how-machines-learned-to-talk.html">session-1-how-machines-learned-to-talk.html</a> · <a href="session-2-cheatsheet.html">Session 2 →</a></div>
+    Generative AI: Foundations &amp; Applications · <a href="../index.html">course home</a> · free to use, fork, localize and teach
+  </footer>
+</div>
+</body>
+</html>

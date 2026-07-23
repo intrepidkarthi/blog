@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Generative AI course · how LLMs work">
+  <style>
+    g, path, line, rect, circle, polyline, polygon, ellipse {
+      fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .g { stroke: #4eff7c; } .a { stroke: #ffb454; } .p { stroke: #ff5f87; } .c { stroke: #5fd7ff; } .d { stroke: #2a8c44; } .pu { stroke: #c780ff; }
+    .fg { fill: #4eff7c; stroke: #4eff7c; } .fa { fill: #ffb454; stroke: #ffb454; } .fc { fill: #5fd7ff; stroke: #5fd7ff; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #4eff7c; stroke: none; letter-spacing: 1px; }
+    .mono-a { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #ffb454; stroke: none; letter-spacing: 1px; }
+    .vt { font-family: 'VT323', monospace; font-size: 16px; fill: #4eff7c; stroke: none; }
+  </style>
+
+  <!-- prompt line: token boxes -->
+  <rect class="c" x="18" y="118" width="30" height="20" rx="4"/>
+  <rect class="c" x="54" y="118" width="26" height="20" rx="4"/>
+  <rect class="c" x="86" y="118" width="34" height="20" rx="4"/>
+  <rect class="a" x="126" y="118" width="24" height="20" rx="4"/>
+  <!-- the empty next-token slot -->
+  <rect class="p" x="156" y="118" width="26" height="20" rx="4" stroke-dasharray="4 3"/>
+  <text class="mono-a" x="160" y="132">?</text>
+
+  <!-- attention arcs into the "?" slot -->
+  <path class="pu" d="M 33 116 Q 100 52 169 116" stroke-width="2.6"/>
+  <path class="pu" d="M 67 116 Q 118 74 169 116" stroke-width="1.8" opacity="0.7"/>
+  <path class="pu" d="M 103 116 Q 136 88 169 116" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- probability bars under the line -->
+  <line class="d" x1="18" y1="152" x2="18" y2="192"/>
+  <rect class="fg" x="22" y="156" width="92" height="7"/>
+  <text class="mono" x="120" y="163">0.66</text>
+  <rect class="fg" x="22" y="169" width="34" height="7" opacity="0.75"/>
+  <text class="mono" x="62" y="176">0.14</text>
+  <rect class="fg" x="22" y="182" width="18" height="7" opacity="0.5"/>
+  <text class="mono" x="46" y="189">0.04</text>
+
+  <!-- header -->
+  <text class="vt" x="18" y="28">$ how_llms_work</text>
+  <text class="mono-a" x="18" y="44">P(next_token)</text>
+</svg>

@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 3 · AI Beyond Text — GenAI Foundations · TCE</title>
+<meta name="description" content="Session 3 of the TCE Madurai GenAI course: vision that reads documents, diffusion image generation, and speech — the same loop with new kinds of tokens.">
+<meta property="og:title" content="Session 3 · AI Beyond Text — GenAI Foundations · TCE">
+<meta property="og:description" content="Session 3 of the TCE Madurai GenAI course: vision that reads documents, diffusion image generation, and speech — the same loop with new kinds of tokens.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --paper:#FFFFFF; --ink:#14171F; --body:#3A404C; --muted:#667080; --faint:#98A0AD;
+    --line:#E8EAEF; --linedark:#C5CAD4; --panel:#F4F6F9;
+    --green:#0E9F6E; --greenpale:#DDF4EA; --red:#D92D20; --redpale:#FDE4E1;
+    --amber:#B36A00; --amberpale:#FFEFD6;
+    /* the six course hues — ALL available in every file (title chips + series) */
+    --h1:#2B4EFF; --d1:#1D3AD1; --t1:#E3E9FF;
+    --h2:#8526E0; --d2:#6B1FBF; --t2:#EFE2FE;
+    --h3:#ED2E7C; --d3:#C2186A; --t3:#FDE0EE;
+    --h4:#F08C00; --d4:#A85E00; --t4:#FFEBCC;
+    --h5:#00A87A; --d5:#00755A; --t5:#D6F3E7;
+    --h6:#E8442E; --d6:#C22B18; --t6:#FDE2DC;
+    /* this deck's own hue — session 3 */
+    --hue:var(--h3); --deep:var(--d3); --tint:var(--t3);
+    --bg:var(--paper);
+    /* legacy aliases (CSS/JS below reference these) */
+    --accent:var(--deep); --accent2:var(--hue); --accentpale:var(--tint);
+    --accentmark:color-mix(in srgb,var(--hue) 35%,white);
+    --stagebg:#14171F; --stageink:#FFFFFF;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--body);font-family:var(--font);overflow:hidden;-webkit-font-smoothing:antialiased}
+  .slide,.deck{z-index:auto} /* ensure slides paint above */
+  /* chrome */
+  #progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--hue);z-index:50;transition:width .3s ease}
+  #hud{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+    padding:13px 28px;font-size:12px;color:var(--muted);letter-spacing:.04em;pointer-events:none;background:var(--paper);
+    border-top:1px solid var(--line);font-family:var(--mono)}
+  #hud .brand{display:inline-flex;align-items:center;gap:10px}
+  #hud .brand b{color:var(--muted);font-weight:600}
+  #hud .pbars{height:11px}
+  #counter{font-variant-numeric:tabular-nums;color:var(--muted);font-family:var(--mono);font-size:11.5px}
+  #keyhint{position:fixed;right:20px;bottom:52px;z-index:50;font-size:11.5px;color:var(--muted);pointer-events:none;
+    background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;padding:8px 12px;transition:opacity .5s}
+  #keyhint kbd{font-family:var(--mono);background:var(--panel);border:1px solid var(--linedark);border-bottom-width:2px;
+    border-radius:4px;padding:1px 6px;font-size:10.5px;color:var(--body)}
+  /* probability-bar motif — the course's logo-mark: a next-token distribution */
+  .pbars{display:inline-flex;align-items:flex-end;gap:3px;height:16px}
+  .pbars i{width:5px;border-radius:2px;background:var(--hue)}
+  .pbars i:nth-child(1){height:100%}.pbars i:nth-child(2){height:62%}
+  .pbars i:nth-child(3){height:38%}.pbars i:nth-child(4){height:20%}.pbars i:nth-child(5){height:10%}
+  /* deck & slides */
+  .deck{position:fixed;inset:0;z-index:10}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+    background:radial-gradient(var(--line) 1.05px, transparent 1.05px) 0 0/26px 26px, var(--paper);
+    padding:7vh 9vw 12vh;opacity:0;visibility:hidden;transform:translateY(18px);
+    transition:opacity .45s ease,transform .45s ease,visibility .45s}
+  .slide.active{opacity:1;visibility:visible;transform:none}
+  .slide.past{transform:translateY(-18px)}
+  .deck.overview{overflow-y:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:20px;background:var(--panel)}
+  .deck.overview .slide{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;
+    zoom:.24;border:3px solid var(--linedark);border-radius:16px;cursor:pointer;height:100vh;overflow:hidden}
+  .deck.overview .slide:hover{border-color:var(--accent)}
+  /* reveal stagger */
+  .rv{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+  .slide.active .rv{opacity:1;transform:none}
+  /* typography */
+  .kicker{display:flex;align-items:baseline;gap:12px;font-size:12px;font-weight:700;letter-spacing:.08em;
+    font-family:var(--mono);color:var(--deep);margin-bottom:26px}
+  .kicker:before{content:"<|";color:var(--faint);font-weight:400;margin-right:-9px}
+  .kicker .tk{color:var(--deep)}
+  .kicker .tk:after{content:"|>";color:var(--faint);font-weight:400;margin-left:2px}
+  .kicker .no{font-family:var(--mono);color:var(--faint);letter-spacing:0}
+  .kicker:after{content:"";flex:1;height:1px;background:var(--line);align-self:center}
+  .kicker .pbars{align-self:center}
+  h1{font-size:clamp(2.7rem,6.2vw,4.7rem);font-weight:800;letter-spacing:-.035em;line-height:1.16;color:var(--ink)}
+  h2{font-size:clamp(1.9rem,3.8vw,2.85rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:18px;color:var(--ink)}
+  .u{background:var(--tint);color:var(--ink);border-radius:10px;padding:.04em .18em;box-shadow:none;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .tok-h i{font-style:normal;border-radius:.14em;padding:.02em .1em;margin:0 .02em;box-decoration-break:clone;-webkit-box-decoration-break:clone;white-space:pre-wrap}
+  .lead{font-size:clamp(1.05rem,1.75vw,1.3rem);color:var(--body);line-height:1.65;max-width:64ch}
+  .lead b,.card b{color:var(--ink);font-weight:650}
+  .note{font-size:.9rem;color:var(--muted);margin-top:16px;line-height:1.55}
+  .mt{margin-top:24px}
+  /* layout */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+  .cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card{background:var(--paper);border:2px solid var(--ink);border-radius:14px;padding:20px 22px;box-shadow:5px 5px 0 var(--tint)}
+  .card h3{font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;color:var(--ink)}
+  .card p{color:var(--muted);font-size:.94rem;line-height:1.6}
+  .card .em{display:inline-block;width:.5em;height:.5em;border-radius:3px;background:var(--accent);margin-right:9px;vertical-align:.06em}
+  .card.hi{box-shadow:6px 6px 0 var(--hue)}
+  .pill{display:inline-block;font-size:12.5px;font-weight:600;color:var(--body);
+    border:1.5px solid var(--linedark);border-radius:999px;padding:5px 13px;margin:4px 6px 0 0;background:var(--paper)}
+  .pill.on{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+  .statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:28px;border-top:1px solid var(--line)}
+  .stat{padding:18px 22px 4px 0;border-bottom:1px solid var(--line)}
+  .stat .n{font-size:clamp(1.5rem,3vw,2.3rem);font-weight:800;letter-spacing:-.02em;color:var(--accent)}
+  .stat .l{color:var(--muted);font-size:.88rem;margin-top:5px;line-height:1.5}
+  .codebox{font-family:var(--mono);font-size:.86rem;line-height:1.75;background:#14171F;border:2px solid var(--ink);border-radius:10px;
+    padding:18px 20px;color:#d7dde6;overflow:auto}
+  .codebox .c{color:#717c8c}.codebox .k{color:#7fb4ff}.codebox .s{color:#a5d6a7}.codebox .f{color:#ffd28a}
+  /* demo shell */
+  .demo{background:var(--paper);border:2px solid var(--ink);border-radius:16px;padding:20px 22px;box-shadow:7px 7px 0 var(--hue)}
+  .dtitle{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--deep);font-family:var(--mono);margin-bottom:16px}
+  .dtitle:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .btn{appearance:none;border:2px solid var(--ink);background:var(--paper);color:var(--ink);font-family:var(--font);
+    font-size:.88rem;font-weight:700;border-radius:10px;padding:9px 16px;cursor:pointer;transition:.15s}
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--linedark)}
+  .btn.primary{background:var(--ink);color:var(--paper);box-shadow:4px 4px 0 var(--hue)}
+  .btn.primary:hover{box-shadow:6px 6px 0 var(--hue);transform:translate(-1px,-1px);background:var(--ink)}
+  .btn:disabled{opacity:.4;cursor:default}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  input[type=range]{accent-color:var(--deep);width:100%}
+  input[type=text]{background:var(--paper);border:2px solid var(--linedark);border-radius:8px;color:var(--ink);
+    font-family:var(--font);font-size:.95rem;padding:10px 14px;width:100%;outline:none}
+  input[type=text]:focus{border-color:var(--hue)}
+  /* probability bars */
+  .bars{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+  .bar{display:grid;grid-template-columns:110px 1fr 52px;gap:12px;align-items:center;font-size:.92rem}
+  .bar .w{font-family:var(--mono);color:var(--ink);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.85rem}
+  .bar .track{height:20px;background:var(--panel);border:1px solid var(--line);border-radius:5px;overflow:hidden}
+  .bar .fill{height:100%;width:0;background:var(--hue);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+  .bar.win .fill{background:var(--green)}
+  .bar .p{font-family:var(--mono);color:var(--muted);font-size:.8rem;text-align:right;font-variant-numeric:tabular-nums}
+  /* tokens */
+  .tokwrap{display:flex;flex-wrap:wrap;gap:6px;min-height:54px;margin-top:14px;align-content:flex-start}
+  .tok{font-family:var(--mono);font-size:.92rem;padding:4px 8px;border-radius:6px;animation:tokin .22s ease both;color:var(--ink)}
+  @keyframes tokin{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
+  .tokcount{font-family:var(--mono);font-size:.88rem;color:var(--muted);margin-top:12px}
+  .tokcount b{color:var(--accent);font-size:1.1rem}
+  /* embedding map */
+  .map{position:relative;height:44vh;min-height:290px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .map svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .word{position:absolute;transform:translate(-50%,-50%);font-size:.86rem;font-weight:600;padding:4px 11px;border-radius:999px;
+    cursor:pointer;border:1px solid var(--linedark);background:var(--bg);transition:.15s;user-select:none;white-space:nowrap;color:var(--body)}
+  .word:hover{transform:translate(-50%,-50%) scale(1.1);border-color:var(--ink);color:var(--ink);z-index:5}
+  .word.sel{background:var(--ink);color:var(--bg);border-color:var(--ink);z-index:6}
+  .simout{margin-top:14px;font-size:.98rem;color:var(--body);min-height:26px}
+  .simout b{font-family:var(--mono);color:var(--accent);font-size:1.15rem}
+  /* attention */
+  .attn{position:relative;padding:40px 8px 10px}
+  .attn svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .attn .words{position:relative;display:flex;flex-wrap:wrap;gap:9px;justify-content:center;z-index:2}
+  .aw{font-size:clamp(.98rem,1.7vw,1.28rem);font-weight:600;padding:7px 13px;border-radius:9px;background:var(--bg);
+    border:1px solid var(--linedark);cursor:pointer;transition:.15s;color:var(--body)}
+  .aw:hover,.aw.hot{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .aw.lit{border-color:var(--accent);color:var(--accent);border-width:1.5px}
+  /* pipeline stepper */
+  .pipe{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;justify-content:space-between}
+  .stage{flex:1;min-width:96px;background:var(--bg);border:1.5px solid var(--line);border-radius:9px;padding:11px 10px;text-align:center;transition:.2s}
+  .stage .t{font-weight:700;font-size:.82rem;letter-spacing:-.01em}
+  .stage .d{color:var(--faint);font-size:.68rem;margin-top:3px;line-height:1.3}
+  .stage.cur{border-color:var(--hue);background:var(--tint)}
+  .stage.done{border-color:var(--linedark)}
+  .stage.done .t{color:var(--muted)}
+  .payload{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    min-height:118px;font-size:.95rem;color:var(--body);line-height:1.6}
+  .payload .mono{font-family:var(--mono);font-size:.88rem}
+  .payload.pre{white-space:pre-wrap}
+  .genline{font-family:var(--mono);font-size:1rem;margin-top:14px;color:var(--ink);line-height:1.7}
+  .genline .new{background:var(--greenpale);color:var(--green);border-radius:4px;padding:1px 4px;font-weight:700}
+  .genline .cursor{display:inline-block;width:9px;height:1.15em;background:var(--accent);vertical-align:text-bottom;animation:pulse 1s infinite}
+  /* classify game */
+  .cg-item{font-size:clamp(1.15rem,2.4vw,1.7rem);font-weight:700;letter-spacing:-.01em;min-height:56px;display:flex;align-items:center}
+  .cg-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  .cg-btn{border:2px solid var(--ink);border-radius:10px;background:var(--paper);color:var(--ink);padding:16px;cursor:pointer;text-align:center;transition:.15s;font-family:var(--font)}
+  .cg-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--linedark)}
+  .cg-btn .b{font-weight:800;font-size:1.05rem}
+  .cg-btn .s{color:var(--muted);font-size:.82rem;margin-top:3px}
+  .cg-btn.right{border-color:var(--green);background:var(--greenpale)}
+  .cg-btn.wrong{border-color:var(--red);background:var(--redpale)}
+  .cg-score{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+  /* reveal cards (failures & recap) */
+  .flip{cursor:pointer;position:relative}
+  .flip .ans{display:none;color:var(--body)}
+  .flip.open .ans{display:block}
+  .flip.open .q{display:none}
+  .flip .hintline{color:var(--accent);font-size:.82rem;font-weight:600;margin-top:10px}
+  .flip.open .hintline{display:none}
+  /* context window */
+  .cw{display:flex;height:58px;border-radius:9px;overflow:hidden;border:1.5px solid var(--linedark);background:var(--panel)}
+  .cw .seg{display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;
+    white-space:nowrap;overflow:hidden;transition:flex-basis .5s ease;flex:0 0 0%}
+  .cwlegend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:.78rem;color:var(--muted)}
+  .cwlegend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .cw-alert{margin-top:14px;font-weight:700;font-size:.95rem;min-height:24px}
+  /* scale slider */
+  .abil{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+  .ab{display:flex;gap:12px;align-items:center;font-size:.97rem;color:var(--faint);transition:.3s;border:1px solid var(--line);
+    border-radius:8px;padding:10px 14px}
+  .ab .chk{font-family:var(--mono);font-size:.85rem}
+  .ab.onn{color:var(--ink);border-color:var(--green);background:var(--greenpale)}
+  .ab.onn .chk{color:var(--green);font-weight:700}
+  /* tables & steps */
+  table.tbl{width:100%;border-collapse:collapse;font-size:.94rem}
+  .tbl th{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-align:left;
+    padding:10px 14px;border-bottom:1.5px solid var(--linedark)}
+  .tbl td{padding:11px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+  .tbl td:first-child{color:var(--ink);font-weight:650}
+  .tag{font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:999px}
+  .tag.closed{background:var(--redpale);color:var(--red)}
+  .tag.open{background:var(--greenpale);color:var(--green)}
+  .steps{counter-reset:st;display:flex;flex-direction:column;gap:13px}
+  .step{display:flex;gap:15px;align-items:flex-start}
+  .step:before{counter-increment:st;content:counter(st);flex:none;width:31px;height:31px;border-radius:8px;
+    background:var(--ink);color:var(--bg);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .step .t{font-weight:700;font-size:.98rem} .step .d{color:var(--muted);font-size:.9rem;margin-top:2px;line-height:1.55}
+  @media (max-width:900px){.cols,.cols3,.statgrid,.cg-btns{grid-template-columns:1fr}.slide{padding:6vh 6vw 13vh}}
+
+  /* collage */
+  .collage{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr .8fr;gap:10px;height:58vh;min-height:330px}
+  .ph{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:zoom-in;background:var(--panel)}
+  .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}
+  .ph:hover img{transform:scale(1.045)}
+  .ph .cap{position:absolute;left:8px;bottom:8px;background:color-mix(in srgb,var(--bg) 95%,transparent);border:1px solid var(--line);
+    border-radius:6px;padding:3px 9px;font-size:10.5px;font-weight:700;letter-spacing:.03em;color:var(--ink);max-width:92%}
+  .ph.hero{grid-column:1/3;grid-row:1/3}
+  .ph.hero .cap{font-size:12.5px;padding:5px 12px}
+  #lightbox{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 93%,transparent);z-index:100;display:none;
+    align-items:center;justify-content:center;flex-direction:column;gap:16px;cursor:zoom-out;padding:4vh 4vw}
+  #lightbox.on{display:flex}
+  #lightbox img{max-width:92vw;max-height:80vh;border-radius:8px}
+  #lightbox .lbcap{color:#fff;font-size:.95rem;text-align:center}
+  @media (max-width:900px){.collage{height:auto;grid-template-rows:repeat(3,150px)}}
+
+  /* terminology rings */
+  .ring{border:1.5px solid var(--linedark);border-radius:14px;padding:13px 15px;cursor:pointer;transition:.15s}
+  .ring .rl{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  .ring:hover>.rl{color:var(--ink)}
+  .ring.sel{border-color:var(--accent)}
+  .ring.sel>.rl{color:var(--accent)}
+  /* fit widget */
+  .fitbox{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px}
+  .fitbox svg{width:100%;height:auto;display:block}
+  .fitlab{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);font-family:var(--mono);margin-top:6px}
+  .fiterr{font-family:var(--mono);font-size:1rem;margin-top:10px}
+  .fiterr b{font-size:1.25rem}
+  /* api flow */
+  .apiflow{position:relative;display:flex;justify-content:space-between;gap:10px;margin:22px 0 4px}
+  .anode{flex:1;text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:12px 8px;font-size:.84rem;font-weight:700;transition:.2s;background:var(--bg)}
+  .anode .sub{font-weight:400;color:var(--faint);font-size:.7rem;margin-top:3px;line-height:1.35}
+  .anode.cur{border-color:var(--hue);background:var(--tint)}
+  #api-dot{position:absolute;top:-16px;width:12px;height:12px;border-radius:50%;background:var(--accent);transition:left .75s ease;opacity:0;left:2%}
+
+  .patchwrap{position:relative;height:220px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .patchwrap svg{width:100%;height:100%;display:block}
+  .patchgrid{position:absolute;inset:0;opacity:0;transition:opacity .5s}
+  .patchgrid svg{width:100%;height:100%;display:block}
+  .patchwrap.gridon .patchgrid{opacity:1}
+  .patchcells{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(4,1fr);opacity:0;transition:opacity .5s;pointer-events:none}
+  .patchwrap.gridon .patchcells{opacity:1;pointer-events:auto}
+  .patchcells i{cursor:pointer}
+  .patchcells i.lit{background:color-mix(in srgb,var(--accentmark) 45%,transparent);box-shadow:inset 0 0 0 2px var(--accent)}
+  .tok.lit{outline:2px solid var(--accent);outline-offset:1px}
+  .difwrap{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+  .difwrap canvas{width:100%;max-width:420px;border-radius:8px;display:block;margin:0 auto}
+  /* hot-take slide — ink block on paper deck */
+  .slide.take{background:var(--ink)}
+  .slide.take h1,.slide.take h2{color:var(--paper)}
+  .slide.take .lead{color:#C6CBD5} .slide.take .note{color:#98A0AD}
+  .slide.take .lead b{color:var(--paper)}
+  .slide.take .kicker,.slide.take .kicker .tk{color:var(--hue)}
+  .slide.take .kicker:after{background:color-mix(in srgb,var(--paper) 16%,transparent)}
+  .tu{background:var(--hue);color:#fff;border-radius:10px;padding:.04em .18em;box-decoration-break:clone;-webkit-box-decoration-break:clone;box-shadow:none}
+  /* series token squares + ghost session number (title slide) */
+  .sdots{display:inline-flex;gap:5px;margin-left:4px;align-self:center}
+  .sdots i{width:9px;height:9px;border-radius:3px;background:var(--line)}
+  .sdots i:nth-child(1){background:var(--t1)}.sdots i:nth-child(2){background:var(--t2)}
+  .sdots i:nth-child(3){background:var(--t3)}.sdots i:nth-child(4){background:var(--t4)}
+  .sdots i:nth-child(5){background:var(--t5)}.sdots i:nth-child(6){background:var(--t6)}
+  .sdots i.on{background:var(--hue);outline:1.5px solid var(--ink)}
+  .bigno{position:absolute;right:4vw;bottom:-6vh;font-size:46vh;font-weight:800;line-height:1;color:var(--tint);opacity:1;letter-spacing:-.06em;pointer-events:none;user-select:none;font-variant-numeric:tabular-nums}
+
+
+  /* ===== presenter mode (press S) ===== */
+  #pres{position:fixed;top:0;right:0;width:330px;height:100vh;z-index:80;background:var(--paper);border-left:2px solid var(--ink);
+    display:none;flex-direction:column;font-family:var(--font);transform:translateX(100%);transition:transform .25s ease}
+  #pres.on{display:flex;transform:none}
+  #pres .phead{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  #pres .phead .lbl{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  #pres .phead .sn{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  #pres .clock{padding:14px 16px;border-bottom:1px solid var(--line)}
+  #pres .elapsed{font-family:var(--mono);font-size:2.4rem;font-weight:800;line-height:1;letter-spacing:-.02em;color:var(--ink)}
+  #pres .pace{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px}
+  #pres .pace.ok{background:var(--greenpale);color:var(--green)}
+  #pres .pace.behind{background:var(--redpale);color:var(--red)}
+  #pres .pace.ahead{background:var(--accentpale);color:var(--accent)}
+  #pres .tgt{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7}
+  #pres .tgt b{color:var(--ink)}
+  #pres .budget{padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px}
+  #pres .budget .this{font-weight:800;font-size:1rem;color:var(--ink)}
+  #pres .budget .compress{display:inline-block;margin-left:6px;font-size:10px;font-weight:700;color:var(--amber);background:var(--amberpale);padding:2px 7px;border-radius:999px}
+  #pres .notes{flex:1;overflow-y:auto;padding:14px 16px;font-size:13.5px;line-height:1.6;color:var(--body)}
+  #pres .notes b{color:var(--ink)}
+  #pres .nxt{padding:10px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--faint)}
+  #pres .nxt b{color:var(--muted);font-weight:600}
+  #pres .ctl{padding:10px 16px;border-top:1px solid var(--line);display:flex;gap:8px}
+  #pres .ctl button{flex:1;font-family:var(--font);font-size:12px;font-weight:700;border:1.5px solid var(--linedark);background:var(--paper);color:var(--ink);
+    border-radius:7px;padding:8px;cursor:pointer}
+  #pres .ctl button:hover{border-color:var(--ink)}
+  #pres .ctl button.go{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  #pres-hint{position:fixed;left:16px;bottom:52px;z-index:60;font-size:11px;color:var(--faint);opacity:.7}
+
+
+  /* kit rail — continue links */
+  .krail{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;align-items:center}
+  .krail a{font-family:var(--mono);font-size:.85rem;font-weight:700;color:var(--ink);text-decoration:none;
+    border:2px solid var(--ink);border-radius:10px;padding:8px 14px;background:var(--paper);transition:.12s}
+  .krail a:hover{background:var(--ink);color:var(--paper)}
+  .krail a.next{background:var(--ink);color:var(--paper);box-shadow:4px 4px 0 var(--hue)}
+  .krail a.next:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--hue)}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="hud">
+  <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b> &nbsp;·&nbsp; Session 3 · TCE Madurai</span>
+  <span id="counter">1 / 1</span>
+</div>
+<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview</div>
+
+<main class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide">
+  <div class="bigno" aria-hidden="true">03</div>
+  <div class="kicker rv"><span class="no">session_03/06</span><span class="tk">generative_ai_foundations_&amp;_applications</span><span class="sdots" aria-label="Session 3 of 6"><i></i><i></i><i class="on"></i><i></i><i></i><i></i></span><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
+  <h1 class="rv">AI beyond text:<br><span class="tok-h"><i style="background:var(--t1)">eyes</i><i style="background:var(--t2)">, ears</i><i style="background:var(--t3)"> and a</i><i style="background:var(--t4)"> paint</i><i style="background:var(--t5)">brush</i></span></h1>
+  <p class="lead rv mt">Vision that reads your mess bill, pictures conjured out of pure static, voices you can't tell from human — and all of it still the one loop you met this morning.</p>
+  <div class="mt rv"><span class="pill">Session 3 of 6 · last of Day 1</span><span class="pill on">Bring your photos</span></div>
+</section>
+
+<!-- 2 RECAP -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">01</span><span class="tk">90_second_recap</span></div>
+  <h2 class="rv">Still true <span class="u">after the break?</span></h2>
+  <div class="demo rv" style="max-width:880px">
+    <div class="dtitle">True or false</div>
+    <div class="cg-item" id="rq-item" style="font-size:clamp(1rem,2vw,1.4rem)"></div>
+    <div class="cg-btns" id="rq-btns"></div>
+    <div class="btnrow mt" style="justify-content:space-between">
+      <span class="cg-score" id="rq-score">0 / 0</span><span class="note" id="rq-fb" style="margin:0;max-width:65%"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 3 BIG IDEA -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">02</span><span class="tk">the_one_idea_again</span></div>
+  <h1 class="rv" style="font-size:clamp(2rem,4.4vw,3.4rem)">Same loop.<br><span class="u">New kinds of tokens.</span></h1>
+  <p class="lead rv mt">Session 1's machine never cared what tokens <i>meant</i>. So: chop an image into little squares, turn each into an embedding — the attention loop reads a photo the way it reads a sentence. Chop audio into ~20-ms slices — it reads sound.</p>
+  <p class="lead rv">"Multimodal" isn't a new brain. It's <b>new eyes wired into the same brain</b>.</p>
+</section>
+
+<!-- 4 PATCHES -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">03</span><span class="tk">live_demo</span></div>
+  <h2 class="rv">How a model <span class="u">reads a picture</span></h2>
+  <div class="cols" style="grid-template-columns:1.2fr 1fr">
+    <div class="demo rv">
+      <div class="dtitle">Image → patches → tokens</div>
+      <div class="patchwrap" id="pt-wrap">
+        <svg viewBox="0 0 300 110" preserveAspectRatio="none">
+          <rect width="300" height="80" fill="#dbeafe"/><rect y="80" width="300" height="30" fill="#bfe8d9"/>
+          <circle cx="250" cy="24" r="14" fill="#ffc857"/>
+          <polygon points="110,80 190,80 178,52 122,52" fill="#b45309"/>
+          <polygon points="122,52 178,52 168,30 132,30" fill="#c2611b"/>
+          <polygon points="132,30 168,30 158,14 142,14" fill="#d97706"/>
+          <rect x="146" y="8" width="8" height="6" fill="#92400e"/>
+          <rect x="142" y="64" width="16" height="16" fill="#7c3a12"/>
+        </svg>
+        <div class="patchgrid"><svg viewBox="0 0 300 110" preserveAspectRatio="none">
+          <line x1="50" y1="0" x2="50" y2="110" stroke="#14171F" stroke-opacity=".4" stroke-width="1"/>
+          <line x1="100" y1="0" x2="100" y2="110" stroke="#14171F" stroke-opacity=".4" stroke-width="1"/>
+          <line x1="150" y1="0" x2="150" y2="110" stroke="#14171F" stroke-opacity=".4" stroke-width="1"/>
+          <line x1="200" y1="0" x2="200" y2="110" stroke="#14171F" stroke-opacity=".4" stroke-width="1"/>
+          <line x1="250" y1="0" x2="250" y2="110" stroke="#14171F" stroke-opacity=".4" stroke-width="1"/>
+          <line x1="0" y1="27.5" x2="300" y2="27.5" stroke="#14171F" stroke-opacity=".4" stroke-width="1"/>
+          <line x1="0" y1="55" x2="300" y2="55" stroke="#14171F" stroke-opacity=".4" stroke-width="1"/>
+          <line x1="0" y1="82.5" x2="300" y2="82.5" stroke="#14171F" stroke-opacity=".4" stroke-width="1"/>
+        </svg></div>
+      </div>
+      <div class="tokwrap" id="pt-toks" style="min-height:40px"></div>
+      <div class="btnrow mt"><button class="btn primary" id="pt-btn">Patchify →</button><span class="note" id="pt-note" style="margin:0"></span></div>
+    </div>
+    <div class="rv">
+      <div class="card"><h3>Patches are visual words</h3>
+        <p>The image splits into a grid of small squares. Each patch → an embedding → the <b>same attention loop</b> from Session 1. "What's in this photo?" is literally next-token prediction with picture-tokens in the context.</p>
+        <p class="note">This is why vision arrived so fast once transformers worked — the hard part was already built.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 WHAT VISION DOES -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">04</span><span class="tk">what_ai_with_eyes_actually_does</span></div>
+  <h2 class="rv">It doesn't just see. <span class="u">It reads.</span></h2>
+  <div class="cols3">
+    <div class="card rv"><h3><span class="em"></span>Documents</h3><p>Receipts, invoices, mark sheets, forms → clean JSON. The most-shipped, least-glamorous vision use-case on the planet.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Handwriting</h3><p>Your lab-record pages, doctor scrawl (mostly), whiteboard photos → text.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Charts &amp; screens</h3><p>Reads graphs, tables, app screenshots — "what's wrong with this UI?" works.</p></div>
+    <div class="card rv"><h3><span class="em"></span>KYC pipelines</h3><p>ID extraction + face match + tamper checks — how fintechs onboard you in minutes. This is my day job.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Accessibility</h3><p>Live alt-text for blind users — describing the visual web. Quietly life-changing.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Field work</h3><p>Leaf-disease detection from a farmer's phone photo. No lab needed.</p></div>
+  </div>
+</section>
+
+<!-- 6 WILL IT READ -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">05</span><span class="tk">vote_before_the_reveal</span></div>
+  <h2 class="rv">Will it read it? <span class="u">Place your bets</span></h2>
+  <div class="demo rv" style="max-width:880px">
+    <div class="dtitle">Yes or no</div>
+    <div class="cg-item" id="wr-item" style="font-size:clamp(1rem,2vw,1.4rem)"></div>
+    <div class="cg-btns" id="wr-btns"></div>
+    <div class="btnrow mt" style="justify-content:space-between">
+      <span class="cg-score" id="wr-score">0 / 0</span><span class="note" id="wr-fb" style="margin:0;max-width:65%"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 7 FLIP TO GENERATION -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">06</span><span class="tk">now_the_other_direction</span></div>
+  <h1 class="rv" style="font-size:clamp(2rem,4.4vw,3.4rem)">Reading pictures is prediction.<br><span class="u">Making them is un-destruction.</span></h1>
+  <p class="lead rv mt">Most image generators aren't next-token machines. They use a different, equally simple trick: learn to <b>remove noise</b> from photos… then hand them <b>pure noise</b> and let them "remove" their way to a picture that was never there.</p>
+  <p class="note rv">It's called <b>diffusion</b>. Watch it happen →</p>
+  <p class="note rv" style="color:var(--faint)">(One 2025 twist: OpenAI's 4o images are generated token-by-token, autoregressively — the loop ate images too. Diffusion is still the concept to know.)</p>
+</section>
+
+<!-- 8 DIFFUSION -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">07</span><span class="tk">live_demo</span></div>
+  <h2 class="rv">Diffusion: <span class="u">a picture emerges from static</span></h2>
+  <div class="cols" style="grid-template-columns:1.1fr 1fr">
+    <div class="demo rv">
+      <div class="dtitle">Drag the slider and watch the shapes arrive before the details — or hit Generate</div>
+      <div class="difwrap"><canvas id="df-canvas" width="300" height="200"></canvas></div>
+      <input type="range" id="df-slider" min="0" max="100" value="0" class="mt">
+      <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--faint);font-family:var(--mono)"><span>pure noise</span><span id="df-step"></span><span>clean image</span></div>
+      <div class="btnrow mt"><button class="btn primary" id="df-gen">Generate </button></div>
+    </div>
+    <div class="rv">
+      <div class="card"><h3>Training: destroy, then learn to repair</h3>
+        <p>Take billions of real images, add noise step by step until pure static, and train a network to <b>reverse each step</b>.</p>
+        <p class="mt"><b>Generation:</b> start from fresh random static and apply the repair over and over. The "repair" invents a plausible image — steered at every step by your <b>text prompt</b> ("a gopuram at sunset"), which is embedded with the same trick from Session 1.</p>
+        <p class="note">Our canvas fakes the pixels, honestly — but the choreography is true: <b>coarse shapes resolve first, details last</b>. Silhouette by step ~15, sun by ~30, window by ~45.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 GEN REALITY -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">08</span><span class="tk">honest_limits</span></div>
+  <h2 class="rv">Image generation: <span class="u">magic with fine print</span></h2>
+  <div class="cols3">
+    <div class="card rv"><h3><span class="em"></span>Details lie</h3><p>The six-finger memes are fixed. The subtle stuff isn't: dense small text, exact logos, jewellery, background faces. Zoom in before you trust.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Style questions</h3><p>Trained on human art. "In the style of a living artist" raises real ethical and legal debates — unresolved, ongoing.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Deepfake era</h3><p>If images can be conjured, images stop being evidence. Provenance tools (watermarking, content credentials) are the counter-move.</p></div>
+  </div>
+  <p class="lead rv mt"><b>The camera spent 200 years earning our trust. Diffusion ended it in two.</b> Same lesson as Session 2: the output is <b>plausible, not verified</b> — now in pixels.</p>
+</section>
+
+<!-- 10 VOICE -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">09</span><span class="tk">ears_and_a_voice</span></div>
+  <h2 class="rv">Speech: <span class="u">solved enough to be dangerous</span></h2>
+  <div class="statgrid rv" style="margin:4px 0 22px">
+    <div class="stat"><div class="n" style="font-family:var(--mono)">3 s</div><div class="l">of audio — enough to clone a voice</div></div>
+    <div class="stat"><div class="n" style="font-family:var(--mono)">~₹0</div><div class="l">the cost of doing it with free tools</div></div>
+    <div class="stat"><div class="n" style="font-family:var(--mono)">∞</div><div class="l">clips of your voice already on Instagram</div></div>
+  </div>
+  <div class="cols3">
+    <div class="card rv"><h3><span class="em"></span>Speech → text</h3><p>Near-human transcription, dozens of languages, decent Tamil-English code-switching. Lectures → notes is a solved problem.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Text → speech</h3><p>Voices now genuinely hard to tell from human — tone, pauses, emotion.</p></div>
+    <div class="card rv hi"><h3><span class="em"></span>Voice cloning</h3><p>A few seconds of audio can clone a voice. "Your grandson" calling paati for an OTP is a live scam pattern in India right now — <b>agree on a family password. Seriously. Tell your parents this weekend.</b></p></div>
+  </div>
+  <p class="note rv mt" style="font-size:.95rem"><b>Video: the same diffusion family, plus time.</b> Mid-2026 reality: native 4K clips with the soundtrack generated alongside the pixels (Sora 2, Veo 3.1, Kling 3.0). Physics still slips in complex scenes, and it costs real money — roughly $0.10–0.75 per second. Improving every quarter — what you're watching today is the worst it will ever be.</p>
+</section>
+
+<!-- HOT TAKE -->
+<section class="slide take">
+  <div class="kicker rv"><span class="no">HT</span><span class="tk">hot_take · argue_with_me</span></div>
+  <h1 class="rv" style="font-size:clamp(2.2rem,5vw,3.9rem)">Your mother’s voice is no longer<br><span class="tu">proof of your mother.</span></h1>
+  <p class="lead rv mt" style="max-width:56ch">Three seconds of audio clones a voice well enough to fool family — voice-clone scam calls already run at scale in India. The fix is not better ears; it is verification habits: <b>a family code word beats a trained ear.</b></p>
+  <p class="note rv">Disagree? Good. Bring it to the break — strongest counter-argument gets named on the closing slide.</p>
+</section>
+
+<!-- 11 ONE CALL -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">10</span><span class="tk">the_best_part</span></div>
+  <h2 class="rv">All of it is <span class="u">one API call</span></h2>
+  <div class="cols">
+    <div class="rv">
+      <div class="codebox">
+<span class="c"># vision = pass the image WITH your question</span>
+<span class="k">from</span> PIL <span class="k">import</span> Image
+
+img = Image.open(<span class="s">"receipt.jpg"</span>)
+r = client.models.<span class="f">generate_content</span>(
+    model=MODEL,
+    contents=[img, <span class="s">"""Total amount? Reply ONLY
+      with JSON {"total": float, "currency": str}"""</span>])
+<span class="f">print</span>(r.text)</div>
+      <p class="note">The contents list mixes images and text freely. Audio files work the same way. Everything from Sessions 1–2 (prompting, format control, evals!) applies unchanged.</p>
+      <p class="note"><b>The production way:</b> you don't beg for JSON in the prompt — you pass <span style="font-family:var(--mono)">response_schema</span> and the API is <b>forced</b> to return valid JSON matching your shape. In the lab you'll do it both ways — then delete half your prompt.</p>
+    </div>
+    <div class="demo rv">
+      <div class="dtitle">Canned run — the real one is your lab</div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start">
+        <svg viewBox="0 0 150 200" width="128" aria-label="Canteen receipt" style="display:block">
+          <!-- physical white-paper prop: fixed light-ink palette in both themes -->
+          <rect x="4" y="4" width="142" height="192" rx="4" fill="#fff" stroke="#d1d5db"/>
+          <text x="75" y="24" text-anchor="middle" font-size="10" font-weight="800" fill="#15181e" style="font-family:var(--font)">TCE CANTEEN</text>
+          <text x="75" y="36" text-anchor="middle" font-size="6.5" fill="#6b7280" style="font-family:var(--mono)">Madurai · GST invoice</text>
+          <line x1="12" y1="45" x2="138" y2="45" stroke="#d1d5db" stroke-dasharray="3 3"/>
+          <text x="12" y="60" font-size="7.5" fill="#3d434c" style="font-family:var(--mono)">Meals ×2</text>
+          <text x="138" y="60" text-anchor="end" font-size="7.5" fill="#3d434c" style="font-family:var(--mono)">240.00</text>
+          <text x="12" y="74" font-size="7.5" fill="#3d434c" style="font-family:var(--mono)">Jigarthanda</text>
+          <text x="138" y="74" text-anchor="end" font-size="7.5" fill="#3d434c" style="font-family:var(--mono)">70.00</text>
+          <text x="12" y="88" font-size="7.5" fill="#3d434c" style="font-family:var(--mono)">Coffee ×2</text>
+          <text x="138" y="88" text-anchor="end" font-size="7.5" fill="#3d434c" style="font-family:var(--mono)">32.00</text>
+          <line x1="12" y1="98" x2="138" y2="98" stroke="#d1d5db" stroke-dasharray="3 3"/>
+          <text x="12" y="111" font-size="6.5" fill="#6b7280" style="font-family:var(--mono)">GST 5% incl.</text>
+          <text x="12" y="128" font-size="9" font-weight="800" fill="#15181e" style="font-family:var(--mono)">TOTAL</text>
+          <text x="138" y="128" text-anchor="end" font-size="9" font-weight="800" fill="#15181e" style="font-family:var(--mono)">₹342.00</text>
+          <rect id="mm-hl" x="8" y="116" width="134" height="17" rx="4" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0" style="transition:opacity .45s ease"/>
+          <line x1="12" y1="140" x2="138" y2="140" stroke="#d1d5db" stroke-dasharray="3 3"/>
+          <text x="75" y="158" text-anchor="middle" font-size="7" fill="#6b7280" style="font-family:var(--font)">நன்றி · visit again</text>
+        </svg>
+        <div class="payload pre" style="min-height:150px;margin-top:0"><span class="mono" id="mm-out">…</span></div>
+      </div>
+      <div class="btnrow mt"><button class="btn primary" id="mm-run">Run it </button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 VISION FAILS -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">11</span><span class="tk">guess_why_then_click</span></div>
+  <h2 class="rv">Where vision <span class="u">quietly fails</span></h2>
+  <div class="cols">
+    <div class="card flip rv"><h3><span class="em"></span>"How many people in this photo?"</h3>
+      <p class="q">Crowd of 23. Model says 15. Or 30. Why?</p>
+      <p class="ans">Patches summarize — they don't enumerate. <b>Counting is prediction, not tallying</b> (same disease as 847×923 in Session 1). Fix: don't trust counts; use detection tools when counting matters.</p>
+      <div class="ans" style="margin-top:12px">
+        <p class="note" style="margin:0 0 8px"><b>You can't count either.</b> One second on the clock — shout your number:</p>
+        <div class="btnrow"><button class="btn" id="cd-btn">Flash the dots </button><span class="note" id="cd-msg" style="margin:0"></span></div>
+        <canvas id="cd-canvas" width="280" height="90" style="display:block;margin-top:10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;width:100%;max-width:320px"></canvas>
+      </div>
+      <div class="hintline">Reveal ↓</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>"What's to the LEFT of the pillar?"</h3>
+      <p class="q">Frequently confused. Why?</p>
+      <p class="ans">Patch positions are encoded only weakly — precise left/right/behind relations blur in the summary. Improving fast, still a weak spot.</p>
+      <div class="hintline">Reveal ↓</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Tiny or blurred text</h3>
+      <p class="q">A smudged total on a receipt. What does it do?</p>
+      <p class="ans">It may <b>invent a plausible number</b> rather than say "unreadable" — hallucination in pixels. Fix: Session 2's grounding line ("if unreadable, say so") works on images too. Test it in lab.</p>
+      <div class="hintline">Reveal ↓</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Faces and identity</h3>
+      <p class="q">"Who is this person?"</p>
+      <p class="ans">Models refuse identification by design (privacy). KYC face-match uses separate, purpose-built, regulated systems — not chat models.</p>
+      <div class="hintline">Reveal ↓</div></div>
+  </div>
+</section>
+
+<!-- 13 PROJECT SEEDS -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">12</span><span class="tk">capstone_sparks · steal_any_of_these</span></div>
+  <h2 class="rv">Vision ideas that <span class="u">belong to Madurai</span></h2>
+  <div class="cols3">
+    <div class="card rv"><h3>Inscription reader</h3><p>Photo of temple Tamil inscriptions → transliteration + translation attempt.</p></div>
+    <div class="card rv"><h3>Menu board decoder</h3><p>Canteen board photo → structured menu + prices + "what's vegetarian?"</p></div>
+    <div class="card rv"><h3>Lab-record digitizer</h3><p>Handwritten observation tables → CSV. Your juniors will worship you.</p></div>
+    <div class="card rv"><h3>Crop doctor</h3><p>Leaf photo → likely disease + treatment, in Tamil, for a farmer's phone.</p></div>
+    <div class="card rv"><h3>Mess-bill splitter</h3><p>Receipt photo → items → who owes what.</p></div>
+    <div class="card rv"><h3>Sign translator</h3><p>Street sign photo → Tamil ⇄ English with context, for tourists.</p></div>
+  </div>
+  <p class="note rv mt">Every one of these = the 4-line call you just saw + Session 2's prompting + an eval set. You learned everything they need before lunch.</p>
+</section>
+
+<!-- 14 RECAP -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">13</span><span class="tk">say_it_before_you_click</span></div>
+  <h2 class="rv">Five ideas you <span class="u">own</span> now</h2>
+  <div class="cols3">
+    <div class="card flip rv"><h3><span class="em"></span>Patches</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">Images chop into squares → embeddings → the same attention loop. Visual words.</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Diffusion</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">Learn to remove noise → start from pure noise → "repair" your way to a new image, steered by the prompt.</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Speech</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">STT near-human, TTS convincing, cloning cheap — set a family password.</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>One call</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">contents=[image, question]. Prompting, format control and evals apply unchanged.</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Pixels lie too</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">Counting, spatial precision, blurred text → plausible inventions. Ground it: "if unreadable, say so."</p><div class="hintline">Reveal</div></div>
+  </div>
+</section>
+
+<!-- 15 LAB -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">14</span><span class="tk">50_minutes · same_rhythm</span></div>
+  <h2 class="rv">Lab 3: <span class="u">interrogate your photos</span></h2>
+  <div class="cols" style="grid-template-columns:1.2fr 1fr">
+    <div class="steps rv">
+      <div class="step"><div><div class="t">Photo Q&amp;A <span style="font-family:var(--mono);font-size:.72rem;font-weight:400;color:var(--faint);margin-left:8px">~10 min</span></div><div class="d">Upload any photo from your phone → ask 5 escalating questions (describe → read → count → judge). ✓ checkpoint 1</div></div></div>
+      <div class="step"><div><div class="t">Receipt / document → JSON <span style="font-family:var(--mono);font-size:.72rem;font-weight:400;color:var(--faint);margin-left:8px">~15 min</span></div><div class="d">Extract structured data with a strict schema. Session 2's "reply ONLY with JSON" earns its keep. ✓ checkpoint 2</div></div></div>
+      <div class="step"><div><div class="t">Handwriting test <span style="font-family:var(--mono);font-size:.72rem;font-weight:400;color:var(--faint);margin-left:8px">~10 min</span></div><div class="d">A page of YOUR notes → transcription. Grade it yourself: what % did it get right?</div></div></div>
+      <div class="step"><div><div class="t">Break it <span style="font-family:var(--mono);font-size:.72rem;font-weight:400;color:var(--faint);margin-left:8px">~10 min</span></div><div class="d">Find one image where it confidently invents a detail. ✓ checkpoint 3: show me the invention</div></div></div>
+    </div>
+    <div class="rv">
+      <div class="card"><h3>Stretch</h3><p>Add the grounding line to your receipt prompt — does the invention stop? · Mini eval: 5 images with expected answers, score it (your S2 harness, now with eyes) · Audio: record a voice note, transcribe it.</p></div>
+      <div class="card mt"><h3>No photo?</h3><p>Sample images are linked in the notebook. But your own mess bill is more fun.</p></div>
+    </div>
+  </div>
+
+  <div class="krail rv" aria-label="Lab materials"><a class="next" href="../labs/session-3/lab-handout.html">lab_3_handout →</a><a href="../labs/session-3/session_3_lab.ipynb" download>notebook.ipynb</a><a href="../cheatsheets/session-3-cheatsheet.html">cheatsheet_3</a></div>
+</section>
+
+<!-- 16 DAY 1 CLOSE -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">15</span><span class="tk">day_1_complete</span></div>
+  <h1 class="rv" style="font-size:clamp(2rem,4.4vw,3.4rem)">Day 1: you understand the machine.<br><span class="u">Day 2: you arm it.</span></h1>
+  <div class="cols mt">
+    <div class="card rv"><h3><span class="em"></span>Today you built</h3><p>First API calls → a prompt playbook → an eval harness that catches lies → vision apps over your own photos.</p></div>
+    <div class="card rv hi"><h3><span class="em"></span>Tonight (5 minutes, not optional)</h3><p>Put <b>2–3 real documents</b> on your laptop or Drive: lecture notes, a textbook chapter PDF, anything you'd want to query. <b>Tomorrow morning you build "chat with my notes" over them</b> — the pattern behind most real AI products. No documents = boring capstone. Bring good ones.</p></div>
+  </div>
+  <div class="mt rv"><span class="pill">@intrepidkarthi</span><span class="pill">Day 2: RAG → tools → ship</span><span class="pill on">Sleep. Tomorrow we build for real.</span></div>
+
+  <div class="krail rv" aria-label="Continue"><a class="next" href="session-4-giving-ai-your-own-knowledge.html">day_2 → session_4 · your own knowledge</a><a href="../cheatsheets/session-3-cheatsheet.html">cheatsheet_3</a><a href="../index.html">course_home</a></div>
+</section>
+
+</main>
+
+<script>
+/* ============ slide engine ============ */
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const progress=document.getElementById('progress');
+  const counter=document.getElementById('counter');
+  const keyhint=document.getElementById('keyhint');
+  let cur=0,numBuf='';
+  function go(i,push){
+    cur=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach((s,j)=>{
+      s.classList.toggle('active',j===cur);
+      s.classList.toggle('past',j<cur);
+      if(j===cur){[...s.querySelectorAll('.rv')].forEach((el,k)=>{el.style.transitionDelay=(k*80)+'ms';});}
+    });
+    progress.style.width=((cur+1)/slides.length*100)+'%';
+    counter.textContent=(cur+1)+' / '+slides.length;
+    if(push!==false)history.replaceState(null,'','#'+(cur+1));
+    if(cur>0)keyhint.style.opacity='0';
+    setTimeout(()=>document.dispatchEvent(new CustomEvent('slidechange',{detail:cur})),480);
+  }
+  function overview(){
+    const isOn=deck.classList.toggle('overview');
+    if(isOn){slides.forEach((s,j)=>{s.onclick=()=>{deck.classList.remove('overview');slides.forEach(x=>x.onclick=null);go(j);};});}
+    else slides.forEach(x=>x.onclick=null);
+  }
+  addEventListener('keydown',e=>{
+    if(e.target.matches('input,textarea'))return;
+    if(e.key>='0'&&e.key<='9'){numBuf+=e.key;return;}
+    if(e.key==='Enter'&&numBuf){go(parseInt(numBuf,10)-1);numBuf='';return;}
+    numBuf='';
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(cur+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1);}
+    else if(e.key==='Home')go(0);
+    else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+    else if(e.key==='o'||e.key==='O')overview();
+    else if(e.key==='Escape'){if(deck.classList.contains('overview'))overview();}
+  });
+  let tx=null;
+  addEventListener('touchstart',e=>{tx=e.target.closest('input,button,canvas,.demo')?null:e.touches[0].clientX;},{passive:true});
+  addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;
+    if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));tx=null;},{passive:true});
+  const h=parseInt((location.hash||'').slice(1),10);
+  go(isNaN(h)?0:h-1,false);
+})();
+
+
+/* ============ flip cards (failures + recap) ============ */
+document.addEventListener('click',e=>{
+  if(e.target.closest('button,canvas,input,a'))return; // demos nested in flip cards shouldn't toggle them
+  const f=e.target.closest('.flip');
+  if(f)f.classList.toggle('open');
+});
+
+/* ============ shared lib ============ */
+function mkQuiz(prefix, items, labels){
+  const item=document.getElementById(prefix+'-item'),fb=document.getElementById(prefix+'-fb'),
+        sc=document.getElementById(prefix+'-score'),wrap=document.getElementById(prefix+'-btns');
+  let i=0,score=0,answered=false,done=false;
+  wrap.innerHTML=labels.map((l,k)=>'<button class="cg-btn" data-k="'+k+'"><div class="b">'+l+'</div></button>').join('');
+  const btns=[...wrap.children];
+  function show(){
+    if(i>=items.length){done=true;item.textContent='Done — '+score+' / '+items.length+'. Click any button to replay.';fb.textContent='';btns.forEach(b=>b.className='cg-btn');return;}
+    answered=false;item.innerHTML=items[i][0];fb.textContent='';
+    btns.forEach(b=>b.className='cg-btn');sc.textContent=score+' / '+i;
+  }
+  btns.forEach(b=>b.onclick=()=>{
+    if(done){i=0;score=0;done=false;show();return;}
+    if(answered)return;answered=true;
+    const k=+b.dataset.k,ok=items[i][1]===k;
+    b.classList.add(ok?'right':'wrong');if(!ok)btns[items[i][1]].classList.add('right');
+    if(ok)score++;fb.textContent=items[i][2];sc.textContent=score+' / '+(i+1);
+    i++;setTimeout(show,2400);
+  });
+  show();
+}
+function mkTyper(el){
+  let timer=null;
+  return function(text,color){
+    if(timer)clearInterval(timer);el.textContent='';el.style.color=color||'inherit';
+    let k=0;timer=setInterval(()=>{el.textContent=text.slice(0,++k);if(k>=text.length)clearInterval(timer);},13);
+  };
+}
+
+
+mkQuiz('rq',[
+ ['Few-shot examples permanently change the model\u2019s weights.',1,'False — in-context only. Close the chat, it\u2019s gone. Weights are frozen at inference.'],
+ ['Evals should run at temperature 0, three times, averaged.',0,'True — kill the dice, then measure the flutter that remains.'],
+ ['A confident, fluent tone is good evidence the answer is right.',1,'False — tone and truth are uncorrelated. Only checking detects lies.'],
+ ['\u201cAnswer only from the stated facts\u201d reduces invented details.',0,'True — grounding. The single most valuable constraint line.']
+],['True','False']);
+
+/* patches */
+(function(){
+  const wrap=document.getElementById('pt-wrap'),toks=document.getElementById('pt-toks'),
+        btn=document.getElementById('pt-btn'),note=document.getElementById('pt-note');
+  const bgs=['var(--accentpale)','var(--greenpale)','var(--amberpale)','var(--redpale)','var(--panel)'];
+  let state=0;
+  // 24 invisible hover cells (6\u00d74) mirroring the patch grid \u2014 pill \u2194 patch mapping
+  const cells=document.createElement('div');cells.className='patchcells';
+  cells.innerHTML=Array.from({length:24},(_,k)=>'<i data-k="'+(k+1)+'"></i>').join('');
+  wrap.appendChild(cells);
+  function litPill(k,on){ // k: cell number 1..24 (13+ maps to the \u2026 pill)
+    [...toks.querySelectorAll('.tok[data-k]')].forEach(p=>{
+      const pk=p.dataset.k, hit=(pk==='rest')?k>12:+pk===k;
+      p.classList.toggle('lit',on&&hit);
+    });
+  }
+  function litCells(k,on){ // k: pill data-k '1'..'12' or 'rest'
+    [...cells.children].forEach((c,idx)=>{
+      const n=idx+1, hit=(k==='rest')?n>12:n===+k;
+      c.classList.toggle('lit',on&&hit);
+    });
+  }
+  cells.addEventListener('mouseover',e=>{const c=e.target.closest('i');if(!c)return;c.classList.add('lit');litPill(+c.dataset.k,true);});
+  cells.addEventListener('mouseout',e=>{const c=e.target.closest('i');if(!c)return;c.classList.remove('lit');litPill(+c.dataset.k,false);});
+  toks.addEventListener('mouseover',e=>{const p=e.target.closest('.tok[data-k]');if(!p)return;p.classList.add('lit');litCells(p.dataset.k,true);});
+  toks.addEventListener('mouseout',e=>{const p=e.target.closest('.tok[data-k]');if(!p)return;p.classList.remove('lit');litCells(p.dataset.k,false);});
+  btn.onclick=()=>{
+    state=(state+1)%3;
+    if(state===1){wrap.classList.add('gridon');toks.innerHTML='';note.textContent='24 patches, like 24 words\u2026';btn.textContent='\u2192 to tokens';}
+    else if(state===2){
+      toks.innerHTML=Array.from({length:12},(_,k)=>'<span class="tok" data-k="'+(k+1)+'" style="background:'+bgs[k%5]+';animation-delay:'+(k*40)+'ms">p'+(k+1)+'</span>').join('')+'<span class="tok" data-k="rest" style="background:var(--panel);border:1px dashed var(--linedark)">\u2026</span><span class="tok" style="background:var(--greenpale);color:var(--green);font-weight:700">\u2192 same attention loop</span>';
+      note.textContent='Now it\u2019s a sequence \u2014 Session 1\u2019s machine takes over. (Hover a pill \u2194 its patch.)';btn.textContent='Reset';
+    } else {wrap.classList.remove('gridon');toks.innerHTML='';note.textContent='';btn.textContent='Patchify \u2192';[...cells.children].forEach(c=>c.classList.remove('lit'));}
+  };
+})();
+
+mkQuiz('wr',[
+ ['A clean printed textbook page, photographed straight-on?',0,'Yes — near-perfect. Printed text is the easy case.'],
+ ['A doctor\u2019s handwritten prescription?',0,'Mostly yes — surprisingly good, but verify anything that matters. \u201cMostly right\u201d is dangerous for medicine.'],
+ ['A motion-blurred number plate from CCTV?',1,'No — and worse, it may CONFIDENTLY GUESS a plausible plate. Blur + confidence = danger zone.'],
+ ['A CAPTCHA — will it give you the answer?',1,'Trick question — it CAN read it, but it’s trained to refuse: CAPTCHAs exist to block bots, and solving them enables abuse. First taste of Session 6: capability \u2260 permission.']
+],['Yes','No']);
+
+/* diffusion */
+(function(){
+  const cv=document.getElementById('df-canvas'),ctx=cv.getContext('2d'),
+        sl=document.getElementById('df-slider'),step=document.getElementById('df-step'),
+        gen=document.getElementById('df-gen');
+  const W=cv.width,H=cv.height;
+  // draw the clean scene once
+  function scene(){
+    ctx.fillStyle='#dbeafe';ctx.fillRect(0,0,W,150);
+    ctx.fillStyle='#bfe8d9';ctx.fillRect(0,150,W,50);
+    ctx.fillStyle='#ffc857';ctx.beginPath();ctx.arc(250,40,22,0,7);ctx.fill();
+    ctx.fillStyle='#b45309';ctx.beginPath();ctx.moveTo(100,150);ctx.lineTo(200,150);ctx.lineTo(185,100);ctx.lineTo(115,100);ctx.fill();
+    ctx.fillStyle='#c2611b';ctx.beginPath();ctx.moveTo(115,100);ctx.lineTo(185,100);ctx.lineTo(172,60);ctx.lineTo(128,60);ctx.fill();
+    ctx.fillStyle='#d97706';ctx.beginPath();ctx.moveTo(128,60);ctx.lineTo(172,60);ctx.lineTo(160,28);ctx.lineTo(140,28);ctx.fill();
+    ctx.fillStyle='#92400e';ctx.fillRect(146,18,8,10);
+    ctx.fillStyle='#7c3a12';ctx.fillRect(138,120,24,30);
+  }
+  scene();
+  const clean=ctx.getImageData(0,0,W,H);
+  // ONE fixed noise field — re-rolling per frame reads as TV interference, not denoising
+  const noise=new Uint8ClampedArray(W*H);
+  for(let k=0;k<noise.length;k++)noise[k]=Math.random()*255;
+  const mosaics={};
+  function mosaic(B){ // block-averaged clean image, cached per block size
+    if(mosaics[B])return mosaics[B];
+    const c=clean.data,out=new Uint8ClampedArray(c.length);
+    for(let by=0;by<H;by+=B)for(let bx=0;bx<W;bx+=B){
+      let r=0,g=0,b=0,m=0;
+      const ye=Math.min(by+B,H),xe=Math.min(bx+B,W);
+      for(let y=by;y<ye;y++)for(let x=bx;x<xe;x++){const i=(y*W+x)*4;r+=c[i];g+=c[i+1];b+=c[i+2];m++;}
+      r/=m;g/=m;b/=m;
+      for(let y=by;y<ye;y++)for(let x=bx;x<xe;x++){const i=(y*W+x)*4;out[i]=r;out[i+1]=g;out[i+2]=b;out[i+3]=255;}
+    }
+    mosaics[B]=out;return out;
+  }
+  function render(t){ // t: 1 = pure noise, 0 = clean — coarse shapes resolve first, details last
+    t=Math.max(0,Math.min(1,t));
+    const B=Math.max(1,Math.round(t*20)); // block size shrinks as t falls
+    const src=B>1?mosaic(B):clean.data;
+    const nw=t*t; // noise fades faster than blocks sharpen → silhouette ~15, sun ~30, window ~45
+    const img=ctx.createImageData(W,H);
+    const d=img.data;
+    for(let i=0,k=0;i<d.length;i+=4,k++){
+      d[i]  =src[i]  *(1-nw)+noise[k]*nw;
+      d[i+1]=src[i+1]*(1-nw)+noise[k]*nw;
+      d[i+2]=src[i+2]*(1-nw)+noise[k]*nw;
+      d[i+3]=255;
+    }
+    ctx.putImageData(img,0,0);
+    step.textContent='denoise step '+Math.round((1-t)*50)+' / 50';
+  }
+  sl.oninput=()=>render(1-sl.value/100); // left = pure noise, right = clean image, matching the labels
+  let timer=null;
+  gen.onclick=()=>{
+    if(timer)clearInterval(timer);
+    let t=1;sl.value=0;
+    timer=setInterval(()=>{
+      t-=0.02;if(t<=0){t=0;clearInterval(timer);timer=null;}
+      sl.value=(1-t)*100;render(t);
+    },50);
+  };
+  render(1);
+})();
+
+/* mm run \u2014 highlight the receipt total, then type the JSON */
+(function(){
+  const t=mkTyper(document.getElementById('mm-out'));
+  const hl=document.getElementById('mm-hl');
+  let dly=null;
+  document.getElementById('mm-run').onclick=()=>{
+    if(dly)clearTimeout(dly);
+    if(hl){hl.style.opacity='0';void hl.getBoundingClientRect();hl.style.opacity='1';}
+    dly=setTimeout(()=>t('{\n  \"total\": 342.00,\n  \"currency\": \"INR\"\n}\n\n(read straight off the receipt on the left \u2014 items, GST and all, in ~2 seconds)','var(--green)'),650);
+  };
+})();
+
+/* you can't count either \u2014 1-second dot flash */
+(function(){
+  const btn=document.getElementById('cd-btn'),cv=document.getElementById('cd-canvas'),msg=document.getElementById('cd-msg');
+  if(!btn||!cv)return;
+  const ctx=cv.getContext('2d');
+  let n=0,pts=[],state=0,timer=null;
+  function scatter(){
+    n=20+Math.floor(Math.random()*7); // 20\u201326 dots \u2014 crowd-sized, not countable in 1 s
+    pts=[];let guard=0;
+    while(pts.length<n&&guard<600){
+      guard++;
+      const x=12+Math.random()*(cv.width-24),y=12+Math.random()*(cv.height-24);
+      if(pts.every(p=>(p[0]-x)*(p[0]-x)+(p[1]-y)*(p[1]-y)>110))pts.push([x,y]);
+    }
+    n=pts.length;
+  }
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ctx.fillStyle=(getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#C2186A').trim()||'#C2186A';
+    pts.forEach(p=>{ctx.beginPath();ctx.arc(p[0],p[1],4,0,7);ctx.fill();});
+  }
+  btn.onclick=()=>{
+    if(timer)return; // ignore clicks mid-flash
+    if(state===0){
+      scatter();draw();msg.textContent='';btn.disabled=true;
+      timer=setTimeout(()=>{ctx.clearRect(0,0,cv.width,cv.height);btn.disabled=false;btn.textContent='Reveal the count';msg.textContent='How many? Shout it.';timer=null;state=1;},1000);
+    }else{
+      draw();msg.textContent=n+' dots. You estimated \u2014 exactly like patches do.';btn.textContent='Flash again \u25b6';state=0;
+    }
+  };
+})();
+
+
+/* ===== presenter mode ===== */
+(function(){
+  var DATA = [{"m": 1.5, "n": "Post-lunch — if flat, open with the Seoul story (45s) first. ‘Same machine, new kinds of tokens.’", "c": false, "title": "AI beyond text: eyes, ears and a paintbrush"}, {"m": 2.5, "n": "<b>Recap quiz.</b> Q on hallucination-in-pixels sets up today.", "c": false, "title": "Still true after the break?"}, {"m": 2, "n": "THE bridge: ‘new eyes wired into the same brain.’ Everything from yesterday transfers.", "c": false, "title": "Same loop. New kinds of tokens."}, {"m": 5, "n": "<b>Patchify.</b> Click grid→tokens→‘same attention loop.’ Hover a pill ↔ its patch. Note: this gopuram scene returns in the diffusion demo (callback).", "c": false, "title": "How a model reads a picture"}, {"m": 3.5, "n": "It doesn’t just see — it READS. The KYC card is your fintech credibility beat.", "c": false, "title": "It doesn't just see. It reads."}, {"m": 5, "n": "<b>GAME. Vote each.</b> CAPTCHA item is a trick question — it plants ‘capability ≠ permission’ — say those words (Session 6 flag).", "c": false, "title": "Will it read it? Place your bets"}, {"m": 2.5, "n": "‘Reading is prediction; making is un-destruction.’ Set up diffusion. The 4o token-by-token aside is one breath — don’t derail.", "c": false, "title": "Reading is prediction. Making is un-destruction."}, {"m": 6, "n": "<b>CENTERPIECE. Drag the slider slowly left→right</b> — narrate ‘shapes arrive before details’: silhouette ~15, sun ~30, window ~45. THEN Generate. Honest: canvas fakes the pixels, the coarse-to-fine direction is true.", "c": false, "title": "Diffusion: a picture emerges from static"}, {"m": 3.5, "n": "Honest limits: subtle details, style ethics, deepfakes. Land the camera line slowly. ‘Plausible not verified — now in pixels.’", "c": true, "title": "Image generation: magic with fine print"}, {"m": 4.5, "n": "Hit the three stats first — 3 s, ~₹0, ∞. <b>Family-password beat is serious — deliver straight.</b> ‘Tell your parents this weekend.’", "c": false, "title": "Speech: solved enough to be dangerous"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Your mother’s voice is no longer proof of your mother"}, {"m": 4, "n": "The payoff: 4 lines. contents=[img, question]. Run it — the highlight finds the total, then the JSON lands. ‘Prompting, format, evals — all apply unchanged.’ New beat: response_schema = guaranteed JSON — lab does both ways.", "c": false, "title": "All of it is one API call"}, {"m": 5, "n": "<b>Failure flips.</b> Counting = S1 multiplication disease in pixels — run the dot flash, the room estimates too. Blur-invention = S2 hallucination in pixels. The course rhymes.", "c": false, "title": "Where vision quietly fails"}, {"m": 3.5, "n": "Read 2–3 Madurai project seeds with enthusiasm. ‘Steal any for your capstone.’", "c": false, "title": "Vision ideas that belong to Madurai"}, {"m": 3, "n": "<b>Recall flips.</b> Class says each before clicking.", "c": false, "title": "Five ideas you own now"}, {"m": 53, "n": "<b>3 min brief, then 50 MIN LAB.</b> Demo the folder-upload ONCE first. Push Part B until json.loads passes. Collect 2 best inventions. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 3: interrogate your photos"}, {"m": 14, "n": "<b>Show &amp; tell + DAY 1 CLOSE — don’t rush.</b> Recap 4 artifacts built. Name the strongest hot-take counter-argument. ONE overnight task: 2–3 real documents. Say it twice. ‘Sleep. Tomorrow we build for real.’ <b>Links are on screen</b> — point at them.", "c": false, "title": "Day 1: understand the machine. Day 2: arm it."}];
+  var deck=document.getElementById('deck');
+  var total=DATA.reduce(function(a,d){return a+d.m;},0);
+  var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});
+  var panel=document.createElement('div');panel.id='pres';
+  panel.innerHTML='<div class="phead"><span class="lbl">Presenter</span><span class="sn" id="pr-sn"></span></div>'+
+   '<div class="clock"><div class="elapsed" id="pr-el">00:00</div><span class="pace ok" id="pr-pace">ready</span>'+
+   '<div class="tgt" id="pr-tgt"></div></div>'+
+   '<div class="budget"><span class="this" id="pr-this"></span><span id="pr-cmp"></span></div>'+
+   '<div class="notes" id="pr-notes"></div>'+
+   '<div class="nxt" id="pr-nxt"></div>'+
+   '<div class="ctl"><button class="go" id="pr-start">Start</button><button id="pr-reset">Reset</button><button id="pr-hide">Hide (S)</button></div>';
+  document.body.appendChild(panel);
+  var hint=document.createElement('div');hint.id='pres-hint';hint.textContent='press S for presenter notes + timer';
+  document.body.appendChild(hint);setTimeout(function(){hint.style.display='none';},6000);
+
+  var cur=0,t0=null,tick=null;
+  function fmt(s){s=Math.max(0,Math.round(s));var m=Math.floor(s/60);return (m<10?'0':'')+m+':'+((s%60)<10?'0':'')+(s%60);}
+  function elapsed(){return t0?(Date.now()-t0)/1000:0;}
+  function paint(){
+    var d=DATA[cur]||{m:2,n:'—',c:false};
+    document.getElementById('pr-sn').textContent=(cur+1)+' / '+DATA.length;
+    document.getElementById('pr-this').textContent='This slide: '+d.m+' min';
+    document.getElementById('pr-cmp').innerHTML=d.c?'<span class="compress">▸ compressible</span>':'';
+    document.getElementById('pr-notes').innerHTML=d.n;
+    var nx=DATA[cur+1];
+    document.getElementById('pr-nxt').innerHTML=nx?('Next ('+nx.m+'m): <b>'+(nx.title||'')+'</b>'):'<b>End of deck</b>';
+    var targetStart=cur>0?cum[cur-1]:0, targetEnd=cum[cur];
+    document.getElementById('pr-tgt').innerHTML='be at <b>'+fmt(targetStart*60)+'</b> starting this · done by <b>'+fmt(targetEnd*60)+'</b> · session '+fmt(total*60);
+  }
+  function refresh(){
+    document.getElementById('pr-el').textContent=fmt(elapsed());
+    var badge=document.getElementById('pr-pace');
+    if(!t0){badge.className='pace ok';badge.textContent='ready';return;}
+    var targetStart=(cur>0?cum[cur-1]:0)*60, el=elapsed(), diff=el-targetStart;
+    if(diff>90){badge.className='pace behind';badge.textContent='behind '+fmt(diff)+' — compress';}
+    else if(diff<-90){badge.className='pace ahead';badge.textContent='ahead '+fmt(-diff);}
+    else{badge.className='pace ok';badge.textContent='on time';}
+  }
+  document.addEventListener('slidechange',function(e){cur=e.detail;paint();refresh();});
+  document.getElementById('pr-start').onclick=function(){t0=Date.now();if(tick)clearInterval(tick);tick=setInterval(refresh,1000);refresh();};
+  document.getElementById('pr-reset').onclick=function(){t0=null;if(tick)clearInterval(tick);tick=null;refresh();};
+  document.getElementById('pr-hide').onclick=function(){panel.classList.remove('on');};
+  addEventListener('keydown',function(e){
+    if(e.target.matches('input,textarea'))return;
+    if(e.key==='s'||e.key==='S'){panel.classList.toggle('on');hint.style.display='none';}
+  });
+  paint();
+})();
+
+</script>
+</body>
+</html>

@@ -15,10 +15,22 @@
           "image": "/images/lab/01-feaws.svg",
           "summary": "An asset-agnostic quant trading model. BTC first, but the same engine applies to stocks, commodities, forex. The whitepaper is open. The trades are public.",
           "highlights": [
-            { "k": "accuracy", "v": "70% on 30 test windows" },
-            { "k": "current signal", "v": "BTC dip over the next couple of months" },
-            { "k": "stack", "v": "Python · Polymarket API · GDELT · sentiment + F&G · Postgres · Next.js" },
-            { "k": "philosophy", "v": "the content IS the product · the trading IS the proof" }
+            {
+              "k": "accuracy",
+              "v": "70% on 30 test windows"
+            },
+            {
+              "k": "current signal",
+              "v": "BTC dip over the next couple of months"
+            },
+            {
+              "k": "stack",
+              "v": "Python · Polymarket API · GDELT · sentiment + F&G · Postgres · Next.js"
+            },
+            {
+              "k": "philosophy",
+              "v": "the content IS the product · the trading IS the proof"
+            }
           ]
         },
         {
@@ -32,10 +44,47 @@
           "image": "/images/lab/02-dailyvox.svg",
           "summary": "A free voice journal that builds your Digital Twin without ever leaving your iPhone. No accounts, no cloud, no tracking. Voice-to-LLM, all local. Also where I'm experimenting with running a real LLM on a home machine — closing in.",
           "highlights": [
-            { "k": "platform", "v": "iOS · App Store" },
-            { "k": "privacy", "v": "0 cloud calls · 0 telemetry · 0 accounts" },
-            { "k": "models", "v": "on-device speech-to-text + on-device LLM" },
-            { "k": "pricing", "v": "free, no upsell" }
+            {
+              "k": "platform",
+              "v": "iOS · App Store"
+            },
+            {
+              "k": "privacy",
+              "v": "0 cloud calls · 0 telemetry · 0 accounts"
+            },
+            {
+              "k": "models",
+              "v": "on-device speech-to-text + on-device LLM"
+            },
+            {
+              "k": "pricing",
+              "v": "free, no upsell"
+            }
+          ]
+        },
+        {
+          "id": "genai-course",
+          "name": "Generative AI course",
+          "tagline": "Free hands-on course — how LLMs actually work",
+          "status": "active",
+          "url": "/genai/",
+          "url_label": "intrepidkarthi.com/genai",
+          "year": 2026,
+          "image": "/images/lab/07-genai-course.svg",
+          "summary": "Six sessions from \"what's a token?\" to a shipped app. Built for TCE Madurai, free for everyone. Opens with an interactive explainer where a real language model tokenizes, embeds, attends, predicts and trains — live in the browser.",
+          "highlights": [
+            {
+              "k": "format",
+              "v": "6 sessions · 12h · 50+ live demos · ₹0"
+            },
+            {
+              "k": "opener",
+              "v": "interactive how-LLMs-work explainer, runs offline"
+            },
+            {
+              "k": "stack",
+              "v": "HTML · vanilla JS · a 729-parameter model trained in-browser"
+            }
           ]
         },
         {
@@ -49,10 +98,22 @@
           "image": "/images/lab/06-minecraft.svg",
           "summary": "A voxel sandbox built from scratch for my son Adyah. Custom WebGL engine, no game libraries. Build, survive nights, fight mobs, find 5 golden stars. Saves locally. Runs in any browser and as an Electron desktop app.",
           "highlights": [
-            { "k": "engine", "v": "custom WebGL voxel · no game libraries" },
-            { "k": "platforms", "v": "browser + Electron desktop (macOS, Windows)" },
-            { "k": "controls", "v": "WASD · mouse · E inventory · 1-9 hotbar" },
-            { "k": "made for", "v": "Adyah" }
+            {
+              "k": "engine",
+              "v": "custom WebGL voxel · no game libraries"
+            },
+            {
+              "k": "platforms",
+              "v": "browser + Electron desktop (macOS, Windows)"
+            },
+            {
+              "k": "controls",
+              "v": "WASD · mouse · E inventory · 1-9 hotbar"
+            },
+            {
+              "k": "made for",
+              "v": "Adyah"
+            }
           ]
         }
       ]
@@ -72,10 +133,22 @@
           "image": "/images/lab/03-book-mobile-ai.svg",
           "summary": "Project-driven guide for shipping ML on iOS and Android. Age + gender CNN, neural style transfer, ML Kit (text/face/barcode), Snapchat-style face filters with OpenCV, MNIST adversarial classifier, on-device food classification via transfer learning.",
           "highlights": [
-            { "k": "publisher", "v": "Packt · 2018" },
-            { "k": "code", "v": "github.com/intrepidkarthi/Machine-Learning-Projects-for-Mobile-Applications" },
-            { "k": "covers", "v": "TF Lite · Core ML · Caffe2 · ML Kit · OpenCV · transfer learning" },
-            { "k": "format", "v": "Hands-on. ~300 pages." }
+            {
+              "k": "publisher",
+              "v": "Packt · 2018"
+            },
+            {
+              "k": "code",
+              "v": "github.com/intrepidkarthi/Machine-Learning-Projects-for-Mobile-Applications"
+            },
+            {
+              "k": "covers",
+              "v": "TF Lite · Core ML · Caffe2 · ML Kit · OpenCV · transfer learning"
+            },
+            {
+              "k": "format",
+              "v": "Hands-on. ~300 pages."
+            }
           ]
         },
         {
@@ -89,10 +162,22 @@
           "image": "/images/lab/04-book-ml-mobile.svg",
           "summary": "The mental-model book. Demystifies the mobile ML landscape — toolchains, deployment patterns, on-device vs cloud tradeoffs, what to use when. Pairs cleanly with the projects book if you want both the why and the how.",
           "highlights": [
-            { "k": "publisher", "v": "Packt · 2018" },
-            { "k": "audience", "v": "Mobile engineers learning ML" },
-            { "k": "depth", "v": "Light on code, heavy on architecture decisions" },
-            { "k": "shelf-life", "v": "The mental model held up better than the specific tool versions did" }
+            {
+              "k": "publisher",
+              "v": "Packt · 2018"
+            },
+            {
+              "k": "audience",
+              "v": "Mobile engineers learning ML"
+            },
+            {
+              "k": "depth",
+              "v": "Light on code, heavy on architecture decisions"
+            },
+            {
+              "k": "shelf-life",
+              "v": "The mental model held up better than the specific tool versions did"
+            }
           ]
         }
       ]
@@ -112,10 +197,22 @@
           "image": "/images/lab/05-teleport-call.svg",
           "summary": "Founded GazeMatic in 2014. Built Teleport Call — a first-of-its-kind VR voice-calling app where two callers could meet inside a shared virtual environment. 420k+ organic downloads in the first month, 1.2M+ calls placed across US/UK/Germany/Russia/India. Zero paid marketing. Ran for 4 years before winding down.",
           "highlights": [
-            { "k": "downloads", "v": "420k+ organic in month 1" },
-            { "k": "calls placed", "v": "1.2M+" },
-            { "k": "VR scenes", "v": "2,000+ environments" },
-            { "k": "tech", "v": "live streaming · adaptive video compression · multi-node CDN · real-time 3D" }
+            {
+              "k": "downloads",
+              "v": "420k+ organic in month 1"
+            },
+            {
+              "k": "calls placed",
+              "v": "1.2M+"
+            },
+            {
+              "k": "VR scenes",
+              "v": "2,000+ environments"
+            },
+            {
+              "k": "tech",
+              "v": "live streaming · adaptive video compression · multi-node CDN · real-time 3D"
+            }
           ]
         }
       ]

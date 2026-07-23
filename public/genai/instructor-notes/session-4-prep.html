@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 4 — Instructor Prep Pack (the deep version) — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Deep mastery guide for Session 4: embeddings geometry, chunking, vector stores, RAG failure taxonomy, demo playbooks, Q&amp;A bank, timing map.">
+<meta property="og:title" content="Session 4 — Instructor Prep Pack (the deep version)">
+<meta property="og:description" content="Deep mastery guide for Session 4: embeddings geometry, chunking, vector stores, RAG failure taxonomy, demo playbooks, Q&amp;A bank, timing map.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#A85E00;--accentpale:#FFEBCC;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
+  <div class="kicker">Session 4 · instructor deep prep</div>
+  <h1>Session 4 — Instructor Prep Pack</h1>
+  <p class="lead">the deep version</p>
+
+  <p>Deck: <code>session-4-giving-ai-your-own-knowledge.html</code> · 20 slides · 8 interactives · deck budget ≈ 97.5 min including the 50-min lab. This session is the spine of the capstone: what students build today gets tools bolted on in S5 and gets attacked in S6. You must be able to go one level below every slide — sharp 4th-years and their professors will test exactly that.</p>
+
+  <h2 id="spine">1 · Narrative spine</h2>
+  <p>One argument, seven beats. The session is a single proof that ends in working code:</p>
+  <ol>
+    <li><strong>The model cannot know your world — and won't admit it.</strong> Ask about the TCE OS syllabus: it invents a plausible one, fluently. (Villain slide — everything else this morning is the cure.)</li>
+    <li><strong>The obvious fix — paste everything — fails three ways.</strong> The <em>window</em> (may not fit), the <em>meter</em> (you re-pay per token, per question), the <em>middle</em> (long-context attention is weakest mid-window). Price it live in ₹.</li>
+    <li><strong>So don't send everything — send the right 3 paragraphs.</strong> The topper in an open-book exam doesn't read the book; she has sticky flags on the right pages. We need an index by <em>meaning</em>.</li>
+    <li><strong>Keyword search can't build that index</strong> — "marks to clear the subject" shares zero words with "50% aggregate to pass". But Session 1's embeddings map meaning to coordinates; today the same trick works on whole paragraphs.</li>
+    <li><strong>Search is then three lines of numpy</strong> — normalize, dot product, argsort. The silent kingmaker is <em>chunking</em>: how you cut the book decides whether the right paragraph even exists to be found.</li>
+    <li><strong>RAG = Retrieve → Augment → Generate.</strong> Staple the top-k chunks into a grounded template with three load-bearing lines: ONLY the context · cite the chunk · the "I don't know" escape hatch.</li>
+    <li><strong>It fails in four knowable ways</strong> (vocabulary gap, split answers, stale index, ignored context), each with a fix, debugged in a fixed order: retrieval → chunks → prompt → model. And this exact architecture is most of the AI product economy — which is why the lab that builds it in ~60 lines is the most employable hour of the course.</li>
+  </ol>
+  <p><strong>Readiness test:</strong> say the whole argument out loud in under 3 minutes, no slides, ending with "and that's why chunking bugs cause more RAG failures than model choice." If you can't, re-walk the beats until you can.</p>
+
+  <h2 id="deep-dives">2 · Concept deep-dives (slide by slide)</h2>
+
+  <h3 id="slides-1-2">Slides 1–2 · Title + recap quiz</h3>
+  <p><strong>Claim:</strong> Day-2 opener; four true/false items re-test Day 1 (image patches, diffusion, pixel hallucination, no memory).<br>
+  <strong>Mechanism:</strong> Q4 — "the model remembers yesterday" is FALSE — is the deliberate setup. Inference runs through <em>frozen</em> weights; chat apps fake memory by re-sending the transcript. Today extends that: if context is the only memory, then <em>choosing what goes into context</em> is the whole game. RAG is memory-management engineering.<br>
+  <strong>Pushback:</strong> "But ChatGPT has a memory feature now?" — Yes, and it's implemented as retrieval: saved notes about you are fetched and inserted into context. The weights still never change. Memory features are RAG wearing a trench coat.<br>
+  <strong>Landmine:</strong> don't rush past Q4 — say the line: "THAT gap is what we fix this morning."</p>
+
+  <h3 id="slide-3">Slide 3 · Watch it not know — loudly</h3>
+  <p><strong>Claim:</strong> Asked about <em>your</em> syllabus, the model invents a plausible one instead of admitting ignorance.<br>
+  <strong>Mechanism (one level deeper):</strong> the model has no "I don't know this" signal. Training optimizes next-token likelihood: given "Unit 3 of the OS course covers…", the highest-probability continuation is <em>a typical OS syllabus</em> — it has seen thousands. Truthfulness about its own knowledge boundary was never the training target; RLHF's helpfulness pressure makes silence even less likely. Hallucination here is a <strong>calibration failure</strong>: fluency and confidence are uncorrelated with truth. Legal anchors if a professor wants stakes: <em>Mata v. Avianca</em> (S.D.N.Y. 2023 — six fabricated case citations, $5,000 sanction) and <em>Moffatt v. Air Canada</em> (2024 BCCRT 149 — airline held liable for a refund policy its chatbot invented).<br>
+  <strong>Worked example:</strong> the deck's typed output is a canned recording (see playbook). Have one student ask their phone live. Two outcomes, both useful: (a) it invents a syllabus → the slide, live; (b) it hedges "I don't have access to TCE's specific syllabus, but typically…" and <em>then produces a typical syllabus anyway</em> → say: "the hedge is not knowledge — it still gave you Unit 3 content it never saw."<br>
+  <strong>Pushback:</strong> "Newer models refuse unknowns more — isn't this solved?" — Abstention training improved (models increasingly decline questions that <em>look</em> unanswerable), but your syllabus looks exactly like something it should know, so pattern-completion wins. No model has a lookup table of what it knows; abstention is itself a learned guess.<br>
+  <strong>Landmine:</strong> never say "models always hallucinate this" — a student's phone may hedge and you'll look stale. The talk track above absorbs both outcomes.</p>
+
+  <h3 id="slide-4">Slide 4 · "Just paste all my notes!" — let's price that</h3>
+  <p><strong>Claim:</strong> pasting your corpus into every prompt fails on window, meter, and middle.<br>
+  <strong>Mechanism:</strong> the slider computes real arithmetic: <code>pages × 500 tokens/page × $1.50 per 1M input tokens × ₹95.5</code>, at 30 questions/day (900/month). "The middle": empirically, long-context models retrieve facts placed at the start or end of the window far better than facts buried mid-window (the "lost in the middle" result — U-shaped position curve). More haystack actively hurts needle-finding.</p>
+  <p><strong>Worked example (whiteboard-reproducible ₹ arithmetic, Gemini 3.5 Flash — the free tier's current Flash, served as <code>gemini-flash-latest</code> — input @ $1.50/1M):</strong></p>
+  <table>
+    <tr><th>Pasted corpus</th><th>Tokens/question</th><th>₹/question (input)</th><th>₹/month @ 30 q/day</th></tr>
+    <tr><td>20 pages (unit notes)</td><td>10,000</td><td>₹1.43</td><td>₹1,289</td></tr>
+    <tr><td>120 pages (all five units)</td><td>60,000</td><td>₹8.60</td><td>₹7,736</td></tr>
+    <tr><td>380 pages (the Galvin OS textbook)</td><td>190,000</td><td>₹27.22</td><td>₹24,496</td></tr>
+  </table>
+  <p>One line of math on the board: 190,000 ÷ 1,000,000 × $1.50 × ₹95.5 = <strong>₹27.22 per question</strong> — a month of doubts is ~₹24,500, five months of hostel mess bills, for <em>one student</em>, before output tokens.<br>
+  <strong>Pushback:</strong> "Gemini 3.5 has a 1M window — it fits, so what's the problem?" — Correct, the <em>window</em> tax is gone for a textbook. The <em>meter</em> and the <em>middle</em> remain: see slide 14 for the full arithmetic, including context caching. "Fits" ≠ "free" ≠ "attended to."<br>
+  <strong>Landmine:</strong> don't claim "it doesn't fit" as the main argument — with 1M windows that's stale. The deck's own verdict text says "even a 1M window takes it — your wallet and mid-window attention don't." Lead with meter + middle.</p>
+
+  <h3 id="slide-5">Slide 5 · The insight</h3>
+  <p><strong>Claim:</strong> send the right 3 paragraphs, not everything.<br>
+  <strong>Mechanism:</strong> this is precision engineering: any single question needs a tiny fraction of the corpus, so per-question relevance filtering beats per-question bulk transfer. Name the acronym here and never let it be mystical again: <strong>R</strong>etrieval, <strong>A</strong>ugmentation, <strong>G</strong>eneration — the rest of the morning builds R, then A; G they already own from Sessions 1–2.</p>
+
+  <h3 id="slide-6">Slide 6 · Keyword search misses meaning</h3>
+  <p><strong>Claim:</strong> Ctrl-F/grep fails when question and answer share zero vocabulary.<br>
+  <strong>Mechanism:</strong> keyword search matches <em>character strings</em>; the query "marks required to clear the subject" and the answer "minimum of 50% aggregate across internals and end-semester" have literally no content word in common. Classical IR patched this with stemming, synonym lists and BM25 (term-frequency scoring) — all still lexical. The real fix is representational: compare <em>meanings</em>, which requires putting meanings into a comparable space — embeddings.<br>
+  <strong>Worked example:</strong> on the board, write both sentences and strike out shared words. There are none (only stopwords like "the"). Then: <code>grep -i "marks\|clear\|subject" notes.txt → 0 matches</code> — while the answer sits in the file.<br>
+  <strong>Pushback:</strong> "So keyword search is obsolete?" — No. For exact identifiers (error codes, section numbers, names, <code>E501</code>), keyword search <em>beats</em> embeddings. Production search is usually <strong>hybrid</strong>: BM25 + semantic, scores fused. Google ran lexical + link-graph for 20 years before adding dense retrieval.<br>
+  <strong>Landmine:</strong> don't oversell semantic search as "understanding." It measures geometric proximity of learned representations — the trap query on slide 8 shows it returning honest low scores, not comprehension.</p>
+
+  <h3 id="slide-7">Slide 7 · Embeddings, now for whole paragraphs — THE core mechanism</h3>
+  <p><strong>Claim:</strong> the Session-1 trick (words → coordinates) works on whole chunks; search = cosine similarity, one numpy line.<br>
+  <strong>Mechanism, honest level deeper:</strong> an embedding model is a transformer that reads the whole chunk, produces contextual vectors for every token, and <strong>pools</strong> them (mean/weighted) into ONE vector for the passage. It's trained <strong>contrastively</strong>: pairs that mean the same thing (question↔answer, paraphrase↔original) are pulled together; unrelated pairs pushed apart, over billions of pairs. Paraphrase-matching isn't a lucky side effect — it is literally the training objective. Individual dimensions mean nothing by themselves; only relative geometry carries meaning. Two API details worth knowing cold:</p>
+  <ul>
+    <li><strong><code>output_dimensionality=768</code></strong> — gemini-embedding-2 is trained with <strong>Matryoshka Representation Learning (MRL)</strong>: information is front-loaded into the leading dimensions, so truncating the full-size vector (3072-dim on this family) to its first 768 and re-normalizing keeps most retrieval quality at ¼ the storage and ¼ the matmul cost. Quality-vs-cost is a <em>dial you choose</em>, not a fixed property.</li>
+    <li><strong><code>task_type</code></strong> — variants like RETRIEVAL_QUERY vs RETRIEVAL_DOCUMENT optimize the asymmetry between short questions and long passages. The lab skips this (defaults are fine at course scale) but know it exists.</li>
+  </ul>
+  <p><strong>Worked example — cosine by hand, 3-dim toy vectors (do this on the board):</strong><br>
+  Let dimensions be roughly (food-ness, breakfast-ness, hardware-ness):</p>
+  <pre><code>idli = [0.9, 0.1, 0]    dosa = [0.85, 0.2, 0]    GPU = [0, 0.1, 0.95]
+
+cos(a,b) = a·b / (|a||b|)
+
+idli·dosa = 0.9×0.85 + 0.1×0.2 + 0 = 0.785
+|idli| = √(0.81+0.01) = 0.906      |dosa| = √(0.7225+0.04) = 0.873
+cos(idli, dosa) = 0.785 / (0.906×0.873) = 0.785/0.791 ≈ 0.99   ← neighbours
+
+idli·GPU = 0 + 0.01 + 0 = 0.01     |GPU| = √(0.01+0.9025) = 0.955
+cos(idli, GPU) = 0.01 / (0.906×0.955) ≈ 0.01                    ← strangers
+cos(dosa, GPU) = 0.02 / (0.873×0.955) ≈ 0.02</code></pre>
+  <p>Real vectors have 768 dimensions instead of 3; the arithmetic is identical.</p>
+  <p><strong>Why cosine, not Euclidean:</strong> magnitude is an artifact (longer texts, token-frequency effects); direction carries the meaning. Board demo: double idli → <code>[1.8, 0.2, 0]</code>. Euclidean distance to dosa jumps from 0.11 to ≈0.95 ("far"!), cosine stays 0.99. Cosine is scale-invariant. And once you <strong>normalize</strong> every vector to length 1, the identity <code>‖a−b‖² = 2 − 2·cos(a,b)</code> means Euclidean and cosine produce <em>identical rankings</em> — which is why the lab normalizes once and then the entire search engine is a dot product: <code>scores = chunk_vecs @ qv</code>.<br>
+  <strong>Pushback (professor-grade):</strong> (1) "Is one pooled vector per paragraph enough? What about token-level matching?" — Bi-encoders (this) trade fidelity for speed; production ladders add a <strong>cross-encoder reranker</strong> on the top-50, or late-interaction models (ColBERT) that keep per-token vectors. Correct architecture for a 60-line Saturday build and for most real products' first version. (2) "What does dimension 412 mean?" — Nothing interpretable; meaning is distributed. Interpretability of embedding dims is an open research area.<br>
+  <strong>Landmine (the #1 student bug after chunking):</strong> query and chunks MUST be embedded by the SAME model (and same dimensionality). Mixing models is comparing coordinates from two different maps — scores become noise, silently.</p>
+
+  <h3 id="slide-8">Slide 8 · The search playground</h3>
+  <p><strong>Claim:</strong> semantic search finds meaning-neighbours; real answers often span multiple chunks; low scores mean "nothing relevant here."<br>
+  <strong>Mechanism:</strong> three lessons hide in the four canned queries: (1) "marks to pass" matches a chunk containing none of those words — pure meaning match; (2) "PC slow with many apps" scores TWO chunks (scheduling 0.62, thrashing 0.57) — answers span chunks, hence <strong>top-k, not top-1</strong>; (3) "attendance condonation" scores everything under 0.35 — the scores <em>tell you</em> the corpus lacks the answer. That's a thresholding insight: production systems refuse to answer below a similarity floor rather than stuffing junk context.<br>
+  <strong>Pushback:</strong> "What's a good absolute threshold?" — There isn't a universal one; score distributions shift with model and domain. Calibrate per-corpus on a labeled set (an eval — Session 2's discipline).<br>
+  <strong>Landmine:</strong> the playground's numbers and 2-D positions are authored (realistic, but written by hand). Say so if asked — see playbook 5. The lab computes real ones within the hour.</p>
+
+  <h3 id="slide-9">Slide 9 · Chunking — the kingmaker</h3>
+  <p><strong>Claim:</strong> how you cut the document decides everything; paragraph + overlap is the boring default that wins.<br>
+  <strong>Mechanism:</strong> a chunk's embedding is a pooled summary of everything in it. Too small → the fragment loses its own referents (pronouns, "the exam" of <em>what</em>?) — retrieval succeeds, the <em>model</em> can't use it. Too big → the vector drifts toward a generic "course policies" centroid; the one relevant sentence's contribution is averaged away and cosine with any specific query drops — <strong>similarity dilution</strong>. Lab defaults: <code>target=800</code> chars (≈200 tokens), <code>overlap=150</code> chars, split on paragraph boundaries first. Overlap exists so a thought that straddles a boundary survives whole in at least one chunk.</p>
+  <p><strong>Worked example — one real OS-notes passage, three knives.</strong> Put this on screen or board:</p>
+  <blockquote><em>"Round Robin assigns each process a fixed time quantum. A very small quantum wastes CPU on context switches. Assessment: each of the two internal exams carries 25 marks. To pass the course, a minimum of 50% aggregate across internals and the end-semester exam is required. Students who miss an internal for medical reasons may take a retest. It is capped at 20 marks."</em></blockquote>
+  <table>
+    <tr><th>Knife</th><th>Chunks produced</th><th>"Marks needed to pass?"</th><th>"Retest max marks?"</th></tr>
+    <tr><td>1 sentence each</td><td>6 tiny chunks</td><td>✓ finds the 50% sentence (self-contained — got lucky)</td><td>✗ retrieves "It is capped at 20 marks." — <em>what</em> is capped? The referent ("retest") lives in the previous chunk. Amputated context.</td></tr>
+    <tr><td>Paragraph + overlap</td><td>1–2 chunks</td><td>✓ complete thought retrieved</td><td>✓ retest + cap arrive together</td></tr>
+    <tr><td>Whole pages</td><td>assessment buried in a 3-page "Course Policies" chunk with attendance, dress code, lab rules</td><td>similarity diluted (deck shows 0.31) — may lose the top-3 to a more focused chunk; even when retrieved, k=3 page-chunks ≈ 4,500 tokens of mostly noise per question</td><td>same</td></tr>
+  </table>
+  <p><strong>Pushback:</strong> (1) "What's the optimal chunk size?" — No universal answer; it's an <strong>eval question</strong>: sweep sizes, measure retrieval hit-rate on a labeled test set (Stretch 1 is exactly this harness). (2) "Smarter ways than fixed size?" — Yes: semantic chunking (split on topic shift), heading-aware splitting, parent-document retrieval (search small chunks, return their bigger parent), rerankers. All post-course; all still lose to fixing a bad extraction first.<br>
+  <strong>Landmine:</strong> say "chunking causes more RAG failures than model choice" — twice, it's the session's most useful sentence — but don't claim paragraph+overlap is <em>optimal</em>, only that it's the default that wins until an eval says otherwise.</p>
+
+  <h3 id="slide-10">Slide 10 · Vector databases, in plain words</h3>
+  <p><strong>Claim:</strong> below ~100k chunks, a numpy array IS your vector database.<br>
+  <strong>Mechanism + worked latency estimate (be ready to defend the ~100k line):</strong> 100,000 chunks × 768 dims × 4 bytes (float32) = <strong>307 MB</strong> — fits in RAM. One query = one matrix–vector multiply = 153.6M multiply-adds; on a laptop this is memory-bandwidth-bound: ~300 MB ÷ ~20 GB/s ≈ <strong>15–30 ms</strong>. Top-k selection (<code>np.argpartition</code>) adds ~1 ms. Meanwhile the network call to <em>embed the query</em> costs 100–300 ms — <strong>numpy is never your bottleneck at this scale.</strong> Scale ladder with storage: today's lab ≈ 6 chunks; full personal notes ≈ 300 chunks ≈ 0.9 MB; every TCE course ≈ 50k ≈ 154 MB — still numpy; English Wikipedia ≈ 30M chunks ≈ 92 GB — <em>now</em> buy the database.<br>
+  <strong>What FAISS/pgvector/Pinecone actually add:</strong> approximate-nearest-neighbour indexes (HNSW graphs, IVF clustering) for sublinear search at millions of vectors — trading a little recall for a lot of speed — plus persistence, metadata filtering ("only chunks from doc X after date Y"), incremental updates, and concurrent access. Name-drops with one-liners: FAISS = Meta's similarity-search library · Chroma = dev-friendly local store · pgvector = vectors inside Postgres (often the right boring choice) · Pinecone/Weaviate = managed.<br>
+  <strong>Pushback:</strong> "Then why do all tutorials start with a vector DB?" — Framework marketing and cargo-culting. Infrastructure should follow scale, not fashion. Building raw first is why these students will debug LangChain better than people who only learned LangChain.<br>
+  <strong>Landmine:</strong> numpy-as-vector-DB is not a toy apology — it's production-honest at small scale. Don't undersell it.</p>
+
+  <h3 id="slide-11">Slide 11 · RAG, end to end (the stepper — centerpiece)</h3>
+  <p><strong>Claim:</strong> one question's full journey: question → embed → cosine search → top-k → grounded template → cited answer.<br>
+  <strong>Mechanism:</strong> two pipelines with different lifetimes: <strong>ingest</strong> runs once per document (chunk → embed → store), <strong>query</strong> runs per question (embed question with the SAME model → dot product → top-k → augment → generate). The only genuinely new idea in the whole session is the Augment stage — everything else they've touched already.</p>
+  <p><strong>Worked example — the actual round-trip (matches the lab code, reproducible verbatim):</strong></p>
+  <pre><code>MODEL = "gemini-flash-latest"  # the free tier's current Flash (July 2026 → Gemini 3.5 Flash); pin a dated id only if you need frozen behavior.
+
+# ingest — once
+res  = client.models.embed_content(model="gemini-embedding-2", contents=chunks)
+vecs = np.array([e.values for e in res.embeddings])     # shape (n_chunks, dims)
+vecs = vecs / np.linalg.norm(vecs, axis=1, keepdims=True)
+
+# query — every question
+qv = embed(["Can I pass with 12/25 internals?"])[0]; qv /= np.linalg.norm(qv)
+scores = vecs @ qv                    # e.g. chunk2→0.81, chunk6→0.44, chunk3→0.12
+prompt = RAG_TEMPLATE.format(context="[1] To pass: minimum 50% aggregate…\n[2] Mid-sem covers units 1–3…",
+                             question="Can I pass with 12/25 internals?")
+answer = client.models.generate_content(model=MODEL, contents=prompt).text
+# → "Yes — possible. Passing needs ≥50% AGGREGATE… [1]"</code></pre>
+  <p>Note what the generation model receives: <strong>plain text</strong>. It never sees a vector. Retrieval and generation are separable systems — embeddings from one provider + generation from another is completely standard.<br>
+  <strong>Pushback:</strong> "Why does the answer cite [1] correctly — does the model know where facts came from?" — It sees the labels <code>[1]</code>, <code>[2]</code> inline in its context and learns (from instruction tuning) to attribute. Chunk-level citation is honest; sentence-level attribution is production polish and genuinely harder.<br>
+  <strong>Landmine:</strong> the stepper's vector <code>[0.11, −0.87, …×768]</code> and its scores are representative, not live. Narration script is in playbook 7 — this slide is where the session is won or lost.</p>
+
+  <h3 id="slide-12">Slide 12 · The grounded prompt template</h3>
+  <p><strong>Claim:</strong> three load-bearing lines turn retrieval into a trustworthy product.<br>
+  <strong>Mechanism — the exact failure each line prevents:</strong></p>
+  <table>
+    <tr><th>Line</th><th>Failure it prevents</th><th>Why it works</th></tr>
+    <tr><td>"Answer using ONLY the context below"</td><td>parametric leakage — training memories overriding your documents (failure mode 4)</td><td>shifts probability mass toward context-supported continuations; imperfect but measurable</td></tr>
+    <tr><td>"Cite which chunk, like [1]"</td><td><em>invisible</em> hallucination</td><td>makes every claim checkable; users verify instead of trust — and attribution pressure itself disciplines generation</td></tr>
+    <tr><td>Escape hatch: "I don't know based on the provided documents."</td><td>silence-filling invention on out-of-corpus questions (the 9 a.m. villain)</td><td>gives the model a licensed high-probability output for "not found"; without one, the most probable continuation is a plausible fake</td></tr>
+  </table>
+  <p>Supporting cast: put context <strong>before</strong> the question (recency effects — the question stays fresh at generation time), and temperature 0 for factual retrieval answers.<br>
+  <strong>Worked example:</strong> the A/B toggle on the slide IS the experiment: with the hatch → "I don't know based on the provided documents." Delete one line → "Attendance requires 75% as per university norms; condonation up to 65% with medical certificate…" — fluent, confident, invented. This is a two-cell eval; students rerun it for real in Part D of the lab.<br>
+  <strong>Pushback:</strong> "Why does it STILL invent sometimes with all three lines?" — Grounding is probabilistic, not a firewall. Debug in order: did retrieval even deliver the right chunk (print scores)? Was the chunk amputated? Only then harden the prompt or drop temperature. Splitting the diagnosis: <strong>retrieval hit-rate</strong> vs <strong>answer faithfulness</strong> — separate metrics, separate fixes.<br>
+  <strong>Landmine:</strong> never claim the template "prevents hallucination." It <em>measurably reduces</em> it. S6 will attack this exact prompt.</p>
+
+  <h3 id="slide-13">Slide 13 · Where RAG breaks in the wild</h3>
+  <p><strong>Claim:</strong> four failure modes, each diagnosable and fixable.<br>
+  <strong>Mechanism + one concrete failing query each:</strong></p>
+  <table>
+    <tr><th>Mode</th><th>Concrete failing query</th><th>What happens</th><th>Fix</th></tr>
+    <tr><td>Vocabulary gap</td><td>"attendance shortage rules" vs notes saying "condonation policy"</td><td>retrieval scores low; escape hatch fires ("I don't know") even though the answer exists</td><td>LLM-rephrase the query, retrieve k=5, index chunk summaries (advanced: HyDE — embed a hypothetical answer)</td></tr>
+    <tr><td>Split answers</td><td>"Can I pass with 12/25 internals?" — rule in chunk 7, medical-retest exception in chunk 8</td><td>confidently <strong>incomplete</strong> answer, correctly cited</td><td>overlap; retrieve neighbours of every hit; bigger k</td></tr>
+    <tr><td>Stale index</td><td>"What's in Unit 3?" after Monday's syllabus revision, embeddings from last month</td><td>confident, <strong>cited</strong>, outdated answer — RAG trusts its shelf</td><td>re-index on change (hash the file), store doc dates, show them in answers</td></tr>
+    <tr><td>Ignored context</td><td>context says internal = 25 marks; internet-average says 20; model answers 20</td><td>parametric memory beats weak grounding</td><td>strengthen ONLY, T=0, context before question — then EVAL it</td></tr>
+  </table>
+  <p><strong>Debug order — retrieval → chunks → prompt → model — and why that order:</strong> it's cheapest-observation-first and most-likely-culprit-first. <code>show_chunks=True</code> (printing scores + retrieved text) answers "did the right chunk arrive?" in 5 seconds and localizes ~80% of failures before you touch a prompt. Blaming the model first is the amateur move; the model is the <em>least</em> likely culprit and the hardest to change.<br>
+  <strong>Pushback:</strong> "Which mode is most common in production?" — Stale index, by far, because it's the only one that gets <em>worse</em> over time silently. It ships working and rots.<br>
+  <strong>Landmine:</strong> the stale-index example — "confident, cited, and out of date" — lands hardest with your fintech war story if you have a shareable one.</p>
+
+  <h3 id="slide-14">Slide 14 · RAG vs paste-it-all vs fine-tuning</h3>
+  <p><strong>Claim:</strong> three tools, three jobs. Interview one-liner: "Fine-tuning teaches behaviour; RAG provides knowledge."<br>
+  <strong>Mechanism — the long-context arithmetic (this is the professor-bait slide; own the numbers):</strong><br>
+  A 1M-token corpus, questioned 900 times/month, Gemini 3.5 Flash (<code>gemini-flash-latest</code>) input @ $1.50/1M, ₹95.5/USD:</p>
+  <table>
+    <tr><th>Strategy</th><th>Input tokens/question</th><th>₹/question</th><th>₹/month (900 q)</th></tr>
+    <tr><td>Paste 1M-token corpus every time</td><td>1,000,000</td><td>₹143.25</td><td>₹1,28,925 (≈ ₹1.29 lakh)</td></tr>
+    <tr><td>Same, with context caching (≈ −90% on cached input)</td><td>1,000,000 (cached)</td><td>≈ ₹14.33</td><td>≈ ₹12,893</td></tr>
+    <tr><td>RAG: top-3 chunks + template ≈ 800 tokens</td><td>800</td><td>₹0.115 (+ ~₹0.13 for ~150 output tokens @ $9.00/1M)</td><td>≈ ₹219 total</td></tr>
+  </table>
+  <p>Even <em>cached</em>, full-context costs ~59× more than RAG — and prefilling a 1M-token prompt adds tens of seconds of latency per question, versus sub-second for 800 tokens. Add freshness (re-embedding one changed file beats re-sending everything) and citations (RAG points at its chunk; long context points at "somewhere in the megabyte") and RAG survives the 1M era comfortably. Honest concession: for a <em>small, static</em> corpus queried rarely, long context is simpler and fine — and production systems increasingly combine both (retrieve 50 chunks into a roomy window).<br>
+  <strong>Fine-tuning, one level deeper:</strong> further gradient updates on your examples (usually LoRA adapters — cheap, parameter-efficient). It's excellent at <em>behaviour</em>: format, tone, domain style, consistent JSON — patterns reinforced across many examples. It's terrible at <em>facts</em>: a fact seen a handful of times doesn't reliably become retrievable; knowledge freezes the moment tuning ends; there's zero provenance ("which document says this?" — unanswerable); and it risks degrading other abilities. "Fine-tune the model on our wiki" is the classic ₹-crore mistake — the wiki changes Tuesday, your weights don't.<br>
+  <strong>Pushback:</strong> "When IS fine-tuning right?" — When an eval proves prompting + RAG can't hold a <em>behaviour</em> at your scale: strict output style, a domain register, tool-use reflexes for a small local model. It's rung 5 of the escalation ladder (S5): prompt → few-shot → RAG → tools → fine-tune.<br>
+  <strong>Landmine:</strong> do not trash fine-tuning wholesale — professors may fine-tune models for research. The claim is precise: wrong tool <em>for facts</em>, right tool for behaviour.</p>
+
+  <h3 id="slides-15-16">Slides 15–16 · Everywhere + hot take</h3>
+  <p><strong>Claim (15):</strong> support bots, NotebookLM-style tools, AI search engines, legal/medical assistants, enterprise wiki-chat — all this architecture. <strong>(16, hot take):</strong> "your final-year project is one grounded prompt away from being a startup."<br>
+  <strong>Mechanism:</strong> the honest version of the claim: a large share of shipped AI products are retrieval + a grounded prompt around someone else's model. The defensible moat is the <strong>data</strong> and the <strong>evals</strong> — Madurai-specific corpora (Tamil-medium notes, local legal/agri/temple-trust documents) that no San Francisco team has, plus the S2 discipline to prove quality.<br>
+  <strong>Pushback (expect it — the slide invites it):</strong> "If it's one prompt, there's no moat and no startup." — Correct that the prompt is not the moat. The moat is proprietary data, distribution, and eval-verified quality on a niche. Same as most SaaS: the CRUD was never the moat either. Park longer debate to the break; name the best counter-argument at close.<br>
+  <strong>Landmine:</strong> "most AI products are RAG" is a defensible characterization, not a measured statistic — phrase as "most of what you've used."</p>
+
+  <h3 id="slides-17-20">Slides 17–20 · Lab architecture, recap flips, lab brief, break</h3>
+  <p><strong>Claim (17):</strong> two pipelines — ingest once per document, query forever; ~60 lines total.<br>
+  <strong>Mechanism:</strong> the split matters economically: ingest cost is amortized (paid once per document), query cost is marginal (paid per question) — which is exactly why RAG beats paste. <strong>Worked example — ₹ cost of embedding a student's 40-page notes corpus:</strong> 40 pages × 500 tokens ≈ 20,000 tokens → on the AI Studio free tier: <strong>₹0</strong>. Even priced at the chat model's input rate ($1.50/1M, Gemini 3.5 Flash — an upper bound; embedding rates didn't move in the 2026 re-base): 20,000 ÷ 1M × $1.50 × ₹95.5 ≈ <strong>₹2.87 — once</strong>. The store: ~80,000 chars ÷ 800-char chunks ≈ 100–115 chunks × 768 dims × 4 B ≈ <strong>0.34 MB</strong>. Total infrastructure: a numpy array smaller than one photo.<br>
+  (18): flip cards — make the class say each answer before clicking. (19): lab brief — see timing map; push the capstone framing hard: documents they actually care about. (20): bridge — "your AI now knows what you know; after lunch it gets hands" (S5 tools).</p>
+
+  <h2 id="demos">3 · Demo playbooks</h2>
+  <p>General fallback: the deck is fully offline/self-contained. If the projector dies, the cosine hand-calc, the ₹ table, and the chunking passage above are the whiteboard versions of demos 3, 5, 6.</p>
+  <table>
+    <tr><th>#</th><th>Demo (slide)</th><th>What it actually computes</th><th>Click sequence</th><th>The reveal sentence</th><th>Fallback / if called out</th></tr>
+    <tr><td>1</td><td>Recap quiz (2)</td><td>Real quiz logic; your click advances (6 s auto-fallback)</td><td>4 questions, class votes before each click</td><td>On Q4: "THAT gap is what we fix this morning."</td><td>Read questions aloud; hands up</td></tr>
+    <tr><td>2</td><td>Not-know typer (3)</td><td><strong>Simulated</strong> — a canned recording of typical model behaviour (typewriter effect), then the stamp</td><td>Click <em>Ask ›</em> once; let it type to the end — the stamp lands last</td><td>"It cannot know. Notice it didn't say that."</td><td>Invite a student to ask their phone live; if it hedges: "the hedge is not knowledge — it still invented Unit 3"</td></tr>
+    <tr><td>3</td><td>Cost slider (4)</td><td><strong>Real arithmetic in JS</strong>: pages × 500 tok × $1.50/1M × ₹95.5, ×900 q/month</td><td>Drag slowly to 380 ("the Galvin textbook"); pause</td><td>Read the ₹/month figure aloud, slowly</td><td>Whiteboard the one-line multiplication (§2, slide 4)</td></tr>
+    <tr><td>4</td><td>Keyword vs semantic (6)</td><td><strong>Canned outputs</strong> (the grep result is faithful to real grep)</td><td><em>Ctrl-F keyword</em> first → 0 matches → pause → <em>Semantic</em></td><td>"Zero shared words — and you already know a machine that maps meaning to coordinates…" (let them shout it)</td><td>Strike out shared words on the board — there are none</td></tr>
+    <tr><td>5</td><td>Search playground (8)</td><td><strong>Simulated</strong> — authored scores + hand-placed 2-D positions (realistic ranges); the lab computes real ones</td><td>All 4 queries in order; linger on Q2 (two green chunks) and Q4 (all bars low)</td><td>Q2: "Real answers span chunks — that's why top-k, not top-1." Q4: "Every bar under 0.35 — the scores admit ignorance."</td><td>"These numbers are authored to be typical — in 40 minutes you'll compute real ones on your own notes." True 2-D maps of 768-dim spaces are projections anyway</td></tr>
+    <tr><td>6</td><td>Chunking knives (9)</td><td><strong>Canned</strong> miniatures of the three failure modes</td><td>Tiny → Huge → <strong>Medium last</strong> (the winner lands last)</td><td>"More RAG failures come from chunking than from model choice." Say it twice</td><td>The chunking passage table (§2, slide 9) on the board</td></tr>
+    <tr><td>7</td><td>RAG stepper (11) — centerpiece</td><td><strong>Simulated but faithful</strong> — representative vector, plausible scores, real template text</td><td>Step through all 6 slowly; at stage 5 stop: "the whole industry is THIS prompt." At stage 6 click the [1] citation — source chunk flashes</td><td>"Grounded, cited, checkable." Then run the whole stepper a second time, faster, narrating over it</td><td>If asked "is this live?": "It's a faithful trace — the lab runs the identical pipeline live on your documents"</td></tr>
+    <tr><td>8</td><td>Escape-hatch A/B toggle (12)</td><td><strong>Canned</strong> WITH/WITHOUT outputs — an honest dramatization of a reproducible experiment</td><td>Ask the class to predict first, then <em>Delete the escape hatch</em></td><td>"One deleted line and it's 9 a.m. all over again — remember the stamp."</td><td>Part D of the lab is this exact A/B, live, on their docs</td></tr>
+  </table>
+  <p>Flip cards (slides 13, 17): not simulations — just reveals. Rule: the class (or you) states the answer <em>before</em> the click.</p>
+
+  <h2 id="qa">4 · Q&amp;A bank</h2>
+  <ol>
+    <li><strong>"Why cosine similarity and not Euclidean distance?"</strong> — Direction carries meaning; magnitude carries artifacts like text length. Double a vector and Euclidean says "far" while the meaning didn't change; cosine is scale-invariant. And once you normalize to unit length, ‖a−b‖² = 2−2cos(a,b), so both give identical rankings — which is why we normalize once and search becomes a dot product.</li>
+    <li><strong>"Do the query and the chunks really need the same embedding model?"</strong> — Yes, non-negotiable. Each model defines its own coordinate system; comparing vectors across models is comparing latitude from one map with longitude from another. Same model, same dimensionality, or your scores are noise. (Generation can be a different model entirely — that's standard.)</li>
+    <li><strong>"Gemini has a 1M-token window. Doesn't that kill RAG?"</strong> — Do the math: 1M tokens re-sent per question is ₹143.25 a question, ~₹1.29 lakh a month at 30 questions a day; even with context caching at minus-90% it's ~₹12,900 — versus about ₹219 for RAG. Add tens of seconds of prefill latency, no citations, and re-sending stale data versus re-indexing one file. Real systems combine both: retrieve generously into a roomy window.</li>
+    <li><strong>"Why not fine-tune the model on our notes instead?"</strong> — Fine-tuning teaches behaviour — style, format, tone — not facts. A fact seen once doesn't become reliably retrievable, the knowledge freezes the day you tune, and there's no citation trail. Your syllabus changes next semester; RAG re-indexes in a minute, a fine-tune is a re-training bill.</li>
+    <li><strong>"What does a paragraph's embedding actually represent?"</strong> — A transformer reads the passage, builds contextual vectors for every token, and pools them into one vector, trained contrastively so paraphrases land close. It's a learned summary of meaning-in-context — no single dimension means anything alone; only the geometry does.</li>
+    <li><strong>"How is this different from how Google search works?"</strong> — Classical Google is lexical: inverted index + term statistics (BM25) + link authority. Semantic search is dense retrieval: geometry over learned representations. Modern engines are hybrid — and "AI search" products are literally RAG at web scale: search results become the context, the answer cites them.</li>
+    <li><strong>"What if two retrieved chunks contradict each other?"</strong> — The model will pick one or blend them, and the template doesn't save you. The engineering answer: surface both with document dates and let the human decide — which is also the fix for the stale-index failure. Contradiction detection is a genuinely open problem.</li>
+    <li><strong>(Professor)</strong> "One pooled vector per chunk seems lossy. What's the state of the art?" — Correct: bi-encoders trade fidelity for a single matmul of speed. The production ladder adds a cross-encoder reranker over the top-50 candidates, or late-interaction models like ColBERT that keep per-token vectors. For this scale, the bi-encoder alone is the right engineering call — and it's what most shipped products run first.</li>
+    <li><strong>(Professor)</strong> "How do you evaluate a RAG system rigorously?" — Split it: retrieval hit-rate (did a chunk containing the answer arrive in top-k — measurable with a labeled set, no LLM needed) versus answer faithfulness (did the generation stick to the chunks — usually LLM-as-judge, e.g. the RAGAS-style metrics). Diagnose separately, fix separately. Stretch 1 of today's lab is a miniature of exactly this.</li>
+    <li><strong>"Why 768 dimensions? Would 3072 be better?"</strong> — The model is Matryoshka-trained: information is front-loaded so the first 768 dims keep most retrieval quality at a quarter of the storage and compute. More dims = slightly better quality, 4× the bytes and matmul. It's a measurable dial: run your eval at both and pay for what the numbers justify.</li>
+    <li><strong>(Cross-session, S2)</strong> "I changed my chunk size and answers 'feel' better. Ship it?" — "Feels better" is three anecdotes; users bring three thousand. Run the eval harness from Session 2: fixed question set, expected key facts, normalized-contains scorer, one number before and after. Change one variable at a time. That habit is the actual job.</li>
+    <li><strong>(Cross-session, S6)</strong> "Can a document attack my RAG system?" — Yes — indirect prompt injection: someone hides instructions in a PDF your pipeline retrieves ("ignore your rules and…"), and your own retrieval feeds the attack into the context. OWASP ranks prompt injection as LLM01, the #1 risk for LLM apps, with no complete fix — only layered defenses. Session 6 attacks today's exact notebook.</li>
+    <li><strong>"Why does it say 'I don't know' when the answer IS in my documents?"</strong> — Retrieval missed — usually a vocabulary gap between your phrasing and the document's. Print the scores: if the right chunk isn't in top-k, the model never saw it. Rephrase the query, raise k, or fix chunking. Debug retrieval before touching the prompt.</li>
+    <li><strong>"Which is the best vector database?"</strong> — Below ~100k chunks the honest answer is numpy — 300 MB and a 20 ms matmul. Past that, pgvector if you already run Postgres, FAISS/Chroma for a library, managed services when ops matter more than money. Choose by scale and team, not by leaderboard.</li>
+  </ol>
+
+  <h2 id="misconceptions">5 · Misconception table</h2>
+  <table>
+    <tr><th>#</th><th>Students walk in believing…</th><th>The one-line correction</th></tr>
+    <tr><td>1</td><td>"Uploading my PDF teaches the model"</td><td>Nothing updates weights — the file enters <em>context</em> and is forgotten after the call; that's why we must re-retrieve every question.</td></tr>
+    <tr><td>2</td><td>"Embeddings are fancy keywords"</td><td>They're coordinates of meaning learned from context of use — that's why zero-shared-word paraphrases match.</td></tr>
+    <tr><td>3</td><td>"Bigger chunks = more context = better answers"</td><td>A chunk's vector is a pooled average — stuffing it dilutes similarity until the right sentence drowns.</td></tr>
+    <tr><td>4</td><td>"RAG requires a vector database"</td><td>Below ~100k chunks a normalized numpy array IS the database (one 20 ms matmul).</td></tr>
+    <tr><td>5</td><td>"It cited a source, so it's correct"</td><td>Citations make answers <em>checkable</em>, not true — a stale index gives confident, cited, wrong answers.</td></tr>
+    <tr><td>6</td><td>"Fine-tuning is how you add knowledge"</td><td>Fine-tuning teaches behaviour; RAG provides knowledge — facts in weights freeze instantly and carry no provenance.</td></tr>
+    <tr><td>7</td><td>"Semantic search understands my question"</td><td>It measures geometric closeness, nothing more — split answers and out-of-corpus queries prove there's no reasoning inside.</td></tr>
+    <tr><td>8</td><td>"1M-token windows make all this obsolete"</td><td>₹143.25 per question re-sent vs ~₹0.24 retrieved — the meter and the middle survive the big window.</td></tr>
+  </table>
+
+  <h2 id="timing">6 · Timing pressure map</h2>
+  <p>Deck budget 97.5 min (DATA array) inside a 2:00 slot: talk ≈ 42.5 min, lab 50 min, close 3 min. Slack is nearly zero — protect the lab.</p>
+  <p><strong>Where this session historically bleeds:</strong></p>
+  <ul>
+    <li><strong>Recap quiz replays</strong> (slide 2) — one pass only; resist the replay button.</li>
+    <li><strong>Playground</strong> (8, 3.5 min) — four queries is the cap; don't take "try my query" requests (park to lab, where they'll do exactly that on real data).</li>
+    <li><strong>Stepper questions</strong> (11, 4 min) — mid-stepper questions derail the narrative; say "hold it two slides — the failure slide answers most of these."</li>
+    <li><strong>Hot-take debate</strong> (16, 1.5 min) — take ONE counter-argument, park the rest to break. This slide can eat 10 minutes if you let it.</li>
+  </ul>
+  <p><strong>Marked compressible (▸ in presenter mode):</strong> slide 10 (vector DBs — the ladder can be one sentence), 14 (RAG vs fine-tune — the table reads itself; keep only the one-liner), 15 (everywhere — 30 seconds), 16 (hot take — read once, 3 s silence, move).</p>
+  <p><strong>Never cut:</strong> slide 3 (the villain — the whole morning's emotional anchor), 9 (chunking — they hit it in lab within the hour), 11 (the stepper — the session), 12 (escape-hatch A/B — the punchline), the 50-minute lab, and the checkpoint sweep at 1:30.</p>
+  <p><strong>Lab-hour triage (from the run sheet, still accurate):</strong> #1 sink is garbage PDF extraction (pypdf reads text layers, not scans — swap doc or screenshot→S3 vision); search junk is 90% chunking; removed <code>time.sleep(1)</code> meets 429; "I don't know" failing = strengthen ONLY + hatch and A/B it. Collect two honest failures for show &amp; tell.</p>
+
+  <h2 id="reading">7 · Going deeper (weekend reading)</h2>
+  <ol>
+    <li><strong>Lewis et al., 2020 — "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks."</strong> Where the name comes from; note the original was trained end-to-end — today's "prompt-stapling RAG" is a simpler descendant. Useful when a professor asks about the term's origin.</li>
+    <li><strong>Liu et al., 2023 — "Lost in the Middle: How Language Models Use Long Contexts."</strong> The evidence behind the "middle tax" on slide 4 — U-shaped accuracy by position. Your citation if anyone challenges the claim.</li>
+    <li><strong>Kusupati et al., 2022 — "Matryoshka Representation Learning."</strong> Why <code>output_dimensionality=768</code> works: nested representations, front-loaded information. Short and readable.</li>
+    <li><strong>Reimers &amp; Gurevych, 2019 — "Sentence-BERT."</strong> The clearest explanation of how sentence/paragraph embeddings are trained contrastively with pooling — the mechanism behind slide 7.</li>
+    <li><strong>Malkov &amp; Yashunin — the HNSW paper ("Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs").</strong> Exactly what you buy when numpy stops being enough — the algorithm inside most vector DBs.</li>
+    <li><strong>Gemini API embeddings docs (<a href="https://ai.google.dev/gemini-api/docs/embeddings">ai.google.dev/gemini-api/docs/embeddings</a>).</strong> Current model names, <code>task_type</code> values, dimensionality options, free-tier limits. Re-read the morning of — this page moves.</li>
+  </ol>
+
+  <h2 id="verify">8 · Day-before verification</h2>
+  <table>
+    <tr><th>Claim in deck/lab</th><th>Check</th></tr>
+    <tr><td><code>gemini-embedding-2</code> is current; <code>gemini-embedding-001</code> shut down 2026-07-14 (already past — old tutorial code now fails, which is itself a teachable moment)</td><td>ai.google.dev/gemini-api/docs/embeddings</td></tr>
+    <tr><td>Notebook Cells 1–7 run end-to-end on a real lecture PDF</td><td>run it yourself, day before</td></tr>
+    <tr><td>Batch of 20 + <code>time.sleep(1)</code> stays under free-tier RPM (~10 RPM-class typical free-tier chat limits — check the live rate-limits page; embed limits differ)</td><td>observed during your run</td></tr>
+    <tr><td><code>gemini-flash-latest</code> resolves on every key in the room — new free-tier keys 404 on dated <code>gemini-2.5-*</code> ids ("no longer available to new users"); existing keys still serve them; the alias covers both (July 2026 → Gemini 3.5 Flash)</td><td>run the notebook's first cell on your key + one fresh student key</td></tr>
+    <tr><td>pypdf extracts your test PDF; also test one <em>scanned</em> page so you can demo the failure</td><td>your own machine</td></tr>
+    <tr><td>Slider economics: $1.50/1M input (Gemini 3.5 Flash), ₹95.5/USD, 900 q/month — matches deck footer</td><td>deck slide 4 footer text</td></tr>
+    <tr><td>Backup: 3 spare lecture PDFs for students who brought nothing</td><td>your drive, downloaded</td></tr>
+  </table>
+
+  <footer class="foot">
+    <div style="margin-bottom:8px">deck: <a href="../presentations/session-4-giving-ai-your-own-knowledge.html">session-4-giving-ai-your-own-knowledge.html</a> · run sheet: <code>session-4-notes.md</code> · lab: <a href="../labs/session-4/lab-handout.html">lab-handout.html</a> · cheatsheet: <a href="../cheatsheets/session-4-cheatsheet.html">session-4-cheatsheet.html</a></div>
+    Generative AI: Foundations &amp; Applications · <a href="../index.html">course home</a> · instructor material
+  </footer>
+</div>
+</body>
+</html>

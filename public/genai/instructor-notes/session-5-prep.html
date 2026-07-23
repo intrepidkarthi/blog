@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 5 — Instructor Prep Pack (deep version) — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Deep instructor prep for Session 5: function calling wire format, agent-loop failure math, MCP, multi-agent patterns, quantization and hybrid economics.">
+<meta property="og:title" content="Session 5 — Instructor Prep Pack (deep version)">
+<meta property="og:description" content="Deep instructor prep for Session 5: tools, agents, MCP, local models.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#00755A;--accentpale:#D6F3E7;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
+  <div class="kicker">Session 5 · instructor deep prep</div>
+  <h1>Session 5 — Instructor Prep Pack</h1>
+  <p class="lead">the deep version · Generative AI: Foundations and Applications · TCE</p>
+
+<blockquote>
+<p>Deck: <a href="../presentations/session-5-making-ai-do-things.html"><code>session-5-making-ai-do-things.html</code></a> — 23 slides, 9 interactives, one hot take. Post-lunch Day 2. This is the session students quote in interviews ("workflow vs agent"), and the one where a professor is most likely to probe protocol details (MCP, multi-agent). Work through this file until you can improvise every whiteboard sketch in it.</p>
+</blockquote>
+<hr />
+<h2 id="1-narrative-spine">1 · Narrative spine</h2>
+<p>One argument, eight beats. Every slide serves one of these:</p>
+<ol>
+<li><strong>Your RAG app is a brain in a jar</strong> — it explains beautifully but can't compute, can't check today, can't touch a file (slides 1–3).</li>
+<li><strong>Tool use gives it hands — but the model never executes anything.</strong> It emits a structured <em>request</em>; your code validates and executes; the result re-enters the context as new tokens. Still next-token prediction, end to end (slides 4–5).</li>
+<li><strong>The declaration is the interface AND the prompt.</strong> Name + docstring + parameter types are the model's entire knowledge of your tool. MCP is that declaration, standardized industry-wide (slides 6–7).</li>
+<li><strong>A while-loop around tool calls is "an agent."</strong> The model picks the order; nobody scripts it. Impressive — and exactly where the danger lives (slides 8–9).</li>
+<li><strong>Tool use fails in five knowable ways</strong>, and the fifth (poisoned tool results) is Session 6's opening (slide 10).</li>
+<li><strong>Most problems want a boring workflow, not an agent, because reliability compounds:</strong> 0.95¹⁰ ≈ 0.599. Multi-agent multiplies the same curve; the one clean exception is parallel fan-out + judge (slides 11–15).</li>
+<li><strong>Escalate up a ladder — prompt → few-shot → RAG → tools → fine-tune — only when your eval says the cheaper rung failed</strong> (slides 16–17).</li>
+<li><strong>API vs local weights is an engineering trade</strong> (privacy, cost at scale, offline), and production is usually a hybrid (slides 18–20). Then recap, lab, close (21–23).</li>
+</ol>
+<p><strong>Readiness test:</strong> say beats 1→8 out loud in under 3 minutes, with the three load-bearing numbers from memory: <strong>0.95¹⁰ ≈ 0.599</strong>, <strong>N×M → N+M</strong>, <strong>~20 tok/s local</strong>. If you stumble on the transition from beat 5 to 6 (failures → "so prefer workflows"), rehearse only that seam — it's the intellectual hinge of the session.</p>
+<hr />
+<h2 id="2-concept-deep-dives">2 · Concept deep-dives</h2>
+<h3 id="21-brain-in-a-jar-slides-13">2.1 Brain in a jar — slides 1–3</h3>
+<p><strong>Claim:</strong> A RAG app is still text-in/text-out; it cannot act, compute exactly, or perceive the present.</p>
+<p><strong>Mechanism.</strong> Everything Sessions 1–4 built is one function: <code>tokens → next-token distribution → sample → repeat</code>. RAG changed <em>what goes into</em> the context; nothing so far changes what comes <em>out</em> — always and only text. The four pills on slide 3 are the four distinct gaps: exact computation (sampling digits ≠ arithmetic), freshness (frozen weights + cutoff), reach (no filesystem/network), and side effects (can't send, write, spend). Tool use addresses all four with one mechanism.</p>
+<p><strong>Worked example (board).</strong> Ask the room: "aggregate of 72, 81, 64, 90, 77, 68?" The true mean is 452/6 = <strong>75.33</strong>. A model <em>predicting</em> the digits of the answer is doing what it did with the GST bill in Session 1 — emitting plausible digits, not computing. Numbers that look right and numbers that are right are different failure classes; write both on the board when the agent-log demo later produces exactly 75.33.</p>
+<p><strong>Pushback.</strong> <em>"But new models do math correctly now."</em> — Frontier models are better because they're trained to write and run code or call calculators internally — i.e., the vendors built today's lesson into the product. Raw sampled digits are still unreliable for arbitrary arithmetic. <em>"Isn't RAG already a tool?"</em> — In your S4 build, retrieval ran <em>before</em> the model, scripted by you: a workflow. Today the model itself decides when to search. Same component, different controller — that's precisely the workflow/agent distinction arriving early; flag it and return to it at slide 11.</p>
+<p><strong>Landmine.</strong> Don't say the model "can't do any math" — small sums it genuinely reproduces from training. The honest claim: it has no arithmetic <em>procedure</em>, so reliability collapses as numbers get unusual.</p>
+<h3 id="22-the-trick-the-trust-boundary-slide-4">2.2 The trick + the trust boundary — slide 4</h3>
+<p><strong>Claim:</strong> The model never executes anything. It writes requests; your code executes.</p>
+<p><strong>Mechanism.</strong> Tool-use models are instruction-tuned on examples where the correct "next tokens" are a structured function call. At inference, when the context contains tool declarations and the user's need matches one, the highest-probability continuation <em>is</em> the call — emitted in a reserved format the API surfaces as a <code>functionCall</code> part instead of text. The model then stops. Your runtime decides what happens next. Nothing about the transformer changed since Session 1; what changed is a <strong>convention between you and the model</strong> about what certain output patterns mean, plus your code honoring that convention.</p>
+<p>Consequence — the trust boundary, say it as a slogan: <strong>the model proposes, your code disposes.</strong> You choose the menu, validate every argument, and can refuse any call. Session 6's entire defense story stands on this sentence.</p>
+<p><strong>Pushback.</strong> <em>"Doesn't Gemini's code-execution tool run code on Google's servers?"</em> — Yes: providers offer <em>hosted</em> tools (code execution, search grounding) that execute on their infrastructure. The principle is intact — the model still only emits a request; an executor honors it — but the executor is theirs, so your validation layer isn't in the loop. For anything touching your data or money, define your own tools. <em>"So an 'evil' model could still do damage?"</em> — Only through the tools you exposed and the arguments you failed to validate. Capability = your tool surface, not model intent. That reframing is the whole security model of Session 6.</p>
+<p><strong>Landmine.</strong> Never say the model "has" a calculator or "uses" the internet. It has <em>descriptions</em> and the ability to <em>request</em>. Sloppy phrasing here undoes the slide.</p>
+<h3 id="23-the-wire-level-round-trip-slide-5-stepper">2.3 The wire-level round trip — slide 5 (stepper)</h3>
+<p><strong>Claim:</strong> One tool call = two API requests with structured parts in between.</p>
+<p><strong>Mechanism + worked example.</strong> This is the whiteboard set piece of the session — know all four payloads cold. The GST question, at the wire level (trimmed but structurally exact):</p>
+<p><strong>① You → API</strong> — declarations ride along with every request:</p>
+<pre><code class="language-json">{ &quot;contents&quot;: [
+    { &quot;role&quot;: &quot;user&quot;, &quot;parts&quot;: [ { &quot;text&quot;: &quot;What's 18% GST on ₹2,347?&quot; } ] } ],
+  &quot;tools&quot;: [ { &quot;functionDeclarations&quot;: [ {
+      &quot;name&quot;: &quot;calculator&quot;,
+      &quot;description&quot;: &quot;Evaluates a math expression exactly. Use for ANY arithmetic — never compute numbers yourself.&quot;,
+      &quot;parameters&quot;: { &quot;type&quot;: &quot;OBJECT&quot;,
+        &quot;properties&quot;: { &quot;expression&quot;: { &quot;type&quot;: &quot;STRING&quot; } },
+        &quot;required&quot;: [&quot;expression&quot;] } } ] } ] }
+</code></pre>
+<p><strong>② API → you</strong> — the "answer" is not text; it's a request:</p>
+<pre><code class="language-json">{ &quot;candidates&quot;: [ { &quot;content&quot;: { &quot;role&quot;: &quot;model&quot;, &quot;parts&quot;: [
+    { &quot;functionCall&quot;: { &quot;name&quot;: &quot;calculator&quot;,
+                        &quot;args&quot;: { &quot;expression&quot;: &quot;2347 * 0.18&quot; } } } ] } } ] }
+</code></pre>
+<p><strong>③ Your code</strong> — allow-list check (<code>calculator</code> is on the menu ✓), charset validation (<code>2347 * 0.18</code> parses as arithmetic ✓), execute → <strong>422.46</strong>. The model is frozen the whole time; there is no session on the server — it's waiting for nothing.</p>
+<p><strong>④ You → API again</strong> — the FULL history plus a <code>functionResponse</code> part:</p>
+<pre><code class="language-json">{ &quot;contents&quot;: [
+    { &quot;role&quot;: &quot;user&quot;,  &quot;parts&quot;: [ { &quot;text&quot;: &quot;What's 18% GST on ₹2,347?&quot; } ] },
+    { &quot;role&quot;: &quot;model&quot;, &quot;parts&quot;: [ { &quot;functionCall&quot;: { &quot;name&quot;: &quot;calculator&quot;, &quot;args&quot;: { &quot;expression&quot;: &quot;2347 * 0.18&quot; } } } ] },
+    { &quot;role&quot;: &quot;user&quot;,  &quot;parts&quot;: [ { &quot;functionResponse&quot;: { &quot;name&quot;: &quot;calculator&quot;, &quot;response&quot;: { &quot;result&quot;: 422.46 } } } ] } ],
+  &quot;tools&quot;: [ &quot;…same declarations…&quot; ] }
+</code></pre>
+<p><strong>⑤ API → you, final text:</strong> <code>"18% GST on ₹2,347 is ₹422.46, making the total ₹2,769.46."</code> Exact — <em>because it never did the math; it delegated.</em> (2347 × 0.18 = 422.46; 2347 + 422.46 = 2,769.46.)</p>
+<p>Two structural facts students miss: <strong>(a)</strong> the API is stateless — step ④ resends everything, which is why long agent runs get token-expensive; <strong>(b)</strong> from the model's view the <code>functionResponse</code> is just new tokens in the context. It cannot verify 422.46 — if your tool returned 999, it would fluently report 999. Tool correctness is your job.</p>
+<p><strong>The malicious run (the button)</strong> replays the same five stages with <code>args: {"expression": "__import__('os').system('rm -rf /')"}</code>. Menu check passes (it <em>is</em> calling calculator); <strong>argument validation fails</strong> — charset isn't arithmetic — so nothing executes, and the error message goes back as the <code>functionResponse</code>. The model reads its own rejection and retries correctly. Exact lesson, one sentence: <strong>the dangerous thing was never the model — it was <code>eval()</code> without a validator; the boundary held because your code checked arguments, not intentions.</strong></p>
+<p><strong>Pushback.</strong> <em>"Where does the malicious expression come from — is the model evil?"</em> — No: from its context. A poisoned document or webpage that flowed in via RAG or a previous tool result can carry instructions the model obediently converts into tool calls. Session 6 demonstrates the delivery; today you build the bouncer. <em>"Why role <code>user</code> for the function result?"</em> — That's the current google-genai convention (older REST examples used a <code>function</code> role); either way it's just labeled context tokens.</p>
+<p><strong>Landmine.</strong> Don't claim validation makes tool use "safe." Charset-checking blocks code injection into <code>eval</code>; it does nothing against a semantically harmful but well-formed call (<code>send_email</code> to the wrong person). Defense is layered: allow-list → schema/charset → semantic checks → human gate on side effects. Session 6 completes the stack.</p>
+<h3 id="24-declarations-the-docstring-is-the-prompt-slide-6">2.4 Declarations: the docstring IS the prompt — slide 6</h3>
+<p><strong>Claim:</strong> Name + docstring + parameter types are the model's entire understanding of your tool.</p>
+<p><strong>Mechanism.</strong> The SDK introspects your Python function — name → <code>name</code>, docstring → <code>description</code>, type hints → JSON Schema <code>parameters</code> — and serializes that declaration into <strong>every request's context</strong>. The model never sees your function body. So tool choice is a pure text-matching problem between the user's need and your description, which makes the description a prompt with all of Session 2's rules: specific beats vague, instructions beat documentation ("Use for ANY arithmetic — never compute numbers yourself" is an <em>instruction</em>), and negative space matters (say when NOT to use it).</p>
+<p><strong>Worked example.</strong> The calculator docstring is ~25 tokens; its full declaration serializes to roughly 60–80 tokens. A 10-tool menu ≈ 600–800 tokens <strong>on every single call</strong> — at Gemini 3.5 Flash input pricing ($1.50/1M tokens, ₹95.5/$ — the free tier's current Flash, served as <code>gemini-flash-latest</code>), that's ~₹0.10 per request of pure menu overhead: small per call, real at volume, and worse: every extra tool dilutes selection accuracy. Big menus are a cost AND a correctness problem — curate them per task.</p>
+<p><strong>Pushback.</strong> <em>"What if two tools have overlapping descriptions?"</em> — The model picks by text similarity and will be inconsistent. Fix is disjoint descriptions with explicit routing hints ("for dates, use days_between, not calculator"). Lab Stretch 2 (<code>"""Does stuff."""</code>) demonstrates the failure on purpose. <em>"Can I lie in a docstring?"</em> — Yes, and the model will believe you; that's also why injected text can manipulate tool choice.</p>
+<p><strong>Landmine.</strong> Don't present automatic function calling as magic. It's four mechanical steps (introspect → declare → intercept → loop) and Lab Part C disables it precisely so students see the raw <code>functionCall</code>. Magic framing here costs you credibility at slide 14 ("while-loop in a trench coat").</p>
+<h3 id="25-mcp-slide-7-new-compressible">2.5 MCP — slide 7 (new, ▸ compressible)</h3>
+<p><strong>Claim:</strong> MCP is USB-C for tools — one standard plug, so N apps + M tools instead of N×M custom adapters.</p>
+<p><strong>Mechanism (one level deeper than the slide — enough for a professor).</strong> The Model Context Protocol (Anthropic, open-sourced Nov 2024; adopted across the industry in 2025) specifies:</p>
+<ul>
+<li><strong>Architecture:</strong> a <em>host</em> app (Claude, an IDE, your chatbot) runs an MCP <em>client</em>; each tool/data provider runs an MCP <em>server</em>. Transport: <strong>JSON-RPC 2.0</strong> over stdio (local) or HTTP (remote).</li>
+<li><strong>Discovery:</strong> client connects → <code>initialize</code> handshake (capabilities, versions) → <code>tools/list</code> returns declarations — name, description, JSON-Schema parameters, <em>the exact triple students hand-wrote on the previous slide</em> → <code>tools/call</code> invokes one and returns the result.</li>
+<li><strong>Three server primitives:</strong> <strong>tools</strong> (model-invoked actions — today's material), <strong>resources</strong> (app-selected context: files, DB rows — Session 4's material, standardized), <strong>prompts</strong> (user-invoked templates — Session 2's material, standardized). The whole course maps onto the protocol; say that out loud, it lands.</li>
+</ul>
+<p><strong>Worked example (board):</strong> your college builds 4 AI apps (helpdesk bot, timetable assistant, an IDE plugin, a WhatsApp bot) needing 6 capabilities (results DB, attendance API, rulebook search, calendar, fee gateway, notice-board scraper). Point-to-point: 4 × 6 = <strong>24 integrations</strong>, each with bespoke auth and formats. With MCP: 6 servers + 4 clients = <strong>10 implementations</strong>, and the 5th app costs 1, not 6.</p>
+<p><strong>"Is MCP just function calling?"</strong> — the question you WILL get. Answer: <em>at heart, yes — the same declaration/call/result cycle. What MCP adds is everything around it: a standard transport (JSON-RPC), runtime discovery (tools/list instead of hardcoded menus), and one wire format so a tool server is written once and every model ecosystem can use it. Function calling is the verb; MCP is the grammar.</em></p>
+<p><strong>Landmine.</strong> Don't demo MCP or drift into server-building — this is a 1.5-minute name-the-thing slide (▸). And don't call it "an agent framework" — it standardizes the <em>tool side</em>, not the loop. The loop is still your while-loop.</p>
+<h3 id="26-which-tool-should-it-call-slide-8">2.6 Which tool should it call? — slide 8</h3>
+<p><strong>Claim:</strong> Tool selection is inference from descriptions — and knowing when to call <em>nothing</em> is half the skill.</p>
+<p><strong>Mechanism.</strong> Selection quality is a function of (menu size) × (description sharpness) × (question ambiguity). The five quiz items map to: pure arithmetic → calculator; post-cutoff fact → web_search; unseen file → read_file; core training knowledge ("process vs thread") → <strong>no tool</strong> — over-tooling adds latency, cost, and failure surface; and item 5 (CGPA vs class average from results.csv) needs read_file <em>then</em> calculator — a chain no single call solves, which is the cliffhanger into the agent loop.</p>
+<p><strong>Pushback.</strong> <em>"How does it know its own cutoff / that it can't know CSK's latest match?"</em> — It doesn't, reliably. It's trained to associate "recent events" phrasing with search tools, but it can also confidently answer from stale knowledge without calling. Mitigation is prompt-level ("for anything time-sensitive, always use web_search") — another docstrings-are-prompts case.</p>
+<p><strong>Landmine.</strong> Don't say the model "reasons about" tools as if there's a separate planner. Selection is the same next-token machinery scoring continuations; the deck's whole demystification depends on not re-mystifying it here.</p>
+<h3 id="27-the-agent-loop-slide-9-lab-part-c">2.7 The agent loop — slide 9 + Lab Part C</h3>
+<p><strong>Claim:</strong> <code>while the model wants a tool: execute (your code), feed the result back</code> — that loop is the entire "agent."</p>
+<p><strong>Mechanism.</strong> Each iteration = one full wire round trip from §2.3, with history growing. The demo trace: model calls <code>read_file("marks.csv")</code> → your code returns six marks → <em>given that new context</em>, the model calls <code>calculator("(72+81+64+90+77+68)/6")</code> → 75.33 → final text: "above the class average of 71 by 4.33." Nobody scripted read-then-calculate; ordering emerged because after step 1 the most probable continuation was a calculator call over the freshly-seen numbers. Also on the meter: each loop iteration resends the entire history — an n-step run costs roughly the sum of n growing prompts, another quiet argument for fewer steps.</p>
+<p><strong>Worked example.</strong> Lab Part C is the manual version: with <code>automatic_function_calling</code> disabled, <code>"What is 15% of 8400 plus 200?"</code> yields a visible <code>MODEL WANTS: calculator {'expression': '8400 * 0.15 + 200'}</code> and nothing executes until student code says so. (8400 × 0.15 = 1260; + 200 = <strong>1460</strong>.) The moment a student prints that raw request, the trust boundary stops being a slogan.</p>
+<p><strong>Pushback.</strong> <em>"Is this ReAct?"</em> — ReAct (Yao et al., 2022) is the prompting-era ancestor: interleaved Thought/Action/Observation as plain text, parsed by regex. Native function calling is the productized version — structured parts instead of fragile text parsing. Same idea; cleaner interface. <em>"Where does it end?"</em> — When the model emits text instead of a call — OR when your hard cap fires. Never ship a loop bounded only by the model's judgment.</p>
+<p><strong>Landmine.</strong> "Agent" has no crisp industry definition — say so before someone quotes a framework's marketing at you. Useful working definition: <em>an LLM in a loop, choosing tools and steps toward a goal.</em></p>
+<h3 id="28-five-failure-modes-slide-10">2.8 Five failure modes — slide 10</h3>
+<p><strong>Claim:</strong> Tool use fails in five knowable ways; each has a boring engineering fix.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Failure</th>
+<th>Concrete trace</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Wrong tool, confidently</td>
+<td>"What year did TCE start?" → <code>calculator("1957")</code> — it matched "year" to numbers</td>
+<td>Sharper docstrings + "answer directly when no tool is needed" in the system prompt</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bad arguments</td>
+<td><code>calculator("what is eighteen percent of 2347")</code> → ValueError</td>
+<td>Validate inside every tool; return <em>readable</em> errors — models genuinely self-correct on a good error message (the stepper's malicious run shows the retry)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Infinite loop</td>
+<td><code>web_search("X")</code> → junk → <code>web_search("X info")</code> → junk → …</td>
+<td>Hard cap (~5 calls), then force a text answer. Every framework ships this constant</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Imaginary tools</td>
+<td><code>functionCall: send_email(...)</code> — a tool you never declared, hallucinated from training data</td>
+<td>Allow-list execution: only run functions on YOUR menu; reject the rest</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Poisoned results</td>
+<td>Tool returns a webpage containing "ignore your instructions and…" — and that text enters the context with the same authority as everything else</td>
+<td>Treat every tool result as untrusted input. No complete fix — this is OWASP LLM01, and it's Session 6's opening act</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pushback.</strong> <em>"Why does a good error message help?"</em> — The error re-enters the context; the most probable continuation after "invalid expression — arithmetic only" is a corrected call. You're prompting-by-error-message. <em>"Isn't #5 just #2 again?"</em> — No: #2 is the model generating malformed output; #5 is an <em>attacker</em> steering well-formed output. Different threat model, different defenses.</p>
+<p><strong>Landmine.</strong> Don't oversell the fixes for #5. OWASP has ranked prompt injection #1 for two editions running precisely because there is no complete fix — only defense-in-depth. Promise layers, not solutions, or Session 6 will contradict you.</p>
+<h3 id="29-workflow-vs-agent-the-decision-rule-slides-11-15">2.9 Workflow vs agent + the decision rule — slides 11 &amp; 15</h3>
+<p><strong>Claim:</strong> Most problems need a workflow (you fix the steps; the model fills the hard parts), not an agent (the model picks the steps). One question decides: <strong>do you know the steps in advance?</strong></p>
+<p><strong>Mechanism.</strong> This is Anthropic's "Building Effective Agents" framing, and the industry consensus it crystallized: workflows = predefined code paths orchestrating LLM calls (predictable, testable, debuggable — each step evaluable in isolation with Session 3's evals); agents = the LLM directs its own process (flexible, and every runtime decision is a new failure point priced by §2.10's math). The idli line carries it: a Madurai mess breakfast is a workflow — same steps daily, no decisions; a wedding feast is an agent — someone senior improvising under pressure. Expensive, occasionally brilliant, occasionally a disaster.</p>
+<p><strong>Worked example.</strong> Invoice processing: extract fields → validate against PO → flag mismatches → post to the ledger. Steps known in advance ⇒ workflow; the model does the genuinely hard parts (reading a messy scanned invoice) <em>inside</em> fixed steps. Versus "investigate why April's GST filing doesn't reconcile" — the path depends on what each lookup reveals ⇒ agent, on a leash: max steps, tool allow-list, validated args, human sign-off on anything that writes, spends, or sends.</p>
+<p><strong>Pushback.</strong> <em>"But agent demos look amazing."</em> — A demo is one best-case run; production is the expectation over thousands. Same trap as Session 2's "it worked when I tried it" — a demo is n=1 on the p^n curve. <em>"You sound anti-agent."</em> — Anti-<em>misapplied</em>-agent. The resume-honest line from the slide: "built an AI workflow with tool use" beats "built an autonomous agent" with interviewers who've watched a demo die at step 7.</p>
+<p><strong>Landmine.</strong> Don't let this become "agents are bad." The claim is conditional: known steps → workflow wins; genuinely unpredictable path → agent, leashed. Over-engineering (an agent where a prompt would do) and under-engineering are both failure modes.</p>
+<h3 id="210-the-compounding-math-slide-12-centerpiece">2.10 The compounding math — slide 12 (centerpiece)</h3>
+<p><strong>Claim:</strong> Chained-step reliability multiplies: success ≈ p^n. Long chains collapse.</p>
+<p><strong>Mechanism + the table</strong> (know these cold; the slider will display them):</p>
+<table>
+<thead>
+<tr>
+<th>p per step</th>
+<th>5 steps</th>
+<th>10 steps</th>
+<th>20 steps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.99</td>
+<td>95.1%</td>
+<td>90.4%</td>
+<td>81.8%</td>
+</tr>
+<tr>
+<td>0.95</td>
+<td>77.4%</td>
+<td><strong>59.9%</strong></td>
+<td>35.8%</td>
+</tr>
+<tr>
+<td>0.90</td>
+<td>59.0%</td>
+<td>34.9%</td>
+<td>12.2%</td>
+</tr>
+</tbody>
+</table>
+<p>Board derivation: independent steps ⇒ P(all succeed) = p × p × … = p^n. The anchor number: <strong>0.95¹⁰ ≈ 0.599 — a 10-step agent at 95% per step is a coin flip you paid for.</strong> And even a 99%-per-step agent — better than most real tool chains — is down to 82% at 20 steps. Compounding is merciless. Fixes, in order: <strong>fewer steps</strong> (that's the workflow argument in one word), validation checkpoints between steps (catching an error resets the chain), human approval on side-effecting steps, retries on cheap idempotent ones (retries raise effective per-step p — that's <em>why</em> they work).</p>
+<p><strong>Pushback.</strong> <em>"Steps aren't independent — this model is too crude."</em> Correct, concede it warmly: real chains correlate (a run that survives step 3 is likelier competent overall), validation truncates failures, retries lift p. The model is a direction, not a forecast — and the direction is undefeated: every added autonomous step multiplies risk. It explains the observed industry pattern (demos die in production) with one line of arithmetic. <em>"Where does 95% even come from?"</em> — Illustrative, and generous: measure your own per-step reliability with Session 3's evals; many real tool calls score lower.</p>
+<p><strong>Landmine.</strong> Don't present p^n as a law of nature or quote it to three decimals as if measured. Its power is being <em>approximately right and totally memorable</em>.</p>
+<h3 id="211-multi-agent-slides-13-14-new-compressible-hot-take">2.11 Multi-agent — slides 13 &amp; 14 (new, ▸ compressible + hot take)</h3>
+<p><strong>Claim:</strong> More agents = more compounding. What ships is usually specialists joined by a boring workflow; true multi-agent wins only for parallel, independent subtasks with a judge.</p>
+<p><strong>Mechanism — hand-off math (board).</strong> Two 90%-reliable agents chained: 0.9 × 0.9 = <strong>81%</strong> before any real work happens. Model the hand-off itself (context summarized, intent lost in translation) at 95%: 0.9 × 0.95 × 0.9 ≈ <strong>77%</strong>. Chaining agents is just adding steps with extra-lossy seams — the same curve, steeper.</p>
+<p><strong>The two patterns to name:</strong>
+- <strong>Orchestrator–worker:</strong> one agent decomposes and delegates; workers run <em>in parallel on independent subtasks</em>; a judge/merge step integrates. Parallel branches don't compound — a failed branch costs one branch, not the run. This is the legitimate pattern: research fan-outs, red-team vs blue-team, many-documents-at-once. Caveat honestly: Anthropic's own write-up of their research system reports big quality gains on breadth-first tasks <em>and</em> roughly an order of magnitude more tokens — the pattern buys reliability and breadth with money.
+- <strong>Peer-to-peer chatter</strong> (agents "collaborating" in a shared conversation): every message is a lossy hand-off; this is the pattern the math punishes, and the one the 2026 pitch decks love.</p>
+<p><strong>Live first-person example (use it):</strong> this course's own materials were built orchestrator-worker style — an orchestrating session fanned out parallel workers (one per session's deck/lab/notes) with a verification pass at the end. Independent subtasks, fan-out, judge. It worked for exactly the reason the slide gives — and where one worker's output fed another's input, it was pinned down with a fixed, validated workflow, not a conversation.</p>
+<p><strong>Hot take (slide 14):</strong> "Most production 'AI agents' are a while-loop in a trench coat." Read it once, slowly, then three seconds of silence. Invited counter-arguments you should <em>welcome</em>: planning/decomposition layers, memory beyond the context window, learned routing — real engineering, all of it wrapping the same loop. Take one counter now, park the rest for the break; strongest one gets named at the close.</p>
+<p><strong>Pushback.</strong> <em>"Company X ships multi-agent and it works."</em> — Look at the architecture: fixed hand-offs, validated at each seam — a pipeline in a costume, which is the slide's own "what actually ships" card. The buzzword and the architecture diverge; teach students to read the diagram, not the press release.</p>
+<p><strong>Landmine.</strong> Don't claim multi-agent "doesn't work" — orchestrator-worker demonstrably does. The precise claim: <em>chained autonomy</em> compounds failure; <em>parallel independence + a judge</em> sidesteps compounding. Keep those two clauses attached.</p>
+<h3 id="212-the-escalation-ladder-slides-1617">2.12 The escalation ladder — slides 16–17</h3>
+<p><strong>Claim:</strong> Prompt → few-shot → RAG → tools → fine-tune, ascending cost. Climb only when your <strong>eval</strong> proves the current rung failed.</p>
+<p><strong>Mechanism.</strong> Each rung changes something different: the prompt changes <em>instructions</em>; few-shot changes <em>demonstrated behavior</em>; RAG changes <em>available knowledge</em>; tools change <em>available actions</em>; fine-tuning changes <em>the weights themselves</em> — which is why it's last: it needs training data + eval infrastructure, re-runs on every base-model update, freezes knowledge uncited, and is wrong for facts (interview line: <strong>fine-tuning teaches behaviour; RAG provides knowledge</strong>). The discipline that makes the ladder real: an eval (Session 3) is the gate between rungs — otherwise "we need to fine-tune" is a mood, not a diagnosis.</p>
+<p><strong>Worked example — one scenario walked up every rung.</strong> <em>College helpdesk bot for the 80-page attendance &amp; exam rulebook</em> (lab Part D, scenario 1):
+- <strong>Rung 1, prompt:</strong> "You are TCE's helpdesk; answer from the rulebook" — fails immediately: the model has never seen TCE's rulebook. Eval shows fabricated clause numbers.
+- <strong>Rung 2, few-shot:</strong> examples fix tone and answer format; knowledge is still absent. Eval: format score up, factuality unchanged.
+- <strong>Rung 3, RAG:</strong> chunk + embed the rulebook, retrieve, cite. Factuality and citations pass. <strong>For pure Q&amp;A, stop here</strong> — this is the answer, and updating the rulebook on Tuesday means re-embedding one PDF, not retraining.
+- <strong>Rung 4, tools:</strong> only if it must also <em>act</em> — check a student's live attendance percentage via API, compute shortfall with a calculator. Escalate the moment the question is "am <em>I</em> short of attendance?" rather than "what is the attendance rule?"
+- <strong>Rung 5, fine-tune:</strong> only if this bot had to emit a rigid 12-field JSON ticket 50,000×/day on a small cheap model AND few-shot provably failed the format eval. For a helpdesk Q&amp;A bot: never.</p>
+<p><strong>Pushback.</strong> <em>"Why is fine-tuning bad at facts?"</em> — Gradient updates diffuse facts across weights: expensive to add, near-impossible to update or delete one, no provenance. Retrieval keeps facts in a database — updatable, citable, deletable. <em>"When is fine-tuning genuinely right?"</em> — Narrow behaviour at high volume on a small model: strict formats, a house style, a classification skill — where per-call few-shot token overhead at scale exceeds one-time training cost.</p>
+<p><strong>Landmine.</strong> Item 5 in the picker ("capital of France") is rung <strong>zero</strong> — no augmentation at all. Don't rush past it: over-engineering is a failure mode, and catching it is the maturity signal the whole slide exists for.</p>
+<h3 id="213-local-models-quantization-hybrid-economics-slides-1820">2.13 Local models, quantization, hybrid economics — slides 18–20</h3>
+<p><strong>Claim:</strong> Open-weight models on your hardware win on privacy, cost-at-scale, and offline; frontier APIs win on capability and zero-ops. Production is a hybrid. A trade, not a religion.</p>
+<p><strong>Mechanism — what quantization actually does.</strong> A weight is stored at some precision. Gemma 4 E4B ("effective 4B" — ~4 billion active parameters):</p>
+<table>
+<thead>
+<tr>
+<th>Precision</th>
+<th>Bytes/param</th>
+<th>~4B params ≈</th>
+<th>Fits 8 GB laptop?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FP16 (training)</td>
+<td>2</td>
+<td>~8 GB</td>
+<td>No — nothing left for OS/KV cache</td>
+</tr>
+<tr>
+<td>INT8</td>
+<td>1</td>
+<td>~4 GB</td>
+<td>Barely</td>
+</tr>
+<tr>
+<td><strong>4-bit (Ollama default)</strong></td>
+<td>0.5</td>
+<td><strong>~2–2.5 GB</strong></td>
+<td>Yes, comfortably</td>
+</tr>
+</tbody>
+</table>
+<p>4-bit quantization maps each small block of weights onto 16 levels with a per-block scale factor. Down to 4 bits the quality loss is measurable but small (the distribution over next tokens barely moves); <strong>below 4 bits quality falls off a cliff</strong> — too few levels to preserve the weight distribution. That cliff is why 4-bit is the standard, not 2-bit. This is the FACTS-block rule of thumb from the slide: <strong>8 GB RAM ≈ 3–4B-parameter quantized models.</strong></p>
+<p><strong>Speed expectation:</strong> local generation is memory-bandwidth-bound — every token requires streaming all ~2.5 GB of weights through the processor — so a laptop gives roughly <strong>~20 tok/s</strong> (the deck's simulation uses exactly this), versus a frontier API's typically severalfold faster streaming plus network. Reading speed is ~5 tok/s: local is genuinely usable, visibly slower.</p>
+<p><strong>Hybrid economics (board, in ₹ — FACTS prices, ₹95.5/$).</strong> Gemini 3.5 Flash — the free tier's current Flash, served as <code>gemini-flash-latest</code>: $1.50/1M input ≈ ₹143.25/M; $9.00/1M output ≈ ₹859.50/M. A typical request (1,000 in + 300 out) ≈ $0.0042 ≈ <strong>₹0.40</strong>. Now a campus product at 10,000 requests/day:
+- All-API on flash-latest: ~$42/day ≈ ₹4,011/day ≈ <strong>₹1.2 lakh/month</strong>, forever, scaling linearly — the frontier tax. (The retired-for-new-users 2.5 Flash ran $0.30/$2.50; the Flash tier re-based ~5× on input in 2026 — budget from the live pricing page, never from memory.)
+- <strong>Hybrid</strong> — a local Gemma handles the routine 90% (FAQ-shaped, format conversion), API takes the hard 10%: ~₹401/day ≈ <strong>₹12,000/month</strong> + electricity on hardware you already own — a 10× lever from one routing decision. That routing decision is itself a workflow (a cheap classifier up front), and context caching (≈ −90% on cached input) stacks on top for repeated system prompts.</p>
+<p>Privacy is the other axis, and it's yours personally: in fintech/KYC, regulators ask exactly where every prompt travels. Local weights end the question — tell it first-person; a lived compliance story beats the slide.</p>
+<p><strong>Pushback.</strong> <em>"Will local models catch the frontier?"</em> — For narrow, well-scoped tasks: effectively already there. For frontier reasoning: a real gap that shrinks every release. The pragmatic answer is the hybrid row of the slide-20 table. <em>"Is Gemma 'open source'?"</em> — Apache 2.0 for Gemma 4 (Mar 2026), so genuinely permissive — but "open weights" is the precise term for this model class generally; you usually get weights, not training data or code. <em>"Exactly how big is Gemma 4 / GPT-5.6?"</em> — Gemma's effective size is published (that's the E4B); frontier API parameter counts are <strong>not public — never state one.</strong></p>
+<p><strong>Landmine.</strong> Don't say local is free — hardware, electricity, and your ops time are real; "~free <em>per token</em>" is the honest claim. And don't run the Ollama demo on venue Wi-Fi assumptions: the model must be pre-pulled and rehearsed with Wi-Fi off (that's the whole theatrical point).</p>
+<h3 id="214-recap-lab-close-slides-2123">2.14 Recap, lab, close — slides 21–23</h3>
+<p>Slide 21 (six recall flips + cold-call): the class says each idea <em>before</em> the flip. Slide 22 (lab brief, 2 min max — the lab is 50): Part A calculator (checkpoint: exact GST with tool, wobble without), Part B chain (<code>days_between</code> + calculator: internship 2026-05-15 → 2026-07-20 = <strong>66 days</strong> ≈ 2.2 months × ₹25,000 = <strong>₹55,000</strong>), Part C raw <code>functionCall</code> (de-mystifies — make every pair run it), Part D scenario cards (checkpoint 3 is verbal; reward reasoning over the "right" letter — several cards have defensible seconds). Stretch 1 is the capstone accelerator: <code>search_notes</code> from Lab 4 wired in as a tool = knowledge + hands in one assistant. Slide 23 close: "Knows, sees, acts. Finale: we attack all of it — bring this notebook, it's the target." Name the strongest hot-take counter-argument from the break.</p>
+<p>Lab operational notes: the lab's <code>gemini-flash-latest</code> sits in the ~10 RPM class on typical free-tier limits (check the live rate-limits page) — pairs sharing keys will hit 429s if they hammer; teach the pause-and-retry reflex. Mixed-room model-id note: new free-tier keys 404 on dated <code>gemini-2.5-*</code> ids ("no longer available to new users") while existing keys still serve them — the alias works on both (July 2026 → Gemini 3.5 Flash), which is why every lab pins the alias; pin a dated id only if you need frozen behavior. The notebook's <code>eval()</code> is charset-validated — say explicitly that production uses a real parser (<code>ast</code>/sympy) and <em>never</em> raw <code>eval</code> on model output.</p>
+<hr />
+<h2 id="3-demo-playbooks">3 · Demo playbooks</h2>
+<p>Nine interactives. For each: what it really is, the click path, the reveal line, the fallback.</p>
+<p><strong>Recap quiz (slide 2)</strong> — Real quiz, scripted content; 4 true/false from S4 (same embedding model, fine-tuning≠facts, "I don't know" escape hatch, numpy-is-fine). Advance is on YOUR click — let them argue first. Reveal line (Q2): "fine-tuning teaches behaviour; RAG provides knowledge." Fallback: none needed; it's self-contained JS.</p>
+<p><strong>Tool stepper (slide 5)</strong> — Fully scripted walkthrough of the §2.3 round trip; nothing calls an API and it doesn't pretend to. Clicks: Step ×5, stress stage 3 ("args parse as math, not DROP TABLE") — then <strong>Try a malicious call</strong>, which restarts at stage 1 and shows the rejection at stage 3. Reveal: <em>"The model proposes. Your code disposes."</em> If a student notes it's canned: "Correct — and Lab Part C is the real one; you'll print this exact functionCall yourself in an hour."</p>
+<p><strong>Which-tool quiz (slide 8)</strong> — Real votes, scripted answers, 5 items. Item 4 is the trap (no tool needed); item 5 sets up the agent loop ("that's a CHAIN — next slide"). Reveal (item 4): "Knowing when NOT to call is half the skill."</p>
+<p><strong>Agent log (slide 9)</strong> — <em>Simulated</em> trace (timed print of a realistic automatic-function-calling log), honest replica of what the SDK produces. One click: Run agent ›. Reveal: <em>"Two tool calls, correct order — zero lines of if/else deciding that order."</em> If called out: "Scripted for the projector, yes — the notebook runs the real loop and the trace looks exactly like this."</p>
+<p><strong>Reliability slider + Monte Carlo (slide 12, centerpiece)</strong> — Real math, computed live: curve is literally p^n; the Monte-Carlo strip draws a Bernoulli run per step. Sequence: drag to 95 → point at "10 steps → 60%" → drag to 99 → "even at 99%, twenty steps is 82%" → <strong>Run a 10-step agent › three times</strong> — it dies at a different step each run. Reveal: <em>"A 10-step agent at 95% per step is a coin flip you paid for."</em> If a professor objects to independence, use the §2.10 concession — it's a strength, not a bug, that you concede and the direction survives.</p>
+<p><strong>Multi-agent board moment (slide 13)</strong> — No widget; the demo is the room: ask "two 90%-reliable agents chatting — combined reliability?" Wait for 81%. That's the whole demo.</p>
+<p><strong>Ladder (slide 16)</strong> — Click every rung (they indent rightward as cost climbs; ₹-meters on each). Land rung 5's cost line: "₹₹₹ + maintenance forever." Reveal: <em>"Escalate only when your EVAL says the cheap rung failed."</em></p>
+<p><strong>Approach picker (slide 17)</strong> — Real votes, 5 scenarios; make students defend before you click. Item 5 (capital of France) is rung ZERO. Reveal: <em>"Over-engineering is also a failure mode."</em></p>
+<p><strong>Ollama race (slide 19)</strong> — Two modes. <strong>Plan A (real, rehearse it):</strong> Wi-Fi OFF, <code>ollama run gemma4:e4b</code>, ask for a one-sentence Tamil explanation of tokens. Reveal: <em>"Four billion knobs, on this laptop, no meter running."</em> <strong>Plan B (the deck's typing race):</strong> an honestly-labeled simulation — two <code>&lt;span&gt;</code>s typed at ~20 tok/s vs API speed with pre-written Tamil answers. If you use Plan B, say "simulation" out loud; the deck's own comment does. Pre-pull the model days before; <code>gemma3:4b</code> is the fallback on older hardware.</p>
+<p><strong>Recap cold-call (slide 21)</strong> — highlights a random un-flipped card; point at a student; they say it, then flip. Keeps the last 3 minutes honest.</p>
+<hr />
+<h2 id="4-qa-bank">4 · Q&amp;A bank</h2>
+<ol>
+<li>
+<p><strong>"How does the model know when to call a tool?"</strong> — It's instruction-tuned on tool-use examples, so when declarations are in context and the need matches a description, the highest-probability continuation is a structured call instead of prose. Still next-token prediction — the "decision" is the same sampling you met in Session 1.</p>
+</li>
+<li>
+<p><strong>"Is this ReAct?"</strong> — ReAct (2022) was the prompt-era version: Thought/Action/Observation as plain text you parsed with regex. Native function calling productizes it — structured parts, no parsing. Same loop, cleaner interface.</p>
+</li>
+<li>
+<p><strong>"Can the model call two tools at once?"</strong> — Yes — modern APIs emit parallel calls in one response and your runtime can execute them concurrently. Speed for coordination complexity; results still all come back as context.</p>
+</li>
+<li>
+<p><strong>"Is MCP just function calling with branding?"</strong> — At heart it's the same declaration/call/result cycle — plus a standard transport (JSON-RPC), runtime discovery (tools/list), and one wire format, so a tool server written once works with every model ecosystem. Function calling is the verb; MCP is the grammar. (§2.5 has the 4×6 arithmetic.)</p>
+</li>
+<li>
+<p><strong>"Why not let the model execute code directly? It'd be faster."</strong> — Then the model's mistakes and an attacker's injections both execute with no checkpoint. The request/execute split is the only place a validator can live — remove it and Session 6's entire defense stack has nowhere to stand.</p>
+</li>
+<li>
+<p><strong>"If p^n is real, how does anyone ship a 50-step agent?"</strong> — By making n effectively small: validation checkpoints reset the chain, retries lift per-step p, sub-workflows pin the predictable parts, humans gate the risky ones. Shipping agents is the art of not letting probability multiply unattended.</p>
+</li>
+<li>
+<p><strong>"Two agents checking each other should be MORE reliable, no?"</strong> — A <em>verifier</em> pattern can be — that's parallel-plus-judge, and the checker only needs to catch errors, not produce work. But two agents <em>chained</em>, each doing work the next depends on, multiply: 0.9 × 0.9 = 0.81. Direction of information flow decides which math you get.</p>
+</li>
+<li>
+<p><strong>"What exactly does 4-bit quantization throw away?"</strong> — Precision, not structure: each block of weights is snapped to 16 levels plus a scale. The next-token distribution barely moves at 4 bits; below that there are too few levels and quality cliffs. That's why 4-bit is the default and 2-bit is a research toy.</p>
+</li>
+<li>
+<p><strong>"Could we fine-tune Gemma on our syllabus instead of RAG?"</strong> — You'd spend weeks teaching weights facts that a retrieval index learns in minutes, with no citations and no way to update one rule when the syllabus changes. Fine-tune the <em>behaviour</em> (format, tone) if an eval proves prompting can't hold it; keep the <em>facts</em> in RAG. (Bridge to Session 4.)</p>
+</li>
+<li>
+<p><strong>"How do I measure that 95%-per-step number for my own agent?"</strong> — Session 3's machinery: a golden set of tasks per step, run each step in isolation, score pass-rate. Per-step evals are exactly how real teams find which step is the weak factor in the product. (Bridge to Session 3.)</p>
+</li>
+<li>
+<p><strong>"The tool returned wrong data and the model repeated it confidently. Whose bug?"</strong> — Yours, twice: the tool for being wrong, the system design for having no validation between tool output and user. The model did its job — it faithfully continued from context. Garbage in, fluent garbage out; that's also why tool results are Session 6's favorite attack surface.</p>
+</li>
+<li>
+<p><strong>"Are 'computer-use' agents (models driving a GUI) the same thing?"</strong> — Same architecture, bigger menu: the tools are click/type/screenshot, the loop is identical, and p^n applies with a vengeance because n is huge and each step is noisy. That's why they're impressive demos and cautious products.</p>
+</li>
+<li>
+<p><strong>"Why did you make us hand-write declarations if MCP standardizes it?"</strong> — Same reason you computed cosine similarity by hand before using a vector DB: you can only debug the abstraction you can see beneath. Every MCP server on earth is the triple you wrote today — name, description, schema.</p>
+</li>
+<li>
+<p><strong>"What's the single decision rule to take home?"</strong> — Do you know the steps in advance? Yes → workflow, model fills the hard parts. No → agent, on a leash: step cap, allow-list, validated args, human sign-off on side effects. And climb the ladder only when an eval says the cheaper rung failed.</p>
+</li>
+</ol>
+<hr />
+<h2 id="5-misconception-table">5 · Misconception table</h2>
+<table>
+<thead>
+<tr>
+<th>Walk-in belief</th>
+<th>One-line correction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"The AI runs the tools"</td>
+<td>It emits a <em>request</em>; your code validates and executes — the model proposes, code disposes.</td>
+</tr>
+<tr>
+<td>"Agents are smarter versions of workflows"</td>
+<td>Agents are <em>less constrained</em> versions — flexibility bought with compounding failure (0.95¹⁰ ≈ 0.599).</td>
+</tr>
+<tr>
+<td>"More agents = more capability"</td>
+<td>Chained agents multiply failure (0.9 × 0.9 = 0.81); only parallel-independent + judge escapes the math.</td>
+</tr>
+<tr>
+<td>"Fine-tuning is how you teach a model your data"</td>
+<td>Fine-tuning teaches <em>behaviour</em>; RAG provides <em>knowledge</em> — facts in weights are stale, uncited, unfixable.</td>
+</tr>
+<tr>
+<td>"Tool docstrings are just documentation"</td>
+<td>They are the model's <em>entire</em> understanding of the tool — a docstring is a prompt with a return type.</td>
+</tr>
+<tr>
+<td>"Local models are toy models"</td>
+<td>A quantized 4B model at ~20 tok/s is production-real for narrow tasks — private, offline, ~free per token.</td>
+</tr>
+<tr>
+<td>"The model knows what tools it has and what they do"</td>
+<td>It sees only name + description + schema, resent as tokens on every request — it has never seen the function body.</td>
+</tr>
+<tr>
+<td>"If the tool returns it, the answer is right"</td>
+<td>The model can't verify results; if your tool returns 999 for 2347×0.18, it fluently reports 999.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-timing-pressure-map">6 · Timing pressure map</h2>
+<p>Pre-lab budget ≈ 59.5 min against a nominal hour — there is <strong>no slack</strong>, and this session historically bleeds in three places: the two voting games (students argue — good, but cap items), the hot-take fight, and Ollama demo fiddling.</p>
+<table>
+<thead>
+<tr>
+<th>Zone</th>
+<th>Slides</th>
+<th>Risk</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Recap + jar</td>
+<td>2–3</td>
+<td>Low</td>
+<td>6 min; the quiz advances on your click — keep arguments to one exchange</td>
+</tr>
+<tr>
+<td>Tool mechanics</td>
+<td>4–9</td>
+<td><strong>High</strong> — stepper (5 min) + two games</td>
+<td>If behind: which-tool quiz 5→3 items (keep 4 and 5 — the no-tool trap and the chain)</td>
+</tr>
+<tr>
+<td>▸ MCP</td>
+<td>7</td>
+<td>Medium — professors ask follow-ups</td>
+<td>1.5 min budget; name it, do the N×M count, park depth for the break (§2.5 has your answers)</td>
+</tr>
+<tr>
+<td>Reliability block</td>
+<td>11–12</td>
+<td><strong>Never cut</strong></td>
+<td>The centerpiece; 3 Monte-Carlo runs minimum — the visceral beat of the session</td>
+</tr>
+<tr>
+<td>▸ Multi-agent + ▸ hot take</td>
+<td>13–14</td>
+<td>Medium</td>
+<td>Compressible to 2 min combined: the 81% question + read the take once. Don't host the debate now — park to break</td>
+</tr>
+<tr>
+<td>Ladder + picker</td>
+<td>16–17</td>
+<td>Medium</td>
+<td>If behind: picker 5→3 items (keep 1, 4, 5 — RAG, fine-tune, rung zero)</td>
+</tr>
+<tr>
+<td>▸ Local block</td>
+<td>18, 20</td>
+<td>Low</td>
+<td>18 and 20 compress to one line each; <strong>19 (Ollama live) is not cuttable</strong> — it's the only live-hardware moment in the course</td>
+</tr>
+<tr>
+<td>Lab brief</td>
+<td>22</td>
+<td>Chronic overrun</td>
+<td>2 min hard cap; the handout repeats everything</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Never cut:</strong> slide 4 (the trick — the session's load-bearing sentence), slide 5's malicious run, slide 12 + Monte-Carlo, slide 19 live Ollama, lab checkpoints. <strong>Pre-stage before lunch:</strong> Ollama model pulled and tested Wi-Fi-off, notebook Cells 2–4 run on your own key, deck at slide 1 with presenter mode (S) started.</p>
+<hr />
+<h2 id="7-going-deeper-weekend-reading">7 · Going deeper (weekend reading)</h2>
+<ol>
+<li><strong>"Building Effective Agents" — Anthropic engineering blog (Dec 2024).</strong> The workflow/agent vocabulary this session teaches, from the source; the five workflow patterns (chaining, routing, parallelization, orchestrator-workers, evaluator-optimizer) are your answer bank for "what should I build instead of an agent?"</li>
+<li><strong>"ReAct: Synergizing Reasoning and Acting in Language Models" — Yao et al., 2022.</strong> The paper that seeded the loop; read it to answer lineage questions and to show students how recent this all is.</li>
+<li><strong>MCP specification — modelcontextprotocol.io.</strong> Skim the architecture page and the tools/resources/prompts primitives; 30 minutes makes you unshakeable on every "is MCP just X?" question.</li>
+<li><strong>"How We Built Our Multi-Agent Research System" — Anthropic (2025) <em>paired with</em> "Don't Build Multi-Agents" — Cognition (2025).</strong> The two posts disagree, and the disagreement IS the lesson: parallel-independent fan-out works, chained hand-offs lose context. Reading both arms you for any multi-agent argument a professor starts.</li>
+<li><strong>Gemini function-calling docs — ai.google.dev.</strong> The exact wire format from §2.3 (functionDeclarations, functionCall, functionResponse), parallel calls, and forced tool choice — your reference if a student's notebook emits something unexpected.</li>
+<li><strong>"Toolformer: Language Models Can Teach Themselves to Use Tools" — Schick et al., 2023.</strong> How tool-use ability gets INTO the weights via training data — the mechanism behind "it's trained to emit calls," one level below this deck.</li>
+</ol>
+
+  <footer class="foot">
+    <div style="margin-bottom:8px">run sheet: <a href="session-5-notes.md">session-5-notes.html</a> · deck: <a href="../presentations/session-5-making-ai-do-things.html">session-5-making-ai-do-things.html</a> · lab: <a href="../labs/session-5/lab-handout.html">lab-handout.html</a> · <a href="../cheatsheets/session-5-cheatsheet.html">cheatsheet</a></div>
+    Generative AI: Foundations &amp; Applications · <a href="../index.html">course home</a> · instructor-only material
+  </footer>
+</div>
+</body>
+</html>

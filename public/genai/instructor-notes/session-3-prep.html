@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 3 — Instructor Deep Prep — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Deep mastery guide for Session 3 (AI Beyond Text): patch math, diffusion objective, voice cloning, constrained decoding, demo playbooks, Q&amp;A bank.">
+<meta property="og:title" content="Session 3 — Instructor Deep Prep">
+<meta property="og:description" content="Deep mastery guide for Session 3 (AI Beyond Text): patch math, diffusion objective, voice cloning, constrained decoding, demo playbooks, Q&amp;A bank.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#C2186A;--accentpale:#FDE0EE;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
+  <div class="kicker">Session 3 · instructor deep prep</div>
+<h1>Session 3 — Instructor Prep Pack</h1>
+<p class="lead">the deep version · Generative AI: Foundations and Applications · TCE</p>
+<p>Study time: ~2.5 h. This is the mastery document for the session, not the run sheet — delivery-day choreography lives in <code>session-3-notes.md</code>. Deck: <a href="../presentations/session-3-ai-beyond-text.html"><code>../presentations/session-3-ai-beyond-text.html</code></a> (17 slides, 7 interactives). Companion reading: Part 3 of <a href="../LEARNING-GUIDE.html"><code>../LEARNING-GUIDE.md</code></a>, lab at <a href="../labs/session-3/lab-handout.html"><code>../labs/session-3/</code></a>.</p>
+<hr>
+<h2 id="1-narrative-spine-the-session-as-one-argument">1. Narrative spine — the session as one argument</h2>
+<p>Six beats. If you can say these out loud in 3 minutes without looking, you own the session:</p>
+<ol>
+<li><strong>The loop never cared what tokens mean.</strong> Session 1's machine reads embeddings, not words. So anything you can chop into embedding-sized pieces, it can read.</li>
+<li><strong>Images become patch-tokens</strong> (chop into squares → embed → same attention loop), <strong>audio becomes slice-tokens</strong>. "Multimodal" is new eyes wired into the same brain — not a new brain.</li>
+<li><strong>Reading images is prediction. Making them is un-destruction</strong>: diffusion learns to remove noise, then "removes" its way out of pure static, steered by the prompt. (One nuance held in reserve: 4o-style image generation is autoregressive — the loop ate images too.)</li>
+<li><strong>Voice is solved enough to be dangerous</strong>: STT near-human, TTS convincing, cloning needs seconds → family code word. The hot take lives here.</li>
+<li><strong>All of it is one API call</strong> — <code>contents=[img, question]</code> — so everything from S1–S2 (prompting, format control, evals) transfers unchanged. New production beat: <code>response_schema</code> makes JSON <em>guaranteed</em>, not begged-for.</li>
+<li><strong>The failures transfer too</strong>: counting, spatial precision, blurred text → plausible invention. Hallucination in pixels. The course rhymes, and you say so.</li>
+</ol>
+<p><strong>The 3-minute test:</strong> deliver beats 1–6 as one continuous argument, out loud, standing up. If you stall anywhere, that beat's deep-dive below is the one you haven't internalized.</p>
+<hr>
+<h2 id="2-concept-deep-dives-slide-by-slide">2. Concept deep-dives — slide by slide</h2>
+<h3 id="slide-1-title-slide-2-recap-quiz">Slide 1 · Title &amp; Slide 2 · Recap quiz</h3>
+<p><strong>Claim:</strong> the recap quiz re-tests four S1–S2 load-bearing facts before building on them.</p>
+<p><strong>Why these four items:</strong> (1) few-shot never updates weights — in-context only; (2) evals run at temperature 0, three times, averaged; (3) tone and truth are uncorrelated; (4) grounding ("answer only from stated facts") is the single most valuable constraint line. Items 3 and 4 are chosen deliberately: today re-derives both <em>in pixels</em> (blurred-text invention, and the grounding fix in Lab Stretch 1). If the room bombs item 4, slow down at slide 13 — they'll need the callback spelled out.</p>
+<p><strong>Landmine:</strong> don't re-teach S1 here. Wrong answers get the one-line feedback baked into the quiz, nothing more. Budget is 2.5 min.</p>
+<h3 id="slide-3-same-loop-new-kinds-of-tokens">Slide 3 · Same loop, new kinds of tokens</h3>
+<p><strong>Claim:</strong> multimodal = the same transformer with new token types in the same context.</p>
+<p><strong>Mechanism, one level deeper:</strong> a transformer block consumes a sequence of vectors; nothing in attention or the MLP knows whether a vector came from text. Modern multimodal models bolt a <em>vision encoder</em> (a ViT, usually contrastively pretrained à la CLIP/SigLIP on image–caption pairs) onto the language model via a small projection layer that maps patch embeddings into the LM's embedding space. After projection, image tokens and text tokens sit in one interleaved sequence and attend to each other freely. That single shared context is the entire reason <code>contents=[img, &quot;what&#x27;s the total?&quot;]</code> works: the question's tokens attend directly to the receipt's patch tokens.</p>
+<p><strong>Worked example (whiteboard):</strong> write a 3-dim toy. Text token "sun" → [0.9, 0.1, 0.3]. A yellow-circle patch from a photo → vision encoder → projector → [0.85, 0.15, 0.28]. Same space, dot product 0.885 — the machine treats a picture of the sun and the word "sun" as near-neighbours. That's the whole trick; everything else is scale.</p>
+<p><strong>Pushback:</strong></p>
+<ul>
+<li><em>"So is it one network or two?"</em> — Two encoders, one brain. The vision encoder is a separate pretrained tower, but from the first transformer layer onward it's one model, one context, one attention.</li>
+<li><em>"Why did vision arrive so fast after ChatGPT?"</em> — Because the hard part (the attention loop, 2017) was already built; ViT (Dosovitskiy et al., 2020) showed patches slot straight in. Fusing the two was engineering, not new science.</li>
+</ul>
+<p><strong>Landmine:</strong> never say "it sees like humans." Patches + attention ≠ human vision, and slide 13's failure modes are the proof. Also don't say multimodality required "a new architecture" — the punchline is that it didn't.</p>
+<h3 id="slide-4-patchify-demo-how-a-model-reads-a-picture">Slide 4 · Patchify demo — how a model reads a picture</h3>
+<p><strong>Claim:</strong> image → grid of patches → embeddings → same attention loop.</p>
+<p><strong>Mechanism:</strong> ViT splits the image into fixed-size squares (14×14 or 16×16 px), flattens each patch's pixels into a vector, multiplies by one learned projection matrix to get an embedding, adds a <em>2D position embedding</em> (so the model knows where each patch sat), and feeds the sequence to a standard transformer. High-res models then <em>pool</em> neighbouring patch embeddings (e.g., 16:1 average pooling) before handing them to the language model, because 4,096 tokens per image is too expensive to attend over per photo.</p>
+<p><strong>Worked example — the patch math, with real numbers (do this on the board):</strong></p>
+<ul>
+<li>Gemma-3-class vision encoder: input normalized to <strong>896×896 px</strong>, patch size <strong>14 px</strong>.</li>
+<li>896 / 14 = <strong>64</strong> patches per side → 64 × 64 = <strong>4,096 raw patches</strong>.</li>
+<li>Pooled 16:1 → <strong>256 vision tokens</strong> handed to the LM. That's why Gemini-family billing shows a flat <strong>~258 tokens per image</strong> (256 pooled patches + a couple of boundary tokens); big images are tiled into 768×768 crops at ~258 tokens each.</li>
+<li><strong>Cost of reading one mess bill on Gemini 3.5 Flash</strong> — what <code>gemini-flash-latest</code> serves today ($1.50/1M input, $9.00/1M output, ₹95.5/USD):
+<ul>
+<li>input: 258 tokens × $1.50/1M = $0.000387 ≈ <strong>₹0.037</strong> — under four paise;</li>
+<li>output: ~120 JSON tokens × $9.00/1M = $0.00108 ≈ <strong>₹0.103</strong>;</li>
+<li>total ≈ <strong>₹0.14 per receipt → 1,000 receipts ≈ ₹140</strong> — two jigarthandas on the slide's receipt. Say that line; it lands.</li>
+</ul></li>
+<li>Same job at the retired 2.5 Flash rates ($0.30/$2.50): ≈ ₹0.036/receipt, ~₹36 per thousand — pricing moved ×5 in / ×3.6 out in one generation; the "right model for the job" thread from S1 continues.</li>
+</ul>
+<p><strong>Pushback:</strong></p>
+<ul>
+<li><em>"If a whole image is ~258 tokens, isn't that massively lossy?"</em> — Yes, deliberately. 896×896×3 bytes ≈ 2.4 MB of pixels compressed into 256 vectors. That lossiness is exactly why fine print, exact counts, and tiny details fail (slide 13). Great question — it means they've understood.</li>
+<li><em>"How does the model know where a patch was?"</em> — Learned 2D position embeddings added to each patch, same idea as text positions. They're a <em>summary</em> of position, not coordinates — which is why precise left/right relations blur.</li>
+<li><em>"Why 14×14 and not per-pixel attention?"</em> — Attention is O(n²) in sequence length. 896² pixels ≈ 800K tokens → ~6×10¹¹ attention pairs per layer. Patches make it tractable; pooling makes it cheap.</li>
+</ul>
+<p><strong>Landmine:</strong> the demo's 24-patch grid is a teaching scale — real models use thousands of patches plus tiling. Say "twenty-four here, four thousand in the real encoder" during the demo, unprompted.</p>
+<h3 id="slide-5-what-ai-with-eyes-actually-does">Slide 5 · What AI with eyes actually does</h3>
+<p><strong>Claim:</strong> the shipped value of vision is <em>reading</em> — documents, handwriting, charts, screens — not "seeing."</p>
+<p><strong>Mechanism — why VLMs can read text in images with no OCR engine:</strong> there is no Tesseract inside. Reading is a <em>learned</em> capability: the training corpus (web image–caption pairs, plus deliberately added document/screenshot/synthetic-OCR data) is full of images containing text paired with strings containing that text. At sufficient scale and input resolution, predicting the caption forces the encoder to represent glyphs, and the LM to decode them — OCR <em>emerges from the training objective</em>, the same way translation emerged from text pretraining. Two consequences you can predict from this: (a) it reads in-context like a language model (great at smudged-but-guessable words, because priors fill gaps), and (b) exactly those priors invent text that isn't there (slide 13). For mission-critical OCR, production systems still often run a dedicated OCR engine and use the LLM for cleanup/structuring — both patterns are legitimate.</p>
+<p><strong>Worked example:</strong> photograph any printed page, ask "read all text exactly as written," and then ask the same of a page held at a 45° angle in bad light. The first is near-perfect, the second degrades word-by-word rather than failing outright — classic learned-reader behaviour, not engine behaviour.</p>
+<p><strong>Pushback:</strong> <em>"Is emergent OCR accurate enough for banking?"</em> — For structuring and cross-checks, yes; as the sole extractor for regulated fields, usually paired with dedicated OCR + human review. This is your KYC day-job beat — one concrete war story here is worth all six cards.</p>
+<p><strong>Landmine:</strong> don't claim doctor's handwriting is "solved" — the will-it-read quiz itself says "mostly, verify anything that matters."</p>
+<h3 id="slide-6-will-it-read-vote-game">Slide 6 · Will it read? (vote game)</h3>
+<p><strong>Claim:</strong> four calibration votes: printed page (yes), prescription (mostly), blurred plate (no — and worse, confident guess), CAPTCHA (can, but refuses).</p>
+<p><strong>Mechanism per item:</strong> printed text = densest pattern in training data. Handwriting = high variance, prior-driven completion. Motion blur destroys glyph information — the model's language prior then <em>supplies</em> a plausible plate; blur + confidence is the danger zone. CAPTCHA: capability exists, policy refuses — trained-in refusal, because solving CAPTCHAs enables abuse.</p>
+<p><strong>The one sentence that must be said:</strong> "<strong>capability ≠ permission</strong>" — this plants Session 6's flag. Say those exact words.</p>
+<p><strong>Landmine:</strong> don't let the CAPTCHA item become a jailbreak tutorial. If someone says "I got it to solve one," respond: "Yes — refusals are training, not physics; that arms race is Session 6," and move on.</p>
+<h3 id="slide-7-reading-is-prediction-making-is-un-destruction">Slide 7 · Reading is prediction, making is un-destruction</h3>
+<p><strong>Claim:</strong> most image generators are not next-token machines; they're denoisers run in reverse.</p>
+<p><strong>Mechanism + the 4o nuance (one breath on stage, full depth here):</strong> two families coexist in 2026.</p>
+<ul>
+<li><strong>Diffusion</strong> (Stable Diffusion, Imagen, Midjourney-class): iterative denoising, next slide.</li>
+<li><strong>Autoregressive</strong> (GPT-4o-style images, and successors): the image is represented as a sequence of <em>discrete visual tokens</em> from a learned codebook (a visual vocabulary — each token ≈ one small texture/shape fragment), generated left-to-right, top-to-bottom by the <em>same</em> transformer that writes text. This is why 4o-class images famously render long correct text and follow conversational edits ("same image, but make the sign say OPEN") — the language model literally <em>is</em> the image model, with full attention over the conversation. Trade-off: token-by-token generation is slower, and diffusion still tends to win on high-res texture; some systems are hybrids (AR planner + diffusion decoder).</li>
+</ul>
+<p><strong>Pushback:</strong> <em>"So which family is 'the future'?"</em> — Don't die on either hill. AR is winning on instruction-following and text rendering; diffusion on speed-per-quality and open-source ecosystem. The honest answer is "both, often combined."</p>
+<p><strong>Landmine:</strong> the 4o aside on the slide is one breath. The depth above is for Q&amp;A, not for the talk track — the presenter note says don't derail, believe it.</p>
+<h3 id="slide-8-diffusion-demo-a-picture-emerges-from-static">Slide 8 · Diffusion demo — a picture emerges from static</h3>
+<p><strong>Claim:</strong> train by destroying images with noise and learning to repair each step; generate by "repairing" pure noise, steered by the prompt.</p>
+<p><strong>The actual training objective (whiteboardable):</strong> take a real image <code>x₀</code>. Pick a random timestep <code>t</code>. Sample Gaussian noise <code>ε</code>. Build the noised image in one shot: <code>x_t = √(ᾱ_t)·x₀ + √(1−ᾱ_t)·ε</code>, where <code>ᾱ_t</code> slides from ~1 (clean) to ~0 (pure noise). The network <code>ε_θ(x_t, t, prompt)</code> is trained to <strong>predict the noise</strong> that was added; the loss is simply the mean-squared error on the noise residual: <code>‖ε − ε_θ‖²</code>. That's the whole objective (Ho et al., 2020). No adversary, no likelihood gymnastics — "guess what I added, be graded on the difference."</p>
+<p><strong>Worked example with real numbers — one-pixel diffusion:</strong> pixel value x₀ = 0.8 (bright). Noise draw ε = −0.5. At a timestep where ᾱ_t = 0.5: x_t = 0.707×0.8 + 0.707×(−0.5) = 0.566 − 0.354 = <strong>0.212</strong>. The network sees 0.212 and t, and must output −0.5. If it predicts −0.4, loss = (−0.5 − (−0.4))² = <strong>0.01</strong>. Nudge weights, repeat a few billion times across billions of images. A professor will recognize this instantly as denoising score matching; students will recognize it as "the same guess-and-nudge from Session 1 with a different target."</p>
+<p><strong>The inference walk (one honest paragraph):</strong> start from pure Gaussian noise <code>x_T</code>. For ~50 steps (fewer with modern samplers): predict the noise in the current image, subtract a calibrated fraction of it, re-inject a controlled amount of fresh noise, repeat. Low spatial frequencies (silhouettes, sky/ground split) survive noise longest, so they're recovered first; high frequencies (edges, windows, jewellery) come last — that's the real reason for the coarse-to-fine choreography the canvas shows. <strong>Classifier-free guidance</strong> is the prompt-obedience dial: at every step the network runs twice — once with the prompt, once without — and the update is extrapolated <em>away</em> from the unconditional prediction: <code>ε̂ = ε_uncond + g·(ε_cond − ε_uncond)</code> with g ≈ 5–8. Higher g = more literal prompt-following, less diversity, eventually fried colours. Production systems (Stable Diffusion family) run all of this in a VAE-compressed <em>latent</em> space (~48× fewer values than pixels), which is why it's fast enough to sell.</p>
+<p><strong>What the canvas honestly fakes:</strong> the demo is a linear cross-fade between a fixed noise field and a block-mosaic of the clean gopuram scene — block size shrinks and noise weight falls as t². No network, no sampling; the "denoise step n/50" label is cosmetic. <strong>The choreography is true (coarse first, details last); the pixels are theatre.</strong> Say this before anyone asks.</p>
+<p><strong>Pushback:</strong></p>
+<ul>
+<li><em>"Why 50 steps — why can't it jump straight to the image?"</em> — Each step's prediction is only accurate near its noise level; one giant jump lands off the image manifold. But this is a live frontier: distilled/consistency models genuinely do 1–4 step generation in 2026, trading a little quality.</li>
+<li><em>"Where does the prompt physically enter?"</em> — Prompt → text-encoder embeddings → cross-attention layers inside the denoiser; every denoising step attends to the prompt tokens. Same attention mechanism, third appearance today.</li>
+<li><em>"Is it copying training images?"</em> — It learns the statistics of images, not a database; there is no image lookup at inference. Researchers <em>have</em> extracted near-copies of heavily duplicated training images in edge cases — so say "overwhelmingly synthesis, with documented rare memorization," not "never copies."</li>
+</ul>
+<p><strong>Landmine:</strong> don't call diffusion "just denoising a JPEG" — the model <em>invents</em> content consistent with the prompt; there is no original hiding under the noise at generation time. That's the whole point of the "picture that was never there" line.</p>
+<h3 id="slide-9-image-generation-magic-with-fine-print-compressible">Slide 9 · Image generation: magic with fine print (▸ compressible)</h3>
+<p><strong>Claim:</strong> three honest limits — subtle detail lies, unresolved style/copyright ethics, and the deepfake era.</p>
+<p><strong>Mechanism:</strong> detail lies are the residue of the coarse-to-fine process — high-frequency content is generated last and least constrained (dense small text, logos, jewellery, background faces). Style debates: training included human art at internet scale; courts and legislatures are actively contesting it — both "theft" and "influence, like human learning" have serious defenders; do not pretend it's settled. Deepfakes: the counter-move is <em>provenance</em> — cryptographically signed content credentials (C2PA) and embedded watermarks (SynthID-class) — because post-hoc "AI detectors" are unreliable and adversarially fragile.</p>
+<p><strong>Pushback:</strong> <em>"Can't we just detect AI images?"</em> — Detection is a losing arms race; provenance flips the burden: instead of proving an image is fake, you prove a real one is real. Neither is complete — watermarks can be degraded by cropping/re-encoding.</p>
+<p><strong>Landmine:</strong> the six-finger meme is <em>stale</em> — models fixed hands long ago. The slide says so; don't resurrect it as a current tell. The camera line ("200 years earning trust, ended in two") is the emotional peak — deliver it slowly, then stop.</p>
+<h3 id="slide-10-speech-solved-enough-to-be-dangerous">Slide 10 · Speech: solved enough to be dangerous</h3>
+<p><strong>Claim:</strong> 3 s of audio clones a voice, at ~₹0, and your voice is already public.</p>
+<p><strong>Mechanism — 2026 state:</strong></p>
+<ul>
+<li><strong>STT:</strong> Whisper-class encoder-decoders trained on weakly-supervised audio–text at scale, plus native-audio LLMs — Gemini takes audio straight in <code>contents</code> at <strong>~32 tokens per second of audio</strong>. Tamil–English code-switching is genuinely decent; "lectures → notes" is a solved problem.</li>
+<li><strong>TTS:</strong> near-indistinguishable for short clips — prosody, pauses, emotion. Real-time speech-to-speech assistants (sub-second latency) shipped across all major providers.</li>
+<li><strong>Cloning mechanics (the part to be able to whiteboard):</strong> modern zero-shot TTS treats speech as <em>tokens too</em> — a neural audio codec compresses sound into discrete acoustic tokens; a transformer is trained to continue an acoustic-token sequence given text. Hand it 3 seconds of <em>your</em> voice as the acoustic prefix and the model continues <em>in your voice</em>, saying whatever the text says. Three seconds suffices because voice identity (pitch, timbre, accent statistics) is low-dimensional compared to content — a prefix pins it down. It's in-context learning, for sound. That framing ("few-shot prompting with your larynx") connects it straight back to S2.</li>
+</ul>
+<p><strong>Worked example:</strong> a 60-second voice note in the lab's Stretch 3 ≈ 60 × 32 = <strong>1,920 input tokens</strong> → 1,920 × $1.50/1M × ₹95.5 ≈ <strong>₹0.28</strong> to transcribe. Cloning economics are similarly trivial — that's why the scam scales.</p>
+<p><strong>The scam-call beat (deliver straight):</strong> voice-clone + urgency + payment/OTP ask is a live, documented pattern in India — "your grandson" calling paati, fake "digital arrest" calls. The defense is not better ears (a trained ear loses to a good clone); it's <em>verification habits</em>: a pre-agreed <strong>family code word</strong>, and calling back on the known number. "Tell your parents this weekend" — mean it.</p>
+<p><strong>Video (one breath):</strong> diffusion plus time — temporal attention across frames so objects persist. Mid-2026: native 4K with soundtrack generated alongside pixels (Sora 2, Veo 3.1, Kling 3.0); physics still slips in complex scenes; ~$0.10–0.75 per second of output. "What you're watching today is the worst it will ever be."</p>
+<p><strong>Pushback:</strong> <em>"Live phone-call translation?"</em> — Pipelines (STT→translate→TTS) work today with latency trade-offs; end-to-end speech-to-speech translation models are arriving. <em>"Can banks still use voice authentication?"</em> — Voiceprint-only auth is now indefensible as a sole factor; the industry is moving to multi-factor. Good instincts if a student raises it.</p>
+<p><strong>Landmine:</strong> don't quote a specific "₹X crore lost to voice scams" figure — you don't have a verified one. The pattern is documented; keep the numbers to the three on the slide (3 s, ~₹0, ∞), which are about capability, not crime statistics.</p>
+<h3 id="hot-take-your-mothers-voice-is-no-longer-proof-of-your-mother-compressible">Hot take · "Your mother's voice is no longer proof of your mother" (▸ compressible)</h3>
+<p><strong>How to run it:</strong> read it once, slowly. Three seconds of silence. Then invite the counter-argument. Take exactly one now; park the rest for the break; name the strongest on the closing slide. Expected counters and your responses: <em>"Context and relationship knowledge still authenticate"</em> → true, and that's exactly what the code word formalizes — the take says <em>voice alone</em> is dead, not trust. <em>"Detection will catch up"</em> → arms race economics favour the attacker; verification beats detection. Don't win the argument too hard — the point of the slide is that they argue.</p>
+<h3 id="slide-12-all-of-it-is-one-api-call-and-the-structured-outputs-beat">Slide 12 · All of it is one API call — and the structured-outputs beat</h3>
+<p><strong>Claim:</strong> <code>contents=[img, question]</code> is the whole vision API; and production code doesn't beg for JSON — it passes <code>response_schema</code> and the API is <em>forced</em> to comply.</p>
+<p><strong>Mechanism — how constrained decoding actually works (this is the July-2026 addition; know it cold):</strong> the API compiles your JSON schema into a grammar — effectively a finite-state machine over <em>tokens</em>. At every decoding step, the sampler checks which tokens could legally extend the output under that grammar, and <strong>masks the logits of every illegal token to −∞ before sampling</strong>. The remaining probabilities renormalize; sampling proceeds as normal. The model <strong>cannot</strong> emit a non-schema token — not "is penalized for," <em>cannot</em>: a code fence, a "Certainly!", a trailing comment are all literally unsampleable. Same next-token loop, with a bouncer at the door of the distribution. Consequence 1: <code>json.loads</code> cannot fail on shape. Consequence 2: it guarantees <em>shape, not truth</em> — the model can still hallucinate a wrong total in perfectly valid JSON. Schemas lock structure; grounding and evals still guard content.</p>
+<p><strong>Worked example — tiny masked-softmax table (board):</strong> the decoder sits right after <code>&quot;total&quot;: </code> and the schema says NUMBER. Raw next-token distribution vs post-mask:</p>
+<table><thead><tr><th>candidate token</th><th>raw p</th><th>schema-legal?</th><th>after mask</th></tr></thead><tbody>
+<tr><td><code> approximately</code></td><td>0.42</td><td>✗</td><td>—</td></tr>
+<tr><td><code>342</code></td><td>0.31</td><td>✓</td><td><strong>0.79</strong></td></tr>
+<tr><td><code>&quot;₹</code></td><td>0.15</td><td>✗</td><td>—</td></tr>
+<tr><td><code>3</code></td><td>0.08</td><td>✓</td><td>0.21</td></tr>
+</tbody></table>
+<p>The model <em>wanted</em> to say "approximately." It can't. 0.31/(0.31+0.08) = 0.79 — renormalization in one line of arithmetic.</p>
+<p><strong>Worked example — the full round trip (matches Lab Part B2 exactly):</strong> request = image + <code>&quot;Extract the receipt.&quot;</code> (no format instructions at all) + config <code>response_mime_type=&quot;application/json&quot;</code>, <code>response_schema={vendor:STRING, date:STRING, total:NUMBER, items:[{name:STRING, price:NUMBER}], required:[vendor,total]}</code>. Response text, parseable as-is:</p>
+<pre><code>{&quot;vendor&quot;: &quot;TCE CANTEEN&quot;, &quot;date&quot;: &quot;2026-07-16&quot;,
+ &quot;items&quot;: [{&quot;name&quot;: &quot;Meals x2&quot;, &quot;price&quot;: 240.0},
+           {&quot;name&quot;: &quot;Jigarthanda&quot;, &quot;price&quot;: 70.0},
+           {&quot;name&quot;: &quot;Coffee x2&quot;, &quot;price&quot;: 32.0}],
+ &quot;total&quot;: 342.0}</code></pre>
+<p>240 + 70 + 32 = 342 ✓ — and that arithmetic check is itself the lab's eval instinct: valid JSON with a wrong sum would parse fine and still be wrong.</p>
+<p><strong>When prompt-JSON still makes sense:</strong> (a) prototyping, when the shape is still moving; (b) when you want visible reasoning <em>before</em> the JSON (a schema forces JSON from token one); (c) endpoints/models without schema support; (d) schemas beyond the supported subset (deeply recursive/dynamic). And keep the <em>task</em> description in the prompt regardless — the schema locks shape, the prompt still steers content.</p>
+<p><strong>Pushback (professor-grade):</strong> <em>"Doesn't forcing tokens degrade quality?"</em> — It can, marginally: masking sometimes forces a token the model ranked low, and over-complex schemas measurably hurt content quality. Mitigations: keep schemas shallow, keep the task described in the prompt. The trade — a rare marginal-quality hit vs a parser that never crashes — is one production takes every time. <em>"Is this fine-tuning?"</em> — No; zero weight changes. It's an inference-time filter on the sampler. That distinction (decode-time constraint vs training) is worth saying explicitly to a sharp room.</p>
+<p><strong>Landmine:</strong> don't claim the schema prevents hallucination — it prevents <em>malformed output</em> only. Also: the slide's receipt run is canned (a typer animation); say "the real one is your lab in twenty minutes."</p>
+<h3 id="slide-13-where-vision-quietly-fails">Slide 13 · Where vision quietly fails</h3>
+<p><strong>Claim:</strong> four systematic failure modes — counting, spatial relations, blurred-text invention, face-ID refusal — each a <em>consequence of the mechanism</em>, not a bug.</p>
+<p><strong>Mechanism + a reproducible example for each:</strong></p>
+<table><thead><tr><th>Failure</th><th>Why (mechanism)</th><th>Reproduce it live</th></tr></thead><tbody>
+<tr><td>Counting</td><td>Patches <em>summarize</em> regions; pooling (4,096→256) discards instance-level info. Counting is prediction of a plausible number — same disease as 847×923 in S1</td><td>Group photo of ~20+ people → "How many people? Count carefully." Answers scatter (15/23/30) across runs. The deck's dot-flash makes the room fail the same test</td></tr>
+<tr><td>Spatial precision</td><td>Position embeddings are a learned summary, further blurred by pooling — precise left/right/behind relations don't survive</td><td>Pen left of a cup, photograph, ask "what is to the LEFT of the cup?" — flips distressingly often, especially mirrored/rotated shots</td></tr>
+<tr><td>Hallucinated fine print</td><td>Blur destroys glyph info; the language prior fills the gap with a <em>plausible</em> completion — pixel hallucination</td><td>Thumb over a receipt total, ask for the total: it often "reads" a value anyway (sometimes by summing items — which looks smart and is still invention). Lab Part D + Stretch 1 A/B the grounding fix</td></tr>
+<tr><td>Face identification</td><td>Refused by policy, not incapacity — privacy. KYC face-match is a separate, purpose-built, regulated stack</td><td>Ask "who is this person?" of any photo → refusal. Contrast with your day job: regulated face-match ≠ chat model</td></tr>
+</tbody></table>
+<p><strong>Pushback:</strong> <em>"If grounding reduces invention, why not always?"</em> — Grounding is a prompt-side prior shift, not a fact-checker: it measurably reduces, never eliminates. That's exactly the S2 lesson re-derived, and the lab's Stretch 1 measures it. <em>"Will counting get fixed?"</em> — Partly (more tokens per image, tool-augmented detection), but under fixed token budgets summarization is inherent. When counts matter, use a detection model — right tool, S1 thread.</p>
+<p><strong>Landmine:</strong> the dot-flash punchline is "you estimated — exactly like patches do." Don't oversell it into "models see like humans" — the shared behaviour is <em>estimation under summarization</em>, arrived at by different routes.</p>
+<h3 id="slide-14-project-seeds-slide-15-recap-flips">Slide 14 · Project seeds &amp; Slide 15 · Recap flips</h3>
+<p>Seeds: read 2–3 with genuine enthusiasm (inscription reader, crop doctor, mess-bill splitter travel well). Every seed = the 4-line call + S2 prompting + an eval set — say that sentence; it makes the capstone feel already-earned. Recap flips: class says each answer <em>before</em> you click. The five: patches / diffusion / speech / one call / pixels lie too. If they can't produce "diffusion = learn to remove noise, start from pure noise," re-say beat 3 in one line now — cheaper than re-teaching tomorrow.</p>
+<h3 id="slide-16-lab-brief-slide-17-day-1-close">Slide 16 · Lab brief &amp; Slide 17 · Day 1 close</h3>
+<p>Lab mechanics live in the run sheet and §4 below. The close is a 14-minute slot that historically gets eaten — protect it: four artifacts recapped, strongest hot-take counter named, and the ONE overnight task (2–3 real documents) said <strong>twice</strong>. Tomorrow's RAG session is dead on arrival without their documents; this is the highest-leverage 60 seconds of the day.</p>
+<hr>
+<h2 id="3-demo-playbooks">3. Demo playbooks</h2>
+<p><strong>General:</strong> all demos are client-side JS, reset on slide re-entry, and work offline. If any interactive dies, every one of them has a talk-through fallback below. Honesty is a feature: two demos are explicitly simulated and the deck says so — repeating the honesty out loud buys credibility for everything else.</p>
+<h3 id="31-recap-quiz-slide-2-rq">3.1 Recap quiz (slide 2) — <code>rq</code></h3>
+<p><strong>What it computes:</strong> nothing — canned T/F with scripted feedback. <strong>Sequence:</strong> read item aloud → room votes by voice → click their majority answer. <strong>Reveal line (item 4):</strong> "grounding comes back within the hour — in pixels." <strong>Fallback:</strong> ask the four questions verbally.</p>
+<h3 id="32-patchify-slide-4-pt">3.2 Patchify (slide 4) — <code>pt</code></h3>
+<p><strong>What it computes:</strong> real DOM state, toy scale — a 6×4 grid (24 patches) over an SVG gopuram scene; state 2 renders pills p1…p12 + "…" + "→ same attention loop". Hovering a pill highlights its patch and vice versa — a <em>real</em> bijection, the honest core of the demo. <strong>Sequence:</strong> Patchify → pause on "24 patches, like 24 words…" → to tokens → hover 2–3 pill↔patch pairs slowly → point at the green pill: <strong>"from here on, Session 1's machine takes over."</strong> Then the board math from §2 slide 4 (24 here, 4,096 real, pooled to ~256, ₹0.14 per receipt). <strong>Callback to plant:</strong> this same gopuram scene reappears in the diffusion demo — flag it there for the laugh. <strong>If called out:</strong> "Correct — real patches are 14 px and there are four thousand of them; the mapping idea is exact, the count is scaled for the projector."</p>
+<h3 id="33-will-it-read-slide-6-wr">3.3 Will it read? (slide 6) — <code>wr</code></h3>
+<p><strong>What it computes:</strong> canned votes. <strong>Sequence:</strong> hands up per item <em>before</em> clicking. The CAPTCHA item is the trap — most rooms vote "yes it will answer." <strong>Reveal line:</strong> "It <em>can</em> read it. It <em>won't</em>. Capability ≠ permission — hold that thought until Session 6." <strong>Fallback:</strong> run it as pure show-of-hands.</p>
+<h3 id="34-diffusion-canvas-slide-8-df">3.4 Diffusion canvas (slide 8) — <code>df</code></h3>
+<p><strong>What it actually computes (be precise if pressed):</strong> a linear cross-fade between one fixed random-noise field and a block-mosaic of the clean scene. Block size shrinks (20 px → 1 px) and noise weight falls as t² as the slider moves; "denoise step n/50" is a label, not a sampler. No network runs. <strong>Sequence:</strong> drag the slider <em>slowly</em> left→right narrating "shapes before details — silhouette by ~15, sun by ~30, window by ~45" → drag back to noise → hit Generate for the 2.5 s auto-run. <strong>Reveal line:</strong> "the pixels here are faked — the <em>direction</em> is the true thing: coarse structure first, details last, fifty small repairs." <strong>If a student calls out the fake:</strong> "Caught — and correctly. Real diffusion runs a trained noise-predictor 50 times in latent space; this canvas is choreography. The one-pixel version on the board is the real objective." (Then do the x₀=0.8 example from §2.) <strong>Fallback if canvas breaks:</strong> the board example carries the slide alone.</p>
+<h3 id="35-receipt-run-slide-12-mm">3.5 Receipt run (slide 12) — <code>mm</code></h3>
+<p><strong>What it computes:</strong> canned. Click → highlight box animates onto the receipt's TOTAL row → typer prints <code>{&quot;total&quot;: 342.00, &quot;currency&quot;: &quot;INR&quot;}</code>. <strong>Sequence:</strong> walk the 4-line code first, then Run. <strong>Reveal line:</strong> "four lines, two seconds, ~fourteen paise — and in the lab you do it for real, then delete half the prompt with <code>response_schema</code>." <strong>If called out:</strong> "Yes, canned — the real call is Lab Part B, twenty minutes from now, on <em>your</em> receipt."</p>
+<h3 id="36-dot-flash-inside-slide-13s-counting-card-cd">3.6 Dot flash (inside slide 13's counting card) — <code>cd</code></h3>
+<p><strong>What it computes:</strong> genuinely real — scatters 20–26 non-overlapping dots, shows them for exactly 1 s, clears, then reveals the true count. <strong>Sequence:</strong> open the counting flip → "Flash the dots" → make them shout numbers → Reveal. <strong>Reveal line:</strong> "You estimated — exactly like patches do." <strong>Fallback:</strong> ask everyone to count a crowd photo from memory.</p>
+<h3 id="37-flip-cards-slides-13-15">3.7 Flip cards (slides 13 &amp; 15)</h3>
+<p>Click toggles Q↔A (clicks on buttons/canvas inside don't toggle — you can run the dot flash without closing the card). Discipline: <strong>guesses before flips</strong>, every time. That's the pedagogy; the cards are just the answer sheet.</p>
+<hr>
+<h2 id="4-lab-3-what-actually-happens-where-it-goes-wrong">4. Lab 3 — what actually happens &amp; where it goes wrong</h2>
+<p>Stack: Colab + <code>google-genai</code>, <code>MODEL = &quot;gemini-flash-latest&quot;</code> (the free tier's current Flash — today Gemini 3.5 Flash), key via <code>getpass</code>. Typical free-tier limits: ~10 RPM / 250K TPM / a few hundred req/day (varies) (check the live limits page) — pairs won't hit it; the notebook's <code>ask()</code> already backs off on 429.</p>
+<table><thead><tr><th>Part</th><th>The real lesson</th><th>Failure you'll see</th></tr></thead><tbody>
+<tr><td>A · Interrogation ladder (5 Qs)</td><td>escalating difficulty exposes the failure gradient live</td><td>wrong filename in <code>Image.open</code>; iPhone HEIC → needs <code>pillow-heif</code> or screenshot→PNG</td></tr>
+<tr><td>B · Prompt-JSON + <code>json.loads</code></td><td>"looks right" ≠ parses; the crash IS the lesson</td><td>students stop at pretty output — push until the parse cell passes</td></tr>
+<tr><td>B2 · <code>response_schema</code></td><td>constrained decoding: parse can <em>never</em> fail; format-begging deleted</td><td>someone asks "so why did we do B?" — answer: to feel the problem the schema solves, and because prompt-JSON is still what you reach for when prototyping</td></tr>
+<tr><td>C · Handwriting</td><td>self-graded accuracy %; Tamil/Tanglish = honest gap + genuine project opportunity</td><td>over-trusting: make them actually count errors</td></tr>
+<tr><td>D · Break it</td><td>confident invention, collected for show &amp; tell</td><td>rooms find blurred-price inventions fastest</td></tr>
+<tr><td>Stretch</td><td>grounding A/B (S2's line, measured), 5-image vision eval (S2 harness grows eyes), audio upload</td><td>audio: <code>client.files.upload</code> then handle in contents</td></tr>
+</tbody></table>
+<p><code>_shrink(1024)</code> teaching point if asked: a 4,000-px photo and a 1,024-px one give the same answer — resolution beyond the encoder's input size is wasted upload time, and big files can outright fail.</p>
+<p><strong>Day-before verification (30 min, non-negotiable):</strong></p>
+<table><thead><tr><th>Check</th><th>How</th></tr></thead><tbody>
+<tr><td>Vision on free-tier <code>gemini-flash-latest</code> works</td><td>run Cells 1–4 with a real receipt</td></tr>
+<tr><td><code>response_schema</code> cell (B2) parses</td><td>run Cell 4b as-is</td></tr>
+<tr><td>Audio upload + transcription</td><td>run Stretch 3 once with an .m4a</td></tr>
+<tr><td>Image <em>generation</em> free-tier status</td><td>ai.google.dev — have a one-line yes/no ready</td></tr>
+<tr><td>HEIC handling in Colab</td><td>try one iPhone photo; fallback = screenshot→PNG</td></tr>
+</tbody></table>
+<hr>
+<h2 id="5-qa-bank">5. Q&amp;A bank</h2>
+<ol>
+<li><strong>"Does the model run OCR software internally?"</strong> — No. There's no OCR engine in the stack — reading emerges from training on billions of image–text pairs where the text in the image appears in the caption. That's why it reads <em>in context</em> like a language model: great at guessable smudges, dangerous on unreadable ones, because the same prior that fills gaps also invents. Production systems that must not invent still pair a dedicated OCR engine with an LLM for structuring.</li>
+
+<li><strong>"If an image is only ~258 tokens, how does it hold a whole photo?"</strong> — It doesn't — that's the point. Roughly 2.4 MB of pixels get summarized into ~256 vectors, so the model keeps gist and layout and loses fine detail. Every failure on slide 13 — counting, fine print, spatial precision — is that compression showing through.</li>
+
+<li><strong>"Is diffusion also next-token prediction?"</strong> — No, different family: iterative denoising over the whole image versus autoregressive tokens. But 2026's twist is that 4o-style generators really are next-token machines over visual tokens — both families coexist, and some systems combine them. Diffusion is still the dominant intuition to carry.</li>
+
+<li><strong>"What exactly does the diffusion network learn?"</strong> <em>(professor)</em> — One function: given a noised image, the timestep, and the prompt, predict the noise that was added, trained on MSE of the noise residual. Sampling inverts it stepwise, and classifier-free guidance extrapolates between prompted and unprompted predictions to control obedience. It's equivalent to learning the score of the data distribution — the "denoising score matching" framing, if they want the lineage.</li>
+
+<li><strong>"Why 50 denoising steps — why not one jump?"</strong> — Each step's prediction is only trustworthy near its own noise level; one giant leap lands off the manifold of real images. That said, step-distilled and consistency models genuinely generate in 1–4 steps now, trading some quality — it's an active frontier, not a law.</li>
+
+<li><strong>"Is '3 seconds to clone a voice' marketing?"</strong> — No — modern zero-shot TTS treats speech as tokens and continues from a short acoustic prefix, so seconds of reference genuinely pin down pitch, timbre, and accent. Quality rises with more reference audio, but "fools family on a phone line" is squarely within 3-second territory. Hence the code word.</li>
+
+<li><strong>"Can we reliably detect AI-generated images?"</strong> — Post-hoc detectors are unreliable and adversarially fragile; the serious counter-move is provenance — signed content credentials (C2PA) and embedded watermarks (SynthID-class) that travel with the file. Neither survives every crop and re-encode, so the honest state is: no complete fix, layered defenses — same shape as prompt injection in Session 6.</li>
+
+<li><strong>"Why does it refuse a CAPTCHA but read my receipt?"</strong> <em>(cross-session → S6)</em> — Capability versus permission. It can read both; it's trained to refuse the one whose whole purpose is blocking automation. Refusals are policy learned in finishing school, not physics — which is why they can be attacked, and that arms race is Session 6.</li>
+
+<li><strong>"Does forcing tokens with <code>response_schema</code> hurt answer quality?"</strong> <em>(professor)</em> — Marginally, sometimes: masking can force a token the model ranked low, and over-complex schemas measurably degrade content. Keep schemas shallow and keep the task described in the prompt. In production the trade is taken every time — a rare marginal-quality cost against a parser that can never crash.</li>
+
+<li><strong>"Can I generate images in today's lab?"</strong> — Today is vision-<em>in</em> on the free tier; image-generation availability there keeps shifting, and I checked last night — [your prepared yes/no]. If you want generation for the capstone, we'll route it through whatever's current then.</li>
+
+<li><strong>"How good is it at Tamil handwriting?"</strong> — Noticeably weaker than printed English, and your Part C percentage is the honest measurement — you'll have your own number within the hour. That gap is a real project opportunity, not just a complaint.</li>
+
+<li><strong>"How does the model know where a patch was in the image?"</strong> <em>(professor)</em> — Learned 2D position embeddings added to each patch vector — same trick as text positions. They're a summary, not coordinates, and pooling blurs them further; that's exactly why precise left/right relations are a documented weak spot.</li>
+
+<li><strong>"Why do Session 2's evals matter here?"</strong> <em>(cross-session → S2)</em> — Because nothing about measurement changed: five images plus expected answers through your S2 harness is a vision eval — the stretch goal is literally your harness growing eyes. Same discipline tomorrow with RAG: the surface changes every session, the eval loop never does.</li>
+
+<li><strong>"Is video just diffusion with more frames?"</strong> — Essentially diffusion plus temporal attention so objects persist across frames — with brutal costs: roughly $0.10–0.75 per generated second in mid-2026, physics still slipping in complex scenes, improving every quarter. Sora 2, Veo 3.1, Kling 3.0 are the reference points.</li>
+</ol>
+<hr>
+<h2 id="6-misconception-table">6. Misconception table</h2>
+<table><thead><tr><th>#</th><th>Students walk in believing</th><th>One-line correction</th></tr></thead><tbody>
+<tr><td>1</td><td>Multimodal = a separate vision AI bolted onto chat</td><td>One context, one attention loop — patches are just new tokens in the same sequence</td></tr>
+<tr><td>2</td><td>It reads text via an OCR engine</td><td>Reading <em>emerged</em> from training on image–text pairs; there's no engine, which is why it both reads and invents</td></tr>
+<tr><td>3</td><td>Image generators search/collage existing images</td><td>The weights synthesize from learned statistics — no image database is consulted at inference</td></tr>
+<tr><td>4</td><td>"AI images have six fingers — I can spot them"</td><td>Hands were fixed long ago; use provenance signals, not vibes</td></tr>
+<tr><td>5</td><td>Computers count perfectly, so AI counts objects perfectly</td><td>Patches summarize, they don't enumerate — counting is prediction, and it misses</td></tr>
+<tr><td>6</td><td>Voice cloning needs a studio and hours of samples</td><td>Seconds of Instagram audio suffice — that's why the family code word matters</td></tr>
+<tr><td>7</td><td>"Reply ONLY with JSON" is production engineering</td><td>Production passes <code>response_schema</code> — the sampler masks illegal tokens, so the parse <em>cannot</em> fail</td></tr>
+<tr><td>8</td><td>Valid JSON output means correct output</td><td>Schemas lock shape, not truth — a wrong total parses beautifully; evals still guard content</td></tr>
+</tbody></table>
+<hr>
+<h2 id="7-timing-pressure-map">7. Timing pressure map</h2>
+<p>Presenter DATA total: <strong>120 min</strong> (53 talk + 53 lab + 14 show-&amp;-tell/close); slide budgets live in presenter mode (press S). This deck is deliberately lighter than S1/S2 — it's the post-lunch slot.</p>
+<table><thead><tr><th>Zone</th><th>Historical bleed</th><th>Action</th></tr></thead><tbody>
+<tr><td>Slide 4 patchify</td><td>hover-mapping is fun; rooms want to hover everything</td><td>2–3 hovers max, then the board math — 5 min hard cap</td></tr>
+<tr><td>Slide 8 diffusion</td><td>over-narrating the slider</td><td>one slow pass + Generate; 6 min budget includes the board example</td></tr>
+<tr><td>Slide 9 gen limits <strong>▸</strong></td><td>style-ethics debate can eat 10 min</td><td>marked compressible: cards in one line each, keep the camera line, park ethics for the break</td></tr>
+<tr><td>Hot take <strong>▸</strong></td><td>the argument you invited</td><td>take ONE counter, park the rest — 1.5 min budget is real</td></tr>
+<tr><td>Slide 12 one call</td><td>explaining constrained decoding to the whole room</td><td>the masking table is for <em>questions</em>; the talk track is one sentence ("the API is forced — lab does both ways")</td></tr>
+<tr><td>Lab Part A</td><td>photo-upload friction (#1 sink)</td><td>demo the folder-icon upload ONCE on the projector before releasing</td></tr>
+<tr><td><strong>Never cut</strong></td><td>—</td><td>family-password beat (slide 10) · CAPTCHA "capability ≠ permission" line · <code>response_schema</code> beat + checkpoint 2 parse · the 14-min Day 1 close and the said-twice overnight task</td></tr>
+</tbody></table>
+<p>If behind at the hot take: compress slides 9 + HT to ~2.5 min combined and you're back on schedule without touching anything that matters.</p>
+<hr>
+<h2 id="8-going-deeper-weekend-reading">8. Going deeper — weekend reading</h2>
+<ol>
+<li><strong>"An Image is Worth 16×16 Words" — Dosovitskiy et al., 2020 (ViT).</strong> The patch trick straight from the source; §3 justifies everything you say on slide 4.</li>
+<li><strong>"Denoising Diffusion Probabilistic Models" — Ho, Jain &amp; Abbeel, 2020.</strong> The noise-prediction objective and sampler; equations 4 and 14 are the two you whiteboarded.</li>
+<li><strong>"Classifier-Free Diffusion Guidance" — Ho &amp; Salimans, 2022.</strong> Four pages; makes the guidance-scale dial rigorous, including why high g fries images.</li>
+<li><strong>"Robust Speech Recognition via Large-Scale Weak Supervision" — Radford et al., 2022 (Whisper).</strong> The template for "capability emerges from weak supervision at scale" — the same argument you make for OCR-in-VLMs.</li>
+<li><strong>"Neural Codec Language Models are Zero-Shot TTS" — Wang et al., 2023 (VALL-E).</strong> The 3-second cloning mechanism precisely: speech as tokens, voice as an in-context prefix.</li>
+<li><strong>"Efficient Guided Generation for Large Language Models" — Willard &amp; Louf, 2023 (Outlines), plus Google's structured-output docs.</strong> How schema→FSM→logit-masking is actually implemented — the ground truth under slide 12's <code>response_schema</code> beat.</li>
+</ol>
+
+  <footer class="foot">
+    <div style="margin-bottom:8px">deck: <a href="../presentations/session-3-ai-beyond-text.html">session-3-ai-beyond-text.html</a> · run sheet: <code>session-3-notes.md</code> · <a href="../cheatsheets/session-3-cheatsheet.html">student cheatsheet</a></div>
+    Generative AI: Foundations &amp; Applications · <a href="../index.html">course home</a> · free to use, fork, localize and teach
+  </footer>
+</div>
+</body>
+</html>

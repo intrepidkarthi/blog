@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 2 — The Lie Detector — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Lab 2 handout: upgrade a weak prompt in five documented steps, build your first eval from your own 10-question test set, then run a prompt-vs-prompt arena.">
+<meta property="og:title" content="Lab 2 — The Lie Detector">
+<meta property="og:description" content="Lab 2 handout: upgrade a weak prompt in five documented steps, build your first eval from your own 10-question test set, then run a prompt-vs-prompt arena.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#6B1FBF;--accentpale:#EFE2FE;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="../../index.html">← Course home</a></nav>
+  <div class="kicker">Lab 2 · 50 minutes</div>
+  <h1>The Lie Detector</h1>
+  <p class="lead">Session 2 · Prompting + Evaluation · TCE · 50 min · same pairs · Same rhythm as Lab 1 (checkpoints → show instructor; stuck &gt;5 min → neighbour → instructor).</p>
+
+  <blockquote><p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p></blockquote>
+
+  <p><strong>You need:</strong> your 10-question file from Lab 1 Part E. Lost it? Rewrite it now — 5 minutes, go.</p>
+
+  <h2>Part A — Prompt makeover (15 min)</h2>
+  <p>Notebook Cell 2 starts with <code>write about tce</code>. Improve it five times — <strong>one upgrade per run</strong>, in this order: task → role+audience → context facts → format+negatives → "only stated facts" constraint. After each run, fill one row of the table: <em>what changed, why the output got better</em>.</p>
+  <blockquote><p>✓ <strong>Checkpoint 1:</strong> five documented rows. (The documentation is the deliverable — "I changed stuff and it got better" doesn't count.)</p></blockquote>
+
+  <h2>Part B — Your first eval (15 min)</h2>
+  <ol>
+    <li>Load your 10 questions into <code>my_tests</code>. Keep <code>expected</code> short — the key fact, not a sentence ("rahman", not "A. R. Rahman composed it").</li>
+    <li>Run the baseline eval. Get your score.</li>
+    <li><strong>Diagnose every ✗:</strong> model hallucinated / scorer too strict / question ambiguous. Fix scorer and question issues; leave true hallucinations in — they're gold.</li>
+  </ol>
+  <blockquote><p>✓ <strong>Checkpoint 2:</strong> score shown + one-line diagnosis per failure.</p></blockquote>
+
+  <h2>Part C — The arena (15 min)</h2>
+  <p>Design <code>PROMPT_B</code> to beat <code>PROMPT_A</code> on <strong>your</strong> test set. Ideas: role, "answer with the specific fact", "say 'I am not sure' instead of guessing", format constraints. Run both. Iterate B until it wins.</p>
+  <blockquote><p>✓ <strong>Checkpoint 3:</strong> A vs B percentages + your most interesting failure, explained to me in one sentence.</p></blockquote>
+
+  <h2>Stretch</h2>
+  <ul>
+    <li><strong>Variance:</strong> run your eval 3×; report spread. Try temperature 0 vs 1.0 in the harness.</li>
+    <li><strong>LLM-as-judge:</strong> run the judge cell; find a case where the judge itself is wrong.</li>
+    <li><strong>Hard mode:</strong> add 5 harder questions designed to <em>make</em> the model hallucinate (obscure details of your expert topic). Watch the score drop — that's a better test set.</li>
+  </ul>
+
+  <h2>Before the break</h2>
+  <p>Keep the notebook open — the eval harness returns in Session 6 to grade your capstone. Have 1–2 photos on your phone for Session 3 (anything: a receipt, your notes page, the canteen menu board).</p>
+
+  <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="../../index.html">course home</a> · free to use, fork, localize and teach</footer>
+</div>
+</body>
+</html>

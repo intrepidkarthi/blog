@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Making AI Do Things — Cheatsheet — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Session 5 on one printable page: tool use, agents vs workflows, the escalation ladder, API vs local.">
+<meta property="og:title" content="Making AI Do Things — Cheatsheet">
+<meta property="og:description" content="Session 5 on one printable page: tool use, agents vs workflows, the escalation ladder, API vs local.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#00755A;--accentpale:#D6F3E7;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
+  <div class="kicker">Session 5 cheatsheet</div>
+  <h1>Making AI Do Things</h1>
+  <p class="lead">Generative AI: Foundations and Applications · TCE</p>
+
+  <h2>The trick (say it twice)</h2>
+  <blockquote style="background:var(--accentpale)"><strong>The model never executes anything. It writes a structured request; YOUR code executes; the result re-enters the context.</strong> Still next-token prediction — and control stays with you (you pick the tools, validate args, refuse calls).</blockquote>
+
+  <h2>Tool use in code</h2>
+  <pre><code>def calculator(expression: str) -&gt; float:
+    """Evaluate a math expression exactly. Use for ANY arithmetic;
+    never compute numbers yourself."""          # docstring = instruction to the model
+    if not set(expression) &lt;= set("0123456789+-*/(). "):
+        raise ValueError("unsafe")               # validate BEFORE running
+    return eval(expression)
+
+config = types.GenerateContentConfig(tools=[calculator])   # hand over the menu</code></pre>
+  <p>The model reads only <strong>name + docstring + type hints</strong> — vague docstring = wrong tool, bad args. The agent loop: <code>while it_wants_a_tool: run it (your code), feed result back</code>.<br>
+  <strong>MCP (Model Context Protocol)</strong> = USB-C for tools: one standard plug, so N models + M tools instead of N×M custom adapters.</p>
+
+  <h2>Five failure modes → fixes</h2>
+  <p>Wrong tool (sharpen docstrings, "answer directly if no tool needed") · bad args (validate inside the tool, return readable errors) · infinite loop (hard cap ~5 calls) · imaginary tools (execute allow-list only) · <strong>poisoned tool results</strong> (treat as untrusted input — Session 6).</p>
+
+  <h2>The honest lesson</h2>
+  <p><strong>Most problems need a workflow, not an agent.</strong> Workflow = YOU fix the steps in code; model fills the hard parts (predictable, testable). Agent = the MODEL picks steps (flexible, fragile). Because reliability compounds:</p>
+  <p><strong>0.95¹⁰ ≈ 60% · 0.95²⁰ ≈ 36%</strong> — every added autonomous step multiplies failure. Fewer steps, checkpoints, human gates on anything that writes/spends/sends.<br>
+  <strong>Multi-agent</strong> = compounding hand-offs (same math — agents chaining agents multiply failure). The exception that works: <strong>parallel fan-out + one judge</strong> — independent workers don't compound.</p>
+
+  <h2>The escalation ladder (cheapest first)</h2>
+  <p><strong>Prompt → Few-shot → RAG → Tools → Fine-tune.</strong> Climb only when your <strong>eval</strong> proves the current rung failed. Interview line: <strong>"Fine-tuning teaches behaviour; RAG provides knowledge."</strong> Fine-tune is the last resort, never the first, and never for facts.</p>
+
+  <h2>API vs local (a trade, not a religion)</h2>
+  <p>Local/open weights (Ollama: <code>ollama run gemma4:e4b</code>) win on <strong>privacy</strong> (data never leaves), <strong>cost at scale</strong> (hardware once), <strong>offline/edge</strong>. Frontier APIs win on raw capability and zero-ops upgrades. Real systems: <strong>hybrid</strong> — API for the hard 10%, small/local for the routine 90%.</p>
+
+  <p><strong>Capstone:</strong> RAG (knowledge) + tools (hands) + evals (judge) = your app. Save the notebook — the finale attacks it, you harden it, you demo.</p>
+
+  <footer class="foot">
+    <div style="margin-bottom:8px"><a href="session-4-cheatsheet.html">← Session 4</a> · deck: <a href="../presentations/session-5-making-ai-do-things.html">session-5-making-ai-do-things.html</a> · <a href="session-6-cheatsheet.html">Session 6 →</a></div>
+    Generative AI: Foundations &amp; Applications · <a href="../index.html">course home</a> · free to use, fork, localize and teach
+  </footer>
+</div>
+</body>
+</html>

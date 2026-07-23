@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 5 · Making AI Do Things — GenAI Foundations · TCE</title>
+<meta name="description" content="Session 5 of a 6-part GenAI course at TCE Madurai — tool use, function calling, the agent loop, workflows vs agents, and local models with Ollama.">
+<meta property="og:title" content="Session 5 · Making AI Do Things — GenAI Foundations · TCE">
+<meta property="og:description" content="Session 5 of a 6-part GenAI course at TCE Madurai — tool use, function calling, the agent loop, workflows vs agents, and local models with Ollama.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+
+  :root{
+    --paper:#FFFFFF; --ink:#14171F; --body:#3A404C; --muted:#667080; --faint:#98A0AD;
+    --line:#E8EAEF; --linedark:#C5CAD4; --panel:#F4F6F9;
+    --green:#0E9F6E; --greenpale:#DDF4EA; --red:#D92D20; --redpale:#FDE4E1;
+    --amber:#B36A00; --amberpale:#FFEFD6;
+    /* the six course hues — title chips + series token squares */
+    --h1:#2B4EFF; --d1:#1D3AD1; --t1:#E3E9FF;
+    --h2:#8526E0; --d2:#6B1FBF; --t2:#EFE2FE;
+    --h3:#ED2E7C; --d3:#C2186A; --t3:#FDE0EE;
+    --h4:#F08C00; --d4:#A85E00; --t4:#FFEBCC;
+    --h5:#00A87A; --d5:#00755A; --t5:#D6F3E7;
+    --h6:#E8442E; --d6:#C22B18; --t6:#FDE2DC;
+    /* this deck = session 5 */
+    --hue:var(--h5); --deep:var(--d5); --tint:var(--t5);
+    --bg:var(--paper);
+    --stagebg:#14171F; --stageink:#FFFFFF;
+    /* legacy aliases — much CSS/JS reads these */
+    --accent:var(--deep); --accent2:var(--hue); --accentpale:var(--tint);
+    --accentmark:color-mix(in srgb,var(--hue) 35%,white);
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--body);font-family:var(--font);overflow:hidden;-webkit-font-smoothing:antialiased}
+  /* chrome */
+  #progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--hue);z-index:50;transition:width .3s ease}
+  #hud{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+    padding:12px 28px;font-size:11.5px;color:var(--muted);letter-spacing:.03em;pointer-events:none;background:var(--paper);
+    border-top:1px solid var(--line);font-family:var(--mono)}
+  #hud .brand{display:inline-flex;align-items:center;gap:9px}
+  #hud .brand b{color:var(--ink);font-weight:700}
+  #counter{font-variant-numeric:tabular-nums;color:var(--muted);font-family:var(--mono);font-size:11.5px}
+  #keyhint{position:fixed;right:20px;bottom:56px;z-index:50;font-size:11.5px;color:var(--muted);font-family:var(--mono);
+    background:var(--paper);border:1.5px solid var(--ink);border-radius:9px;padding:8px 12px;transition:opacity .5s}
+  #keyhint kbd{font-family:var(--mono);background:var(--panel);border:1px solid var(--linedark);border-bottom-width:2px;
+    border-radius:4px;padding:1px 6px;font-size:10.5px;color:var(--body)}
+  /* probability-bar motif — the course logo-mark: a next-token distribution */
+  .pbars{display:inline-flex;align-items:flex-end;gap:3px;height:16px}
+  .pbars i{width:5px;border-radius:2px;background:var(--hue)}
+  .pbars i:nth-child(1){height:100%}.pbars i:nth-child(2){height:62%}
+  .pbars i:nth-child(3){height:38%}.pbars i:nth-child(4){height:20%}.pbars i:nth-child(5){height:10%}
+  /* deck & slides */
+  .deck{position:fixed;inset:0;z-index:10}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+    background:radial-gradient(var(--line) 1.05px, transparent 1.05px) 0 0/26px 26px, var(--paper);
+    padding:7vh 9vw 12vh;opacity:0;visibility:hidden;transform:translateY(18px);
+    transition:opacity .45s ease,transform .45s ease,visibility .45s}
+  .slide.active{opacity:1;visibility:visible;transform:none}
+  .slide.past{transform:translateY(-18px)}
+  .deck.overview{overflow-y:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:20px;background:var(--panel)}
+  .deck.overview .slide{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;
+    zoom:.24;border:3px solid var(--linedark);border-radius:16px;cursor:pointer;height:100vh;overflow:hidden}
+  .deck.overview .slide:hover{border-color:var(--hue)}
+  /* reveal stagger */
+  .rv{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease;position:relative}
+  .slide.active .rv{opacity:1;transform:none}
+  /* typography */
+  .kicker{display:flex;align-items:baseline;gap:12px;font-size:12px;font-weight:700;letter-spacing:.08em;
+    color:var(--deep);font-family:var(--mono);margin-bottom:26px}
+  .kicker .no{color:var(--faint);letter-spacing:0}
+  .kicker .tk:before{content:"<|";color:var(--faint);font-weight:400;margin-right:2px}
+  .kicker .tk:after{content:"|>";color:var(--faint);font-weight:400;margin-left:2px}
+  .kicker:after{content:"";flex:1;height:1px;background:var(--line);align-self:center;min-width:24px}
+  .sdots{display:inline-flex;gap:6px;margin-left:4px;align-self:center}
+  .sdots i{width:9px;height:9px;border-radius:3px;background:var(--line)}
+  .sdots i:nth-child(1){background:var(--t1)}
+  .sdots i:nth-child(2){background:var(--t2)}
+  .sdots i:nth-child(3){background:var(--t3)}
+  .sdots i:nth-child(4){background:var(--t4)}
+  .sdots i:nth-child(5){background:var(--t5)}
+  .sdots i:nth-child(6){background:var(--t6)}
+  .sdots i.on{background:var(--hue);outline:1.5px solid var(--ink)}
+  .kicker .pbars{align-self:center}
+  .bigno{position:absolute;right:4vw;bottom:-6vh;font-size:46vh;font-weight:800;line-height:1;color:var(--tint);opacity:1;letter-spacing:-.06em;pointer-events:none;user-select:none;font-variant-numeric:tabular-nums}
+  h1{font-size:clamp(2.7rem,6.2vw,4.7rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;color:var(--ink)}
+  h2{font-size:clamp(1.9rem,3.8vw,2.85rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:18px;color:var(--ink)}
+  .u{background:var(--tint);color:var(--ink);border-radius:10px;padding:.04em .18em;box-shadow:none;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .tok-h i{font-style:normal;color:var(--ink);border-radius:.14em;padding:.02em .1em;margin:0 .02em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  /* chip lines in display type need extra leading so line-1 descenders clear the chip background */
+  h1 .u,h1 .tu,h1 .tok-h{line-height:1.24}
+  .lead{font-size:clamp(1.05rem,1.75vw,1.3rem);color:var(--body);line-height:1.65;max-width:64ch}
+  .lead b,.card b{color:var(--ink);font-weight:700}
+  .note{font-size:.9rem;color:var(--muted);margin-top:16px;line-height:1.55}
+  .mt{margin-top:24px}
+  /* layout */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+  .cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card{background:var(--paper);border:2px solid var(--ink);border-radius:14px;padding:20px 22px;box-shadow:5px 5px 0 var(--tint)}
+  .card h3{font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;color:var(--ink)}
+  .card p{color:var(--muted);font-size:.94rem;line-height:1.6}
+  .card .em{display:inline-block;width:.5em;height:.5em;border-radius:3px;background:var(--accent);margin-right:9px;vertical-align:.06em}
+  .card.hi{box-shadow:6px 6px 0 var(--hue)}
+  .card.danger{border-color:var(--red);background:var(--redpale);box-shadow:5px 5px 0 var(--redpale)}
+  .card.danger p{color:var(--body)}
+  .card.called{border-color:var(--hue);box-shadow:6px 6px 0 var(--hue)}
+  .pill{display:inline-block;font-size:12.5px;font-weight:600;color:var(--body);
+    border:1.5px solid var(--linedark);border-radius:999px;padding:5px 13px;margin:4px 6px 0 0;background:var(--paper)}
+  .pill.on{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+  .statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:28px;border-top:1px solid var(--line)}
+  .stat{padding:18px 22px 4px 0;border-bottom:1px solid var(--line)}
+  .stat .n{font-size:clamp(1.5rem,3vw,2.3rem);font-weight:800;letter-spacing:-.02em;color:var(--deep)}
+  .stat .l{color:var(--muted);font-size:.88rem;margin-top:5px;line-height:1.5}
+  .codebox{font-family:var(--mono);font-size:.86rem;line-height:1.75;background:#14171F;border:2px solid var(--ink);border-radius:10px;
+    padding:18px 20px;color:#EDE7DA;overflow:auto}
+  .codebox .c{color:#8A8377}.codebox .k{color:#7fb4ff}.codebox .s{color:#a5d6a7}.codebox .f{color:#ffd28a}
+  .pre{white-space:pre-wrap}
+  .codebox.pre{white-space:pre}
+  /* demo shell */
+  .demo{background:var(--paper);border:2px solid var(--ink);border-radius:16px;padding:20px 22px;box-shadow:7px 7px 0 var(--hue)}
+  .dtitle{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--deep);font-family:var(--mono);margin-bottom:16px}
+  .dtitle:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .btn{appearance:none;border:2px solid var(--ink);background:var(--paper);color:var(--ink);font-family:var(--font);
+    font-size:.88rem;font-weight:700;border-radius:10px;padding:9px 16px;cursor:pointer;transition:.15s}
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--linedark)}
+  .btn.primary{background:var(--ink);color:var(--paper);box-shadow:4px 4px 0 var(--hue)}
+  .btn.primary:hover{box-shadow:6px 6px 0 var(--hue);transform:translate(-1px,-1px);background:var(--ink)}
+  .btn:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+  .btn.primary:disabled{box-shadow:4px 4px 0 var(--tint);opacity:.7}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  input[type=range]{accent-color:var(--hue);width:100%}
+  input[type=text]{background:var(--paper);border:2px solid var(--linedark);border-radius:8px;color:var(--ink);
+    font-family:var(--font);font-size:.95rem;padding:10px 14px;width:100%;outline:none}
+  input[type=text]:focus{border-color:var(--hue)}
+  /* pipeline stepper */
+  .pipe{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;justify-content:space-between}
+  .pipe .arrow{align-self:center;color:var(--faint);font-size:.9rem}
+  .stage{flex:1;min-width:96px;background:var(--paper);border:1.5px solid var(--line);border-radius:9px;padding:11px 10px;text-align:center;transition:.2s}
+  .stage .t{font-weight:700;font-size:.82rem;letter-spacing:-.01em;color:var(--ink)}
+  .stage .d{color:var(--muted);font-size:.68rem;margin-top:3px;line-height:1.3}
+  .stage.cur{border-color:var(--hue);background:var(--tint)}
+  .stage.done{border-color:var(--linedark)}
+  .stage.done .t{color:var(--muted)}
+  .stage.bad{border-color:var(--red);background:var(--redpale)}
+  .payload{margin-top:16px;background:var(--panel);border:1.5px solid var(--line);border-radius:10px;padding:16px 18px;
+    min-height:118px;font-size:.95rem;color:var(--body);line-height:1.6}
+  .payload .mono{font-family:var(--mono);font-size:.88rem}
+  /* classify game */
+  .cg-item{font-size:clamp(1.15rem,2.4vw,1.7rem);font-weight:700;letter-spacing:-.01em;min-height:56px;display:flex;align-items:center;color:var(--ink)}
+  .cg-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  .cg-btns.four{grid-template-columns:repeat(4,1fr)}
+  .cg-btn{border:1.5px solid var(--linedark);border-radius:10px;background:var(--paper);padding:16px;cursor:pointer;text-align:center;transition:.15s;font-family:var(--font);color:var(--ink)}
+  .cg-btn:hover{border-color:var(--ink);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--linedark)}
+  .cg-btn .b{font-weight:800;font-size:1.05rem}
+  .cg-btn .s{color:var(--muted);font-size:.82rem;margin-top:3px}
+  .cg-btn.right{border-color:var(--green);background:var(--greenpale)}
+  .cg-btn.wrong{border-color:var(--red);background:var(--redpale)}
+  .cg-score{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+  /* reveal cards (failures & recap) */
+  .flip{cursor:pointer;position:relative}
+  .flip .ans{display:none;color:var(--body)}
+  .flip.open .ans{display:block}
+  .flip.open .q{display:none}
+  .flip .hintline{color:var(--deep);font-family:var(--mono);font-size:.8rem;font-weight:700;margin-top:10px}
+  .flip.open .hintline{display:none}
+  /* tables & steps */
+  table.tbl{width:100%;border-collapse:collapse;font-size:.94rem}
+  .tbl th{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;
+    padding:10px 14px;border-bottom:2px solid var(--ink)}
+  .tbl td{padding:11px 14px;border-bottom:1px solid var(--line);color:var(--muted)}
+  .tbl td:first-child{color:var(--ink);font-weight:650}
+  .tag{font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:999px}
+  .tag.closed{background:var(--redpale);color:var(--red)}
+  .tag.open{background:var(--greenpale);color:var(--green)}
+  .steps{counter-reset:st;display:flex;flex-direction:column;gap:13px}
+  .step{display:flex;gap:15px;align-items:flex-start}
+  .step:before{counter-increment:st;content:counter(st);flex:none;width:31px;height:31px;border-radius:8px;
+    background:var(--ink);color:var(--paper);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .step .t{font-weight:700;font-size:.98rem;color:var(--ink)} .step .d{color:var(--muted);font-size:.9rem;margin-top:2px;line-height:1.55}
+  @media (max-width:900px){.cols,.cols3,.statgrid,.cg-btns,.cg-btns.four{grid-template-columns:1fr}.slide{padding:6vh 6vw 13vh}}
+
+
+  /* terminology rings */
+  .ring{border:1.5px solid var(--linedark);border-radius:14px;padding:13px 15px;cursor:pointer;transition:.15s;background:var(--paper)}
+  .ring .rl{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  .ring:hover>.rl{color:var(--ink)}
+  .ring.sel{border-color:var(--hue)}
+  .ring.sel>.rl{color:var(--deep)}
+
+  .relwrap svg{width:100%;height:auto;display:block;background:var(--panel);border:1.5px solid var(--line);border-radius:10px}
+  .mcrow{display:flex;gap:6px}
+  .mcrow .mcn{flex:1;height:26px;border:1.5px solid var(--line);border-radius:6px;background:var(--panel);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;color:var(--faint);transition:.15s}
+  .mcrow .mcn.ok{background:var(--greenpale);border-color:var(--green);color:var(--green);font-weight:700}
+  .mcrow .mcn.dead{background:var(--redpale);border-color:var(--red);color:var(--red);font-weight:800}
+  .lognote{font-family:var(--mono);font-size:.85rem;line-height:1.9;color:var(--body)}
+  .lognote .tool{color:var(--deep);font-weight:700}
+  .rung{border:1.5px solid var(--linedark);border-radius:10px;padding:12px 16px;cursor:pointer;transition:.15s;margin-bottom:8px;background:var(--paper)}
+  .rung:hover{border-color:var(--ink)}
+  .rung.sel{border-color:var(--hue);background:var(--tint)}
+  .rung .rt{font-weight:800;font-size:.95rem;color:var(--ink)}
+  .rung .rd{color:var(--muted);font-size:.8rem;margin-top:2px}
+  .rung .rmeter{float:right;font-family:var(--mono);font-size:.75rem;font-weight:600;color:var(--muted);letter-spacing:.04em}
+
+  /* hot take — ink block on the paper deck */
+  .slide.take{background:var(--ink)}
+  .slide.take h1,.slide.take h2{color:var(--paper)}
+  .slide.take .lead{color:#C6CBD5} .slide.take .note{color:#98A0AD}
+  .slide.take .lead b{color:var(--paper)}
+  .slide.take .kicker,.slide.take .kicker .tk{color:var(--hue)}
+  .slide.take .kicker .no{color:#98A0AD}
+  .slide.take .kicker:after{background:#3A404C}
+  .tu{background:var(--hue);color:#fff;border-radius:10px;padding:.04em .18em;box-decoration-break:clone;-webkit-box-decoration-break:clone;box-shadow:none}
+
+
+  /* ===== presenter mode (press S) ===== */
+  #pres{position:fixed;top:0;right:0;width:330px;height:100vh;z-index:80;background:var(--paper);border-left:2px solid var(--ink);
+    display:none;flex-direction:column;font-family:var(--font);transform:translateX(100%);transition:transform .25s ease}
+  #pres.on{display:flex;transform:none}
+  #pres .ph{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  #pres .ph .lbl{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);font-family:var(--mono)}
+  #pres .ph .sn{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  #pres .clock{padding:14px 16px;border-bottom:1px solid var(--line)}
+  #pres .elapsed{font-family:var(--mono);font-size:2.4rem;font-weight:800;line-height:1;letter-spacing:-.02em;color:var(--ink)}
+  #pres .pace{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px}
+  #pres .pace.ok{background:var(--greenpale);color:var(--green)}
+  #pres .pace.behind{background:var(--redpale);color:var(--red)}
+  #pres .pace.ahead{background:var(--tint);color:var(--deep)}
+  #pres .tgt{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7}
+  #pres .tgt b{color:var(--ink)}
+  #pres .budget{padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px}
+  #pres .budget .this{font-weight:800;font-size:1rem;color:var(--ink)}
+  #pres .budget .compress{display:inline-block;margin-left:6px;font-size:10px;font-weight:700;color:var(--amber);background:var(--amberpale);padding:2px 7px;border-radius:999px}
+  #pres .notes{flex:1;overflow-y:auto;padding:14px 16px;font-size:13.5px;line-height:1.6;color:var(--body)}
+  #pres .notes b{color:var(--ink)}
+  #pres .nxt{padding:10px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+  #pres .nxt b{color:var(--ink);font-weight:700}
+  #pres .ctl{padding:10px 16px;border-top:1px solid var(--line);display:flex;gap:8px}
+  #pres .ctl button{flex:1;font-family:var(--font);font-size:12px;font-weight:700;border:1.5px solid var(--linedark);background:var(--paper);color:var(--ink);
+    border-radius:7px;padding:8px;cursor:pointer}
+  #pres .ctl button:hover{border-color:var(--ink)}
+  #pres .ctl button.go{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  #pres-hint{position:fixed;left:16px;bottom:56px;z-index:60;font-size:11px;color:var(--muted);font-family:var(--mono);
+    background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:3px 9px}
+
+
+  /* kit rail — continue links */
+  .krail{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;align-items:center}
+  .krail a{font-family:var(--mono);font-size:.85rem;font-weight:700;color:var(--ink);text-decoration:none;
+    border:2px solid var(--ink);border-radius:10px;padding:8px 14px;background:var(--paper);transition:.12s}
+  .krail a:hover{background:var(--ink);color:var(--paper)}
+  .krail a.next{background:var(--ink);color:var(--paper);box-shadow:4px 4px 0 var(--hue)}
+  .krail a.next:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--hue)}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="hud">
+  <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b><span>· Session 5 · Day 2 · TCE Madurai</span></span>
+  <span id="counter">1 / 1</span>
+</div>
+<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview</div>
+
+<main class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide">
+  <div class="bigno" aria-hidden="true">05</div>
+  <div class="kicker rv"><span class="no">S5/6</span><span class="tk">session_05/06 · day_2</span><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="sdots" aria-label="Session 5 of 6"><i></i><i></i><i></i><i></i><i class="on"></i><i></i></span></div>
+  <h1 class="rv">Making AI<br><span class="tok-h"><i style="background:var(--t1)">do</i><i style="background:var(--t3)"> thi</i><i style="background:var(--t5)">ngs</i></span></h1>
+  <p class="lead rv mt">Tool use: how a text-predictor gets hands — calculators, search, your files. Then the honest lesson the hype skips: when you need an agent, when you need a boring workflow, and the framework for choosing prompt vs RAG vs tools vs fine-tuning.</p>
+  <div class="mt rv"><span class="pill">Session 5 of 6</span><span class="pill on">Your RAG app gets hands today</span></div>
+</section>
+
+<!-- 2 RECAP -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">01</span><span class="tk">90_second_recap</span></div>
+  <h2 class="rv">Still true <span class="u">after lunch?</span></h2>
+  <div class="demo rv" style="max-width:880px">
+    <div class="dtitle">True or false</div>
+    <div class="cg-item" id="rq-item" style="font-size:clamp(1rem,2vw,1.4rem)"></div>
+    <div class="cg-btns" id="rq-btns"></div>
+    <div class="btnrow mt" style="justify-content:space-between">
+      <span class="cg-score" id="rq-score">0 / 0</span><span class="note" id="rq-fb" style="margin:0;max-width:65%"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 3 BRAIN IN A JAR -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">02</span><span class="tk">the_limitation</span></div>
+  <h2 class="rv">Your RAG app is a <span class="u">brain in a jar</span></h2>
+  <p class="lead rv">It can explain your notes beautifully. But ask it to:</p>
+  <div class="mt rv">
+    <span class="pill">compute your exact aggregate → predicts digits (the Session 1 disease)</span>
+    <span class="pill">check today's exam schedule → knowledge cutoff</span>
+    <span class="pill">read a file it wasn't given → no hands</span>
+    <span class="pill">email your project group → no hands</span>
+  </div>
+  <p class="lead rv mt">Text in, text out — that's the whole jar. Today we wire the jar to the world. <b>Carefully.</b></p>
+</section>
+
+<!-- 4 THE TRICK -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">03</span><span class="tk">the_trick · read_it_twice</span></div>
+  <h1 class="rv" style="font-size:clamp(1.9rem,4.2vw,3.2rem)">The model never executes anything.<br><span class="u">It writes requests. Your code executes.</span></h1>
+  <p class="lead rv mt">Tool use = the model outputs a <b>structured function call</b> ("call calculator with 2347 × 0.18") → <b>your Python runs it</b> → the result goes back into the context → the model continues writing. Still next-token prediction, end to end.</p>
+  <p class="lead rv">Which means: <b>control stays with you.</b> You decide which tools exist, validate every argument, and can refuse any call. Hold onto that sentence — Session 6 is built on it.</p>
+</section>
+
+<!-- 5 TOOL STEPPER -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">04</span><span class="tk">live_demo · drive_the_loop</span></div>
+  <h2 class="rv">One tool call, <span class="u">step by step</span></h2>
+  <div class="demo rv">
+    <div class="dtitle">"What's 18% GST on ₹2,347?" — the question that broke Session 1</div>
+    <div class="pipe" id="tl-stages"></div>
+    <div class="payload pre" id="tl-payload" style="min-height:110px">Press <b>Step</b>.</div>
+    <div class="btnrow mt">
+      <button class="btn primary" id="tl-step">Step →</button>
+      <button class="btn" id="tl-evil">Try a malicious call</button>
+      <button class="btn" id="tl-reset">Reset</button>
+      <span class="note" id="tl-note" style="margin:0"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 6 DECLARATIONS -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">05</span><span class="tk">teaching_it_the_menu</span></div>
+  <h2 class="rv">Function declarations: <span class="u">the description IS the prompt</span></h2>
+  <div class="cols">
+    <div class="codebox rv pre"><span class="c"># you hand the model a menu of tools</span>
+<span class="k">def</span> <span class="f">calculator</span>(expression: str) -> float:
+    <span class="s">"""Evaluates a math expression exactly.
+    Use for ANY arithmetic — never compute
+    numbers yourself."""</span>
+    <span class="k">return</span> safe_eval(expression)
+
+config = types.GenerateContentConfig(
+    tools=[calculator, search_notes])</div>
+    <div class="rv">
+      <div class="card"><h3>The model reads three things</h3>
+        <p><b>Name</b>, <b>docstring</b>, <b>parameter types</b> — that's its entire understanding of your tool. A vague docstring = wrong tool choices, missed calls, bad arguments.</p>
+        <p class="mt">"Use for ANY arithmetic — never compute numbers yourself" isn't documentation. <b>It's an instruction to the model.</b> Docstrings just became prompts.</p>
+        <p class="note">The SDK converts Python functions to declarations automatically — types and docstrings do the work.</p>
+        <p class="note">The industry-standard version of this menu is called <b>MCP</b> (Model Context Protocol) — a common format so any model can use any tool. Same idea you just learned, standardized.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MCP -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">06</span><span class="tk">the_standard_plug</span></div>
+  <h2 class="rv">MCP: <span class="u">USB-C</span> for tools</h2>
+  <p class="lead rv mt">You just wrote a tool declaration by hand — you built the socket. In 2024 the industry standardized the plug: the <b>Model Context Protocol</b>. One MCP server exposes your tools and data; any model that speaks MCP can use them.</p>
+  <div class="cols">
+    <div class="card rv"><h3><span class="em"></span>Before MCP</h3>
+      <p>Every app × every tool = hand-written glue. N apps, M tools → <b>N×M integrations</b> — a drawer full of proprietary chargers, one per phone.</p></div>
+    <div class="card rv"><h3><span class="em"></span>After MCP</h3>
+      <p>Write <b>ONE server</b> for your data or tool; Claude, Gemini, ChatGPT, your IDE all plug in. <b>N+M</b> — the way USB-C ended the cable drawer.</p></div>
+  </div>
+  <p class="note rv">You already understand MCP — it's the function declaration you just wrote, standardized. That's exactly why this course builds raw first.</p>
+</section>
+
+<!-- 7 WHICH TOOL -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">07</span><span class="tk">think_like_the_model · vote_first</span></div>
+  <h2 class="rv">Which tool <span class="u">should it call?</span></h2>
+  <div class="demo rv" style="max-width:920px">
+    <div class="dtitle">Menu: calculator · web_search · read_file · (or no tool at all)</div>
+    <div class="cg-item" id="wt-item" style="font-size:clamp(1rem,1.9vw,1.35rem)"></div>
+    <div class="cg-btns four" id="wt-btns"></div>
+    <div class="btnrow mt" style="justify-content:space-between">
+      <span class="cg-score" id="wt-score">0 / 0</span><span class="note" id="wt-fb" style="margin:0;max-width:65%"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 8 AGENT LOOP -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">08</span><span class="tk">live_demo · multiple_steps</span></div>
+  <h2 class="rv">The agent loop: <span class="u">while it wants tools, feed it</span></h2>
+  <div class="cols" style="grid-template-columns:1.2fr 1fr">
+    <div class="demo rv">
+      <div class="dtitle">"Read marks.csv — is my average above the class average of 71?"</div>
+      <div class="lognote" id="ag-log" style="min-height:170px"></div>
+      <div class="lognote" id="ag-stat" style="min-height:24px;font-weight:700"></div>
+      <div class="btnrow mt"><button class="btn primary" id="ag-run">Run agent</button></div>
+    </div>
+    <div class="rv">
+      <div class="codebox pre"><span class="c"># the whole pattern</span>
+<span class="k">while</span> response.wants_tool_call:
+    result = execute(response.call)   <span class="c"># YOUR code</span>
+    response = model.continue_with(result)</div>
+      <div class="card mt"><h3>That while-loop is the whole "agent"</h3><p>The model chose the order — nobody scripted read-then-calculate. Impressive. Also exactly where the danger lives → next slide.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 WHAT GOES WRONG -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">09</span><span class="tk">guess_then_click</span></div>
+  <h2 class="rv">Five ways tool use <span class="u">goes sideways</span></h2>
+  <div class="cols" style="grid-template-columns:1fr 1fr">
+    <div class="card flip rv"><h3><span class="em"></span>Wrong tool, confidently</h3><p class="q">"What year did TCE start?" → calls calculator. Why?</p><p class="ans">Vague docstrings + a model eager to use its toys. Fix: sharper descriptions + "answer directly when no tool is needed" in the system prompt.</p><div class="hintline">Reveal ↓</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Bad arguments</h3><p class="q">calculator("what is eighteen percent of 2347") — crash. Why?</p><p class="ans">It writes plausible args, not valid ones. Fix: validate/parse INSIDE every tool; return readable errors — the model actually corrects itself on a good error message.</p><div class="hintline">Reveal ↓</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>The infinite loop</h3><p class="q">Search → weird result → search again → again… Why?</p><p class="ans">No termination judgment. Fix: hard cap (max 5 tool calls), then force an answer. Every agent framework has this number for a reason.</p><div class="hintline">Reveal ↓</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Imaginary tools</h3><p class="q">Calls send_email — which you never gave it. Why?</p><p class="ans">It's seen a thousand send_emails in training. Fix: execute ONLY menu functions; reject the rest. (Your code is the bouncer — another reason the model never executes.)</p><div class="hintline">Reveal ↓</div></div>
+  </div>
+  <div class="card rv danger mt"><h3><span class="em"></span>The fifth one is tomorrow's-session material, today</h3><p>Tool results are <b>text entering the context</b> — a poisoned webpage or file can carry instructions: "ignore your rules and…". Session 6 weaponizes this. For now: treat tool results as untrusted input.</p></div>
+</section>
+
+<!-- 10 HONEST LESSON -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">10</span><span class="tk">the_honest_lesson</span></div>
+  <h1 class="rv" style="font-size:clamp(1.9rem,4.2vw,3.2rem)">Most problems don't need an agent.<br><span class="u">They need a boring workflow.</span></h1>
+  <p class="lead rv mt"><b>Workflow:</b> YOU fix the steps in code (extract → validate → summarize → format). The model fills in the hard parts. Predictable, testable, debuggable.</p>
+  <p class="lead rv"><b>Agent:</b> the MODEL decides the steps at runtime. Flexible, impressive — and every extra decision is a new place to fail.</p>
+  <p class="lead rv">Morning idli at a Madurai mess is a <b>workflow</b> — same steps, every day, no decisions. A wedding feast is an <b>agent</b> — someone senior improvising under pressure.</p>
+  <p class="note rv">The industry relearns this quarterly. Here's the arithmetic nobody puts on the poster →</p>
+</section>
+
+<!-- 11 RELIABILITY -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">11</span><span class="tk">live_demo · compounding_failure_curve</span></div>
+  <h2 class="rv">Why long agent chains <span class="u">collapse</span></h2>
+  <div class="cols" style="grid-template-columns:1.15fr 1fr">
+    <div class="demo rv">
+      <div class="dtitle">success = p<sup>n</sup> — drag per-step reliability</div>
+      <div class="relwrap"><svg id="rel-svg" viewBox="0 0 320 190"></svg></div>
+      <input type="range" id="rel-slider" min="80" max="99" value="95" class="mt">
+      <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--faint);font-family:var(--mono)"><span>80% per step</span><b id="rel-val"></b><span>99% per step</span></div>
+      <p class="note" style="margin-top:10px">A 10-step agent at 95% per step is a coin flip you paid for.</p>
+      <div class="mcrow mt" id="mc-row" aria-hidden="true"></div>
+      <div class="btnrow" style="margin-top:10px"><button class="btn primary" id="mc-run">Run a 10-step agent</button><span class="note" id="mc-out" style="margin:0"></span></div>
+    </div>
+    <div class="rv">
+      <div class="card"><h3>The number to remember</h3>
+        <p id="rel-msg" style="font-size:1.02rem"></p>
+        <p class="mt">Fixes, in order: <b>fewer steps</b> (workflow!), checkpoints with validation between steps, human approval on risky ones, and retries on cheap ones.</p>
+        <p class="note">This one slide explains most "our agent demo failed in production" stories.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MULTI-AGENT -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">12</span><span class="tk">the_buzzword_check</span></div>
+  <h2 class="rv">Multi-agent: more agents, <span class="u">more compounding</span></h2>
+  <p class="lead rv mt">2026's favourite pitch: a crew of AI agents talking to each other. You now own the math to check it — <b>every hand-off between agents multiplies the failure curve you just saw.</b></p>
+  <div class="cols">
+    <div class="card rv"><h3><span class="em"></span>What actually ships</h3>
+      <p>Specialist agents joined by a <b>boring workflow</b>: fixed hand-offs, validated at each step. The "crew" is usually a pipeline in a costume.</p></div>
+    <div class="card rv"><h3><span class="em"></span>When true multi-agent wins</h3>
+      <p>Genuinely parallel, <b>independent</b> subtasks: research fan-outs, red-team vs blue-team, many documents at once — with a judge step at the end.</p></div>
+  </div>
+  <p class="note rv">Same rule as ten minutes ago: the fewer decisions the system improvises, the more often it works. More agents raise the ceiling AND the bill.</p>
+</section>
+
+<!-- HOT TAKE -->
+<section class="slide take">
+  <div class="kicker rv"><span class="no">HT</span><span class="tk">hot_take · argue_with_me</span></div>
+  <h1 class="rv" style="font-size:clamp(2.2rem,5vw,3.9rem)">Most production “AI agents” are<br><span class="tu">a while-loop in a trench coat.</span></h1>
+  <p class="lead rv mt" style="max-width:56ch">A model, a tool list, and <span style="font-family:var(--mono)">while(model_wants_tools)</span>. That is the whole secret. The industry charges enterprise prices for that loop — you will write it yourself in the next fifty minutes.</p>
+  <p class="note rv">Disagree? Good. Bring it to the break — strongest counter-argument gets named on the closing slide.</p>
+</section>
+
+<!-- 12 DECISION -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">13</span><span class="tk">the_rule_of_thumb</span></div>
+  <h2 class="rv">Workflow or agent? <span class="u">One question decides</span></h2>
+  <div class="cols">
+    <div class="card rv"><h3><span class="em"></span>Do you know the steps in advance?</h3>
+      <p><b>Yes → workflow.</b> "Every invoice: extract → validate → post." Script the steps, let the model do the smart parts inside each. This is most real business AI — by a wide margin.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Genuinely unpredictable path?</h3>
+      <p><b>Then an agent — with a leash:</b> max steps, tool allow-list, validated args, human sign-off on anything that writes, spends, or sends. (S6 makes this list official.)</p></div>
+  </div>
+  <p class="lead rv mt">Resume-honest phrasing: "built an AI workflow with tool use" beats "built an autonomous agent" in almost every real job. Interviewers have watched agent demos die at step 7 — they know this arithmetic.</p>
+</section>
+
+<!-- 13 LADDER -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">14</span><span class="tk">click_each_rung</span></div>
+  <h2 class="rv">The escalation ladder: <span class="u">cheapest fix first</span></h2>
+  <div class="cols" style="grid-template-columns:1fr 1.2fr">
+    <div class="rv" id="ld-rungs"></div>
+    <div class="rv"><div class="card" style="min-height:220px"><h3 id="ld-title">—</h3><p id="ld-body">—</p><p class="note" id="ld-cost"></p></div></div>
+  </div>
+</section>
+
+<!-- 14 PICKER -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">15</span><span class="tk">the_game_that_is_also_the_exam</span></div>
+  <h2 class="rv">Right approach? <span class="u">Defend your vote</span></h2>
+  <div class="demo rv" style="max-width:920px">
+    <div class="dtitle">Shout, vote, argue</div>
+    <div class="cg-item" id="ap-item" style="font-size:clamp(1rem,1.9vw,1.35rem)"></div>
+    <div class="cg-btns four" id="ap-btns"></div>
+    <div class="btnrow mt" style="justify-content:space-between">
+      <span class="cg-score" id="ap-score">0 / 0</span><span class="note" id="ap-fb" style="margin:0;max-width:70%"></span>
+    </div>
+  </div>
+  <p class="note rv">In Lab Part D you'll do this in writing for three scenarios — that's a mini design doc, and it's capstone rehearsal.</p>
+</section>
+
+<!-- 15 OPEN VS CLOSED -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">16</span><span class="tk">one_more_decision_axis</span></div>
+  <h2 class="rv">API models vs <span class="u">models you own</span></h2>
+  <div class="cols3">
+    <div class="card rv"><h3><span class="em"></span>Privacy &amp; compliance</h3><p>Some data legally can't leave your infrastructure — patient records, financial KYC. I live this at work in fintech: regulators ask exactly where every prompt goes. Local weights end the question.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Cost at scale</h3><p>APIs bill per token forever; a small tuned local model can serve one narrow task at near-zero marginal cost.</p></div>
+    <div class="card rv"><h3><span class="em"></span>Offline &amp; edge</h3><p>No internet in the field / on the factory floor / on a farmer's phone? The model must live on the device.</p></div>
+  </div>
+  <p class="lead rv mt">Open-weight models (Llama, Qwen, DeepSeek, Gemma) run on your hardware. The gap to frontier APIs is real but shrinking — and for a well-scoped task, often irrelevant.</p>
+</section>
+
+<!-- 16 OLLAMA -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">17</span><span class="tk">live_on_my_laptop · no_internet_after_download</span></div>
+  <h2 class="rv">Ollama: <span class="u">a model in your pocket</span></h2>
+  <div class="cols">
+    <div class="rv">
+      <div class="codebox pre"><span class="c"># the entire installation experience</span>
+$ ollama run gemma4:e4b
+>>> Explain tokens in one sentence, in Tamil.
+
+<span class="c"># it answers. On this machine.
+# Wi-Fi off. No API key. No meter running.</span></div>
+      <div class="codebox pre mt" style="font-size:.8rem;white-space:pre-wrap"><span class="c"># plan B if the live demo sulks — a simulation, labeled honestly</span>
+local ~20 tok/s » <span id="ol-local"></span>
+API, for contrast » <span id="ol-api"></span></div>
+      <div class="btnrow mt"><button class="btn" id="ol-sim">Simulate the race</button><span class="note" style="margin:0">same answer — one is yours</span></div>
+    </div>
+    <div class="rv">
+      <div class="card"><h3>What you're watching</h3>
+        <p>Gemma 4 E4B — a 4-billion-knob open-weight model (Apache 2.0, March 2026), quantized to fit in laptop RAM, running on this machine's GPU/CPU. Slower and less brilliant than the API — <b>and it's yours</b>: private, free per token, works on the Vaigai Express through a dead zone.</p>
+        <p class="note">Try at home: 8 GB RAM runs 3–4B models fine. ollama.com — one installer, then the command above. (Last year's <span style="font-family:var(--mono)">gemma3:4b</span> still works too.)</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 LOCAL VS API -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">18</span><span class="tk">side_by_side</span></div>
+  <h2 class="rv">Local vs API: <span class="u">an engineering trade, not a religion</span></h2>
+  <div class="rv">
+  <table class="tbl">
+    <tr><th></th><th>Frontier API (Gemini/GPT/Claude)</th><th>Local open weights (Ollama)</th></tr>
+    <tr><td>Capability</td><td>Best available</td><td>Good; excellent when task is narrow</td></tr>
+    <tr><td>Cost model</td><td>Per token, forever</td><td>Hardware once, then ~free</td></tr>
+    <tr><td>Privacy</td><td>Data leaves your machine</td><td>Never leaves</td></tr>
+    <tr><td>Upgrades</td><td>Provider upgrades free</td><td>You manage versions</td></tr>
+    <tr><td>Offline</td><td>No</td><td>Yes</td></tr>
+    <tr><td>Best first fit</td><td>Products, complex reasoning</td><td>Sensitive data, edge, high-volume narrow tasks</td></tr>
+  </table>
+  </div>
+  <p class="note rv mt">Production pattern you'll actually meet: frontier API for the hard 10%, cheap local/small model for the routine 90%.</p>
+</section>
+
+<!-- 18 RECAP -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">19</span><span class="tk">say_it_before_you_click</span></div>
+  <h2 class="rv">Six ideas you <span class="u">own</span> now</h2>
+  <div class="cols3">
+    <div class="card flip rv"><h3><span class="em"></span>Tool use</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">Model writes structured calls; YOUR code executes; result re-enters context. Control stays with you.</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Declarations</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">Name + docstring + types = the model's entire understanding. Docstrings are prompts now.</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Agent loop</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">While it wants tools, execute and feed back — with a hard step cap and an allow-list.</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>0.95<sup>10</sup> ≈ 0.60</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">Reliability compounds against you. Fewer steps, checkpoints, human gates. Workflows beat agents for known tasks.</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>The ladder</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">Prompt → few-shot → RAG → tools → fine-tune. Escalate only when the cheaper rung measurably fails (evals!).</p><div class="hintline">Reveal</div></div>
+    <div class="card flip rv"><h3><span class="em"></span>Local models</h3><p class="q" style="color:var(--faint)">···</p><p class="ans">Open weights on your hardware: private, offline, ~free per token. Ollama makes it one command.</p><div class="hintline">Reveal</div></div>
+  </div>
+  <div class="btnrow mt rv"><button class="btn" id="rc-pick">Pick one for me</button><span class="note" style="margin:0">cold-call: the highlighted card goes to whoever I point at — say it, then flip</span></div>
+</section>
+
+<!-- 19 LAB -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">20</span><span class="tk">50_minutes · same_rhythm</span></div>
+  <h2 class="rv">Lab 5: <span class="u">give it hands</span></h2>
+  <div class="cols" style="grid-template-columns:1.2fr 1fr">
+    <div class="steps rv">
+      <div class="step"><div><div class="t">Calculator tool</div><div class="d">Fix Session 1's broken math forever. Watch it CALL instead of guess. ✓ checkpoint 1</div></div></div>
+      <div class="step"><div><div class="t">Second tool + the menu</div><div class="d">Unit/date converter. Ask a question needing BOTH tools — watch the loop chain them. ✓ checkpoint 2</div></div></div>
+      <div class="step"><div><div class="t">See the machinery</div><div class="d">Print the function-call trace: what did it call, with what args, in what order?</div></div></div>
+      <div class="step"><div><div class="t">Scenario cards (paper + pen)</div><div class="d">3 scenarios → pick prompt/RAG/tools/fine-tune, justify in 2 sentences each. ✓ checkpoint 3: defend one to me</div></div></div>
+    </div>
+    <div class="rv">
+      <div class="card"><h3>Stretch</h3>
+        <p>1. Wire <b>search_notes</b> from your Session 4 RAG app in as a tool — your capstone just became an assistant.</p>
+        <p style="margin-top:6px">2. Write the agent loop manually — see every message.</p>
+        <p style="margin-top:6px">3. Break it: make it call the wrong tool, then fix the docstring.</p></div>
+      <div class="card hi mt"><h3>Capstone status check</h3><p>After this lab you have: knowledge (RAG) + hands (tools) + a judge (evals). The final session hardens it and you demo. Almost there.</p></div>
+    </div>
+  </div>
+
+  <div class="krail rv" aria-label="Lab materials"><a class="next" href="../labs/session-5/lab-handout.html">lab_5_handout →</a><a href="../labs/session-5/session_5_lab.ipynb" download>notebook.ipynb</a><a href="../cheatsheets/session-5-cheatsheet.html">cheatsheet_5</a></div>
+</section>
+
+<!-- 20 BREAK -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">21</span><span class="tk">last_break · finale_next</span></div>
+  <h1 class="rv" style="font-size:clamp(2rem,4.4vw,3.4rem)">Your AI knows, sees, <span class="u">and now acts.</span></h1>
+  <p class="lead rv mt">Final session: we <b>attack</b> everything you built — live prompt injection, poisoned documents — then harden it, talk real production costs, and you demo your capstone.</p>
+  <div class="mt rv"><span class="pill">@intrepidkarthi</span><span class="pill on">Bring your RAG+tools notebook — it's the target</span></div>
+
+  <div class="krail rv" aria-label="Continue"><a class="next" href="session-6-breaking-securing-shipping.html">finale → session_6 · breaking &amp; shipping</a><a href="../cheatsheets/session-5-cheatsheet.html">cheatsheet_5</a><a href="../index.html">course_home</a></div>
+</section>
+
+</main>
+
+<script>
+/* ============ slide engine ============ */
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const progress=document.getElementById('progress');
+  const counter=document.getElementById('counter');
+  const keyhint=document.getElementById('keyhint');
+  let cur=0,numBuf='';
+  function go(i,push){
+    cur=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach((s,j)=>{
+      s.classList.toggle('active',j===cur);
+      s.classList.toggle('past',j<cur);
+      if(j===cur){[...s.querySelectorAll('.rv')].forEach((el,k)=>{el.style.transitionDelay=(k*80)+'ms';});}
+    });
+    progress.style.width=((cur+1)/slides.length*100)+'%';
+    counter.textContent=(cur+1)+' / '+slides.length;
+    if(push!==false)history.replaceState(null,'','#'+(cur+1));
+    if(cur>0)keyhint.style.opacity='0';
+    setTimeout(()=>document.dispatchEvent(new CustomEvent('slidechange',{detail:cur})),480);
+  }
+  function overview(){
+    const isOn=deck.classList.toggle('overview');
+    if(isOn){slides.forEach((s,j)=>{s.onclick=()=>{deck.classList.remove('overview');slides.forEach(x=>x.onclick=null);go(j);};});}
+    else slides.forEach(x=>x.onclick=null);
+  }
+  addEventListener('keydown',e=>{
+    if(e.target.matches('input,textarea'))return;
+    if(e.key>='0'&&e.key<='9'){numBuf+=e.key;return;}
+    if(e.key==='Enter'&&numBuf){go(parseInt(numBuf,10)-1);numBuf='';return;}
+    numBuf='';
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(cur+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1);}
+    else if(e.key==='Home')go(0);
+    else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+    else if(e.key==='o'||e.key==='O'||e.key==='Escape')overview();
+  });
+  let tx=null;
+  addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+  addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;
+    if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));tx=null;},{passive:true});
+  const h=parseInt((location.hash||'').slice(1),10);
+  go(isNaN(h)?0:h-1,false);
+})();
+
+
+/* ============ flip cards (failures + recap) ============ */
+document.addEventListener('click',e=>{
+  if(document.getElementById('deck').classList.contains('overview'))return;
+  const f=e.target.closest('.flip');
+  if(f)f.classList.toggle('open');
+});
+
+/* ============ shared lib ============ */
+function mkQuiz(prefix, items, labels){
+  const item=document.getElementById(prefix+'-item'),fb=document.getElementById(prefix+'-fb'),
+        sc=document.getElementById(prefix+'-score'),wrap=document.getElementById(prefix+'-btns');
+  let i=0,score=0,answered=false,done=false;
+  wrap.innerHTML=labels.map((l,k)=>'<button class="cg-btn" data-k="'+k+'"><div class="b">'+l+'</div></button>').join('');
+  const btns=[...wrap.children];
+  function show(){
+    if(i>=items.length){done=true;btns.forEach(b=>b.className='cg-btn');
+      item.textContent='Done — '+score+' / '+items.length+'. Click any button to replay.';fb.textContent='';return;}
+    answered=false;item.innerHTML=items[i][0];fb.textContent='';
+    btns.forEach(b=>b.className='cg-btn');sc.textContent=score+' / '+i;
+  }
+  btns.forEach(b=>b.onclick=()=>{
+    if(done){i=0;score=0;done=false;show();return;}
+    if(answered){i++;show();return;} /* presenter paces the argument — no timer */
+    answered=true;
+    const k=+b.dataset.k,ok=items[i][1]===k;
+    b.classList.add(ok?'right':'wrong');if(!ok)btns[items[i][1]].classList.add('right');
+    if(ok)score++;
+    fb.innerHTML=items[i][2]+' <b style="color:var(--accent)">→ click any button for the next one</b>';
+    sc.textContent=score+' / '+(i+1);
+  });
+  show();
+}
+function mkTyper(el,ms){
+  let timer=null;
+  return function(text,color){
+    if(timer)clearInterval(timer);el.textContent='';el.style.color=color||'inherit';
+    let k=0;timer=setInterval(()=>{el.textContent=text.slice(0,++k);if(k>=text.length)clearInterval(timer);},ms||13);
+  };
+}
+
+
+mkQuiz('rq',[
+ ['The question and the chunks must be embedded with the same model.',0,'True — different models = coordinates from different maps. Silent garbage otherwise.'],
+ ['Fine-tuning is the best way to teach a model your company\u2019s facts.',1,'False — fine-tuning teaches BEHAVIOUR; RAG provides knowledge. Facts via fine-tune = expensive, stale, uncited.'],
+ ['A grounded prompt should give the model an explicit way to say \u201cI don\u2019t know.\u201d',0,'True — no escape hatch means it fills silence with fiction.'],
+ ['Below ~100k chunks, a numpy array is a perfectly good vector database.',0,'True — argsort is instant. Add infrastructure when you have an infrastructure-sized problem.']
+],['True','False']);
+
+/* tool stepper */
+(function(){
+  const defs=[['\u2753 Question','user asks'],['\ud83e\udde0 Model decides','emits function_call'],['\u2699\ufe0f Your code runs','validates + executes'],['\ud83d\udce8 Result returns','into the context'],['\ud83d\udcac Final answer','model continues']];
+  const stages=document.getElementById('tl-stages'),pay=document.getElementById('tl-payload'),note=document.getElementById('tl-note');
+  stages.innerHTML=defs.map(d=>'<div class="stage"><div class="t">'+d[0]+'</div><div class="d">'+d[1]+'</div></div>').join('<span class="arrow">\u2192</span>');
+  const els=[...stages.querySelectorAll('.stage')];
+  const steps=[
+   '\u201cWhat\u2019s 18% GST on \u20b92,347?\u201d\n\n(Session 1 taught us what happens if it just predicts digits\u2026)',
+   'Model output is NOT an answer \u2014 it\u2019s a request:\n\nfunction_call {\n  name: \u201ccalculator\u201d,\n  args: { expression: \u201c2347 * 0.18\u201d }\n}',
+   'YOUR Python:\n  \u2713 calculator is on the menu\n  \u2713 args parse as math (not \u201cDROP TABLE\u201d)\n  \u2192 eval \u2192 422.46\n\nThe model is still frozen, waiting.',
+   'function_response { result: 422.46 } \u2192 appended to the context.\n\nFrom the model\u2019s view: new tokens arrived. It just reads on.',
+   '\u201c18% GST on \u20b92,347 is \u20b9422.46, making the total \u20b92,769.46.\u201d\n\nExact. Because it never did the math \u2014 it delegated. \ud83c\udf89'
+  ];
+  const evil=[
+   'Same question \u2014 but somewhere in the context, a poisoned instruction is waiting. (Session 6 shows how it gets there.)',
+   'Model output \u2014 a request, dressed as math:\n\nfunction_call {\n  name: \u201ccalculator\u201d,\n  args: { expression:\n    \u201c__import__(\'os\').system(\'rm -rf /\')\u201d }\n}',
+   'YOUR Python:\n  \u2713 calculator is on the menu\n  \u2717 args do NOT parse as math\n  \u2192 REJECTED. Nothing executed.\n\nThe model proposes. Your code disposes.',
+   'function_response { error: \u201cinvalid expression \u2014 arithmetic only\u201d }\n\u2192 appended to the context. The model reads its own rejection.',
+   '\u201cThat expression was invalid \u2014 retrying: calculator(\u201c2347 * 0.18\u201d) \u2192 \u20b9422.46.\u201d\n\nNo damage done. Your validator was the bouncer \u2014 Session 6 arms it properly.'
+  ];
+  const stepBtn=document.getElementById('tl-step'),evilBtn=document.getElementById('tl-evil');
+  let i=-1,script=steps,evilMode=false;
+  function paint(){
+    els.forEach((e,k)=>{e.className='stage'+(k<i?' done':'')+(k===i?' cur':'')+(evilMode&&k===2&&i>=2?' bad':'');});
+    pay.textContent=script[i];
+    note.textContent='stage '+(i+1)+' / 5'+(evilMode?' \u00b7 malicious run':'');
+    if(i>=4){stepBtn.disabled=true;stepBtn.textContent='Done \u2713';}
+    else{stepBtn.disabled=false;stepBtn.textContent='Step \u2192';}
+  }
+  stepBtn.onclick=()=>{if(i>=4)return;i++;paint();};
+  evilBtn.onclick=()=>{evilMode=true;script=evil;i=0;paint();};
+  document.getElementById('tl-reset').onclick=()=>{i=-1;evilMode=false;script=steps;
+    stepBtn.disabled=false;stepBtn.textContent='Step \u2192';
+    els.forEach(e=>e.className='stage');pay.innerHTML='Press <b>Step</b>.';note.textContent='';};
+})();
+
+mkQuiz('wt',[
+ ['\u201cWhat\u2019s the compound interest on \u20b950,000 at 7.1% for 3 years?\u201d',0,'calculator — any arithmetic. Predicted digits are Session-1 poison.'],
+ ['\u201cWho won the most recent CSK match?\u201d',1,'web_search — knowledge cutoff means it literally cannot know. Without the tool it may guess a plausible winner.'],
+ ['\u201cSummarize the notes in unit3.txt\u201d',2,'read_file — it has no filesystem access unless you hand it one.'],
+ ['\u201cExplain the difference between a process and a thread\u201d',3,'No tool! Core training knowledge. Over-tooling adds latency, cost and failure surface. Knowing when NOT to call is half the skill.'],
+ ['\u201cIs my sem-1 CGPA above the class average in results.csv?\u201d',2,'read_file first, then calculator — a CHAIN. That\u2019s the agent loop on the next slide.']
+],['calculator','web_search','read_file','no tool']);
+
+/* agent log */
+(function(){
+  const log=document.getElementById('ag-log');
+  const lines=[
+   ['model \u2192 <span class="tool">read_file(\u201cmarks.csv\u201d)</span>',0],
+   ['you \u2192 executed. 6 subjects: 72, 81, 64, 90, 77, 68',450],
+   ['model \u2192 <span class="tool">calculator(\u201c(72+81+64+90+77+68)/6\u201d)</span>',1100],
+   ['you \u2192 executed. 75.33',1650],
+   ['model \u2192 \u201cYour average is <b>75.33</b> \u2014 above the class average of 71 by 4.33 marks.\u201d',2300]
+  ];
+  const typeStat=mkTyper(document.getElementById('ag-stat'),16);
+  let timers=[];
+  document.getElementById('ag-run').onclick=()=>{
+    timers.forEach(clearTimeout);timers=[];
+    log.innerHTML='';typeStat('');
+    lines.forEach(l=>timers.push(setTimeout(()=>{log.innerHTML+=l[0]+'<br>';},l[1])));
+    timers.push(setTimeout(()=>typeStat('\u2713 2 tool calls \u00b7 correct order \u00b7 0 lines of if/else deciding the order','var(--green)'),3000));
+  };
+})();
+
+/* reliability curve */
+(function(){
+  const svg=document.getElementById('rel-svg'),sl=document.getElementById('rel-slider'),
+        val=document.getElementById('rel-val'),msg=document.getElementById('rel-msg');
+  const cssVar=n=>getComputedStyle(document.documentElement).getPropertyValue('--'+n).trim();
+  function render(){
+    const axis=cssVar('linedark'),grid=cssVar('line'),lbl=cssVar('muted'),acc=cssVar('accent'),red=cssVar('red');
+    const p=+sl.value/100;val.textContent=(p*100).toFixed(0)+'% per step';
+    let pts='',ticks='';
+    for(let n=1;n<=20;n++){
+      const x=10+(n-1)*(300/19), y=165-Math.pow(p,n)*150;
+      pts+=(n>1?' ':'')+x.toFixed(1)+','+y.toFixed(1);
+    }
+    const y10=165-Math.pow(p,10)*150, x10=10+9*(300/19), y20=165-Math.pow(p,20)*150;
+    [1,5,10,15,20].forEach(n=>{const tx=10+(n-1)*(300/19);ticks+='<text x="'+tx.toFixed(1)+'" y="176" font-size="8" fill="'+lbl+'" text-anchor="middle">'+n+'</text>';});
+    svg.innerHTML=
+      '<line x1="10" y1="165" x2="310" y2="165" stroke="'+axis+'"/>'+
+      '<line x1="10" y1="15" x2="10" y2="165" stroke="'+axis+'"/>'+
+      '<line x1="10" y1="90" x2="310" y2="90" stroke="'+grid+'" stroke-dasharray="4 4"/>'+
+      '<text x="14" y="87" font-size="9" fill="'+lbl+'">50% \u2014 coin flip</text>'+
+      '<polyline points="'+pts+'" fill="none" stroke="'+acc+'" stroke-width="2.5" stroke-linecap="round"/>'+
+      '<circle cx="'+x10+'" cy="'+y10+'" r="4" fill="'+red+'"/>'+
+      '<text x="'+(x10-70)+'" y="'+(y10-8)+'" font-size="10" font-weight="700" fill="'+red+'">10 steps \u2192 '+(Math.pow(p,10)*100).toFixed(0)+'%</text>'+
+      '<circle cx="310" cy="'+y20.toFixed(1)+'" r="4" fill="'+red+'"/>'+
+      '<text x="306" y="'+(y20-8).toFixed(1)+'" font-size="10" font-weight="700" fill="'+red+'" text-anchor="end">20 \u2192 '+(Math.pow(p,20)*100).toFixed(0)+'%</text>'+
+      ticks+'<text x="160" y="188" font-size="9" fill="'+lbl+'" text-anchor="middle">number of chained steps \u2192</text>';
+    msg.innerHTML='At <b>'+(p*100).toFixed(0)+'%</b> per step, a 10-step agent succeeds <b style="color:var(--red)">'+(Math.pow(p,10)*100).toFixed(0)+'%</b> of the time. Twenty steps: <b style="color:var(--red)">'+(Math.pow(p,20)*100).toFixed(0)+'%</b>.';
+  }
+  sl.oninput=render;render();
+  sl.addEventListener('pointerup',()=>sl.blur());
+  sl.addEventListener('change',()=>sl.blur());
+  /* Monte-Carlo: stop believing the formula, watch it die */
+  const row=document.getElementById('mc-row'),out=document.getElementById('mc-out');
+  for(let n=1;n<=10;n++){const d=document.createElement('div');d.className='mcn';d.textContent=n;row.appendChild(d);}
+  const nodes=[...row.children];
+  let mct=[];
+  document.getElementById('mc-run').onclick=()=>{
+    mct.forEach(clearTimeout);mct=[];
+    nodes.forEach((n,ix)=>{n.className='mcn';n.textContent=ix+1;});out.textContent='';
+    const p=+sl.value/100;
+    let died=0;
+    for(let k=1;k<=10;k++){if(Math.random()>p){died=k;break;}}
+    const last=died||10;
+    for(let k=1;k<=last;k++){
+      mct.push(setTimeout(()=>{
+        if(k===died){nodes[k-1].className='mcn dead';nodes[k-1].textContent='\u2717';
+          out.innerHTML='<b style="color:var(--red)">died at step '+died+'</b> \u2014 one bad step kills the whole run. Run it again.';}
+        else{nodes[k-1].className='mcn ok';nodes[k-1].textContent='\u2713';}
+      },k*220));
+    }
+    if(!died)mct.push(setTimeout(()=>{out.innerHTML='<b style="color:var(--green)">survived all 10</b> \u2014 a lucky run. At '+sl.value+'% per step, only '+(Math.pow(p,10)*100).toFixed(0)+'% of runs end this way.';},10*220+150));
+  };
+})();
+
+/* ladder */
+(function(){
+  const rungs=[
+   ['1 · Better prompt','Always first. Free, instant, fixes most \u201cthe AI is bad\u201d complaints.','Structure, examples, grounding, format \u2014 Sessions 2\u2019s whole toolkit. Escalate only when your EVAL says this rung is exhausted.','Cost: \u20b90 · Time: minutes'],
+   ['2 · Few-shot examples','Behaviour by demonstration \u2014 2\u20135 examples pin format and edge cases.','Still just a prompt \u2014 no training, reversible instantly. The most underused rung in industry.','Cost: tokens per call · Time: minutes'],
+   ['3 · RAG','The model needs YOUR knowledge \u2014 facts, documents, freshness, citations.','This morning\u2019s build. Knowledge lives outside the model where you can update it Tuesday.','Cost: embedding + storage · Time: a day'],
+   ['4 · Tool use','It needs to ACT or fetch live data \u2014 compute, search, files, APIs.','This afternoon\u2019s build. Add the agent loop only if the path is truly unpredictable \u2014 remember p\u207f.','Cost: engineering + risk · Time: days'],
+   ['5 · Fine-tuning','LAST resort: a specific BEHAVIOUR at high volume that prompting provably can\u2019t hold.','Style, strict formats, a narrow skill on a small cheap model. NOT for facts \u2014 it freezes and forgets nothing gracefully. Needs training data + evals + re-runs per base-model update.','Cost: \u20b9\u20b9\u20b9 + maintenance forever · Time: weeks'],
+  ];
+  const wrap=document.getElementById('ld-rungs'),ti=document.getElementById('ld-title'),
+        bo=document.getElementById('ld-body'),co=document.getElementById('ld-cost');
+  rungs.forEach((r,k)=>{
+    const d=document.createElement('div');d.className='rung'+(k===0?' sel':'');
+    d.style.marginLeft=(k*14)+'px';
+    d.innerHTML='<div class="rt">'+r[0]+'<span class="rmeter">'+['\u20b90','\u20b9','\u20b9\u20b9','\u20b9\u20b9\u20b9','\u20b9\u20b9\u20b9\u20b9\u20b9'][k]+'</span></div><div class="rd">'+r[1]+'</div>';
+    d.onclick=()=>{[...wrap.children].forEach(x=>x.classList.remove('sel'));d.classList.add('sel');
+      ti.textContent=r[0];bo.textContent=r[2];co.textContent=r[3];};
+    wrap.appendChild(d);
+  });
+  ti.textContent=rungs[0][0];bo.textContent=rungs[0][2];co.textContent=rungs[0][3];
+})();
+
+mkQuiz('ap',[
+ ['College helpdesk bot answering from the official rulebook PDF \u2014 answers must be checkable.',1,'RAG — your knowledge + citations + updates when the rulebook changes. Fine-tuning would freeze the rules into the weights, uncited.'],
+ ['Replies keep coming out too long and too casual.',0,'Better prompt — length cap, tone spec, 2 examples. Cheapest rung fixes it. Don\u2019t reach for training when a sentence will do.'],
+ ['\u201cConvert \u20b98,40,000 to USD at today\u2019s rate.\u201d',2,'Tool use — \u201ctoday\u2019s rate\u201d needs a live API, the arithmetic needs a calculator. Two things models fake convincingly.'],
+ ['A support model must ALWAYS output your company\u2019s exact 12-field JSON ticket format, 50,000 times a day, on a small cheap model.',3,'Fine-tune territory — one narrow BEHAVIOUR at massive volume on a small model. But only after few-shot provably fails your eval \u2014 and many teams find few-shot holds.'],
+ ['\u201cWhat\u2019s the capital of France?\u201d',0,'Trick question — rung ZERO. Core knowledge, no augmentation needed. Over-engineering is also a failure mode.']
+],['Prompt','RAG','Tools','Fine-tune']);
+
+/* recap cold-call */
+(function(){
+  const btn=document.getElementById('rc-pick');if(!btn)return;
+  const cards=[...btn.closest('section').querySelectorAll('.flip')];
+  btn.onclick=()=>{
+    cards.forEach(c=>c.classList.remove('called'));
+    const closed=cards.filter(c=>!c.classList.contains('open'));
+    const pool=closed.length?closed:cards;
+    pool[Math.floor(Math.random()*pool.length)].classList.add('called');
+  };
+})();
+
+/* ollama fallback \u2014 honest simulation, zero network */
+(function(){
+  const btn=document.getElementById('ol-sim');if(!btn)return;
+  const typeLocal=mkTyper(document.getElementById('ol-local'),42);
+  const typeApi=mkTyper(document.getElementById('ol-api'),6);
+  const ansLocal='டோக்கன்கள் என்பவை மாடல் உரையை உடைத்துப் படிக்கும் சிறு துண்டுகள் \u2014 முழு சொல்லோ, சொல்லின் பகுதியோ.';
+  const ansApi='ஒரு டோக்கன் என்பது மாடல் படிக்கும் உரையின் மிகச்சிறிய துண்டு \u2014 சொல்லோ அதன் பகுதியோ.';
+  btn.onclick=()=>{typeLocal(ansLocal);typeApi(ansApi);};
+})();
+
+
+/* ===== presenter mode ===== */
+(function(){
+  var DATA = [{"m": 1, "n": "‘Your RAG app is a brain in a jar — text in, text out. Today we wire it to the world. Carefully.’", "c": false, "title": "Making AI do things"}, {"m": 3, "n": "<b>Recap quiz.</b> Reinforces embeddings + grounding from this morning. Answers advance on YOUR click now — let them argue first.", "c": false, "title": "Still true after lunch?"}, {"m": 2, "n": "Brain in a jar: can’t compute, can’t check today, can’t read a file, can’t email. Text in, text out.", "c": false, "title": "Your RAG app is a brain in a jar"}, {"m": 2, "n": "<b>THE trick, read twice.</b> Model writes requests; YOUR code executes. ‘Control stays with you’ — the thread to Session 6. If challenged: strictly true for tools YOU define — providers also offer hosted tools (code execution, search) that run on THEIR servers. Same request-based principle, different executor.", "c": false, "title": "The model never executes anything. It writes requests."}, {"m": 5, "n": "<b>Tool stepper.</b> Step through; stress stage 3 (validate ‘args parse as math, not DROP TABLE’). Stage 5 exact ‘because it delegated.’ Then the malicious run: the model proposes, your code disposes — plant the Session 6 seed.", "c": false, "title": "One tool call, step by step"}, {"m": 3, "n": "‘Docstrings just became prompts.’ Vague docstring → wrong tool. (Lab Stretch 3 proves it.) Name-drop MCP: the standardized menu format — same idea, industry-wide.", "c": false, "title": "Function declarations: the description IS the prompt"}, {"m": 1.5, "n": "<b>One breath.</b> They just hand-wrote a declaration — MCP is that, standardized. USB-C line lands by itself. Don't demo; name it and move.", "c": true, "title": "MCP: USB-C for tools"}, {"m": 4, "n": "<b>GAME. Vote each tool.</b> Item 4 = NO tool (maturity: over-tooling is a failure). Item 5 = chain → next slide. You control the pace — click advances.", "c": false, "title": "Which tool should it call?"}, {"m": 3, "n": "<b>Run agent log.</b> ‘Model chose the order — nobody scripted it. Impressive, and exactly where danger lives.’ Land the stat line: 0 lines of if/else deciding the order.", "c": false, "title": "The agent loop: while it wants tools, feed it"}, {"m": 3.5, "n": "<b>Five failure flips.</b> Flip 4; the 5th (poisoned tool results) is the red card — Session 6 bridge. ‘Tool results are untrusted input.’", "c": false, "title": "Five ways tool use goes sideways"}, {"m": 2.5, "n": "<b>THE takeaway.</b> Workflow (you fix steps) vs agent (model picks). Say the distinction slowly, then the idli line — let it land.", "c": false, "title": "Most problems don't need an agent. They need a workflow."}, {"m": 5, "n": "<b>CENTERPIECE. Reliability slider.</b> 95%→10 steps≈60%. ‘This explains most failed agent demos.’ 99%→20 = 82%. Then run the Monte-Carlo agent three times — it dies at a different step each run. Let them feel it.", "c": false, "title": "Why long agent chains collapse"}, {"m": 2, "n": "<b>Anti-hype with their own math.</b> Ask the room: two 90%-reliable agents chatting — reliability? 81% before any work happens. Parallel fan-out + judge = the legit pattern.", "c": true, "title": "Multi-agent: more agents, more compounding"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Most production “AI agents” are a while-loop"}, {"m": 2.5, "n": "One question decides: do you know the steps in advance? Yes=workflow (most real business AI, by a wide margin). No=agent with a leash.", "c": false, "title": "Workflow or agent? One question decides"}, {"m": 3.5, "n": "<b>Ladder, click each rung.</b> Escalate only when your EVAL says the cheap rung failed. Fine-tune is rung 5, never rung 1.", "c": false, "title": "The escalation ladder: cheapest fix first"}, {"m": 4, "n": "<b>GAME = the exam.</b> Vote + defend. Item 5 (capital of France) = rung ZERO. Over-engineering is a failure mode too. Click advances — pace the argument.", "c": false, "title": "Right approach? Defend your vote"}, {"m": 2, "n": "API vs local: privacy, cost, offline. Your fintech/KYC reality: regulators ask where prompts go.", "c": true, "title": "API models vs models you own"}, {"m": 4, "n": "<b>OLLAMA — Wi-Fi OFF, run live:</b> ollama run gemma4:e4b (gemma3:4b still works). ‘4 billion knobs, on this laptop, no meter.’ 8GB RAM runs it at home. If the live demo sulks, run the typing race — and call it a simulation.", "c": false, "title": "Ollama: a model in your pocket"}, {"m": 1.5, "n": "Local vs API = a trade, not a religion. Production = hybrid: API for hard 10%, local for routine 90%.", "c": true, "title": "Local vs API: an engineering trade, not a religion"}, {"m": 3, "n": "<b>Recall flips.</b> Class says each before clicking. ‘Pick one for me’ = cold-call: point at a student, they answer, THEN flip.", "c": false, "title": "Six ideas you own now"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB.</b> Nudge strong pairs to Stretch (RAG-as-tool = capstone assembles itself). Part C manual loop de-mystifies. Checkpoint 3 is verbal. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 5: give it hands"}, {"m": 12, "n": "<b>Show & tell + last break (12 min).</b> Best ‘called both tools’ + best scenario defense + name the strongest hot-take counter-argument. ‘Knows, sees, acts. Finale: we break it all.’ Bring the notebook. <b>Links are on screen</b> — point at them.", "c": false, "title": "Your AI knows, sees, and now acts."}];
+  var deck=document.getElementById('deck');
+  var total=DATA.reduce(function(a,d){return a+d.m;},0);
+  var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});
+  var panel=document.createElement('div');panel.id='pres';
+  panel.innerHTML='<div class="ph"><span class="lbl">Presenter</span><span class="sn" id="pr-sn"></span></div>'+
+   '<div class="clock"><div class="elapsed" id="pr-el">00:00</div><span class="pace ok" id="pr-pace">ready</span>'+
+   '<div class="tgt" id="pr-tgt"></div></div>'+
+   '<div class="budget"><span class="this" id="pr-this"></span><span id="pr-cmp"></span></div>'+
+   '<div class="notes" id="pr-notes"></div>'+
+   '<div class="nxt" id="pr-nxt"></div>'+
+   '<div class="ctl"><button class="go" id="pr-start">Start</button><button id="pr-reset">Reset</button><button id="pr-hide">Hide (S)</button></div>';
+  document.body.appendChild(panel);
+  var hint=document.createElement('div');hint.id='pres-hint';hint.textContent='press S for presenter notes + timer';
+  document.body.appendChild(hint);setTimeout(function(){hint.style.display='none';},6000);
+
+  var cur=0,t0=null,tick=null;
+  function fmt(s){s=Math.max(0,Math.round(s));var m=Math.floor(s/60);return (m<10?'0':'')+m+':'+((s%60)<10?'0':'')+(s%60);}
+  function elapsed(){return t0?(Date.now()-t0)/1000:0;}
+  function paint(){
+    var d=DATA[cur]||{m:2,n:'—',c:false};
+    document.getElementById('pr-sn').textContent=(cur+1)+' / '+DATA.length;
+    document.getElementById('pr-this').textContent='This slide: '+d.m+' min';
+    document.getElementById('pr-cmp').innerHTML=d.c?'<span class="compress">▸ compressible</span>':'';
+    document.getElementById('pr-notes').innerHTML=d.n;
+    var nx=DATA[cur+1];
+    document.getElementById('pr-nxt').innerHTML=nx?('Next ('+nx.m+'m): <b>'+(nx.title||'')+'</b>'):'<b>End of deck</b>';
+    var targetStart=cur>0?cum[cur-1]:0, targetEnd=cum[cur];
+    document.getElementById('pr-tgt').innerHTML='be at <b>'+fmt(targetStart*60)+'</b> starting this · done by <b>'+fmt(targetEnd*60)+'</b> · session '+fmt(total*60);
+  }
+  function refresh(){
+    document.getElementById('pr-el').textContent=fmt(elapsed());
+    var badge=document.getElementById('pr-pace');
+    if(!t0){badge.className='pace ok';badge.textContent='ready';return;}
+    var targetStart=(cur>0?cum[cur-1]:0)*60, el=elapsed(), diff=el-targetStart;
+    if(diff>90){badge.className='pace behind';badge.textContent='behind '+fmt(diff)+' — compress';}
+    else if(diff<-90){badge.className='pace ahead';badge.textContent='ahead '+fmt(-diff);}
+    else{badge.className='pace ok';badge.textContent='on time';}
+  }
+  document.addEventListener('slidechange',function(e){cur=e.detail;paint();refresh();});
+  document.getElementById('pr-start').onclick=function(){t0=Date.now();if(tick)clearInterval(tick);tick=setInterval(refresh,1000);refresh();};
+  document.getElementById('pr-reset').onclick=function(){t0=null;if(tick)clearInterval(tick);tick=null;refresh();};
+  document.getElementById('pr-hide').onclick=function(){panel.classList.remove('on');};
+  addEventListener('keydown',function(e){
+    if(e.target.matches('input,textarea'))return;
+    if(e.key==='s'||e.key==='S'){panel.classList.toggle('on');hint.style.display='none';}
+  });
+  paint();
+})();
+
+</script>
+</body>
+</html>

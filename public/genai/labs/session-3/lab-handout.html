@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 3 — Interrogate Your Photos — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Lab 3 handout: run the 5-question vision ladder on your own photos, extract a receipt to strict JSON, transcribe handwriting, and catch one confident invention.">
+<meta property="og:title" content="Lab 3 — Interrogate Your Photos">
+<meta property="og:description" content="Lab 3 handout: run the 5-question vision ladder on your own photos, extract a receipt to strict JSON, transcribe handwriting, and catch one confident invention.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#C2186A;--accentpale:#FDE0EE;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="../../index.html">← Course home</a></nav>
+  <div class="kicker">Lab 3 · 50 minutes</div>
+  <h1>Interrogate Your Photos</h1>
+  <p class="lead">Session 3 · Multimodal · TCE · 50 min · pairs · Same rhythm (checkpoints → show instructor).</p>
+
+  <blockquote><p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p></blockquote>
+
+  <p><strong>You need:</strong> 2–3 photos on your laptop (receipt / handwritten notes / menu board / anything). Sample images linked in the notebook if you're stuck — but your own mess bill is more fun.</p>
+
+  <h2>Part A — The interrogation ladder (12 min)</h2>
+  <p>Upload a photo to Colab (folder icon → upload). Run the 5-question ladder: describe → read text → count → infer → surprise. Grade each answer honestly.</p>
+  <blockquote><p>✓ <strong>Checkpoint 1:</strong> ladder run + 2-line grading (where did it wobble?).</p></blockquote>
+
+  <h2>Part B — Document → JSON (15 min)</h2>
+  <p>Receipt/bill/marksheet → strict-schema extraction. The test isn't the output <em>looking</em> right — it's <strong><code>json.loads()</code> succeeding</strong>. If the parse cell crashes, your prompt isn't strict enough. Tighten ("Reply ONLY with JSON", "null if unreadable — do NOT guess") and re-run.</p>
+  <blockquote><p>✓ <strong>Checkpoint 2:</strong> parse cell prints your total.</p></blockquote>
+
+  <h2>The production way: response_schema</h2>
+  <p>Prompt-begging for JSON works — production code doesn't beg. Pass a schema with the request (<code>response_mime_type="application/json"</code> + <code>response_schema=…</code>) and the API <strong>cannot</strong> return anything else: no code fences, nothing to strip — and the format instructions come out of your prompt entirely. Run the Part B2 cell in the notebook.</p>
+  <blockquote><p>✓ <strong>Checkpoint:</strong> <code>json.loads</code> never fails now — even with an empty prompt about format.</p></blockquote>
+
+  <h2>Part C — Handwriting (8 min)</h2>
+  <p>Your own notes page → transcription with <code>[?]</code> for unclear words. What % did it get? Tamil/Tanglish = bonus data point.</p>
+
+  <h2>Part D — Break it (10 min)</h2>
+  <p>Find one <strong>confident invention</strong>: a blurred price it reads anyway, a miscount, paraphrased "quotes."</p>
+  <blockquote><p>✓ <strong>Checkpoint 3:</strong> show me the invention.</p></blockquote>
+
+  <h2>Stretch</h2>
+  <p>Grounding A/B (does "reply UNREADABLE if unclear" stop the invention?) · vision eval — 5 images + expected answers through your S2 harness · voice-note transcription.</p>
+
+  <h2>Tonight (5 min — this one is mandatory)</h2>
+  <p>Put <strong>2–3 real documents</strong> on your laptop/Drive: lecture notes, a textbook chapter PDF, anything worth querying. Tomorrow you build <strong>chat with my notes</strong> over them. No documents = boring Day 2. Bring good ones.</p>
+
+  <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="../../index.html">course home</a> · free to use, fork, localize and teach</footer>
+</div>
+</body>
+</html>

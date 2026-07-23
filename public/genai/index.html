@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generative AI: Foundations &amp; Applications — a free, hands-on course</title>
+<meta name="description" content="Learn how ChatGPT, Gemini and Claude actually work — tokens, attention, RAG, agents, security — by building something real in every session. 6 sessions, 12 hours, ₹0. Built for TCE Madurai, free for everyone.">
+<meta property="og:title" content="Generative AI: Foundations &amp; Applications">
+<meta property="og:description" content="A free, hands-on course: learn how ChatGPT actually works by building something in every session. 6 sessions · 50+ live demos · ₹0 · any laptop.">
+<meta property="og:type" content="website">
+<!-- TODO: set the final absolute URL for og:image and og:url once the hosting path on intrepidkarthi.com is decided -->
+<meta property="og:image" content="https://intrepidkarthi.com/genai/assets/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2314171F'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23FFFFFF' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Course","name":"Generative AI: Foundations & Applications",
+"description":"A free, hands-on 6-session course: how large language models actually work — tokens, embeddings, attention, RAG, tool use, security — taught by building something real in every session.",
+"provider":{"@type":"Person","name":"Karthikeyan NG","url":"https://intrepidkarthi.com"},
+"isAccessibleForFree":true,"educationalLevel":"Undergraduate",
+"hasCourseInstance":{"@type":"CourseInstance","courseMode":"onsite","courseWorkload":"PT12H"}}
+</script>
+<style>
+  @font-face{font-family:'Fraunces';src:url('assets/fonts/fraunces.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
+  :root{
+    --paper:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;
+    --line:#E8EAEF;--linedark:#C5CAD4;--panel:#F4F6F9;
+    --h1:#2B4EFF;--d1:#1D3AD1;--t1:#E3E9FF;
+    --h2:#8526E0;--d2:#6B1FBF;--t2:#EFE2FE;
+    --h3:#ED2E7C;--d3:#C2186A;--t3:#FDE0EE;
+    --h4:#F08C00;--d4:#A85E00;--t4:#FFEBCC;
+    --h5:#00A87A;--d5:#00755A;--t5:#D6F3E7;
+    --h6:#E8442E;--d6:#C22B18;--t6:#FDE2DC;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(var(--line) 1.05px,transparent 1.05px) 0 0/26px 26px,var(--paper);
+    color:var(--body);font-family:var(--font);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 24px}
+  a{color:inherit}
+  :focus-visible{outline:2.5px solid var(--h1);outline-offset:2px;border-radius:4px}
+  section.wrap{padding:74px 24px 8px}
+  .mono{font-family:var(--mono)}
+  .kicker{font-size:13px;font-weight:700;font-family:var(--mono);letter-spacing:.06em;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .kicker:after{content:"";flex:1;height:1.5px;background:var(--line)}
+  .kicker b{color:var(--ink);font-weight:700}
+  .kicker b:before{content:"<|";color:var(--faint);font-weight:400}
+  .kicker b:after{content:"|>";color:var(--faint);font-weight:400}
+  h2{font-size:clamp(1.6rem,3.2vw,2.3rem);font-weight:800;letter-spacing:-.028em;line-height:1.14;color:var(--ink);margin-bottom:10px}
+  .sub{font-size:1.03rem;color:var(--muted);max-width:64ch;margin-bottom:26px}
+  /* reveal */
+  .js .rv{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .js .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+  /* ===== hero ===== */
+  /* ===== journey hero (ref: fivepathways.com — structure, not beige) ===== */
+  header.fp{position:relative;min-height:96vh;display:flex;flex-direction:column;overflow:hidden}
+  .roadband{position:relative;flex:1 1 auto;min-height:140px;max-height:220px;margin-top:14px}
+  #path{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+  .fp-inner{position:relative;z-index:2;width:100%;max-width:980px;margin:0 auto;padding:11vh 24px 0;text-align:center}
+  .fp-kicker{display:flex;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.05em;color:var(--muted)}
+  .fp-kicker .t:before{content:"<|";color:var(--faint);font-weight:400}
+  .fp-kicker .t:after{content:"|>";color:var(--faint);font-weight:400}
+  .fp h1{font-family:Fraunces,"Iowan Old Style",Palatino,Georgia,serif;font-weight:600;
+    font-size:clamp(2.05rem,4.9vw,4.5rem);line-height:1.08;letter-spacing:-.018em;color:var(--ink);margin:24px auto 0}
+  .fp h1 em{font-style:normal;color:var(--d1)}
+  .fp-sub{font-size:clamp(1rem,1.5vw,1.16rem);color:var(--body);max-width:56ch;margin:20px auto 0;line-height:1.6}
+  .fp-sub b{color:var(--ink)}
+  .fp-ctas{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:30px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);text-decoration:none;
+    font-weight:700;font-size:1.02rem;border-radius:999px;padding:16px 15px 16px 26px;transition:transform .18s ease}
+  .pill .arr{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;
+    background:var(--paper);color:var(--ink);font-weight:800;transition:transform .18s ease}
+  .pill:hover .arr{transform:translateX(3px)}
+  .quiet{font-weight:700;color:var(--ink);text-decoration:none;border-bottom:2px solid var(--linedark);padding-bottom:2px}
+  .quiet:hover{border-color:var(--ink)}
+  /* chip marquee (their press logos → our syllabus) */
+  .marq{margin-top:0;border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);padding:16px 0;overflow:hidden;position:relative;z-index:2;background:var(--paper)}
+  .marq-lab{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--faint);text-align:center;margin-bottom:12px;text-transform:uppercase}
+  .marq-row{display:flex;gap:12px;width:max-content;animation:marq 36s linear infinite}
+  .marq:hover .marq-row{animation-play-state:paused}
+  @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .mchip{font-family:var(--mono);font-size:13px;font-weight:600;white-space:nowrap;border:1.5px solid var(--line);border-radius:999px;padding:7px 16px;background:var(--paper);transition:transform .15s,border-color .15s}
+  .mchip:hover{transform:translateY(-2px);border-color:currentColor}
+  @media (prefers-reduced-motion:reduce){.marq-row{animation:none;flex-wrap:wrap;width:auto;justify-content:center}}
+  .fp-stats{display:flex;justify-content:center;gap:clamp(20px,4vw,52px);flex-wrap:wrap;margin-top:34px}
+  .fp-stats .n{font-family:var(--mono);font-size:1.12rem;font-weight:750;color:var(--ink);text-align:center}
+  .fp-stats .l{color:var(--muted);font-size:.78rem;margin-top:2px;text-align:center}
+  /* ===== build grid ===== */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .bcard{border:2px solid var(--ink);border-radius:14px;padding:20px 22px;background:var(--paper)}
+  .bcard .no{font-family:var(--mono);font-size:12px;font-weight:700;margin-bottom:9px;display:inline-block;border-radius:6px;padding:2px 8px;color:var(--ink)}
+  .bcard h3{font-size:1.03rem;font-weight:750;color:var(--ink);letter-spacing:-.01em;margin-bottom:5px}
+  .bcard p{font-size:.89rem;color:var(--muted);line-height:1.55}
+  .b1{box-shadow:6px 6px 0 var(--t1)} .b1 .no{background:var(--t1)}
+  .b2{box-shadow:6px 6px 0 var(--t2)} .b2 .no{background:var(--t2)}
+  .b3{box-shadow:6px 6px 0 var(--t3)} .b3 .no{background:var(--t3)}
+  .b4{box-shadow:6px 6px 0 var(--t4)} .b4 .no{background:var(--t4)}
+  .b5{box-shadow:6px 6px 0 var(--t5)} .b5 .no{background:var(--t5)}
+  .b6{box-shadow:6px 6px 0 var(--t6)} .b6 .no{background:var(--t6)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;max-width:900px}
+  .chip{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--body);border:1.5px solid var(--linedark);border-radius:8px;padding:4px 11px;background:var(--paper)}
+  .chip{position:relative;cursor:help}
+  .chip:hover,.chip:focus{border-color:var(--ink);background:var(--panel);outline:none}
+  .chip::after{content:attr(data-d);position:absolute;left:0;bottom:calc(100% + 9px);width:max-content;max-width:280px;background:var(--ink);color:var(--paper);font-size:11.5px;font-weight:500;line-height:1.5;padding:9px 12px;border-radius:9px;opacity:0;visibility:hidden;transition:opacity .15s;z-index:30;pointer-events:none;white-space:normal}
+  .chip::before{content:"";position:absolute;left:18px;bottom:calc(100% + 3px);border:6px solid transparent;border-top-color:var(--ink);opacity:0;visibility:hidden;transition:opacity .15s;z-index:30}
+  .chip:hover::after,.chip:focus::after,.chip:hover::before,.chip:focus::before{opacity:1;visibility:visible}
+  @media (max-width:720px){.chip::after{position:fixed;left:16px;right:16px;bottom:16px;max-width:none;width:auto}.chip::before{display:none}}
+  /* ===== weekend ===== */
+  .days{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+  .day{border:2px solid var(--ink);border-radius:14px;padding:20px 22px;background:var(--paper);box-shadow:6px 6px 0 var(--line)}
+  .day .d{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.08em}
+  .day h3{font-size:1.08rem;font-weight:750;color:var(--ink);margin:7px 0 4px}
+  .day p{font-size:.9rem;color:var(--muted)}
+  .rhythm{border:2px solid var(--ink);border-radius:14px;padding:20px 22px;background:var(--paper);box-shadow:6px 6px 0 var(--line)}
+  .rhythm .t{font-size:.8rem;font-weight:700;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:13px}
+  .rbar{display:flex;height:46px;border-radius:10px;overflow:hidden;border:2px solid var(--ink)}
+  .rbar div{display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;min-width:0}
+  .rbar .r1{flex:8;background:var(--t4)}
+  .rbar .r2{flex:44;background:var(--t1)}
+  .rbar .r3{flex:50;background:var(--ink);color:var(--paper)}
+  .rbar .r4{flex:12;background:var(--t5)}
+  .rnote{font-size:.86rem;color:var(--muted);margin-top:11px}
+  /* ===== sessions — the syllabus poster ===== */
+  .arc{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:clamp(1rem,2vw,1.3rem);font-weight:700;margin:10px 0 4px}
+  .arc i{color:var(--faint);font-style:normal;font-weight:400}
+  .arc .v1{color:var(--d1)}.arc .v2{color:var(--d2)}.arc .v3{color:var(--d3)}.arc .v4{color:var(--d4)}.arc .v5{color:var(--d5)}.arc .v6{color:var(--d6)}
+  .arcnote{font-size:.88rem;color:var(--muted);margin-top:8px;margin-bottom:26px}
+  .band{display:grid;grid-template-columns:190px 1fr;border:2px solid var(--ink);border-radius:16px;overflow:hidden;background:var(--paper);
+    margin-bottom:18px;text-decoration:none;transition:.16s;position:relative}
+  .band:hover{transform:translate(-2px,-2px)}
+  .band .left{padding:22px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+  .band .num{font-family:Fraunces,Georgia,serif;font-size:2.6rem;font-weight:600;line-height:1;color:#fff}
+  .band .verb{font-family:var(--mono);font-size:.95rem;font-weight:700;color:#fff;letter-spacing:.04em}
+  .band .verb:before{content:"<|"}.band .verb:after{content:"|>"}
+  .band .right{padding:20px 24px 18px}
+  .band .toprow{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .band h3{font-size:clamp(1.2rem,2.3vw,1.6rem);font-weight:800;letter-spacing:-.018em;color:var(--ink)}
+  .band .meta{font-family:var(--mono);font-size:11px;color:var(--faint);white-space:nowrap}
+  .band p{font-size:.92rem;color:var(--muted);line-height:1.55;margin-top:6px;max-width:62ch}
+  .band .builds{font-size:.85rem;margin-top:10px;font-weight:750}
+  .band .kit{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .band .kit a{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);border-radius:8px;padding:4px 11px;background:var(--paper);transition:.12s}
+  .band .kit a:hover{color:var(--paper);background:var(--ink)}
+  .band .tlink{color:inherit;text-decoration:none}
+  .band .tlink:after{content:"";position:absolute;inset:0;border-radius:16px}
+  .band .kit{position:relative;z-index:2}
+  .n1{box-shadow:7px 7px 0 var(--t1)} .n1 .left{background:var(--h1)} .n1 .builds{color:var(--d1)} .n1:hover{box-shadow:10px 10px 0 var(--t1)}
+  .n2{box-shadow:7px 7px 0 var(--t2)} .n2 .left{background:var(--h2)} .n2 .builds{color:var(--d2)} .n2:hover{box-shadow:10px 10px 0 var(--t2)}
+  .n3{box-shadow:7px 7px 0 var(--t3)} .n3 .left{background:var(--h3)} .n3 .builds{color:var(--d3)} .n3:hover{box-shadow:10px 10px 0 var(--t3)}
+  .n4{box-shadow:7px 7px 0 var(--t4)} .n4 .left{background:var(--h4)} .n4 .builds{color:var(--d4)} .n4:hover{box-shadow:10px 10px 0 var(--t4)}
+  .n5{box-shadow:7px 7px 0 var(--t5)} .n5 .left{background:var(--h5)} .n5 .builds{color:var(--d5)} .n5:hover{box-shadow:10px 10px 0 var(--t5)}
+  .n6{box-shadow:7px 7px 0 var(--t6)} .n6 .left{background:var(--h6)} .n6 .builds{color:var(--d6)} .n6:hover{box-shadow:10px 10px 0 var(--t6)}
+  .n4 .num,.n4 .verb{color:var(--ink)}
+  .kitnote{font-size:.85rem;color:var(--muted);margin-top:4px}
+  .kitnote a{color:var(--body);font-weight:650}
+  /* ===== arguments — lights off ===== */
+  .args{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .arg{background:var(--ink);border:2px solid var(--ink);border-radius:16px;padding:24px 26px;color:#A8AFBC}
+  .arg .n{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.06em;margin-bottom:12px}
+  .arg .n:before{content:"<|"}.arg .n:after{content:"|>"}
+  .arg p.q{font-size:clamp(1.05rem,1.9vw,1.3rem);font-weight:750;color:#FFFFFF;letter-spacing:-.014em;line-height:1.35}
+  .g1{box-shadow:7px 7px 0 var(--t1)}.g2{box-shadow:7px 7px 0 var(--t2)}.g3{box-shadow:7px 7px 0 var(--t3)}
+  .g4{box-shadow:7px 7px 0 var(--t4)}.g5{box-shadow:7px 7px 0 var(--t5)}.g6{box-shadow:7px 7px 0 var(--t6)}
+  /* ===== manifesto ===== */
+  .moves{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .move{border:2px solid var(--ink);border-radius:14px;padding:20px 24px;background:var(--paper);box-shadow:6px 6px 0 var(--line)}
+  .move h3{font-size:1.02rem;font-weight:750;color:var(--ink);margin-bottom:6px}
+  .move p{font-size:.9rem;color:var(--muted);line-height:1.6}
+  .credo{margin-top:20px;border:2px solid var(--ink);background:var(--t4);border-radius:14px;padding:18px 24px;font-size:1.06rem;color:var(--ink);font-weight:700;box-shadow:6px 6px 0 var(--h4)}
+  /* ===== instructor ===== */
+  .inst{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:start}
+  .inst .bio{font-size:1rem;color:var(--body);line-height:1.7}
+  .inst .bio b{color:var(--ink)}
+  .ilinks{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+  .ilinks a{font-family:var(--mono);font-size:.85rem;font-weight:700;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);border-radius:8px;padding:6px 14px;background:var(--paper);transition:.12s}
+  .ilinks a:hover{background:var(--ink);color:var(--paper)}
+  .photos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .photos figure{position:relative;border-radius:12px;overflow:hidden;border:2px solid var(--ink);margin:0;background:var(--panel);box-shadow:5px 5px 0 var(--line)}
+  .photos img{width:100%;height:130px;object-fit:cover;display:block;transition:transform .25s ease}
+  .photos figure:hover img{transform:scale(1.05)}
+  .photos figcaption{position:absolute;left:7px;bottom:7px;background:var(--paper);border:1.5px solid var(--ink);border-radius:6px;padding:2px 9px;font-size:10px;font-weight:700;color:var(--ink)}
+  /* ===== kit ===== */
+  .kit2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .kitcol{border:2px solid var(--ink);border-radius:14px;padding:20px 24px;background:var(--paper);box-shadow:6px 6px 0 var(--line)}
+  .kitcol h3{font-size:.78rem;font-weight:700;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .kitcol a{display:block;text-decoration:none;color:var(--ink);font-size:.94rem;font-weight:650;padding:10px 2px;border-bottom:1.5px solid var(--line);transition:.12s}
+  .kitcol a:last-child{border-bottom:none}
+  .kitcol a span{display:block;font-size:.8rem;color:var(--muted);font-weight:400;margin-top:1px}
+  .kitcol a .kt{font-style:normal;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--muted);
+    background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-right:9px;vertical-align:1px;display:inline-block;min-width:44px;text-align:center}
+  .kitcol a:hover{padding-left:8px}
+  .note{margin-top:34px;padding:15px 22px;border:2px solid var(--ink);border-radius:14px;background:var(--t1);font-size:.9rem;color:var(--body);box-shadow:6px 6px 0 var(--h1)}
+  .note b{color:var(--ink)}
+  /* ===== faq ===== */
+  details{border-bottom:1.5px solid var(--line)}
+  summary{cursor:pointer;font-weight:700;color:var(--ink);font-size:.98rem;padding:16px 2px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:14px}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"+";font-family:var(--mono);color:var(--faint);font-size:1.2rem;flex:none}
+  details[open] summary:after{content:"–"}
+  details p{padding:0 2px 16px;font-size:.92rem;color:var(--muted);max-width:70ch}
+  details a{color:var(--body)}
+  details code{font-family:var(--mono);background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:0 5px}
+  /* ===== footer ===== */
+  footer{margin-top:80px;padding:26px 0 64px;border-top:2px solid var(--ink);font-size:.86rem;color:var(--faint)}
+  footer .frow{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer b{color:var(--body)}
+  footer a{color:var(--muted);font-weight:650;text-decoration:none}
+  footer a:hover{color:var(--ink)}
+  footer .stamp{font-family:var(--mono);font-size:.76rem;margin-top:12px}
+  @media (max-width:880px){.grid3{grid-template-columns:1fr 1fr}}
+  @media (max-width:720px){.grid3,.args,.moves,.days,.kit2,.inst,.photos{grid-template-columns:1fr}
+    .statrow{grid-template-columns:repeat(2,1fr)} .photos img{height:150px} section.wrap{padding:52px 24px 8px} header.wrap{padding:6vh 24px 30px}
+    .band{grid-template-columns:1fr} .band .left{flex-direction:row;align-items:center;padding:14px 20px}}
+  /* ===== fp site pass: centered sections, soft geometry ===== */
+  section.wrap .kicker{justify-content:center}
+  section.wrap .kicker:after{display:none}
+  section.wrap .kicker:before{display:none}
+  section.wrap>h2{text-align:center;margin-left:auto;margin-right:auto;font-family:Fraunces,"Iowan Old Style",Palatino,Georgia,serif;font-weight:600;letter-spacing:-.015em;font-size:clamp(1.55rem,3vw,2.2rem)}
+  section.wrap>.sub{text-align:center;margin-left:auto;margin-right:auto}
+  section.wrap>.arc,section.wrap>.arcnote{justify-content:center;text-align:center}
+  .bcard,.day,.rhythm,.move,.kitcol,.game{border-width:1.5px;border-color:var(--line);border-radius:20px;box-shadow:0 14px 34px rgba(20,23,31,.06)}
+  .b1,.b2,.b3,.b4,.b5,.b6{box-shadow:0 14px 34px rgba(20,23,31,.06)}
+  .band{border-width:1.5px;border-color:var(--line);border-radius:22px;box-shadow:0 14px 34px rgba(20,23,31,.06)}
+  .n1,.n2,.n3,.n4,.n5,.n6{box-shadow:0 14px 34px rgba(20,23,31,.06)}
+  .n1:hover,.n2:hover,.n3:hover,.n4:hover,.n5:hover,.n6:hover{box-shadow:0 20px 44px rgba(20,23,31,.1)}
+  .band:hover{transform:translateY(-3px)}
+  .arg{border-radius:22px;box-shadow:0 14px 34px rgba(20,23,31,.12)}
+  .g1,.g2,.g3,.g4,.g5,.g6{box-shadow:0 14px 34px rgba(20,23,31,.12)}
+  .credo,.note{border-radius:18px;box-shadow:0 14px 34px rgba(20,23,31,.06);border-width:1.5px;border-color:var(--line)}
+  .btn{border-radius:999px;box-shadow:none;border-width:1.5px}
+  .btn.primary{box-shadow:none}
+  .btn.primary:hover,.btn.ghost:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(20,23,31,.14)}
+  .chip{border-radius:999px}
+  .gopt{border-radius:14px;border-width:1.5px}
+  .photos figure{border-width:1.5px;border-color:var(--line);border-radius:16px;box-shadow:0 12px 30px rgba(20,23,31,.07)}
+  .band .kit a,.ilinks a{border-radius:999px;border-width:1.5px}
+  /* ===== next-token game (you are the model) ===== */
+  .game{max-width:660px;margin:34px auto 0;background:var(--paper);border:1.5px solid var(--line);border-radius:20px;padding:24px 28px 22px;text-align:left}
+  .glab{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .glab:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--h1);flex:none}
+  .gp{font-size:clamp(1.15rem,2vw,1.35rem);font-weight:650;color:var(--ink);line-height:1.5;letter-spacing:-.01em}
+  .gp .nw{font-family:var(--mono);font-size:.82em;font-weight:700;color:var(--d1);background:var(--t1);border-radius:8px;padding:2px 9px}
+  .cur{display:inline-block;width:9px;height:1.05em;background:var(--ink);vertical-align:-0.12em;margin-left:3px;animation:gblink 1.06s steps(2,start) infinite}
+  @keyframes gblink{to{visibility:hidden}}
+  .gopts{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .gopt{font-family:var(--mono);font-size:.93rem;font-weight:600;color:var(--ink);background:var(--paper);
+    border:1.5px solid var(--linedark);border-radius:14px;padding:11px 20px;cursor:pointer;text-decoration:none;
+    transition:transform .15s,border-color .15s,box-shadow .15s}
+  .gopt:hover{border-color:var(--ink);transform:translateY(-1px);box-shadow:0 8px 18px rgba(20,23,31,.10)}
+  .gopt:focus-visible{outline:2.5px solid var(--h1);outline-offset:2px}
+  .grows{display:grid;gap:9px;margin-top:18px}
+  .grow{display:grid;grid-template-columns:minmax(104px,max-content) 1fr 46px;align-items:center;gap:12px;font-family:var(--mono);font-size:.85rem}
+  .grow .w{font-weight:600;color:var(--muted)}
+  .grow .tr{display:block;height:10px;background:var(--panel);border-radius:999px;overflow:hidden}
+  .grow .fi{display:block;height:100%;width:0;background:var(--linedark);border-radius:999px;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+  .grow .p{text-align:right;font-weight:700;color:var(--muted);font-size:.8rem;font-variant-numeric:tabular-nums}
+  .grow.win .w,.grow.win .p{color:var(--d1)}
+  .grow.win .fi{background:var(--h1)}
+  .grow.you .w:after{content:" \2190 you";color:var(--ink);font-weight:700}
+  .grows.nomo .fi{transition:none}
+  .gfoot{margin-top:18px;padding-top:14px;border-top:1.5px dashed var(--line);font-size:.92rem;color:var(--muted);line-height:1.55}
+  .gfoot b{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){.cur{animation:none}}
+  /* ===== generation hud ===== */
+  #genhud{position:fixed;left:18px;bottom:18px;z-index:70;font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--muted);
+    background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;box-shadow:0 10px 26px rgba(20,23,31,.12);pointer-events:none}
+  #genhud b{color:var(--ink)}
+  @media (max-width:760px){#genhud{display:none}}
+  /* ===== self-generating headline ===== */
+  .fp h1{position:relative}
+  .fp h1 .cur{width:.13em;height:.95em;vertical-align:-.06em;margin-left:.05em;transition:opacity .5s}
+  .fp h1 .gho{position:absolute;color:var(--faint);pointer-events:none;white-space:pre;font-style:normal}
+  .fp-sub,.fp-ctas,.fp-stats{transition:opacity .6s ease,transform .6s ease}
+  .js .fp.pre .fp-sub,.js .fp.pre .fp-ctas,.js .fp.pre .fp-stats{opacity:0;transform:translateY(10px)}
+  .samp{position:absolute;z-index:5;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;box-shadow:0 14px 30px rgba(20,23,31,.10);
+    padding:10px 14px;display:grid;gap:6px;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--muted);text-align:left;pointer-events:none}
+  .samp .sr{display:flex;align-items:center;gap:8px;white-space:nowrap}
+  .samp .sr i{display:inline-block;height:8px;border-radius:999px;background:var(--linedark);flex:none;transform-origin:left;animation:sjit 1s ease-in-out infinite alternate}
+  .samp .sr.top{color:var(--ink)}
+  .samp .sr.top i{background:var(--h1)}
+  .samp .sr b{font-weight:700}
+  @keyframes sjit{from{transform:scaleX(.92)}to{transform:scaleX(1.05)}}
+  @media (prefers-reduced-motion:reduce){.samp .sr i{animation:none}}
+  /* ===== the page spine — the hero road continues down the page; each section is the next token slot, committed as you read ===== */
+  section.wrap{position:relative}
+  section.wrap:before{content:"";position:absolute;left:calc(50% - 1px);top:0;height:26px;border-left:2px dashed var(--linedark)}
+  section.wrap:after{content:"";position:absolute;left:50%;top:31px;width:9px;height:9px;border-radius:50%;transform:translateX(-50%);
+    background:var(--paper);border:2px solid var(--linedark);transition:background .5s ease,border-color .5s ease}
+  section.wrap.lit:after{background:var(--ink);border-color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="fp" id="fphero">
+  <div class="fp-inner">
+    <div class="fp-kicker"><span class="t">free_open_hands_on_course</span></div>
+    <h1>Learn how AI actually works<br><em>— by building it.</em></h1>
+    <p class="fp-sub"><b>Generative AI: Foundations &amp; Applications.</b> Six hands-on sessions, from "what's a token?" to a shipped app. One weekend, zero cost, nothing to install.</p>
+    <div class="fp-ctas">
+      <a class="pill" href="how-llms-work.html">First: watch how LLMs work <span class="arr">→</span></a>
+      <a class="pill" href="presentations/session-1-how-machines-learned-to-talk.html">Start Session 1 <span class="arr">→</span></a>
+      <a class="quiet" href="TEACH-THIS-YOURSELF.html">Teach this course</a>
+    </div>
+    <div class="fp-stats">
+      <div><div class="n">6</div><div class="l">sessions</div></div>
+      <div><div class="n">12h</div><div class="l">half labs</div></div>
+      <div><div class="n">50+</div><div class="l">live demos</div></div>
+      <div><div class="n">6</div><div class="l">things you ship</div></div>
+      <div><div class="n">₹0</div><div class="l">total cost</div></div>
+    </div>
+  </div>
+  <div class="roadband"><canvas id="path" aria-hidden="true"></canvas></div>
+  <div class="marq rv" aria-label="What you will master">
+    <div class="marq-lab">the_road_ahead · 6 sessions · 25 concepts</div>
+    <div class="marq-row" id="marqrow">
+      <span class="mchip" style="color:var(--d1)">tokenization</span><span class="mchip" style="color:var(--d1)">embeddings</span><span class="mchip" style="color:var(--d1)">attention</span><span class="mchip" style="color:var(--d1)">temperature</span><span class="mchip" style="color:var(--d2)">prompt anatomy</span><span class="mchip" style="color:var(--d2)">eval harnesses</span><span class="mchip" style="color:var(--d2)">hallucination mechanics</span><span class="mchip" style="color:var(--d3)">vision tokens</span><span class="mchip" style="color:var(--d3)">diffusion</span><span class="mchip" style="color:var(--d3)">structured outputs</span><span class="mchip" style="color:var(--d4)">semantic search</span><span class="mchip" style="color:var(--d4)">chunking</span><span class="mchip" style="color:var(--d4)">RAG</span><span class="mchip" style="color:var(--d5)">function calling</span><span class="mchip" style="color:var(--d5)">the agent loop</span><span class="mchip" style="color:var(--d5)">MCP</span><span class="mchip" style="color:var(--d6)">prompt injection</span><span class="mchip" style="color:var(--d6)">defense in depth</span><span class="mchip" style="color:var(--d6)">token economics</span>
+    </div>
+  </div>
+</header>
+
+<section class="wrap turn" id="turn">
+  <div class="kicker rv"><b>your_turn</b></div>
+  <h2 class="rv">The machine picks the next token. <span class="uu">Now you try.</span></h2>
+  <p class="sub rv">Three prompts. Guess the next token before the model reveals its odds. Score 3/3 and you <i>are</i> the autocomplete.</p>
+  <div class="game rv" id="game" aria-label="Play next-token prediction — you are the model">
+    <div class="glab" id="g-lab">you_are_the_model · round <span id="g-round">1</span>/3</div>
+    <div class="gp" id="g-prompt">The capital of Tamil Nadu is <span class="cur" aria-hidden="true"></span></div>
+    <div class="gopts" id="g-opts"></div>
+    <div class="grows" id="g-rows"></div>
+    <div class="gfoot" id="g-foot">ChatGPT&#8217;s entire job: pick the next token. Your turn &#8212; <b>tap your guess.</b></div>
+  </div>
+</section>
+
+<section class="wrap" id="build">
+  <div class="kicker rv"><b>the_deal</b></div>
+  <h2 class="rv">Walk out with six things you built.</h2>
+  <p class="sub rv">Every session ends with working code in your hands, not notes about someone else's code.</p>
+  <div class="grid3">
+    <div class="bcard b1 rv"><div class="no">S1</div><h3>Your first AI script</h3><p>Your own API key, your own code, calling a frontier model — before you leave the first session.</p></div>
+    <div class="bcard b2 rv"><div class="no">S2</div><h3>An eval harness</h3><p>A tester that <b>measures</b> whether AI answers are right — like an engineer, not a fan.</p></div>
+    <div class="bcard b3 rv"><div class="no">S3</div><h3>A vision app</h3><p>Upload a photo, interrogate it. AI that reads documents, receipts and handwriting.</p></div>
+    <div class="bcard b4 rv"><div class="no">S4</div><h3>Chat with your notes</h3><p>An AI that answers from <b>your</b> study material — RAG, the pattern behind most real AI products.</p></div>
+    <div class="bcard b5 rv"><div class="no">S5</div><h3>A tool-using assistant</h3><p>AI that calls tools your code controls — and the judgment to know when <b>not</b> to build an agent.</p></div>
+    <div class="bcard b6 rv"><div class="no">S6</div><h3>A hardened capstone</h3><p>You attack each other's apps, patch the holes, and demo a real product to the room.</p></div>
+  </div>
+</section>
+
+
+<section class="wrap" id="syllabus">
+  <div class="kicker rv"><b>no_hidden_jargon</b></div>
+  <h2 class="rv">The whole syllabus, said plainly.</h2>
+  <p class="sub rv">If a concept matters in real AI engineering, it's named here up front: taught from scratch, then used in a lab the same afternoon. <b>Hover any chip:</b> a course that can't define its vocabulary in one plain line doesn't own it.</p>
+  <div class="chips rv">
+    <span class="chip" tabindex="0" data-d="Splitting text into the sub-word chunks a model actually reads — 'jigarthanda' ≈ 4 tokens.">tokenization</span><span class="chip" tabindex="0" data-d="Every token becomes coordinates in meaning-space; similar meanings land near each other.">embeddings</span><span class="chip" tabindex="0" data-d="Each token weighs every other token to resolve meaning — the T in GPT.">attention</span><span class="chip" tabindex="0" data-d="How raw scores become probabilities, and the dial that sharpens or flattens them.">softmax &amp; temperature</span><span class="chip" tabindex="0" data-d="Months of knob-tuning, once. Your chat just flows through the frozen result.">training vs inference</span><span class="chip" tabindex="0" data-d="The model's whole working memory, measured in tokens. Outside the window = doesn't exist.">context windows</span><span class="chip" tabindex="0" data-d="Role, task, constraints, examples, format — the switches that actually move output quality.">prompt anatomy</span><span class="chip" tabindex="0" data-d="Show 2–3 worked examples instead of describing what you want. The strongest dial there is.">few-shot</span><span class="chip" tabindex="0" data-d="Why confident, plausible, false text is the default output of a plausibility machine.">hallucination mechanics</span><span class="chip" tabindex="0" data-d="A test set plus a scorer — turns 'it seems better' into a number you can defend.">eval harnesses</span><span class="chip" tabindex="0" data-d="Exact-match, contains, LLM-as-judge — and why the scorer decides what truth means.">scorers &amp; test sets</span><span class="chip" tabindex="0" data-d="Images become patch tokens; the same next-token loop then reads pictures.">vision tokens</span><span class="chip" tabindex="0" data-d="Images generated by learning to reverse noise, step by step, steered by your prompt.">diffusion</span><span class="chip" tabindex="0" data-d="Three seconds of audio can fake a voice. A family code word beats a trained ear.">voice cloning</span><span class="chip" tabindex="0" data-d="Search by meaning using vectors, not keywords — Ctrl-F that understands synonyms.">semantic search</span><span class="chip" tabindex="0" data-d="How you cut documents decides what retrieval can ever find. Unglamorous, decisive.">chunking</span><span class="chip" tabindex="0" data-d="Retrieve the right 3 paragraphs, staple them to the question, answer only from them.">RAG</span><span class="chip" tabindex="0" data-d="The 'answer ONLY from the context below' pattern — makes AI cite instead of invent.">grounded prompts</span><span class="chip" tabindex="0" data-d="The model writes a request. Your code decides whether it runs. Never the reverse.">function calling</span><span class="chip" tabindex="0" data-d="While the model wants tools: run them, feed results back. That's the whole secret.">the agent loop</span><span class="chip" tabindex="0" data-d="Fixed steps beat improvisation for most jobs — knowing when is the engineering.">workflows vs agents</span><span class="chip" tabindex="0" data-d="Open-weight models running on your own laptop, offline, in one Ollama command.">local models</span><span class="chip" tabindex="0" data-d="When data talks its way into being treated as instructions — OWASP's #1 LLM risk.">prompt injection</span><span class="chip" tabindex="0" data-d="No single fix stops injection, so you stack five imperfect layers.">defense in depth</span><span class="chip" tabindex="0" data-d="Every token is money. Caching, routing and budgets decide whether your app survives.">token economics</span><span class="chip" tabindex="0" data-d="Ask the API for a schema, not a vibe — response_schema makes valid JSON guaranteed.">structured outputs</span><span class="chip" tabindex="0" data-d="Models that spend tokens thinking before answering — accuracy bought with time and money.">reasoning models</span><span class="chip" tabindex="0" data-d="The USB-C of tool use — one standard socket between models and your tools and data.">MCP</span><span class="chip" tabindex="0" data-d="Specialist agents plus hand-offs. Failure compounds per hand-off; parallel fan-out + a judge is the pattern that works.">multi-agent systems</span><span class="chip" tabindex="0" data-d="Bias, provenance, privacy, accountability — the four questions the EU AI Act and NIST AI RMF ask.">responsible AI</span>
+  </div>
+</section>
+
+<section class="wrap" id="weekend">
+  <div class="kicker rv"><b>the_format</b></div>
+  <h2 class="rv">One weekend. A rhythm, not a lecture.</h2>
+  <div class="days">
+    <div class="day rv"><div class="d">day_1 · sessions 1–3</div><h3>Understand the machine</h3><p>Next-token prediction, prompting and evals, vision and images. Overnight: bring your own documents for Day 2.</p></div>
+    <div class="day rv"><div class="d">day_2 · sessions 4–6</div><h3>Arm it, then ship it</h3><p>RAG on your own notes, tool use and agents, security and production — ending in capstone demos.</p></div>
+  </div>
+  <div class="rhythm rv">
+    <div class="t">every session, the same rhythm</div>
+    <div class="rbar" role="img" aria-label="Session rhythm: 8 minute hook, 45 minute talk with live demos, 50 minute lab, 12 minute show and tell">
+      <div class="r1">hook</div><div class="r2">talk · live demos on every idea</div><div class="r3">50-min lab</div><div class="r4">show&amp;tell</div>
+    </div>
+    <p class="rnote">Half the course is laptops-open lab time. The talks exist to make the labs land — not the other way around.</p>
+  </div>
+</section>
+
+<section class="wrap" id="sessions">
+  <div class="kicker rv"><b>the_sessions</b></div>
+  <h2 class="rv">Six sessions, one throughline.</h2>
+  <div class="arc rv" aria-label="Course arc">
+    <span class="v1">Predict</span><i>→</i><span class="v2">Measure</span><i>→</i><span class="v3">See</span><i>→</i><span class="v4">Know</span><i>→</i><span class="v5">Act</span><i>→</i><span class="v6">Ship</span>
+  </div>
+  <p class="arcnote rv">Each session hands its verb to the next. By Sunday evening the sentence is yours.</p>
+
+  <div class="band n1 rv">
+    <div class="left"><div class="num">01</div><div class="verb">predict</div></div>
+    <div class="right">
+      <div class="toprow"><h3><a class="tlink" href="presentations/session-1-how-machines-learned-to-talk.html">How Machines Learned to Talk</a></h3><span class="meta">30 slides · ~2h</span></div>
+      <p>Next-token prediction, tokens, embeddings, attention, training vs inference — the whole engine, every idea a live demo, including a neural network you watch think.</p>
+      <div class="builds">→ you build: your first AI API call</div>
+      <div class="kit"><a href="presentations/session-1-how-machines-learned-to-talk.html">slides</a><a href="labs/session-1/lab-handout.html">lab</a><a href="cheatsheets/session-1-cheatsheet.html">cheatsheet</a></div>
+    </div>
+  </div>
+  <div class="band n2 rv">
+    <div class="left"><div class="num">02</div><div class="verb">measure</div></div>
+    <div class="right">
+      <div class="toprow"><h3><a class="tlink" href="presentations/session-2-talking-to-ai-and-catching-its-lies.html">Talking to AI, and Catching Its Lies</a></h3><span class="meta">21 slides · ~2h</span></div>
+      <p>Prompt engineering that works, why polished prompts still lie beautifully, and how engineers measure quality with numbers instead of vibes.</p>
+      <div class="builds">→ you build: an evaluation harness</div>
+      <div class="kit"><a href="presentations/session-2-talking-to-ai-and-catching-its-lies.html">slides</a><a href="labs/session-2/lab-handout.html">lab</a><a href="cheatsheets/session-2-cheatsheet.html">cheatsheet</a></div>
+    </div>
+  </div>
+  <div class="band n3 rv">
+    <div class="left"><div class="num">03</div><div class="verb">see</div></div>
+    <div class="right">
+      <div class="toprow"><h3><a class="tlink" href="presentations/session-3-ai-beyond-text.html">AI Beyond Text</a></h3><span class="meta">17 slides · ~2h</span></div>
+      <p>Vision that reads documents, diffusion that paints from static, voices cloned in seconds — and why it's all the same loop.</p>
+      <div class="builds">→ you build: a vision app</div>
+      <div class="kit"><a href="presentations/session-3-ai-beyond-text.html">slides</a><a href="labs/session-3/lab-handout.html">lab</a><a href="cheatsheets/session-3-cheatsheet.html">cheatsheet</a></div>
+    </div>
+  </div>
+  <div class="band n4 rv">
+    <div class="left"><div class="num">04</div><div class="verb">know</div></div>
+    <div class="right">
+      <div class="toprow"><h3><a class="tlink" href="presentations/session-4-giving-ai-your-own-knowledge.html">Giving AI Your Own Knowledge</a></h3><span class="meta">20 slides · ~2h</span></div>
+      <p>Embeddings, semantic search, chunking, and RAG end to end — the single most useful pattern in applied AI.</p>
+      <div class="builds">→ you build: chat with your own notes</div>
+      <div class="kit"><a href="presentations/session-4-giving-ai-your-own-knowledge.html">slides</a><a href="labs/session-4/lab-handout.html">lab</a><a href="cheatsheets/session-4-cheatsheet.html">cheatsheet</a></div>
+    </div>
+  </div>
+  <div class="band n5 rv">
+    <div class="left"><div class="num">05</div><div class="verb">act</div></div>
+    <div class="right">
+      <div class="toprow"><h3><a class="tlink" href="presentations/session-5-making-ai-do-things.html">Making AI Do Things</a></h3><span class="meta">23 slides · ~2h</span></div>
+      <p>Tool use, the agent loop, MCP, why workflows beat agents most days — plus a frontier model running on a bare laptop.</p>
+      <div class="builds">→ you build: a tool-using assistant</div>
+      <div class="kit"><a href="presentations/session-5-making-ai-do-things.html">slides</a><a href="labs/session-5/lab-handout.html">lab</a><a href="cheatsheets/session-5-cheatsheet.html">cheatsheet</a></div>
+    </div>
+  </div>
+  <div class="band n6 rv">
+    <div class="left"><div class="num">06</div><div class="verb">ship</div></div>
+    <div class="right">
+      <div class="toprow"><h3><a class="tlink" href="presentations/session-6-breaking-securing-shipping.html">Breaking, Securing, Shipping</a></h3><span class="meta">20 slides · ~2h</span></div>
+      <p>Live prompt-injection attacks, defense in depth, what production actually costs — then you demo your capstone.</p>
+      <div class="builds">→ you build: a hardened, shipped app</div>
+      <div class="kit"><a href="presentations/session-6-breaking-securing-shipping.html">slides</a><a href="labs/session-6/lab-handout.html">lab</a><a href="cheatsheets/session-6-cheatsheet.html">cheatsheet</a></div>
+    </div>
+  </div>
+  <p class="kitnote rv">Colab notebooks for all six labs ship in the <span class="mono">labs/</span> folder of the course repo.</p>
+</section>
+
+<section class="wrap" id="arguments">
+  <div class="kicker rv"><b>the_arguments</b></div>
+  <h2 class="rv">Every session stops once to pick a fight.</h2>
+  <p class="sub rv">One deliberately debatable claim per session, defended on stage. The deck goes lights-off for it. Disagreement is part of the syllabus; the strongest counter-argument gets named on the closing slide.</p>
+  <div class="args">
+    <div class="arg g1 rv"><div class="n" style="color:#8fa8ff">session_1</div><p class="q">If autocomplete can pass your exam, your exam was never testing understanding.</p></div>
+    <div class="arg g2 rv"><div class="n" style="color:#c9a4f7">session_2</div><p class="q">Hallucination is not a bug. It is the model doing exactly what it was trained to do.</p></div>
+    <div class="arg g3 rv"><div class="n" style="color:#f79ec4">session_3</div><p class="q">Your mother's voice is no longer proof of your mother.</p></div>
+    <div class="arg g4 rv"><div class="n" style="color:#f7c886">session_4</div><p class="q">Your final-year project is one grounded prompt away from being a startup.</p></div>
+    <div class="arg g5 rv"><div class="n" style="color:#7fdcbe">session_5</div><p class="q">Most production "AI agents" are a while-loop in a trench coat.</p></div>
+    <div class="arg g6 rv"><div class="n" style="color:#f7a294">session_6</div><p class="q">There is no secure AI agent. Only one whose blast radius you've made small enough to survive.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="method">
+  <div class="kicker rv"><b>the_method</b></div>
+  <h2 class="rv">Why it's built this way.</h2>
+  <p class="sub rv">This course exists to prove a point about teaching AI, and it wants to be copied.</p>
+  <div class="moves">
+    <div class="move rv"><h3>Vote before the reveal</h3><p>Every big idea arrives as a game: the room predicts, shouts, commits — <i>then</i> the answer lands. A brain that guessed wrong remembers forever.</p></div>
+    <div class="move rv"><h3>Build before the jargon</h3><p>Raw API calls before frameworks, your own retrieval loop before "vector database" is ever said. You earn every abstraction before you're allowed to use it.</p></div>
+    <div class="move rv"><h3>Honest failure is curriculum</h3><p>Demos that can fail live stay in the deck. Hallucinations get measured, not apologized for. The fine print is taught with the magic.</p></div>
+    <div class="move rv"><h3>Measure, don't vibe</h3><p>"It worked when I tried it" is not evidence. From Session 2 onward, every claim about AI quality must survive an eval.</p></div>
+  </div>
+  <div class="credo rv">If you only listen, you forget. Here, everyone ships — in every session, on any laptop, for free.</div>
+</section>
+
+<section class="wrap" id="instructor">
+  <div class="kicker rv"><b>your_instructor</b></div>
+  <h2 class="rv">Built by someone who ships this for a living.</h2>
+  <div class="inst">
+    <div>
+      <p class="bio rv"><b>Karthikeyan NG</b> heads engineering at Vision, a fintech and crypto platform in Dubai — where RAG pipelines, eval harnesses and agent guardrails are production reality, not slideware. Along the way: two startups founded, two published books on machine learning, eighteen hackathon wins, and stages at TEDx, Google, IIT Kharagpur and Seoul.</p>
+      <p class="bio rv" style="margin-top:12px">The course began where you might be sitting now — an engineering classroom (CSE '09, Madurai). He built the course he wishes he'd had, and credits most of what it teaches to the hundreds of things he shipped that <b>failed</b>.</p>
+      <div class="ilinks rv">
+        <a href="https://intrepidkarthi.com">intrepidkarthi.com</a>
+        <a href="https://x.com/intrepidkarthi">@intrepidkarthi</a>
+      </div>
+    </div>
+    <div class="photos rv">
+      <figure><img src="assets/img/web/tedx.jpg" alt="Karthikeyan NG speaking at TEDx SOA University" loading="lazy"><figcaption>TEDx</figcaption></figure>
+      <figure><img src="assets/img/web/google-office.jpg" alt="Speaking at a Google office event" loading="lazy"><figcaption>Google</figcaption></figure>
+      <figure><img src="assets/img/web/iit-kharagpur.jpg" alt="Speaking at IIT Kharagpur" loading="lazy"><figcaption>IIT Kharagpur</figcaption></figure>
+      <figure><img src="assets/img/web/book-launch.jpg" alt="Book launch at the SAARC CXO Summit" loading="lazy"><figcaption>Book launch</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="kit">
+  <div class="kicker rv"><b>the_course_kit</b></div>
+  <h2 class="rv">Everything is in the box. Take it, teach it.</h2>
+  <p class="sub rv">Six interactive decks, six labs with notebooks and handouts, six cheatsheets, a complete learning guide, per-slide timing, and instructor prep packs. Swap Madurai for your city and run it anywhere.</p>
+  <div class="kit2">
+    <div class="kitcol rv">
+      <h3>for students &amp; self-learners</h3>
+      <a href="LEARNING-GUIDE.html"><i class="kt">guide</i>Learning Guide<span>Every concept of the course, one honest document</span></a>
+      <a href="cheatsheets/session-1-cheatsheet.html"><i class="kt">sheet</i>Cheatsheets<span>One printable page per session — start with Session 1</span></a>
+      <a href="labs/session-1/lab-handout.html"><i class="kt">lab</i>Lab handouts<span>Step-by-step, checkpoint-driven — start with Lab 1</span></a>
+      <a href="ZERO-SETUP.html"><i class="kt">setup</i>Zero-Setup Guarantee<span>Any laptop, browser only, free tiers, no credit card</span></a>
+    </div>
+    <div class="kitcol rv">
+      <h3>for instructors</h3>
+      <a href="TEACH-THIS-YOURSELF.html"><i class="kt">howto</i>Teach This Yourself<span>Run the course at any scale — college, meetup, company</span></a>
+      <a href="course-plan.html"><i class="kt">plan</i>Course Plan<span>The full design: goals, arc, capstone rubric</span></a>
+      <a href="TIMING.html"><i class="kt">timing</i>Timing Guide<span>Per-slide budgets for all six sessions</span></a>
+      <a href="presentations/session-1-how-machines-learned-to-talk.html"><i class="kt">deck</i>Presenter mode<span>Open any deck, press S — timer, pace badge, speaker notes</span></a>
+      <a href="instructor-notes/session-1-prep.html"><i class="kt">prep</i>Deep prep packs<span>Master every concept one level below the slides — start with Session 1</span></a>
+      <a href="instructor-notes/instructor-notes-all-sessions.pdf"><i class="kt">pdf</i>All notes, one PDF<span>120 pages: six deep preps + run sheets + facilitation guide, printable</span></a>
+      <a href="certificate.html"><i class="kt">cert</i>Certificate template<span>Printable, per-student, capstone rubric on the back</span></a>
+    </div>
+  </div>
+  <div class="note rv"><b>Presenting?</b> Open any deck and press <b>S</b> for presenter mode — a live timer, per-slide budgets, a pace badge, and speaker notes. Arrow keys navigate · <b>F</b> fullscreen · <b>O</b> overview grid.</div>
+</section>
+
+<section class="wrap" id="faq">
+  <div class="kicker rv"><b>questions</b></div>
+  <h2 class="rv" style="margin-bottom:18px">The ones everyone asks.</h2>
+  <details class="rv"><summary>Does it really cost nothing?</summary><p>Yes. The labs run on Google AI Studio's free tier (no credit card) and free Google Colab. The whole course fits inside the daily free limits — the lab handouts even budget the API calls per exercise.</p></details>
+  <details class="rv"><summary>What laptop do I need?</summary><p>Anything that opens a browser. All heavy computation happens in Google's cloud; your machine just needs a keyboard and Wi-Fi. A ₹15,000 laptop is exactly as capable here as a MacBook Pro.</p></details>
+  <details class="rv"><summary>Do I need math or ML background?</summary><p>One line of school math appears in the whole course: <code>y = wx + b</code>. If you can write a for-loop in any language, you have every prerequisite.</p></details>
+  <details class="rv"><summary>Can I self-study without an instructor?</summary><p>Yes. The decks are self-contained and interactive, every lab has a step-by-step handout with checkpoints, and pressing <b>S</b> in any deck shows the full speaker narration. The Learning Guide covers every concept in prose.</p></details>
+  <details class="rv"><summary>Is my data private on free tiers?</summary><p>Assume free-tier conversations may train future models. The course drills one rule from Session 1: never paste anything you couldn't survive seeing on the front page of the newspaper.</p></details>
+  <details class="rv"><summary>Can I teach or translate this?</summary><p>Please do — that's the point. <a href="TEACH-THIS-YOURSELF.html" style="font-weight:650">Teach This Yourself</a> covers running it at any scale, and the Madurai references are designed to be swapped for your own city's.</p></details>
+</section>
+
+<footer class="wrap">
+  <div class="frow">
+    <div>Built for <b>engineering classrooms everywhere</b> · by <a href="https://intrepidkarthi.com">Karthikeyan NG</a> (<a href="https://x.com/intrepidkarthi">@intrepidkarthi</a>)</div>
+    <div>Free to use, fork, localize and teach.</div>
+  </div>
+  <div class="stamp">facts &amp; model names verified july 2026 · every deck works offline · no trackers, no cookies, no build step — view source, it's all here.</div>
+</footer>
+
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* hero game + hud installed at end of body */
+  var els=document.querySelectorAll('.rv');
+  if(reduce||location.hash||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});}
+  else{
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});
+    },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+    var vh=window.innerHeight||document.documentElement.clientHeight;
+    els.forEach(function(e){
+      if(e.getBoundingClientRect().top<vh*.96){e.classList.add('in');}
+      else{io.observe(e);}
+    });
+  }
+})();
+(function(){
+  var secs=[].slice.call(document.querySelectorAll('section.wrap'));
+  if(!secs.length)return;
+  if(!('IntersectionObserver' in window)){secs.forEach(function(s){s.classList.add('lit')});return;}
+  var io=new IntersectionObserver(function(en){
+    en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('lit');io.unobserve(e.target);}});
+  },{threshold:0,rootMargin:'0px 0px -35% 0px'});
+  secs.forEach(function(s){io.observe(s)});
+})();
+</script>
+<div id="genhud" aria-hidden="true"><span id="gh-live">token <b id="gh-n">0</b> / <span id="gh-t">&#8212;</span></span><span id="gh-end" hidden>&lt;|end_of_page|&gt; &#183; now you generate</span></div>
+<script>
+(function(){
+  var pEl=document.getElementById('g-prompt'),oEl=document.getElementById('g-opts'),
+      rEl=document.getElementById('g-rows'),fEl=document.getElementById('g-foot'),
+      lab=document.getElementById('g-lab');
+  if(!pEl)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)rEl.classList.add('nomo');
+  var RUP="\u20B9";
+  var R=[
+    {p:'The capital of Tamil Nadu is',o:[['Chennai',84],['Madurai',9],['London',4],['pizza',1]],
+     q:[null,"Heart says Madurai; the training data says otherwise.","Bold. Eight billion web pages disagree.","Somewhere, 1% of the internet is very sure of this."]},
+    {p:'The fastest way to learn AI is to',o:[['build with it',63],['read about it',22],['memorize math',9],['panic',6]],
+     q:[null,"Most of the internet chose this one. Hence this course.","The model holds the math so you don't have to.","Statistically popular. Pedagogically weak."]},
+    {p:'This course will cost you',o:[['nothing',76],['one weekend',18],[RUP+'50,000',4],['a kidney',2]],
+     q:[null,"Also true \u2014 but the money answer is "+RUP+"0.","That's other courses. This one is "+RUP+"0.","Keep the kidney. Bring any laptop."]}
+  ];
+  var i=0,score=0,busy=false,T=[];
+  function later(f,ms){T.push(setTimeout(f,ms));}
+  function setP(h){pEl.innerHTML=h+' <span class="cur" aria-hidden="true"></span>';}
+  function opts(r){
+    oEl.innerHTML='';
+    r.o.slice().sort(function(){return Math.random()-.5;}).forEach(function(c){
+      var b=document.createElement('button');b.type='button';b.className='gopt';b.textContent=c[0];
+      b.addEventListener('click',function(){pick(r,c);});
+      oEl.appendChild(b);
+    });
+  }
+  function bars(r,chosen){
+    rEl.innerHTML='';
+    r.o.forEach(function(c,k){
+      var d=document.createElement('div');
+      d.className='grow'+(k===0?' win':'')+(c===chosen?' you':'');
+      d.innerHTML='<span class="w">'+c[0]+'</span><span class="tr"><span class="fi"></span></span><span class="p">'+c[1]+'%</span>';
+      rEl.appendChild(d);
+    });
+    requestAnimationFrame(function(){rEl.querySelectorAll('.fi').forEach(function(f,k){f.style.width=r.o[k][1]+'%';});});
+  }
+  function pick(r,c){
+    if(busy)return;busy=true;
+    var k=r.o.indexOf(c),top=r.o[0],hit=(k===0);if(hit)score++;
+    setP(r.p+' <span class="nw">'+c[0]+'</span>');
+    oEl.innerHTML='';bars(r,c);
+    fEl.innerHTML=hit?'<b>Match.</b> That is the model&#8217;s top token too ('+top[1]+'%).'
+      :(r.q[k]||'')+' The model samples <b>'+top[0]+'</b> ('+top[1]+'%).';
+    later(next,2600);
+  }
+  function next(){
+    busy=false;i++;
+    if(i<R.length){var re=document.getElementById('g-round');if(re)re.textContent=i+1;start();}
+    else finish();
+  }
+  function start(){
+    var r=R[i];setP(r.p);rEl.innerHTML='';opts(r);
+    fEl.innerHTML=i===0?'ChatGPT&#8217;s entire job: pick the next token. Your turn: <b>tap your guess.</b>'
+      :'Round '+(i+1)+'. Same job, new context. <b>Context changes everything.</b>';
+  }
+  function finish(){
+    var v=['T = 2.0 \u2014 pure chaos. Session 1 explains what you just did.',
+           'T \u2248 1.2 \u2014 a creative sampler. The model is mildly concerned.',
+           'T \u2248 0.4 \u2014 mostly greedy, occasionally spicy. Engineer material.',
+           'T = 0 \u2014 greedy decoding. You ARE the autocomplete.'][score];
+    lab.textContent='you_are_the_model \u00B7 results';
+    setP('You matched the model <span class="nw">'+score+'/3</span>');
+    rEl.innerHTML='';oEl.innerHTML='';
+    fEl.innerHTML='<b>'+v+'</b><br>This guessing game is the <b>only thing ChatGPT does</b> \u2014 about 650 times per answer. Session 1 opens the machine.';
+    var a=document.createElement('a');a.className='gopt';a.href='presentations/session-1-how-machines-learned-to-talk.html';a.innerHTML='See how it chooses \u2192';
+    var b=document.createElement('button');b.type='button';b.className='gopt';b.textContent='\u27F2 Play again';
+    b.addEventListener('click',function(){T.forEach(clearTimeout);T=[];i=0;score=0;busy=false;
+      lab.innerHTML='you_are_the_model \u00B7 round <span id="g-round">1</span>/3';start();});
+    oEl.appendChild(a);oEl.appendChild(b);
+  }
+  start();
+})();
+(function(){
+  var hud=document.getElementById('genhud');if(!hud)return;
+  var live=document.getElementById('gh-live'),end=document.getElementById('gh-end'),
+      n=document.getElementById('gh-n'),tt=document.getElementById('gh-t');
+  var total=Math.max(600,Math.round((document.body.innerText||'').length/4));
+  tt.textContent=total.toLocaleString('en-IN');
+  var tick=false;
+  function upd(){
+    tick=false;
+    var h=document.documentElement,max=h.scrollHeight-window.innerHeight;
+    var p=max>0?Math.min(1,window.scrollY/max):1;
+    n.textContent=Math.round(p*total).toLocaleString('en-IN');
+    var done=p>=.999;live.hidden=done;end.hidden=!done;
+  }
+  addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd);}},{passive:true});
+  addEventListener('resize',upd);upd();
+})();
+</script>
+<script>
+/* replaced by journey path */
+(function(){})();
+</script>
+<script>
+/* the decode strip — the road from <|user|> to <|builder|>, generated token by token */
+(function(){
+  var cv=document.getElementById('path'); if(!cv||!cv.getContext) return;
+  var ctx=cv.getContext('2d');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DPR=Math.min(2,devicePixelRatio||1),W=0,H=0;
+  var HUES=['#2B4EFF','#8526E0','#ED2E7C','#F08C00','#00A87A','#E8442E'];
+  var STEPS=[
+    {pick:'predict',alts:['memorise','vibes']},
+    {pick:'measure',alts:['hope','guess']},
+    {pick:'see',alts:['squint','stare']},
+    {pick:'know',alts:['cram','google']},
+    {pick:'act',alts:['wait','ponder']},
+    {pick:'ship',alts:['demo','someday']}];
+  var MU=[0.09,0.253,0.416,0.579,0.742,0.905];
+  var MONO='ui-monospace,Menlo,monospace';
+  var probs=[];
+  function shuffleProbs(){
+    probs=STEPS.map(function(){
+      var p0=0.52+Math.random()*0.22, rest=1-p0, p1=rest*(0.55+Math.random()*0.25);
+      return [p0,p1,rest-p1];
+    });
+  }
+  shuffleProbs();
+  var xs=0,xe=0;
+  function pt(u){return [xs+(xe-xs)*u, H*(0.56-0.115*Math.sin(u*Math.PI*1.6))];}
+  function size(){W=cv.clientWidth||1;H=cv.clientHeight||1;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+    xs=Math.max(96,W*0.075); xe=W-Math.max(104,W*0.075);
+    if(reduce){scene(-1,6,-1,0,1);}else if(!armed){scene(-1,0,-1,0,1);}}
+  function chip(cx,cy,txt,filled){
+    ctx.font='700 11px '+MONO;
+    var w=ctx.measureText(txt).width+18;
+    ctx.beginPath();
+    var x=cx-w/2,y=cy-12,r=12;
+    ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+24,r);ctx.arcTo(x+w,y+24,x,y+24,r);ctx.arcTo(x,y+24,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+    ctx.fillStyle=filled?'#14171F':'#fff';ctx.fill();
+    ctx.strokeStyle=filled?'#14171F':'rgba(20,23,31,.4)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle=filled?'#fff':'#14171F';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(txt,cx,cy+1);ctx.textBaseline='alphabetic';
+  }
+  /* scene(cursorU, stampedCount, dwellingIdx, dwellPhase 0-1, alpha) */
+  function scene(cu,stamped,dw,dp,alpha,ts){
+    ctx.clearRect(0,0,W,H);
+    ctx.globalAlpha=alpha;
+    // road
+    ctx.lineCap='round';
+    [['rgba(20,23,31,.055)',30,3],['rgba(20,23,31,.085)',26,0]].forEach(function(s){
+      ctx.beginPath();
+      for(var i=0;i<=120;i++){var q=pt(i/120); i?ctx.lineTo(q[0],q[1]+s[2]):ctx.moveTo(q[0],q[1]+s[2]);}
+      ctx.strokeStyle=s[0];ctx.lineWidth=s[1];ctx.stroke();});
+    ctx.strokeStyle='rgba(255,255,255,.95)';ctx.lineWidth=2;ctx.setLineDash([10,14]);
+    ctx.beginPath();
+    for(var i=0;i<=120;i++){var q=pt(i/120); i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);}
+    ctx.stroke();ctx.setLineDash([]);
+    // end caps: the whole point of the journey
+    var p0=pt(0),p1=pt(1);
+    chip(Math.max(52,xs-46),p0[1],'<|user|>',false);
+    chip(Math.min(W-56,xe+50),p1[1],'<|builder|>',stamped>=6);
+    // token slots: hollow ring until committed, hue-filled + verb stamp after
+    for(var m=0;m<6;m++){var q=pt(MU[m]);
+      if(m<stamped){
+        ctx.beginPath();ctx.arc(q[0],q[1],7,0,6.2832);ctx.fillStyle=HUES[m];ctx.fill();
+        ctx.lineWidth=3;ctx.strokeStyle='#fff';ctx.stroke();
+        ctx.font='700 11px '+MONO;ctx.textAlign='center';
+        ctx.fillStyle=HUES[m];ctx.fillText(STEPS[m].pick,q[0],q[1]+30);
+      }else{
+        ctx.beginPath();ctx.arc(q[0],q[1],6,0,6.2832);ctx.fillStyle='#fff';ctx.fill();
+        ctx.lineWidth=2;ctx.strokeStyle='rgba(20,23,31,.28)';ctx.stroke();
+      }}
+    // sampling panel: top-3 candidates with live probability bars
+    if(dw>=0&&W>620){
+      var q=pt(MU[dw]), px=Math.min(W-120,Math.max(56,q[0]-24)), py=q[1]-26;
+      var fade=dp<0.12?dp/0.12:(dp>0.9?(1-dp)/0.1:1);
+      ctx.globalAlpha=alpha*Math.max(0,fade);
+      var rows=[[STEPS[dw].pick,probs[dw][0]],[STEPS[dw].alts[0],probs[dw][1]],[STEPS[dw].alts[1],probs[dw][2]]];
+      ctx.font='600 10px '+MONO;ctx.textAlign='left';
+      for(var r=0;r<3;r++){
+        var ry=py-30+ r*13;
+        var jit=1+0.09*Math.sin((ts||0)*0.018+r*2.1);
+        var bw=Math.max(3,34*rows[r][1]*jit);
+        ctx.fillStyle=r===0?HUES[dw]:'rgba(20,23,31,.16)';
+        ctx.fillRect(px,ry-7,bw,8);
+        ctx.fillStyle=r===0?'#14171F':'#8A93A3';
+        ctx.fillText(rows[r][0]+' '+Math.round(rows[r][1]*100)+'%',px+40,ry);
+      }
+      ctx.globalAlpha=alpha;
+    }
+    // the decoding head
+    if(cu>=0&&cu<=1){
+      var q=pt(cu),q2=pt(Math.min(1,cu+0.004));
+      var ang=Math.atan2(q2[1]-q[1],q2[0]-q[0]);
+      ctx.save();ctx.translate(q[0],q[1]);ctx.rotate(ang);
+      ctx.fillStyle='#14171F';ctx.fillRect(-2,-8,5,16);
+      ctx.restore();
+    }
+    ctx.globalAlpha=1;
+  }
+  size(); try{new ResizeObserver(size).observe(cv);}catch(e){addEventListener('resize',size);}
+  if(reduce)return;
+  var armed=false;
+  function arm(){if(armed)return;armed=true;requestAnimationFrame(tick);}
+  addEventListener('herodecoded',arm);
+  setTimeout(arm,4600);
+  // schedule: travel to slot, dwell (sample), commit; hold at builder; fade; replay
+  var TRAVEL=1250, DWELL=1050, HOLD=2400, FADE=550;
+  var t0=null;
+  function tick(ts){
+    if(t0===null)t0=ts;
+    var e=ts-t0, u=0, stamped=0, dw=-1, dp=0, alpha=1, done=false;
+    var prev=0;
+    for(var m=0;m<6&&!done;m++){
+      if(e<TRAVEL){u=prev+(MU[m]-prev)*(1-Math.pow(1-e/TRAVEL,2));stamped=m;done=true;break;}
+      e-=TRAVEL;
+      if(e<DWELL){u=MU[m];stamped=m;dw=m;dp=e/DWELL;done=true;break;}
+      e-=DWELL; prev=MU[m];
+    }
+    if(!done){
+      if(e<TRAVEL){u=prev+(1-prev)*(e/TRAVEL);stamped=6;}
+      else if(e<TRAVEL+HOLD){u=1;stamped=6;}
+      else if(e<TRAVEL+HOLD+FADE){u=1;stamped=6;alpha=1-(e-TRAVEL-HOLD)/FADE;}
+      else{t0=ts;shuffleProbs();u=0;stamped=0;}
+    }
+    scene(u,stamped,dw,dp,alpha,ts);
+    requestAnimationFrame(tick);
+  }
+})();
+/* the headline generates itself — every word visibly sampled, then committed */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hero=document.getElementById('fphero'), h1=hero&&hero.querySelector('h1');
+  if(!h1||reduce)return;
+  var inner=hero.querySelector('.fp-inner');
+  hero.classList.add('pre');
+  var TOK=[];
+  function wrap(node){
+    [].slice.call(node.childNodes).forEach(function(n){
+      if(n.nodeType===3){
+        var frag=document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function(p2){
+          if(!p2)return;
+          if(/^\s+$/.test(p2)){frag.appendChild(document.createTextNode(p2));return;}
+          var s=document.createElement('span');s.className='tok';s.textContent=p2;
+          TOK.push(s);frag.appendChild(s);
+        });
+        node.replaceChild(frag,n);
+      }else if(n.nodeType===1&&n.tagName!=='BR'){wrap(n);}
+    });
+  }
+  wrap(h1);
+  TOK.forEach(function(s){s.style.visibility='hidden';});
+  var cur=document.createElement('span');cur.className='cur';h1.insertBefore(cur,h1.firstChild);
+  var gho=document.createElement('span');gho.className='gho';gho.style.display='none';h1.appendChild(gho);
+  // rejected candidates per token index; the real word always wins (greedy decoding)
+  var ALT={0:['Study','Master'],1:['why','what'],2:['ML','LLMs'],3:['really','secretly'],
+           4:['thinks','fails'],6:['before','without'],7:['watching','reading'],8:['one.','apps.']};
+  var SAMP={works:[['works',71],['thinks',12],['fails',9]],
+            building:[['building',68],['watching',19],['reading',13]]};
+  var DWELL={4:'works',7:'building'};
+  var panel=null;
+  function showPanel(key){
+    hidePanel();
+    panel=document.createElement('div');panel.className='samp';
+    panel.innerHTML=SAMP[key].map(function(c,ix){
+      return '<span class="sr'+(ix?'':' top')+'"><i style="width:'+Math.round(c[1]*0.42)+'px"></i>'+c[0]+' <b>'+c[1]+'%</b></span>';
+    }).join('');
+    inner.appendChild(panel);
+    var r=cur.getBoundingClientRect(), ri=inner.getBoundingClientRect(), hr=h1.getBoundingClientRect();
+    var below=innerWidth<640 || (r.top-hr.top)>20;   // a headline line above the caret? go under it
+    panel.style.left=Math.min(ri.width-200,Math.max(10,r.left-ri.left-20))+'px';
+    panel.style.top=(below? r.bottom-ri.top+16 : r.top-ri.top-panel.offsetHeight-14)+'px';
+  }
+  function hidePanel(){if(panel&&panel.parentNode)panel.parentNode.removeChild(panel);panel=null;}
+  function ghostAt(idx,word){
+    var s=TOK[idx];
+    gho.textContent=word;
+    gho.style.left=s.offsetLeft+'px';gho.style.top=s.offsetTop+'px';
+    gho.style.display='inline';
+  }
+  function hideGhost(){gho.style.display='none';}
+  function revealUpTo(n){
+    for(var k=0;k<TOK.length;k++)TOK[k].style.visibility=k<n?'visible':'hidden';
+    if(n<TOK.length){TOK[n].parentNode.insertBefore(cur,TOK[n]);}
+    else{var last=TOK[TOK.length-1];last.parentNode.appendChild(cur);}
+  }
+  var i=0;
+  function commit(){hideGhost();i++;revealUpTo(i);setTimeout(play,40+Math.random()*55);}
+  function play(){
+    if(i>=TOK.length){finish();return;}
+    var word=TOK[i].textContent;
+    if(word==='\u2014'||word.length<=1){commit();return;}   // punctuation commits instantly
+    var key=DWELL[i];
+    var seq=key? [SAMP[key][1][0],SAMP[key][2][0],SAMP[key][1][0],word]
+               : (ALT[i]||[]).concat([word]);
+    var step=key?150:72, k=0;
+    if(key)showPanel(key);
+    (function flick(){
+      if(k<seq.length){ghostAt(i,seq[k]);k++;setTimeout(flick,step);}
+      else if(key){setTimeout(function(){hidePanel();commit();},170);}
+      else commit();
+    })();
+  }
+  function finish(){
+    hidePanel();hideGhost();
+    hero.classList.remove('pre');hero.classList.add('go');
+    try{dispatchEvent(new CustomEvent('herodecoded'));}catch(e){}
+    setTimeout(function(){cur.style.opacity='0';},1600);
+  }
+  revealUpTo(0);
+  setTimeout(play,420);
+})();
+</script>
+</body>
+</html>

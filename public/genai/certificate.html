@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificate of Completion — Generative AI: Foundations &amp; Applications</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2314171F'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23FFFFFF' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--paper:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;
+    --line:#E8EAEF;--linedark:#C5CAD4;--panel:#F4F6F9;
+    --h1:#2B4EFF;--t1:#E3E9FF;--h2:#8526E0;--t2:#EFE2FE;--h3:#ED2E7C;--t3:#FDE0EE;
+    --h4:#F08C00;--t4:#FFEBCC;--h5:#00A87A;--t5:#D6F3E7;--h6:#E8442E;--t6:#FDE2DC;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#EDEFF3;font-family:var(--font);color:var(--body);padding:24px;display:flex;flex-direction:column;align-items:center;gap:24px}
+  .hint{font-family:var(--mono);font-size:12px;color:var(--muted);max-width:960px;text-align:center}
+  .hint b{color:var(--ink)}
+  .cert{width:1050px;max-width:100%;aspect-ratio:297/210;background:
+    radial-gradient(var(--line) 1.05px,transparent 1.05px) 0 0/26px 26px,var(--paper);
+    border:3px solid var(--ink);border-radius:18px;box-shadow:10px 10px 0 var(--t1);
+    padding:48px 56px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+  .kick{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:14px}
+  .kick .t:before{content:"<|";color:var(--faint);font-weight:400}
+  .kick .t:after{content:"|>";color:var(--faint);font-weight:400}
+  .pb{display:inline-flex;align-items:flex-end;gap:3px;height:16px}
+  .pb i{width:5px;border-radius:2px}
+  .pb i:nth-child(1){height:100%;background:var(--h1)}.pb i:nth-child(2){height:66%;background:var(--h2)}
+  .pb i:nth-child(3){height:44%;background:var(--h3)}.pb i:nth-child(4){height:30%;background:var(--h4)}
+  .pb i:nth-child(5){height:18%;background:var(--h5)}.pb i:nth-child(6){height:10%;background:var(--h6)}
+  .kick .r{margin-left:auto;color:var(--faint)}
+  h1{font-size:2rem;font-weight:800;letter-spacing:-.03em;color:var(--ink);margin-top:34px;line-height:1.1}
+  h1 .c{border-radius:8px;padding:1px 6px}
+  .awarded{font-size:1rem;color:var(--muted);margin-top:26px}
+  .name{font-size:2.6rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);border-bottom:2.5px solid var(--ink);
+    display:inline-block;min-width:60%;padding:6px 4px 8px;margin-top:6px}
+  .name:empty:before{content:"Student Name";color:var(--faint);font-weight:600}
+  .body{font-size:.98rem;margin-top:22px;max-width:64ch;line-height:1.6}
+  .body b{color:var(--ink)}
+  .verbs{font-family:var(--mono);font-size:.92rem;font-weight:700;margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .verbs i{font-style:normal;color:var(--faint);font-weight:400}
+  .v1{color:var(--h1)}.v2{color:var(--h2)}.v3{color:var(--h3)}.v4{color:#A85E00}.v5{color:#00755A}.v6{color:#C22B18}
+  .bottom{margin-top:auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:end}
+  .sig .line{border-bottom:2px solid var(--ink);height:44px}
+  .sig .lab{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+  .score{text-align:center}
+  .score .box{border:2.5px solid var(--ink);border-radius:12px;background:var(--t4);padding:10px 14px;display:inline-block;box-shadow:4px 4px 0 var(--h4)}
+  .score .n{font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--ink)}
+  .score .n:empty:before{content:"__";color:var(--faint)}
+  .score .of{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+  .score .lab{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+  .ghost{position:absolute;right:28px;top:96px;font-size:11rem;font-weight:800;color:var(--t1);line-height:1;pointer-events:none;user-select:none;font-variant-numeric:tabular-nums;letter-spacing:-.05em}
+  /* rubric page */
+  .rubric{width:1050px;max-width:100%;background:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:10px 10px 0 var(--line);padding:36px 56px}
+  .rubric h2{font-size:1.3rem;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+  .rubric p{font-size:.9rem;color:var(--muted);margin-top:4px}
+  table{width:100%;border-collapse:collapse;margin-top:18px;font-size:.92rem}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:2px solid var(--ink)}
+  td{padding:10px;border-bottom:1.5px solid var(--line);vertical-align:top}
+  td:first-child{font-weight:700;color:var(--ink);white-space:nowrap}
+  td:last-child{font-family:var(--mono);font-weight:700;color:var(--ink);text-align:right}
+  .req{font-size:.88rem;color:var(--body);margin-top:14px;padding:12px 16px;border:2px solid var(--ink);border-radius:10px;background:var(--panel)}
+  .req b{color:var(--ink)}
+  @media print{
+    body{background:var(--paper);padding:0;gap:0}
+    .hint{display:none}
+    .cert,.rubric{width:100%;border-radius:0;box-shadow:none;border-width:2.5px}
+    .rubric{page-break-before:always}
+  }
+</style>
+</head>
+<body>
+<p class="hint"><b>Instructor use:</b> click any underlined field to type (they're editable) → <b>Ctrl/Cmd-P</b> → A4 landscape, print backgrounds ON. Page 1 = certificate, page 2 = the grading rubric behind the score.</p>
+
+<div class="cert">
+  <div class="ghost" aria-hidden="true">6/6</div>
+  <div class="kick"><span class="t">certificate_of_completion</span>
+    <span class="pb" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="r" contenteditable="true">no. GAI-2026-___</span>
+  </div>
+  <h1>Generative AI:<br><span class="c" style="background:var(--t1)">Founda</span><span class="c" style="background:var(--t2)">tions</span><span class="c" style="background:var(--t3)">&nbsp;&amp;</span><span class="c" style="background:var(--t4)">&nbsp;Applica</span><span class="c" style="background:var(--t5)">tions</span></h1>
+  <div class="awarded">is awarded to</div>
+  <div class="name" contenteditable="true"></div>
+  <p class="body">for completing all six sessions and twelve hours of this hands-on course — including every lab — and for shipping a <b>graded capstone project</b>: a working AI application combining at least two course techniques, defended with a scored evaluation set and a documented failure analysis.</p>
+  <div class="verbs"><span class="v1">Predict</span><i>→</i><span class="v2">Measure</span><i>→</i><span class="v3">See</span><i>→</i><span class="v4">Know</span><i>→</i><span class="v5">Act</span><i>→</i><span class="v6">Ship</span></div>
+  <div class="bottom">
+    <div class="sig"><div class="line"></div><div class="lab">instructor · Karthikeyan NG (@intrepidkarthi)</div></div>
+    <div class="score"><span class="box"><span class="n" contenteditable="true"></span><span class="of"> / 100</span></span><div class="lab">capstone score · rubric overleaf</div></div>
+    <div class="sig"><div class="line" contenteditable="true" style="font-family:var(--mono);font-size:1rem;color:var(--ink);display:flex;align-items:flex-end;padding-bottom:4px"></div><div class="lab">date &amp; venue</div></div>
+  </div>
+</div>
+
+<div class="rubric">
+  <h2>The capstone rubric — what the score means</h2>
+  <p>Graded live, during the Session 6 demo round. No multiple choice was involved in the making of this certificate.</p>
+  <table>
+    <thead><tr><th>dimension</th><th>what earns it</th><th>points</th></tr></thead>
+    <tbody>
+      <tr><td>Working demo</td><td>The app runs live, in front of the room, on the free tier — surviving one unrehearsed input from the audience.</td><td>40</td></tr>
+      <tr><td>Honest evaluation</td><td>A 10-example scored eval set with real numbers — including the ones that aren't flattering.</td><td>25</td></tr>
+      <tr><td>Failure analysis</td><td>One documented failure mode, its cause traced (retrieval? prompt? model?), and the mitigation applied.</td><td>15</td></tr>
+      <tr><td>Technique fit</td><td>≥2 course techniques (RAG, tool use, structured outputs, evals, injection defenses…) chosen because they fit — not because they impress.</td><td>10</td></tr>
+      <tr><td>Presentation</td><td>Three minutes, no filler, failure shown as proudly as success.</td><td>10</td></tr>
+    </tbody>
+  </table>
+  <p class="req"><b>Course requirements behind this certificate:</b> 6 sessions × 2 hours (≈42% laptops-open lab time) · labs 1–6 completed in pairs · capstone red-teamed by a classmate (prompt-injection round) before demo · all built on free tiers — total cost to the student: ₹0.</p>
+</div>
+</body>
+</html>

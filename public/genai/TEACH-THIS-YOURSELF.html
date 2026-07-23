@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach This Yourself — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="How to pick up this course and teach it yourself — at full 12-hour scale, as a single 2-hour session, or a 45-minute talk.">
+<meta property="og:title" content="Teach This Yourself">
+<meta property="og:description" content="How to pick up this course and teach it yourself — at full 12-hour scale, as a single 2-hour session, or a 45-minute talk.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#1D3AD1;--accentpale:#E3E9FF;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="index.html">← Course home</a></nav>
+  <div class="kicker">For instructors</div>
+  <h1>Teach This Yourself</h1>
+  <p class="lead">This course is built to be <b>picked up and taught by anyone</b> — a professor, a senior student, a meetup organizer, a corporate L&amp;D team. Everything you need is in this repo. Here's how to run it, whether you have 12 hours or 45 minutes.</p>
+
+  <h2>Who can teach it</h2>
+  <p>You need to be <strong>one session ahead of the room</strong>, not an expert. Each session ships a <code>*-prep.md</code> pack that teaches you the material one level deeper than the slides, lists the questions students will ask (with answers), and flags the facts to re-verify. If you can read those and run the demos once, you can teach the session.</p>
+
+  <h2>What's in the box (per session)</h2>
+  <table>
+    <thead>
+      <tr><th>File</th><th>For whom</th><th>When</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>presentations/session-N-*.html</code></td><td>everyone</td><td>the talk — open in a browser, press <code>S</code> for presenter notes + timer</td></tr>
+      <tr><td><code>instructor-notes/session-N-prep.md</code></td><td>you</td><td>study 1–2 days before</td></tr>
+      <tr><td><code>instructor-notes/session-N-notes.md</code></td><td>you</td><td>run sheet for delivery day</td></tr>
+      <tr><td><code>labs/session-N/lab-handout.md</code></td><td>students</td><td>the hands-on sheet</td></tr>
+      <tr><td><code>labs/session-N/session_N_lab.ipynb</code></td><td>students</td><td>ready-to-run Colab notebook</td></tr>
+      <tr><td><code>cheatsheets/session-N-cheatsheet.md</code></td><td>students</td><td>1-page takeaway</td></tr>
+    </tbody>
+  </table>
+  <p>Plus, repo-wide: <a href="course-plan.html"><code>course-plan.html</code></a> (the whole design), <code>TIMING.md</code> (per-slide timing), <code>fact-check.md</code> (every claim + source), <code>lab-facilitation-guide.md</code> (how to run the labs), <a href="ZERO-SETUP.html"><code>ZERO-SETUP.html</code></a> (the no-cost guarantee).</p>
+
+  <h2>The decks in 30 seconds</h2>
+  <ul>
+    <li>Open the <code>.html</code> in any browser. Fully offline, nothing to install.</li>
+    <li><strong>→ / Space</strong> next · <strong>←</strong> back · <strong>F</strong> fullscreen · <strong>O</strong> overview grid · <strong>number + Enter</strong> jump · <strong><code>S</code></strong> presenter mode (live timer, per-slide budget, pace badge, speaker notes).</li>
+    <li>Every demo is <strong>live</strong> — click, drag, type, vote during the talk. They reset if you leave and re-enter a slide.</li>
+  </ul>
+
+  <h2>The teaching method (why it works)</h2>
+  <p>The whole course runs on four repeatable moves. Copy them into any topic you ever teach:</p>
+  <ol>
+    <li><strong>Interactive-first.</strong> Every big idea has a thing the room <em>does</em> (a game, a slider, a stepper) before the explanation. People remember what they did, not what they heard.</li>
+    <li><strong>Vote before reveal.</strong> Ask the room to commit — shout an answer, raise a hand, guess the mechanism — <em>then</em> click. A committed guess makes the answer stick, right or wrong.</li>
+    <li><strong>Honest failure.</strong> Every session shows where the tech breaks and why. Trust comes from teaching the failures, not hiding them.</li>
+    <li><strong>Ship something every time.</strong> Each lab ends with working code the student ran themselves. Understanding follows building, not the reverse.</li>
+  </ol>
+
+  <h2>Run it at three scales</h2>
+
+  <h3>Full course — 12 hours (the design)</h3>
+  <p>Weekend bootcamp, 6 × 2-hour sessions. Day 1: S1–S3. Day 2: S4–S6. See <a href="course-plan.html"><code>course-plan.html</code></a> and <code>TIMING.md</code>. This is the intended experience and the only one with the capstone.</p>
+
+  <h3>One session — 2 hours (drop-in)</h3>
+  <p>Any single session stands alone (S1, S2, and S4 work best as standalone). Run the deck (~45 min) + the lab (~50 min) + wrap. Skip the "carry forward" callbacks or explain them in a line.</p>
+
+  <h3>A talk — 45 minutes (no lab)</h3>
+  <p>Run just the deck of any session, demos included, skip the lab-brief and wrap slides. S1 (how LLMs work), S4 (RAG), or S6 (AI security) each make a strong standalone talk. Press <code>S</code> and follow the timer.</p>
+
+  <h2>Before you teach any session (the 3-step prep)</h2>
+  <ol>
+    <li><strong>Read</strong> <code>instructor-notes/session-N-prep.md</code> — deep-dives + the pushback questions + facts to re-verify.</li>
+    <li><strong>Rehearse</strong> with the deck open: click every demo twice, and do the 3-minute "spine test" (tell the session's story with no slides). If you can, the deck becomes support, not a script.</li>
+    <li><strong>Re-verify</strong> the facts in <code>fact-check.md</code> (model names, free-tier limits, prices drift). Run the notebook top-to-bottom with your own free key.</li>
+  </ol>
+
+  <h2>Adapting it to your audience</h2>
+  <ul>
+    <li><strong>Not in Madurai?</strong> Swap the local examples (jigarthanda, Meenakshi temple, TCE, Tamil tokenization) for your own city's food, landmark, college, and language. The <em>structure</em> is universal; the flavor is find-and-replace.</li>
+    <li><strong>Different language?</strong> The Tamil-tokenization demo works for any non-English language — point it at yours; the "some languages cost more tokens" lesson is global.</li>
+    <li><strong>Corporate / non-student?</strong> Keep everything; swap the capstone data (class notes → your team's docs) and the examples (cricket → your domain). The engineering is identical.</li>
+    <li><strong>Younger / less technical?</strong> Do the decks and demos, make the labs optional or instructor-driven. The intuition survives without the code.</li>
+  </ul>
+
+  <h2>Cost to run</h2>
+  <p>Zero. Every student uses a free Gemini API key (no card). You need a projector and a room. See <a href="ZERO-SETUP.html"><code>ZERO-SETUP.html</code></a> for the full guarantee and the free-tier budget math.</p>
+
+  <h2>One setup task before Day 1</h2>
+  <p>Replace the placeholder link <code>tinyurl.com/tce-genai</code> on Session 1's lab-kit slide (titled “Your lab kit, and the rhythm”) with a real short link, and host the notebooks + handouts behind it (GitHub works — add Colab badges). That's the only thing standing between this repo and a live course.</p>
+
+  <h2>License / sharing</h2>
+  <p>Built to be shared. Use it, fork it, localize it, teach it. If it helps someone learn to build with AI, it did its job. Credit appreciated but not required — the point is that more people understand how these systems actually work.</p>
+
+  <p>— Originally built for Thiagarajar College of Engineering, Madurai, by Karthikeyan NG (<a href="https://x.com/intrepidkarthi">@intrepidkarthi</a>).</p>
+
+  <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="index.html">course home</a> · free to use, fork, localize and teach</footer>
+</div>
+</body>
+</html>

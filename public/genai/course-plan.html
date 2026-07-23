@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Course Plan — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="The full design of the 12-hour weekend bootcamp: six sessions, labs, the capstone sprint, tech decisions, and the risk/fallback plan.">
+<meta property="og:title" content="The Course Plan">
+<meta property="og:description" content="The full design of the 12-hour weekend bootcamp: six sessions, labs, the capstone sprint, tech decisions, and the risk/fallback plan.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#1D3AD1;--accentpale:#E3E9FF;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="index.html">← Course home</a></nav>
+  <div class="kicker">Course design</div>
+  <h1>Generative AI: Foundations and Applications</h1>
+  <p class="lead">One-credit course · 3rd &amp; 4th year BE CSE · Thiagarajar College of Engineering, Madurai</p>
+
+  <p><strong>Instructor:</strong> Karthikeyan Natarajan Gnanapalam (TCE CSE '09) · <strong>Total: 12 hours · 6 sessions × 2 hours</strong></p>
+
+  <p><strong>Delivery format: weekend bootcamp.</strong> Two consecutive days (Fri+Sat or Sat+Sun), three sessions per day, back-to-back with 10–15 min breaks and a lunch gap. <strong>Day 1:</strong> S1 → S2 → S3. <strong>Day 2:</strong> S4 → S5 → S6. What this format changes: no homework between sessions — all prep happens inside the labs (e.g., the 10-question test set is written in Lab 1's final 10 minutes, ready for Lab 2). The single overnight gap has exactly one job: students gather 2–3 of their own documents (notes, PDFs) for Day 2's RAG build. The capstone becomes a scoped in-session sprint in S6, not a take-home.</p>
+
+  <h2>Design principles</h2>
+  <ol>
+    <li><strong>Every session ships something.</strong> Students leave each session with working code in their own Colab.</li>
+    <li><strong>Intuition before jargon.</strong> Analogies first, terms second, math never (this course).</li>
+    <li><strong>Honest engineering.</strong> Cover failure modes (hallucination, injection, cost) as first-class content, not footnotes.</li>
+    <li><strong>Zero-install.</strong> Google Colab + Gemini free tier. Works on any college machine with a browser.</li>
+  </ol>
+
+  <h2>Session structure (every session)</h2>
+  <table>
+    <thead>
+      <tr><th>Segment</th><th>Time</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Hook + recap of last session</td><td>8 min</td></tr>
+      <tr><td>Talk with live interactive demos (HTML deck)</td><td>48 min</td></tr>
+      <tr><td>Lab (hands-on, pair-friendly)</td><td>50 min</td></tr>
+      <tr><td>Show &amp; tell + wrap + next-session teaser</td><td>12 min</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Session 1 — How Machines Learned to Talk</h2>
+  <p><em>Covers original topics: 1 (What is Generative AI?)</em></p>
+  <p><strong>Talk:</strong> Discriminative vs generative AI, and the terminology map (AI ⊃ ML ⊃ GenAI ⊃ LLM; app ≠ model). The one idea behind everything: predict the next token. The basics most courses skip: it's NOT a database (nothing stored, nothing looked up), what a parameter is (students hand-train a 2-knob model), training vs inference ("does it learn from my chats?"), and the no-memory truth (apps re-send the whole conversation). Tokens (Tamil vs English cost). Embeddings as coordinates. Attention as "which words look at which." Pretraining → instruction tuning → RLHF. The mid-2026 landscape. What LLMs are bad at, and why. What an API call actually is (before the lab).</p>
+  <p><strong>Interactive deck demos:</strong> next-token prediction game, live tokenizer visualizer, 2D embedding map, attention hover demo, temperature slider.</p>
+  <p><strong>Lab 1:</strong> Get Gemini API key from AI Studio. First API call in Colab. Run 5 structured prompts. Same prompt across 3 models (Gemini API + 2 free web UIs) — document the differences.</p>
+  <p><strong>Student leaves with:</strong> a working API key, first script, and the "it's all next-token prediction" mental model.</p>
+
+  <h2>Session 2 — Talking to AI, and Catching Its Lies</h2>
+  <p><em>Covers original topics: 2 (Prompt Engineering) + 3 (Evaluation)</em></p>
+  <p><strong>Talk:</strong> Anatomy of a good prompt: role, task, context, format, examples. Zero-shot vs few-shot. Step-by-step reasoning. Temperature and why the same prompt gives different answers. Common mistakes. Then the honest turn: models make things up — so how do engineers <em>know</em> a prompt is better? Test sets, scoring, side-by-side comparison. "It looked good in the demo" is not evaluation.</p>
+  <p><strong>Lab 2:</strong> Two-part lab. (a) Take a deliberately bad prompt, improve it in 5 documented iterations. (b) Build a 10-question checker: expected answers vs model answers, auto-scored. Compare your prompt v1 vs v5 with numbers, not vibes.</p>
+  <p><strong>Student leaves with:</strong> a prompt playbook + a working eval harness (their first "AI engineering" artifact).</p>
+
+  <h2>Session 3 — AI Beyond Text</h2>
+  <p><em>Covers original topic: 4 (Images, Voice, Video)</em></p>
+  <p><strong>Talk:</strong> How image generation works — the noise-to-picture intuition (diffusion). Vision models: AI that reads photos, documents, handwriting. Speech-to-text and text-to-speech. Video generation state of play (mid-2026). What multimodal means in one API call.</p>
+  <p><strong>Lab 3:</strong> Multimodal Colab: upload a photo → ask questions about it. Extract structured data from a photographed document/receipt. Stretch: voice-note transcription → summary pipeline.</p>
+  <p><strong>Student leaves with:</strong> a vision-powered app and the realization that "AI that sees" is one function call.</p>
+
+  <h2>Session 4 — Giving AI Your Own Knowledge</h2>
+  <p><em>Covers original topics: 5 (Embeddings &amp; Search) + 6 (RAG)</em></p>
+  <p><strong>Talk:</strong> The model doesn't know your college, your notes, your company. Context window as the model's "working memory." Embeddings recap → semantic search: turning documents into vectors, finding similar chunks. Vector databases in plain terms. Then RAG: retrieve → stuff into prompt → answer with sources. Why this powers ~80% of real AI products. Where RAG fails (bad chunks, wrong retrieval, stale data).</p>
+  <p><strong>Lab 4:</strong> Build "chat with my notes" end-to-end: chunk your own PDFs/notes → embed → search → feed top chunks to Gemini → answer with citations. All in one notebook.</p>
+  <p><strong>Student leaves with:</strong> a working RAG app over their own study material — the single most employable skill in this course.</p>
+
+  <h2>Session 5 — Making AI Do Things</h2>
+  <p><em>Covers original topics: 7 (Tools &amp; Workflows) + 8 (Choosing the Right Approach)</em></p>
+  <p><strong>Talk:</strong> Text-only AI is a brain in a jar. Tool use: the model decides <em>which</em> function to call, your code executes it. Calculator, search, database, email. Workflows vs agents — the honest lesson: most problems need a fixed pipeline, not an autonomous agent. Then the decision framework: better prompt → few-shot → RAG → tools → fine-tuning, in that order of escalation. Open vs closed models; running models locally with Ollama (live demo).</p>
+  <p><strong>Lab 5:</strong> Build an assistant with 2–3 tools (calculator, web search, file reader) using Gemini function calling. Then: 3 scenario cards — pick the right approach for each, justify in writing.</p>
+  <p><strong>Student leaves with:</strong> a tool-using assistant + a decision framework they can defend in an interview.</p>
+
+  <h2>Session 6 — Breaking AI, Securing It, and Shipping It</h2>
+  <p><em>Covers original topics: 9 (Security &amp; Safety) + 10 (Shipping a Real Product) + Capstone demos</em></p>
+  <p><strong>Talk:</strong> Live attacks they'll never forget: prompt injection, jailbreaking, data leakage, hallucinated citations. Defense: input validation, output checking, guardrails, human-in-the-loop. Then production reality: cost per call, latency, rate limits, logging, retries, streaming UX. What changes between a notebook and a product.</p>
+  <p><strong>Lab 6, red-team round (~30 min):</strong> students attack each other's Session 4 RAG apps with injection payloads, then patch the holes.</p>
+  <p><strong>Capstone sprint + demos (~50 min):</strong> in pairs, extend the app you already built today (S4 RAG app or S5 assistant) with <strong>one more course technique</strong> — e.g., add tool use to your RAG app, add an eval set to your assistant, or bolt vision onto either. Then 2–3 minute demos: what it does, one failure you found, one fix you made. (S6 deviates from the standard session timing: talk is compressed to ~30 min to make room.)</p>
+  <p><strong>Student leaves with:</strong> a security mindset, a shipped demo, and a portfolio project.</p>
+
+  <h2>Capstone (bootcamp format: an in-session sprint, not a take-home)</h2>
+  <p>Seeded end of Day 1 ("start thinking about what you'd build"), data gathered overnight (students bring their own documents), foundation built in S4/S5 labs, extended + hardened + demoed in S6. Requirement: your Day-2 app combining <strong>at least two course techniques</strong>, with (1) a 10-example eval set with scores, (2) one documented failure mode + mitigation. Solo or pairs.</p>
+  <p><strong>Grading suggestion (100):</strong> Working demo 40 · Eval set with honest numbers 25 · Failure analysis 15 · Technique fit (right tool for the job) 10 · Presentation clarity 10.</p>
+  <p><strong>Optional stretch:</strong> students who want a bigger portfolio piece can keep building after the weekend and submit a video demo within a week — grade the in-session version, bonus for the polished one.</p>
+
+  <h2>Materials per session</h2>
+  <table>
+    <thead>
+      <tr><th>Item</th><th>File</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Interactive HTML deck</td><td><code>presentations/session-N-*.html</code></td></tr>
+      <tr><td>Instructor prep pack (study before)</td><td><code>instructor-notes/session-N-prep.md</code></td></tr>
+      <tr><td>Instructor run sheet (delivery day)</td><td><code>instructor-notes/session-N-notes.md</code></td></tr>
+      <tr><td>Student lab handout</td><td><code>labs/session-N/lab-handout.md</code></td></tr>
+      <tr><td>Ready-to-run Colab notebook</td><td><code>labs/session-N/session_N_lab.ipynb</code></td></tr>
+      <tr><td>1-page cheatsheet</td><td><code>cheatsheets/session-N-cheatsheet.md</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Tech decisions (July 2026)</h2>
+  <ul>
+    <li><strong>SDK:</strong> <code>google-genai</code> (<code>from google import genai</code>) — the current unified SDK; old <code>google-generativeai</code> is deprecated.</li>
+    <li><strong>Default model:</strong> <code>gemini-flash-latest</code> — the alias for the free tier's current Flash (Gemini 3.5 Flash as of July 2026). The alias is deliberate: dated ids age out — <code>gemini-2.5-flash</code> is no longer available to <em>new</em> accounts while older accounts still have it, and the alias serves both, so a mixed room just works. Typical free-tier limits: ~10 requests/min, a few hundred/day per key — ample when each student has their own key; Google no longer publishes fixed per-model numbers, so confirm your project's live limits in AI Studio. Notebooks use a single <code>MODEL</code> variable; pin a dated id only if you need frozen behavior. Check current list: <a href="https://ai.google.dev/gemini-api/docs/models">https://ai.google.dev/gemini-api/docs/models</a></li>
+    <li><strong>Embeddings (S4):</strong> Gemini embedding model via same SDK — currently <code>gemini-embedding-2</code> (the older <code>gemini-embedding-001</code> is retired; the notebooks' embedding-model variable makes this a one-line change too).</li>
+    <li><strong>Local models (S5):</strong> Ollama demo on instructor laptop (pre-pull a small model; don't rely on college bandwidth).</li>
+  </ul>
+
+  <h2>Currency, alignment &amp; future-proofing</h2>
+  <p>This course's spine — LLM fundamentals → prompting → evaluation → RAG → tools/agents → production &amp; security — matches how GenAI is taught across 2026's leading curricula (IBM's RAG &amp; Agentic AI certificate, the major LLM-engineering courses, the frontier labs' own material) and what employers expect: chunking strategies, embedding selection, vector DBs, citations, failure-mode analysis, golden-dataset evals, regression testing, function calling, workflow orchestration, and cost/latency/observability.</p>
+  <p><strong>Deliberate pedagogy: build raw, then name the frameworks.</strong> Where most bootcamps teach LangChain/LlamaIndex/CrewAI first, this course builds RAG as a numpy array and tools as plain Python functions — so students understand the machinery before an abstraction hides it. Frameworks, rerankers, LoRA/QLoRA, MCP, and LLMOps tooling are named as honest "next steps" (see <a href="LEARNING-GUIDE.html#s7-2">the Learning Guide, §7.2</a>), not taught, keeping the 12 hours focused on durable fundamentals.</p>
+  <p><strong>Future-proofing:</strong> model names, prices, free-tier limits, and fashionable frameworks change every few months; tokens, embeddings, attention, evaluation, retrieval, tool use, and security failure modes do not. The course is built on that stable layer, with one <code>MODEL</code> variable per notebook for the single thing that changes. <a href="LEARNING-GUIDE.html#s7-3">The Learning Guide, §7.3</a> makes this explicit for students — it's the most valuable idea in the course.</p>
+
+  <h2>Risk / fallback plan</h2>
+  <ul>
+    <li><strong>College Wi-Fi dies:</strong> decks are fully offline (single HTML files, no CDN). Keep one mobile hotspot; labs degrade to instructor-driven demo + students run at home.</li>
+    <li><strong>AI Studio blocked / sign-up friction:</strong> carry 5 spare API keys on paper for stuck students; keys are free.</li>
+    <li><strong>Rate limits (429):</strong> notebooks include retry-with-backoff cell; students each use their own key.</li>
+    <li><strong>Slow machines:</strong> everything runs in Colab's cloud — local specs don't matter. See <a href="ZERO-SETUP.html"><code>ZERO-SETUP.html</code></a> for the full any-laptop/zero-cost guarantee.</li>
+  </ul>
+
+  <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="index.html">course home</a> · free to use, fork, localize and teach</footer>
+</div>
+</body>
+</html>

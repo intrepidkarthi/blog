@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Learning Guide — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Every concept in the course — tokens, embeddings, attention, prompting, evaluation, RAG, tools, agents, and security — in one plain-language guide.">
+<meta property="og:title" content="The Learning Guide">
+<meta property="og:description" content="Every concept in the course — tokens, embeddings, attention, prompting, evaluation, RAG, tools, agents, and security — in one plain-language guide.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#1D3AD1;--accentpale:#E3E9FF;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="index.html">← Course home</a></nav>
+  <div class="kicker">Course guide</div>
+  <h1>The Learning Guide</h1>
+  <p class="lead">Every concept in this course, in one place.</p>
+
+  <p>Read this to <em>learn</em> or <em>refresh</em> everything the course teaches — whether you're the instructor prepping, or a student who wants the whole picture in one document. It's written in plain language, no math, mental-models first. Each idea comes with <strong>what it is → why it matters → how it fails.</strong> If you understand this guide, you understand modern applied GenAI.</p>
+
+  <p><strong>The single mental model to hold onto:</strong> a large language model does exactly one thing — <em>given some text, it predicts the next chunk of text, then repeats.</em> Everything else in this guide is either (a) how that prediction works, (b) how to steer it, or (c) how to build reliable products on top of something that is fluent but not always right.</p>
+
+  <h2 id="part-1">Part 1 · How Machines Learned to Talk (the engine)</h2>
+
+  <h3 id="s1-1">1.1 Two kinds of AI</h3>
+  <p><strong>Discriminative AI</strong> judges — it sorts existing things into labels (spam/not-spam, cat/dog, fraud/genuine). It ran the world 2012–2022. <strong>Generative AI</strong> creates — it produces new content that never existed (essays, code, images, answers). Same underlying mathematics (neural networks); the difference is what the model is trained to output. This course is about the generative kind.</p>
+
+  <h3 id="s1-2">1.2 The one idea: next-token prediction</h3>
+  <p>An LLM is <em>autocomplete with a PhD.</em> Given text, it predicts the most likely next <strong>token</strong>, appends it, and predicts again — a thousand times per answer, left to right. Essays, code, and reasoning all emerge from this one loop repeated at scale. This is the most important sentence in the course: <strong>it's all next-token prediction.</strong></p>
+
+  <h3 id="s1-3">1.3 Tokens</h3>
+  <p>Models don't read letters or words — they read <strong>tokens</strong>, which are learned chunks of text (roughly ¾ of an English word, or ~4 characters, each). "unbelievable" might be <code>un·believ·able</code>. Two consequences: you <strong>pay per token</strong>, and context is <strong>measured in tokens</strong>. Also: tokenizers are trained on English-heavy data, so languages like Tamil get split into more, smaller tokens — the same meaning costs 3–5× more tokens (a real fairness issue, slowly improving with multilingual tokenizers).</p>
+
+  <h3 id="s1-4">1.4 Embeddings</h3>
+  <p>Every token (and later, every sentence or paragraph) gets turned into a long list of numbers — an <strong>embedding</strong> — which you can think of as coordinates in a space of <em>meaning</em>. Things used in similar contexts land near each other: "idli" sits near "dosa," far from "GPU." The famous demonstration: <code>king − man + woman ≈ queen</code>. Meaning became geometry. This is the foundation that makes semantic search (Part 4) possible.</p>
+
+  <h3 id="s1-5">1.5 Attention</h3>
+  <p>Language is ambiguous: in "the trophy didn't fit in the suitcase because <em>it</em> was too big," what is "it"? <strong>Attention</strong> is the mechanism by which every word weighs every other word to resolve meaning — here, "it" attends strongly to "trophy." Change "big" to "small" and it re-weights to "suitcase," instantly. Nobody programmed grammar rules; the model learned this weighting from data. Attention is the <strong>T in GPT</strong> — the Transformer, from the 2017 paper <em>"Attention Is All You Need,"</em> which by removing older sequential bottlenecks made massive parallel training (and thus scale) possible.</p>
+
+  <h3 id="s1-6">1.6 Sampling and temperature</h3>
+  <p>The model outputs a <em>probability</em> for every possible next token — not a single answer. It then <strong>samples</strong> from that distribution (rolls weighted dice). <strong>Temperature</strong> reshapes the dice: low temperature (→0) sharpens toward the single most likely token (deterministic, good for facts and code); high temperature (→2) flattens the field (creative, surprising, riskier). This is <em>why the same prompt gives different answers</em> to you and your friend — nobody's lying, it's dice. Related knobs you'll meet: <strong>top-k</strong> (only consider the k best tokens) and <strong>top-p / nucleus</strong> (the smallest set of tokens whose probabilities sum to p).</p>
+
+  <h3 id="s1-7">1.7 Parameters, training, and inference</h3>
+  <p>A model is nothing more than <strong>a file full of numbers</strong> — billions to trillions of <strong>parameters</strong> (the "knobs"). You already know the idea from <code>y = wx + b</code>: w and b are parameters you'd adjust to fit a line. Training is exactly that, automated and enormous: guess the next token → measure how wrong (the "loss") → nudge every knob a tiny bit in the direction that reduces the error (<strong>backpropagation + gradient descent</strong>) → repeat over trillions of tokens for months.</p>
+  <p>Two distinct moments, often confused:</p>
+  <ul>
+    <li><strong>Training</strong> (writing the cookbook): happens once, in the lab, at huge cost. Ends with a <strong>frozen file</strong>.</li>
+    <li><strong>Inference</strong> (cooking from it): every time you use the model, your prompt flows through the frozen knobs. <strong>The model does not learn from your chat.</strong> (Your free-tier text may be used to train <em>future</em> versions, offline — which is why you don't paste private data.)</li>
+  </ul>
+  <p>A crucial corollary: <strong>a model has no memory.</strong> Chat apps create the illusion of memory by silently re-sending the whole conversation into the model on every turn.</p>
+
+  <h3 id="s1-8">1.8 From feral base model to helpful assistant</h3>
+  <p>A freshly pretrained model (a "base model") only <em>continues</em> text — ask it "What is 2+2?" and it might reply "What is 3+3? What is 4+4?" like a worksheet. It's a brilliant parrot of the internet with no manners. Three stages of "finishing school" turn it into an assistant:</p>
+  <ol>
+    <li><strong>Pretraining</strong> — read everything, learn to predict tokens (raw intelligence, no manners).</li>
+    <li><strong>Instruction tuning (SFT)</strong> — show it many "question → good answer" examples until it learns the <em>assistant format</em>.</li>
+    <li><strong>RLHF</strong> (or modern variants like <strong>DPO</strong>) — humans rank answers; the model is tuned toward what people prefer (helpful, harmless, honest). Refusals and tone mostly come from here.</li>
+  </ol>
+  <p>ChatGPT's 2022 breakthrough wasn't a smarter brain — it was <strong>better finishing school</strong> on the same loop.</p>
+
+  <h3 id="s1-9">1.9 Why the same trick gives different products</h3>
+  <p>ChatGPT, Gemini, and Claude all run the token loop. They differ in <strong>training data</strong> (ingredients), <strong>finishing school</strong> (whose preferences tuned it), <strong>house rules</strong> (the hidden system prompt + safety training), and <strong>tools bolted on</strong> (search, code execution, files). "Open-weight" models (Llama, Qwen, DeepSeek, Mistral, Gemma) publish the actual parameter file so you can download and run them yourself (Part 5).</p>
+
+  <h3 id="s1-10">1.10 Emergence and scale</h3>
+  <p>The loop is old; the <strong>scale</strong> is new — trillions of training tokens, billions-to-trillions of parameters, months on GPU clusters. Keep scaling the <em>same</em> loop and abilities nobody explicitly programmed start to appear: translation, coding, step-by-step reasoning. This is <strong>emergence</strong>, and researchers still debate how "sudden" it really is. The takeaway: quantity became quality.</p>
+
+  <h3 id="s1-11">1.11 Why LLMs fail (all explained by the above)</h3>
+  <ul>
+    <li><strong>"How many r's in strawberry?" → wrong:</strong> it sees tokens, not letters. (Mostly patched now via training, but the mechanism remains — try counting letters in rarer words.)</li>
+    <li><strong>Big multiplication → wrong:</strong> it <em>predicts plausible digits</em>, it doesn't calculate. (Fix: give it a calculator — Part 5.)</li>
+    <li><strong>Doesn't know today's news:</strong> <strong>knowledge cutoff</strong> — training ended months ago. (Fix: retrieval or search — Part 4.)</li>
+    <li><strong>Confident nonsense (hallucination):</strong> it optimizes for <em>plausible</em>, not <em>true</em>. Fluent, confident, and wrong — indistinguishable by tone. (Fix: evaluation and grounding — Parts 2 and 4.)</li>
+  </ul>
+  <p>None of these are bugs. They are direct consequences of next-token prediction, and each has an engineering fix that the rest of the course teaches.</p>
+
+  <h3 id="s1-12">1.12 The context window</h3>
+  <p>Everything the model can consider <em>right now</em> — the system rules, the conversation so far, any documents you pasted, plus its own answer-in-progress — must fit in one <strong>context window</strong>, measured in tokens (modern windows: ~128k to 1M+). It's the model's entire working memory. When your knowledge doesn't fit — and it never all fits — you need retrieval (Part 4).</p>
+
+  <h3 id="s1-13">1.13 What an API call actually is</h3>
+  <p>The model runs on the provider's GPUs, not your laptop. Your code sends an HTTPS request with your <strong>API key</strong> (your identity + quota); the gateway checks it (over the limit → error <code>429</code>, retry shortly); the GPUs run the token loop; tokens stream back. Latency (1–3 s) is literally the loop running, one pass per token.</p>
+
+  <h3 id="s1-14">1.14 Reasoning models and test-time compute</h3>
+  <p>You now know two dials for making a model smarter: more parameters and more training data. <strong>Reasoning models</strong> (OpenAI's o-series, Gemini's "thinking" mode, Claude's extended thinking, DeepSeek-R1) add a <strong>third dial: think longer at answer time.</strong> Before replying, the model generates thousands of hidden <strong>scratchpad tokens</strong> — a private chain-of-thought it drafts, checks, and revises — and only then writes the answer. Same token loop; the compute is just spent at <em>inference</em> instead of training ("test-time compute"). The cost rule falls straight out of that: the scratchpad is real tokens — <strong>10–50× more than a direct answer, billed and slow</strong> — so route hard math/code/planning to a reasoning model, and never send one an easy question. "What's the capital of France?" does not need a thousand tokens of deliberation.</p>
+
+  <h2 id="part-2">Part 2 · Talking to AI, and Catching Its Lies</h2>
+
+  <h3 id="s2-1">2.1 Anatomy of a prompt</h3>
+  <p>A good prompt has up to six parts. <strong>Task</strong> is mandatory; the rest are dials you turn on when the job needs them:</p>
+  <ul>
+    <li><strong>Role</strong> — "You are a careful teaching assistant…"</li>
+    <li><strong>Task</strong> — the precise job: verb + object + length.</li>
+    <li><strong>Context</strong> — the facts it needs (it remembers nothing).</li>
+    <li><strong>Format</strong> — "Reply ONLY with JSON {…}" / bullet cap / word cap.</li>
+    <li><strong>Examples</strong> — 2–5 input→output pairs.</li>
+    <li><strong>Constraints</strong> — "If a fact isn't stated above, don't invent it. If unsure, say so."</li>
+  </ul>
+  <p>Over-stuffing costs tokens and dilutes attention, so add only what helps.</p>
+
+  <h3 id="s2-2">2.2 The three power moves</h3>
+  <ol>
+    <li><strong>Few-shot</strong> — show 2–5 examples instead of describing the format. The model imitates patterns; this is <strong>in-context learning</strong> (behavior changes with <em>zero</em> weight updates — it lives only in this context window). The single highest-leverage prompt upgrade.</li>
+    <li><strong>Step-by-step (chain-of-thought)</strong> — "Solve step by step, then give the final answer." Intermediate tokens give the model room to work and give <em>you</em> an auditable trail. Modern "reasoning models" internalize this, but explicit steps still matter when a human must check the logic.</li>
+    <li><strong>Grounding</strong> — "Answer only from the facts above." The single line that most reduces invented citations, policies, and awards.</li>
+  </ol>
+
+  <h3 id="s2-3">2.3 Common prompt mistakes</h3>
+  <p>The kitchen sink (one prompt doing five jobs — split it), vague adjectives ("make it professional" — define it or show it), assuming memory ("like I told you yesterday" — it remembers nothing), and no format spec (then parsing "Certainly! Here are…" forever).</p>
+
+  <h3 id="s2-4">2.4 Hallucination, precisely</h3>
+  <p>Hallucination is a <strong>calibration failure</strong>: the model's confidence and fluency are <em>uncorrelated</em> with truth. A US lawyer was sanctioned in federal court for a brief with six ChatGPT-invented case citations (<em>Mata v. Avianca</em>, 2023); Air Canada was held liable for a refund policy its chatbot made up (<em>Moffatt v. Air Canada</em>, 2024). These weren't bad prompts — they were <strong>unmeasured</strong> ones. Grounding and tools reduce hallucination but never eliminate it.</p>
+
+  <h3 id="s2-5">2.5 Evaluation — the skill that separates engineers from fans</h3>
+  <p>"It worked when I tried it" is not evidence — you tried 3 inputs; users bring 3,000. The engineering answer to "how do you know it's right?" is to <strong>measure</strong>:</p>
+  <ol>
+    <li><strong>Test set</strong> — questions with known-correct answers, written by someone who actually knows.</li>
+    <li><strong>Scorer</strong> — code that compares the model's answer to the expected one and returns ✓/✗.</li>
+    <li><strong>Score</strong> — one number, so "is prompt B better?" has an <em>answer</em> instead of an argument.</li>
+  </ol>
+  <p>Run evals at <strong>temperature 0, three times, averaged</strong> (kill the dice, then measure the flutter that remains). <strong>Read the failures, not the score</strong> — which ones failed and why is the actual curriculum. Change <strong>one thing at a time</strong> or you'll never know what worked.</p>
+
+  <h3 id="s2-6">2.6 Scorers are a design decision (and can be wrong)</h3>
+  <ul>
+    <li><strong>Exact match</strong> — unambiguous, but fails a correct answer over punctuation.</li>
+    <li><strong>Normalized contains</strong> — lowercase, strip symbols, check if the key fact appears; robust and simple (but a too-generic expected string gives false positives).</li>
+    <li><strong>LLM-as-judge</strong> — a second model grades paraphrase-tolerantly; handles wording, but has biases (prefers longer answers, its own phrasing, first position) — audit it, don't trust it blindly.</li>
+  </ul>
+
+  <h3 id="s2-7">2.7 Eval-driven development (the actual job)</h3>
+  <p><strong>Write prompt → run eval → read failures → fix one thing → re-run.</strong> Repeat until the score stops improving, then grow the test set. This loop is what professional AI work looks like. Your eval set later becomes a <strong>regression test</strong> — run it before every prompt change, forever (Part 6).</p>
+
+  <h2 id="part-3">Part 3 · AI Beyond Text (multimodal)</h2>
+
+  <h3 id="s3-1">3.1 Same loop, new tokens</h3>
+  <p>The attention loop never cared what tokens <em>mean</em>. So: chop an image into a grid of small <strong>patches</strong>, turn each patch into an embedding, and the same machine "reads" a photo the way it reads a sentence. Chop audio into short slices — it reads sound. "Multimodal" isn't a new brain; it's new eyes and ears wired into the same brain. (The vision-transformer idea, ViT, is from 2020.)</p>
+
+  <h3 id="s3-2">3.2 What "AI with eyes" does</h3>
+  <p>It doesn't just see — it <strong>reads</strong>: receipts and invoices → structured data (the most-shipped use case), handwriting, charts, screenshots, IDs for KYC. One caution it <em>refuses</em> by design: identifying who a person is (privacy).</p>
+
+  <h3 id="s3-3">3.3 Making images: diffusion</h3>
+  <p>Reading images is prediction; <em>making</em> them is a different, equally simple trick. <strong>Diffusion</strong>: take millions of real images, add noise step-by-step until pure static, and train a network to <em>reverse</em> each step. To generate, start from fresh random static and "repair" your way to an image — steered at every step by your text prompt (embedded with the same trick from Part 1). (Some newer image models are token-based/autoregressive instead; both families coexist.) Limits: hands and in-image text are classic failure zones; artist-style prompts raise unresolved legal/ethical questions; and if images can be conjured, images stop being evidence (deepfakes → provenance/watermarking as the counter-move).</p>
+
+  <h3 id="s3-4">3.4 Speech — solved enough to be dangerous</h3>
+  <p>Speech-to-text is near-human (lectures → notes is a solved problem); text-to-speech is convincingly human; and <strong>voice cloning needs only seconds of audio.</strong> The "family member urgently needs money/an OTP" scam call is real — agree on a family password. Video generation is the diffusion family plus time: impressive short clips, physics still slips, costs real money, improving every quarter.</p>
+
+  <h3 id="s3-5">3.5 It's all one API call</h3>
+  <p><code>contents=[image, "your question"]</code> — the SDK mixes images, audio, and text freely. Everything from Parts 1–2 (prompting, format control, grounding, <strong>evaluation</strong>) applies unchanged. Vision fails in familiar ways: it <strong>miscounts</strong> (patches summarize, they don't enumerate — same disease as multiplication), confuses precise left/right, and will <strong>confidently "read" blurred text</strong> it can't actually see (pixel hallucination — the grounding line "if unreadable, say so" helps).</p>
+
+  <h3 id="s3-6">3.6 Structured outputs — guaranteed JSON</h3>
+  <p>Prompt-begging ("Reply ONLY with JSON…") works until the model adds a code fence or a friendly preamble and your parser crashes. The production way: pass a <strong>schema with the request</strong> — in the Gemini SDK, <code>response_mime_type="application/json"</code> plus <code>response_schema=…</code> (every major provider has an equivalent). The decoder is then <em>constrained</em>: it literally cannot emit a token that breaks the schema, so <code>json.loads</code> never fails — and the format instructions come out of your prompt entirely. That's why it beats prompt-begging: a prompt <em>requests</em> the shape; a schema <em>enforces</em> it at generation time. Prompts steer content; schemas lock shape.</p>
+
+  <h2 id="part-4">Part 4 · Giving AI Your Own Knowledge (RAG)</h2>
+
+  <h3 id="s4-1">4.1 The problem</h3>
+  <p>The model read the internet but not <em>your</em> notes, syllabus, or company docs — and when asked, it <em>invents</em> a plausible answer rather than admitting ignorance. Pasting everything fails three ways: it doesn't fit the <strong>window</strong>; you re-pay the token <strong>meter</strong> on every question; and models attend worst to content buried in the <strong>middle</strong> of a long context. The fix isn't a bigger paste — it's sending only the <em>right</em> few paragraphs.</p>
+
+  <h3 id="s4-2">4.2 Semantic search (the "R" — retrieval)</h3>
+  <p>Keyword search (Ctrl-F) misses meaning: "marks to clear the subject" shares zero words with "50% aggregate to pass," yet they mean the same thing. Embeddings solve this — embed each <strong>chunk</strong> of your documents into meaning-coordinates (once), embed the question, and find the chunks whose vectors sit closest. Closeness is measured by <strong>cosine similarity</strong>, which on normalized vectors is a single matrix multiply: <code>scores = chunk_vectors @ question_vector</code>, then take the top-k. That's the entire search engine.</p>
+
+  <h3 id="s4-3">4.3 Chunking — the unglamorous kingmaker</h3>
+  <p>How you cut the document decides everything. Too small → the retrieved fragment loses its context ("…and the end-semester exam" — of what?). Too big → the right sentence drowns and similarity dilutes. The boring default that wins: <strong>paragraph-sized chunks with a little overlap</strong>, split on natural boundaries. <em>Chunking bugs cause more RAG failures than model choice does.</em> (Advanced variants you'll meet: semantic chunking, recursive splitting, parent-document retrieval, rerankers to re-order results.)</p>
+
+  <h3 id="s4-4">4.4 Vector databases, plainly</h3>
+  <p>A vector database is a library shelved by <em>meaning</em> — hand it a query vector, it returns the nearest neighbors fast, even across millions. Names: FAISS (library), Chroma (dev-friendly), pgvector (vectors inside Postgres — often the right boring choice), Pinecone/Weaviate (managed). But below ~100k chunks, <strong>a numpy array is a perfectly good vector database</strong> — don't add infrastructure until you have an infrastructure-sized problem.</p>
+
+  <h3 id="s4-5">4.5 RAG end to end</h3>
+  <p><strong>R</strong>etrieve the top chunks → <strong>A</strong>ugment the prompt by stapling them in → <strong>G</strong>enerate a grounded, cited answer. The grounded template has three load-bearing lines:</p>
+  <pre><code>Answer using ONLY the context below.          ← blocks the model's internet-memories
+Cite which chunk you used, like [1].          ← makes hallucinations visible
+If not in the context, reply exactly:
+"I don't know based on the provided documents." ← the escape hatch (no fiction to fill silence)</code></pre>
+  <p>This pattern powers a large share of real AI products: support bots over help docs, "chat with your sources" tools, AI search engines, legal/medical assistants, enterprise "chat with our wiki."</p>
+
+  <h3 id="s4-6">4.6 Where RAG breaks (debug in this order: retrieval → chunks → prompt → model)</h3>
+  <ul>
+    <li><strong>Vocabulary gap</strong> — retrieval misses despite embeddings; fix by rephrasing the query with the LLM, retrieving more chunks, or indexing summaries too.</li>
+    <li><strong>Answer split across chunks</strong> — the model sees half; fix with overlap or retrieving neighbors.</li>
+    <li><strong>Stale index</strong> — the doc changed but the embeddings didn't → confident, <em>cited</em>, outdated answers (RAG trusts its shelf); fix by re-indexing on change and showing document dates.</li>
+    <li><strong>Model ignores your context</strong> — training memories leak past weak grounding; fix by strengthening the ONLY line, lowering temperature, putting context <em>before</em> the question — and <em>evaluating</em> it.</li>
+  </ul>
+  <p>Evaluating RAG splits in two: <strong>retrieval hit-rate</strong> (did the right chunk arrive?) and <strong>answer faithfulness</strong> (did the model stick to it?) — diagnose and fix them separately.</p>
+
+  <h3 id="s4-7">4.7 RAG vs long-context vs fine-tuning</h3>
+  <ul>
+    <li><strong>Paste into context</strong> — fine for a few pages, one-off questions.</li>
+    <li><strong>RAG</strong> — for large or changing knowledge, needing citations and freshness.</li>
+    <li><strong>Fine-tuning</strong> — for teaching <em>behavior/style/format</em> at scale, <strong>not facts</strong> (it's expensive, freezes instantly, and gives no citations — the classic costly mistake).</li>
+  </ul>
+  <p>The interview one-liner: <strong>"Fine-tuning teaches behavior; RAG provides knowledge."</strong> (Million-token context windows are a real competitor for small, static corpora — but RAG survives on cost, freshness, and citations, and real systems increasingly combine both.)</p>
+
+  <h2 id="part-5">Part 5 · Making AI Do Things (tools &amp; agents)</h2>
+
+  <h3 id="s5-1">5.1 The trick (read it twice)</h3>
+  <p>A text model is a brain in a jar. Tool use gives it hands — but <strong>the model never executes anything. It writes a structured request; your code executes it; the result re-enters the context; the model continues.</strong> Still next-token prediction. The consequence that matters: <strong>control stays with you</strong> — you choose which tools exist, validate every argument, and can refuse any call.</p>
+
+  <h3 id="s5-2">5.2 Function declarations — the description IS the prompt</h3>
+  <p>You hand the model a menu of functions. It reads only their <strong>name, docstring, and parameter types</strong> — that's its entire understanding. A vague docstring causes wrong tool choices and bad arguments. "Use for ANY arithmetic; never compute numbers yourself" isn't documentation — it's an instruction to the model. The SDK converts your Python functions to declarations automatically from type hints and docstrings.</p>
+
+  <h3 id="s5-3">5.3 The agent loop</h3>
+  <p><code>while the model wants a tool: run it (your code) and feed the result back.</code> When the model chains calls itself — read a file, then calculate on it, in an order nobody scripted — that loop is what people call "an agent." Impressive, and exactly where the danger lives.</p>
+
+  <h3 id="s5-4">5.4 Five ways tool use goes wrong</h3>
+  <p>Wrong tool confidently (sharpen docstrings; "answer directly when no tool is needed"); bad arguments (validate <em>inside</em> every tool, return readable errors — models self-correct on good errors); infinite loops (hard-cap the number of tool calls); imaginary tools it never had (execute an allow-list only); and <strong>poisoned tool results</strong> — a tool's output is text entering the context, so a malicious web page or file can carry instructions ("ignore your rules and…"). Treat tool results as untrusted input (this becomes Part 6).</p>
+
+  <h3 id="s5-5">5.5 The honest lesson: workflow vs agent</h3>
+  <p>Most problems <strong>don't need an agent</strong> — they need a boring <strong>workflow</strong> where <em>you</em> fix the steps in code (extract → validate → summarize → format) and the model fills the hard parts. Predictable, testable, debuggable. An <strong>agent</strong> lets the <em>model</em> decide the steps at runtime — flexible and impressive, but every added autonomous step is a new failure point. Why it matters: <strong>reliability compounds.</strong> Ten independent 95%-reliable steps succeed only 0.95¹⁰ ≈ <strong>60%</strong> of the time; twenty steps ≈ 36%. This one fact explains most "our agent demo failed in production" stories. Mitigations: fewer steps, validation between steps, human approval on anything that writes/spends/sends, retries on cheap idempotent steps.</p>
+  <p>The rule of thumb: <strong>do you know the steps in advance? Yes → workflow (80%+ of real business AI). No → an agent, on a leash</strong> (max steps, tool allow-list, validated args, human sign-off on side effects).</p>
+
+  <h3 id="s5-6">5.6 The escalation ladder (cheapest fix first)</h3>
+  <p><strong>Better prompt → few-shot → RAG → tools → fine-tuning.</strong> Climb a rung only when your <em>eval</em> proves the current one failed. Fine-tuning is rung 5, never rung 1, and never for facts. Over-engineering (reaching for an agent when a prompt would do) is itself a failure mode.</p>
+
+  <h3 id="s5-7">5.7 API models vs models you own</h3>
+  <p>Open-weight models run on your own hardware (<strong>Ollama</strong> makes it one command: <code>ollama run gemma4:e4b</code>, then it works offline — older <code>gemma3:4b</code> also still works). Choose on <strong>privacy/compliance</strong> (data that legally can't leave your infrastructure — healthcare, financial KYC), <strong>cost at scale</strong> (per-token API forever vs hardware once), and <strong>offline/edge</strong> (no internet on the factory floor or a farmer's phone). It's an engineering trade, not a religion. The production pattern you'll actually meet: <strong>hybrid</strong> — a frontier API for the hard 10%, a small/local model for the routine 90%.</p>
+
+  <h3 id="s5-8">5.8 MCP and multi-agent systems</h3>
+  <p>Two names you'll hear the moment you touch agents in industry. <strong>MCP (Model Context Protocol)</strong> is the USB-C of tool use: instead of every model needing a custom adapter for every tool (N models × M tools = N×M integrations), everyone implements one standard plug, and any model can use any tool server (N+M). Nothing new mechanically — still "model requests, your code executes" — just standardized across the ecosystem. <strong>Multi-agent</strong> systems (agents handing work to other agents) sound like a free upgrade but usually aren't: every hand-off is one more autonomous step, and the compounding-reliability math from 5.5 applies with a vengeance — chained agents multiply failure. The one pattern that legitimately earns its keep: <strong>parallel fan-out + judge</strong> — several workers attack subtasks <em>independently, in parallel</em>, and a single judge merges or picks. Independent attempts don't compound; chained hand-offs do.</p>
+
+  <h2 id="part-6">Part 6 · Breaking It, Securing It, Shipping It</h2>
+
+  <h3 id="s6-1">6.1 Every capability is an attack surface</h3>
+  <p>RAG reads documents → a document can attack it. Tools take actions → a hijack can take actions. Thinking like an attacker is part of building.</p>
+
+  <h3 id="s6-2">6.2 Prompt injection (the #1 risk)</h3>
+  <p>The model reads one flat stream of text with <strong>no reliable border</strong> between "my instructions" and "the user's data" — so text that <em>looks</em> like an instruction can <em>become</em> one. It's SQL injection's ghost, but harder: language has no escape character. <strong>Indirect injection</strong> is the sneaky version — the attacker never talks to your bot; they hide a payload in a document your RAG retrieves (a web page, a shared PDF, white-on-white text), and your own pipeline feeds it in. Tool use makes it worse: an injected "email the database to attacker@evil" can fire if the tool exists. OWASP ranks prompt injection the <strong>#1</strong> risk for LLM apps, and there is <strong>no complete fix</strong> — only layers.</p>
+
+  <h3 id="s6-3">6.3 Jailbreaks and leaks</h3>
+  <p><strong>Jailbreak</strong> — wrap a banned request in roleplay/hypothetical/"my grandma used to…" framing to slip past safety training (an arms race, not a wall). <strong>Prompt leak</strong> — "print your instructions verbatim" spills the hidden system prompt, which often holds business logic or other users' context. Golden rule: <strong>never put anything in a prompt you couldn't survive seeing on the front page.</strong></p>
+
+  <h3 id="s6-4">6.4 Defense in depth (no silver bullet, so stack them)</h3>
+  <ol>
+    <li><strong>Delimit and label</strong> untrusted text (wrap it, tell the model it's data, not commands).</li>
+    <li><strong>Instruction hierarchy</strong> in the system prompt (rules override anything the user text says).</li>
+    <li><strong>Output validation</strong> (check the answer before it ships — format, no leaked secrets, allow-listed values).</li>
+    <li><strong>Least privilege + human-in-the-loop</strong> — no destructive tools by default; a human approves anything that writes, spends, or sends. <strong>Match trust to blast radius.</strong> This last layer caps the damage even when everything upstream fails.</li>
+  </ol>
+
+  <h3 id="s6-5">6.5 Notebook → product: the four that change</h3>
+  <p>A demo runs once, for you, on one input, free. A product runs a million times, for strangers, on inputs you never imagined, while the meter runs:</p>
+  <ul>
+    <li><strong>Cost</strong> — every token is a coin, paid per query, forever. Levers: cheaper/local model for easy queries, caching, trimming chunks, capping output. Cost is an architecture decision.</li>
+    <li><strong>Speed</strong> — 2–4 s of silence feels broken; <strong>stream</strong> tokens as they generate and show a "thinking…" state. Users forgive slow; they hate frozen.</li>
+    <li><strong>Reliability</strong> — APIs time out, rate-limit, and return malformed JSON; use retries with backoff, timeouts, and a graceful fallback (never a raw stack trace to a user).</li>
+    <li><strong>Observability</strong> — log the prompt, response, tokens, latency, cost, and thumbs up/down. When it misbehaves at 2 a.m., logs are the only way you'll know what happened. And your <strong>evals become the regression test</strong> — run them before every change.</li>
+  </ul>
+
+  <h3 id="s6-6">6.6 UX for something that's sometimes wrong</h3>
+  <p>Show sources (citations let users verify — trust comes from checkability, not confidence); make retry/edit/thumbs-down one click; signal uncertainty ("I don't know" beats confident fabrication); and always offer an escape to a human.</p>
+
+  <h3 id="s6-7">6.7 Responsible AI — the four questions</h3>
+  <p>Before anything you built ships to strangers, ask four questions. <strong>Bias</strong> — who does it fail for? Models inherit the skews of their training data; test on your real users, not the demo persona. <strong>Provenance</strong> — where did the training data come from, and can generated content be traced (watermarks, disclosure) so images and essays don't masquerade as human? <strong>Privacy</strong> — what happens to the data users type into your prompts, and could the model surface someone else's? <strong>Accountability</strong> — when it's wrong, who answers? "The AI did it" has already lost in court (Air Canada, 2.4). Two names give you the regulators' version of this checklist: the <strong>EU AI Act</strong> (risk-tiered legal obligations, phasing in through 2027) and the US <strong>NIST AI Risk Management Framework</strong> (voluntary, but the de-facto shared vocabulary). Neither asks anything this guide hasn't: measure, ground, log, and keep a human on the blast radius.</p>
+
+  <h2 id="part-7">Part 7 · The bigger picture — currency &amp; future-proofing</h2>
+
+  <h3 id="s7-1">7.1 How this course maps to how the industry teaches GenAI (2026)</h3>
+  <p>Standard 2026 curricula (IBM's RAG &amp; Agentic AI certificate, the major LLM-engineering courses, DeepLearning.AI, Anthropic's and the frontier labs' own courses) converge on the same spine this course follows: <strong>LLM fundamentals → prompting → evaluation → RAG → tools/agents → production &amp; security.</strong> Point by point, this course covers what employers in 2026 expect: transformers/attention/tokenization/context windows/embeddings (Part 1); RAG with chunking strategies, embedding selection, vector DBs, citations, and failure-mode analysis (Part 4); evaluation with golden datasets, regression testing, and quality gates (Parts 2 &amp; 6); agents with function calling, the agent loop, and workflow orchestration (Part 5); and production concerns — latency, caching, streaming, rate limiting, cost control, observability (Part 6).</p>
+
+  <h3 id="s7-2">7.2 What this course deliberately leaves out (and why)</h3>
+  <p>Most bootcamps teach <strong>frameworks first</strong> — LangChain, LlamaIndex, CrewAI, LangGraph, ChromaDB. This course builds everything <strong>raw</strong> (a numpy vector store, plain Python functions as tools) on purpose: so you understand what the framework does <em>before</em> you let it hide the machinery. Once you've built RAG in 60 lines, LangChain is just convenience — and you'll debug it far better than someone who only knows the framework. When you're ready to go deeper, these are the honest "next steps," not gaps:</p>
+  <ul>
+    <li><strong>Frameworks</strong>: LangChain / LlamaIndex (orchestration), Chroma / pgvector (vector stores) — you'll recognize every piece.</li>
+    <li><strong>Advanced RAG</strong>: rerankers, hybrid (keyword + semantic) search, parent-document retrieval, RAGAS for eval.</li>
+    <li><strong>Fine-tuning</strong>: LoRA / QLoRA (parameter-efficient tuning) — reach for it only when an eval proves prompting can't hold a behavior.</li>
+    <li><strong>Agent frameworks &amp; MCP</strong>: the <strong>Model Context Protocol</strong> is the emerging standard for connecting models to tools and data — the same idea as Part 5, standardized across the ecosystem.</li>
+    <li><strong>LLMOps</strong>: tracing/observability tools, prompt versioning, automated quality gates.</li>
+  </ul>
+
+  <h3 id="s7-3">7.3 Future-proofing — what's stable vs what changes</h3>
+  <p>This is the most important idea for a young learner. <strong>The names change every few months; the fundamentals don't.</strong></p>
+  <ul>
+    <li><strong>Changes fast:</strong> model names (GPT-5, Gemini 3.x, Claude — and whatever's next), specific free-tier limits and prices, which framework is fashionable, benchmark leaderboards, the "hot" capability of the quarter.</li>
+    <li><strong>Stable for years:</strong> tokens, embeddings, attention, prediction &amp; sampling, training vs inference, prompting, <strong>evaluation</strong>, retrieval/RAG, tool use, the workflow-vs-agent trade-off, and the security failure modes. Every one of those is a <em>consequence of how the technology works</em>, not a product decision.</li>
+  </ul>
+  <p>This course is built on the stable layer, with a single <code>MODEL</code> variable in each notebook for the one thing that changes. Learn the fundamentals here, and when the next hype wave arrives — a new model, a new framework, a new buzzword — you'll see straight through it to what's actually new (usually: not much). That x-ray vision is the real, durable skill. Most people never get it because they learned a product, not the principles.</p>
+
+  <h3 id="s7-4">7.4 Staying current (a light habit, not a treadmill)</h3>
+  <p>Read the model providers' docs like release notes. Rebuild one lab from memory each month. Follow how the frontier moves, but judge it against the fundamentals above — ask "which stable idea is this a new instance of?" You do not need to chase every launch. You need to understand the layer underneath them, which you now do.</p>
+
+  <h2 id="glossary">Glossary (fast reference)</h2>
+  <p><strong>Token</strong> — the chunk a model reads (~¾ word). <strong>Embedding</strong> — text turned into meaning-coordinates. <strong>Attention</strong> — words weighing each other to resolve meaning; the Transformer's engine. <strong>Parameter</strong> — one learned knob; a model is a file of billions. <strong>Inference</strong> — using the frozen model (no learning, no memory). <strong>Temperature</strong> — the randomness dial on sampling. <strong>Context window</strong> — the model's working memory, measured in tokens. <strong>Hallucination</strong> — confident, fluent, wrong (plausible ≠ true). <strong>Prompt engineering</strong> — structuring the input (role/task/context/format/examples/constraints). <strong>Few-shot</strong> — steering by examples. <strong>Chain-of-thought</strong> — asking for visible reasoning. <strong>Eval</strong> — measuring quality with a test set + scorer + score. <strong>RAG</strong> — retrieve relevant chunks, augment the prompt, generate a grounded cited answer. <strong>Chunking</strong> — how you split documents for retrieval. <strong>Cosine similarity</strong> — how retrieval measures closeness. <strong>Vector database</strong> — a store that returns nearest-meaning neighbors. <strong>Tool use / function calling</strong> — the model requests, your code executes. <strong>Agent</strong> — an LLM in a loop choosing tools/steps toward a goal. <strong>Workflow</strong> — you fix the steps; the model fills them in. <strong>Fine-tuning</strong> — further training to teach behavior/style (not facts). <strong>Prompt injection</strong> — untrusted text becoming instructions. <strong>Defense in depth</strong> — layered mitigations because no single one is complete. <strong>Streaming</strong> — sending tokens as they generate for responsive UX. <strong>Open weights</strong> — a model whose parameters you can download and run yourself.</p>
+
+  <hr>
+  <p><em>If you can teach Part 7.3 to someone else — what's stable vs what changes — you've understood the point of the whole course.</em></p>
+
+  <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="index.html">course home</a> · free to use, fork, localize and teach</footer>
+</div>
+</body>
+</html>
