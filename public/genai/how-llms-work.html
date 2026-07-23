@@ -3,686 +3,750 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How LLMs work — a step-by-step visual explainer</title>
-<meta name="description" content="Tokens, embeddings, attention, next-token prediction and training — explained step by step with animated visuals. The opening walkthrough for Session 1 of the Generative AI course.">
-<meta property="og:title" content="How LLMs work — a step-by-step visual explainer">
-<meta property="og:description" content="A dark, animated, step-by-step walkthrough of what actually happens when you press enter on ChatGPT.">
+<title>How LLMs work — one sentence through the machine</title>
+<meta name="description" content="Follow one sentence — 'Elon Musk wants to colonize ___' — through tokenization, embeddings, attention, neurons, the transformer stack, prediction and training. Step-by-step animated visuals.">
+<meta property="og:title" content="How LLMs work — one sentence through the machine">
+<meta property="og:description" content="One example, followed through every stage of GPT: tokens, vectors, attention, neurons, the stack, the prediction, the training.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://intrepidkarthi.com/genai/assets/og-card.png">
-<meta name="theme-color" content="#0B0E14">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230B0E14'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%2358C4DD' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#07090E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2307090E'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%2358C4DD' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <style>
-  @font-face{font-family:'Fraunces';src:url('assets/fonts/fraunces.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;overflow:hidden;background:#0B0E14}
-  body{font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;color:#E8ECF4}
-  canvas{display:block;position:fixed;inset:0;cursor:pointer}
-  .hint{position:fixed;top:18px;right:22px;font:12.5px/1.5 ui-monospace,"SF Mono",Consolas,monospace;color:#8B94A8;text-align:right;opacity:1;transition:opacity 1.2s;pointer-events:none;z-index:5}
+  @font-face{font-family:'Fraunces';src:url('assets/fonts/fraunces.woff2') format('woff2');font-weight:100 900;font-display:swap}
+  *{margin:0;box-sizing:border-box}html,body{height:100%;overflow:hidden;background:#07090E}
+  body{font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;color:#EAEFF7}
+  canvas{position:fixed;inset:0;display:block}
+  #fg{cursor:pointer}
+  .hint{position:fixed;top:18px;right:22px;font:12.5px/1.6 ui-monospace,"SF Mono",Consolas,monospace;color:#8B94A8;text-align:right;transition:opacity 1.2s;pointer-events:none;z-index:5}
   .hint kbd{border:1px solid #2A3242;border-radius:4px;padding:0 6px;color:#B8C0D0}
   .hint.faded{opacity:0}
-  .end{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:10}
+  .end{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:10;background:rgba(7,9,14,0.55)}
   .end.show{display:flex}
-  .endcard{text-align:center;max-width:720px;padding:0 24px}
+  .endcard{text-align:center;max-width:760px;padding:0 24px}
   .endcard h2{font-family:'Fraunces',Georgia,serif;font-weight:560;font-size:clamp(1.7rem,4vw,2.8rem);letter-spacing:-.015em;line-height:1.15;margin-bottom:14px}
   .endcard p{color:#8B94A8;font-size:15px;margin-bottom:30px}
   .endrow{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  .endrow a,.endrow button{font:600 14px ui-monospace,monospace;color:#E8ECF4;background:transparent;border:1.5px solid #2A3242;border-radius:10px;padding:12px 20px;cursor:pointer;text-decoration:none;transition:border-color .2s,transform .1s}
+  .endrow a,.endrow button{font:600 14px ui-monospace,monospace;color:#EAEFF7;background:transparent;border:1.5px solid #2A3242;border-radius:10px;padding:12px 20px;cursor:pointer;text-decoration:none;transition:border-color .2s,transform .1s}
   .endrow a:hover,.endrow button:hover{border-color:#58C4DD;transform:translateY(-1px)}
-  .endrow a.primary{background:#58C4DD;border-color:#58C4DD;color:#0B0E14}
+  .endrow a.primary{background:#58C4DD;border-color:#58C4DD;color:#07090E}
   .endnote{margin-top:26px;font:11.5px ui-monospace,monospace;color:#5A6478}
 </style>
 </head>
 <body>
-<canvas id="cv"></canvas>
-<div class="hint" id="hint"><kbd>→</kbd> / click — next step<br><kbd>←</kbd> back &nbsp;·&nbsp; <kbd>R</kbd> replay step &nbsp;·&nbsp; <kbd>F</kbd> fullscreen</div>
+<canvas id="bg"></canvas><canvas id="trail"></canvas><canvas id="fg"></canvas>
+<div class="hint" id="hint"><kbd>→</kbd> / click — next step<br><kbd>←</kbd> back · <kbd>R</kbd> replay · <kbd>F</kbd> fullscreen</div>
 <div class="end" id="end">
   <div class="endcard">
-    <h2>Every answer AI has ever given you<br>is this loop, at scale.</h2>
-    <p>Tokens → vectors → attention → a probability → one more token. Repeat.</p>
+    <h2>One sentence, one guess at a time.<br>That's every AI answer you've ever read.</h2>
+    <p>Tokens → vectors → attention → neurons → a probability → one more token. Repeat.</p>
     <div class="endrow">
       <a class="primary" href="presentations/session-1-how-machines-learned-to-talk.html">Start Session 1 →</a>
       <a href="llm-playground.html">Open the playground — drive it yourself</a>
       <button id="replay">↺ replay</button>
     </div>
-    <div class="endnote">parameter &amp; data figures are reported estimates · attention weights shown are illustrative</div>
+    <div class="endnote">parameter &amp; data figures are reported estimates · attention weights and probabilities are illustrative</div>
   </div>
 </div>
 
 <script>
 "use strict";
-/* ============================================================
-   How LLMs work — step-by-step animated explainer
-   Presenter model: each scene has N "beats" (builds).
-   → / click advances a beat; scenes animate continuously.
-   All drawing is procedural from (sceneTime, beatTime, beat).
-============================================================ */
-const cv=document.getElementById("cv"),x=cv.getContext("2d");
-let W=0,H=0,DPR=1;
-function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+"px";cv.style.height=H+"px";x.setTransform(DPR,0,0,DPR,0,0);}
-resize();addEventListener("resize",resize);
-
-/* palette (3b1b-ish on near-black) */
-const BG="#0B0E14",INK="#E8ECF4",DIM="#8B94A8",FAINT="#3A4356",
-      BLUE="#58C4DD",YEL="#F0C674",GRN="#5CD0B3",RED="#FC6255",PUR="#B48CF2";
-const CAT=[BLUE,YEL,GRN,RED];
-
-/* helpers */
+/* ================================================================
+   How LLMs work — ONE example through the whole machine.
+   "Elon Musk wants to colonize ___"
+   3-layer canvas: static bg · fading trail · crisp fg.
+   Presenter beats: → / click advances. Drawing is procedural.
+================================================================ */
+const bgc=document.getElementById("bg"),trc=document.getElementById("trail"),fgc=document.getElementById("fg");
+const bg=bgc.getContext("2d"),tr=trc.getContext("2d"),fg=fgc.getContext("2d");
+let W,H,DPR;
+const INK="#EAEFF7",DIM="#8B94A8",FAINT="rgba(57,65,84,0.4)",
+      BLUE="#58C4DD",YEL="#FFD86B",RED="#FF6B7A",GRN="#5CD0B3",PUR="#B48CF2";
 const clamp01=v=>Math.max(0,Math.min(1,v));
 const seg=(t,a,b)=>clamp01((t-a)/(b-a));
 const io=t=>{t=clamp01(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
 const out=t=>{t=clamp01(t);return 1-Math.pow(1-t,3)};
 const lerp=(a,b,t)=>a+(b-a)*t;
-function mulberry(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-function glow(c,b){x.shadowColor=c;x.shadowBlur=b}
-function noglow(){x.shadowBlur=0}
-function rr(x0,y0,w,h,r){x.beginPath();x.moveTo(x0+r,y0);x.arcTo(x0+w,y0,x0+w,y0+h,r);x.arcTo(x0+w,y0+h,x0,y0+h,r);x.arcTo(x0,y0+h,x0,y0,r);x.arcTo(x0,y0,x0+w,y0,r);x.closePath()}
-function alpha(c,a){const n=parseInt(c.slice(1),16);return`rgba(${n>>16},${n>>8&255},${n&255},${a})`}
-function arrow(x1,y1,x2,y2,c,w,p,glo){ // p = draw progress 0..1
-  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
-  const ex=x1+dx*p,ey=y1+dy*p;
-  x.strokeStyle=c;x.lineWidth=w;x.lineCap="round";if(glo)glow(c,14);
-  x.beginPath();x.moveTo(x1,y1);x.lineTo(ex,ey);x.stroke();
-  if(p>0.05){const hs=9+w*1.6;
-    x.fillStyle=c;x.beginPath();x.moveTo(ex,ey);
-    x.lineTo(ex-ux*hs-uy*hs*.5,ey-uy*hs+ux*hs*.5);
-    x.lineTo(ex-ux*hs+uy*hs*.5,ey-uy*hs-ux*hs*.5);x.closePath();x.fill();}
-  noglow();
+const alpha=(c,a)=>{const n=parseInt(c.slice(1,7),16);return`rgba(${n>>16},${n>>8&255},${n&255},${a})`};
+function mono(px,w){return`${w||600} ${px}px ui-monospace,"SF Mono",Consolas,monospace`}
+function serif(px,w){return`${w||500} ${px}px Fraunces,Georgia,serif`}
+function mulberry(s){return function(){s|=0;s=s+0x6D2B79F5|0;let t2=Math.imul(s^s>>>15,1|s);t2=t2+Math.imul(t2^t2>>>7,61|t2)^t2;return((t2^t2>>>14)>>>0)/4294967296}}
+function rr(c,x0,y0,w,h,r){c.beginPath();c.moveTo(x0+r,y0);c.arcTo(x0+w,y0,x0+w,y0+h,r);c.arcTo(x0+w,y0+h,x0,y0+h,r);c.arcTo(x0,y0+h,x0,y0,r);c.arcTo(x0,y0,x0+w,y0,r);c.closePath()}
+function ttext(s,t,cps){return s.slice(0,Math.floor(t*(cps||18)))}
+function orb(c,x0,y0,r,col,coreA,haloR){ // soft glowing node
+  const g=c.createRadialGradient(x0,y0,0,x0,y0,haloR||r*2.4);
+  g.addColorStop(0,alpha(col,coreA));g.addColorStop(0.55,alpha(col,coreA*0.25));g.addColorStop(1,"rgba(0,0,0,0)");
+  c.fillStyle=g;c.beginPath();c.arc(x0,y0,haloR||r*2.4,0,7);c.fill();
 }
-function mono(px,weight){return`${weight||600} ${px}px ui-monospace,"SF Mono",Consolas,monospace`}
-function serif(px,weight){return`${weight||480} ${px}px Fraunces,Georgia,serif`}
-function ttext(s,t,cps){const n=Math.floor(t*(cps||22));return s.slice(0,n)}
-
-/* caption + heading */
-function heading(kicker,title,a){
-  x.textAlign="left";x.globalAlpha=a;
-  x.font=mono(Math.max(12,H*0.016),700);x.fillStyle=DIM;
-  x.fillText("<|"+kicker+"|>",Math.max(28,W*0.045),Math.max(44,H*0.075));
-  x.font=serif(Math.max(22,H*0.042),560);x.fillStyle=INK;
-  x.fillText(title,Math.max(28,W*0.045),Math.max(44,H*0.075)+Math.max(30,H*0.055));
-  x.globalAlpha=1;
-}
-function caption(lines,tb){
-  if(!lines)return;
-  const a=io(seg(tb,0.1,0.7));
-  x.textAlign="center";x.globalAlpha=a;
-  const fs=Math.max(17,H*0.030);
-  x.font=serif(fs,470);x.fillStyle=INK;
-  const arr=Array.isArray(lines)?lines:[lines];
-  arr.forEach((s,i)=>{
-    // dim parenthetical lines
-    x.fillStyle=s.startsWith("(")?DIM:INK;
-    x.fillText(s,W/2,H-Math.max(64,H*0.115)+i*fs*1.45);
-  });
-  x.globalAlpha=1;
+function puff(px,py,col,sz){ // additive pulse on trail layer
+  tr.globalCompositeOperation="lighter";
+  const g=tr.createRadialGradient(px,py,0,px,py,sz);
+  g.addColorStop(0,alpha(col,0.8));g.addColorStop(0.4,alpha(col,0.25));g.addColorStop(1,alpha(col,0));
+  tr.fillStyle=g;tr.beginPath();tr.arc(px,py,sz,0,7);tr.fill();
+  tr.globalCompositeOperation="source-over";
 }
 
-/* ============ shared visual pieces ============ */
-const SENT=["The","capital","of","Tamil","Nadu","is"];
+/* ---- static background ---- */
+function drawBG(){
+  bg.fillStyle="#07090E";bg.fillRect(0,0,W,H);
+  bg.fillStyle="rgba(90,105,135,0.09)";
+  for(let gx=17;gx<W;gx+=34)for(let gy=17;gy<H;gy+=34){bg.beginPath();bg.arc(gx,gy,1,0,7);bg.fill();}
+  const R=mulberry(11),nodes=[];
+  for(let l=0;l<6;l++)for(let i=0;i<7;i++)nodes.push({x:W*(0.06+l*0.176)+(R()-.5)*40,y:H*(0.12+i*0.13)+(R()-.5)*50,l});
+  bg.filter="blur(3px)";
+  nodes.forEach(n=>nodes.forEach(m=>{if(m.l===n.l+1&&R()>0.74){
+    bg.strokeStyle="rgba(88,140,180,0.05)";bg.lineWidth=1;
+    bg.beginPath();bg.moveTo(n.x,n.y);bg.lineTo(m.x,m.y);bg.stroke();}}));
+  nodes.forEach(n=>{bg.fillStyle="rgba(96,150,190,0.09)";bg.beginPath();bg.arc(n.x,n.y,4,0,7);bg.fill();});
+  bg.filter="none";
+  const v=bg.createRadialGradient(W/2,H/2,Math.min(W,H)*0.25,W/2,H/2,Math.max(W,H)*0.78);
+  v.addColorStop(0,"rgba(0,0,0,0)");v.addColorStop(1,"rgba(0,0,0,0.55)");
+  bg.fillStyle=v;bg.fillRect(0,0,W,H);
+}
+function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;
+  [bgc,trc,fgc].forEach(c=>{c.width=W*DPR;c.height=H*DPR;c.style.width=W+"px";c.style.height=H+"px"});
+  [bg,tr,fg].forEach(c=>c.setTransform(DPR,0,0,DPR,0,0));drawBG();}
+resize();addEventListener("resize",resize);
+
+/* ================================================================
+   THE example
+================================================================ */
+const PROMPT="Elon Musk wants to colonize";
+const TOKS=["Elon","Musk","wants","to","colon","ize"];       // colonize splits!
+const TCOL=[BLUE,BLUE,GRN,GRN,PUR,PUR];
 function fakeId(s){let h=0;for(const c of s.toLowerCase())h=(h*31+c.charCodeAt(0))>>>0;return 100+(h%49900)}
-function tokenChip(cx,cy,label,color,a,scale,id,idA){
-  const fs=Math.max(15,H*0.024)*(scale||1);
-  x.font=mono(fs,650);
-  const w=x.measureText(label).width+fs*1.1,h=fs*1.9;
-  x.globalAlpha=a;
-  glow(color,16);x.strokeStyle=color;x.lineWidth=1.6;
-  x.fillStyle=alpha(color,0.10);rr(cx-w/2,cy-h/2,w,h,8);x.fill();x.stroke();noglow();
-  x.fillStyle=INK;x.textAlign="center";x.textBaseline="middle";
-  x.fillText(label,cx,cy+1);
-  if(idA>0){x.globalAlpha=a*idA;x.font=mono(fs*0.62,500);x.fillStyle=DIM;
-    x.fillText("#"+(id??fakeId(label)),cx,cy+h*0.95);}
-  x.globalAlpha=1;x.textBaseline="alphabetic";
+
+function tokenChip(cx,cy,label,color,a,idA){
+  const fs=Math.max(16,H*0.026);
+  fg.font=mono(fs,650);
+  const w=fg.measureText(label).width+fs*1.1,h=fs*1.95;
+  fg.globalAlpha=a;
+  orb(fg,cx,cy,h*0.5,color,0.10,h*1.1);
+  fg.strokeStyle=alpha(color,0.9);fg.lineWidth=1.6;fg.fillStyle=alpha(color,0.10);
+  rr(fg,cx-w/2,cy-h/2,w,h,9);fg.fill();fg.stroke();
+  fg.fillStyle=INK;fg.textAlign="center";fg.textBaseline="middle";
+  fg.fillText(label,cx,cy+1);
+  if(idA>0){fg.globalAlpha=a*idA;fg.font=mono(fs*0.6,500);fg.fillStyle=DIM;
+    fg.fillText("#"+fakeId(label),cx,cy+h*0.98);}
+  fg.globalAlpha=1;fg.textBaseline="alphabetic";
+  return w;
 }
-function sentenceLayout(words,cy,fs){ // centered chip row positions
-  x.font=mono(fs,650);
-  const ws=words.map(wd=>x.measureText(wd).width+fs*1.1);
-  const gap=fs*0.55,total=ws.reduce((a,b)=>a+b,0)+gap*(words.length-1);
-  let cxp=W/2-total/2;const pos=[];
-  ws.forEach(w=>{pos.push(cxp+w/2);cxp+=w+gap});
+function chipRow(words,cy){
+  const fs=Math.max(16,H*0.026);
+  fg.font=mono(fs,650);
+  const ws=words.map(wd=>fg.measureText(wd).width+fs*1.1);
+  const gap=fs*0.6,total=ws.reduce((a,b)=>a+b,0)+gap*(words.length-1);
+  let cx=W/2-total/2;const pos=[];
+  ws.forEach(w=>{pos.push(cx+w/2);cx+=w+gap});
   return pos;
 }
 
-/* 3D embedding cloud */
-const R2=mulberry(7);
+/* ---- 3D cloud: neighborhoods of OUR tokens + animal aside ---- */
 const CLOUD=(()=>{
-  const mk=(cx,cy,cz,n,color,words)=>{const pts=[];for(let i=0;i<n;i++){pts.push({
-    x:cx+(R2()-.5)*.5,y:cy+(R2()-.5)*.45,z:cz+(R2()-.5)*.5,c:color,w:words[i]||null})}return pts};
-  // royalty anchored so king-man+woman = queen exactly
-  const man={x:-.55,y:-.28,z:.05,c:BLUE,w:"man"},woman={x:-.18,y:-.55,z:.22,c:BLUE,w:"woman"},
-        king={x:-.38,y:.42,z:-.08,c:BLUE,w:"king"},
-        queen={x:king.x-man.x+woman.x,y:king.y-man.y+woman.y,z:king.z-man.z+woman.z,c:BLUE,w:"queen"};
-  return{
-    named:{man,woman,king,queen},
-    pts:[man,woman,king,queen,
-      ...mk(-.42,.05,.05,4,BLUE,["prince","girl","boy","aunt"]),
-      ...mk(.62,.5,.1,6,YEL,["Madurai","Chennai","Paris","temple","beach","London"]),
-      ...mk(-.5,-.75,-.2,6,GRN,["dosa","idli","biryani","coffee","mango","pizza"]),
-      ...mk(.6,-.6,.25,6,RED,["dog","cat","tiger","parrot","cow","elephant"])]
-  };
+  const pts=[];
+  const put=(w,x,y,z,c,key)=>pts.push({w,x,y,z,c,key});
+  // space-companies neighborhood (Musk lands here)
+  put("Musk",-.42,.42,-.05,BLUE,1);put("SpaceX",-.30,.52,.08,BLUE,0);put("Tesla",-.55,.50,.12,BLUE,0);
+  put("rocket",-.35,.30,-.15,BLUE,0);put("Starship",-.20,.40,-.02,BLUE,0);
+  // colonize verb neighborhood
+  put("colonize",.52,.40,.10,PUR,1);put("settle",.62,.50,.02,PUR,0);put("terraform",.42,.52,.20,PUR,0);
+  put("expand",.66,.32,.14,PUR,0);put("build",.50,.24,-.04,PUR,0);
+  // function words drift middle-low
+  put("wants",-.05,-.10,.06,GRN,1);put("to",.08,-.20,-.04,GRN,0);put("the",-.10,-.26,.10,GRN,0);
+  // animals (for the directions aside): kitten = cat + (puppy - dog)
+  const dog={x:-.50,y:-.62,z:.05},pup={x:-.30,y:-.44,z:.12},cat={x:.18,y:-.66,z:-.02};
+  put("dog",dog.x,dog.y,dog.z,YEL,1);put("puppy",pup.x,pup.y,pup.z,YEL,1);
+  put("cat",cat.x,cat.y,cat.z,YEL,1);
+  put("kitten",cat.x+(pup.x-dog.x),cat.y+(pup.y-dog.y),cat.z+(pup.z-dog.z),YEL,1);
+  return pts;
 })();
-function proj(p,yaw){ // rotate about Y then perspective
+function proj(p,yaw){
   const cs=Math.cos(yaw),sn=Math.sin(yaw);
-  const rx=p.x*cs+p.z*sn, rz=-p.x*sn+p.z*cs;
-  const d=2.6,s=d/(d+rz);
-  const scale=Math.min(W,H)*0.34;
-  return{x:W*0.5+rx*scale*s,y:H*0.52-p.y*scale*s,s};
+  const rx=p.x*cs+p.z*sn,rz=-p.x*sn+p.z*cs;
+  const d=2.6,s=d/(d+rz),sc=Math.min(W,H)*0.36;
+  return{x:W*0.5+rx*sc*s,y:H*0.50-p.y*sc*s,s};
 }
-function drawCloud(t,colorized,labels,aAll){
-  const yaw=t*0.14;
-  const order=[...CLOUD.pts].map(p=>({p,pr:proj(p,yaw)})).sort((a,b)=>a.pr.s-b.pr.s);
-  order.forEach(({p,pr})=>{
-    const c=colorized?p.c:DIM;
-    const r=(3.2+pr.s*3.4);
-    x.globalAlpha=aAll*(0.35+0.65*pr.s*0.9);
-    glow(c,12*pr.s);x.fillStyle=c;
-    x.beginPath();x.arc(pr.x,pr.y,r,0,7);x.fill();noglow();
-    if(labels&&p.w){x.font=mono(Math.max(10.5,H*0.015),500);x.fillStyle=colorized?INK:DIM;
-      x.textAlign="left";x.fillText(p.w,pr.x+r+5,pr.y+3);}
+function drawCloud(t,labelAll,dimNonKey){
+  const yaw=t*0.10;
+  [...CLOUD].map(p=>({p,pr:proj(p,yaw)})).sort((a,b)=>a.pr.s-b.pr.s).forEach(({p,pr})=>{
+    const base=dimNonKey&&!p.key?0.35:1;
+    const r=3+pr.s*3.6;
+    fg.globalAlpha=base*(0.4+0.6*pr.s*0.9);
+    orb(fg,pr.x,pr.y,r,p.c,0.5,r*3);
+    fg.fillStyle=p.c;fg.beginPath();fg.arc(pr.x,pr.y,r,0,7);fg.fill();
+    if(labelAll||p.key){fg.font=mono(Math.max(11.5,H*0.0165),p.key?700:500);
+      fg.fillStyle=p.key?INK:DIM;fg.textAlign="left";fg.fillText(p.w,pr.x+r+6,pr.y+4);}
   });
-  x.globalAlpha=1;
+  fg.globalAlpha=1;
+}
+const findP=w=>CLOUD.find(p=>p.w===w);
+function arrow2(x1,y1,x2,y2,c,w,p){
+  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+  const ex=x1+dx*p,ey=y1+dy*p;
+  fg.strokeStyle=c;fg.lineWidth=w;fg.lineCap="round";fg.shadowColor=c;fg.shadowBlur=12;
+  fg.beginPath();fg.moveTo(x1,y1);fg.lineTo(ex,ey);fg.stroke();
+  if(p>0.06){const hs=9+w*1.5;
+    fg.fillStyle=c;fg.beginPath();fg.moveTo(ex,ey);
+    fg.lineTo(ex-ux*hs-uy*hs*.5,ey-uy*hs+ux*hs*.5);
+    fg.lineTo(ex-ux*hs+uy*hs*.5,ey-uy*hs-ux*hs*.5);fg.closePath();fg.fill();}
+  fg.shadowBlur=0;
 }
 
-/* neural net for scene 4 */
-const LAYERS=[6,8,8,6,3];
-function netPos(){
-  const left=W*0.24,right=W*0.76,top=H*0.24,bot=H*0.72;
-  return LAYERS.map((n,li)=>{
-    const lx=lerp(left,right,li/(LAYERS.length-1));
-    return Array.from({length:n},(_,i)=>({x:lx,y:lerp(top,bot,n===1?0.5:i/(n-1))}));
-  });
-}
-const R3=mulberry(21);
-const NETW=LAYERS.slice(0,-1).map((n,li)=>{ // sparse-ish weights
-  const conns=[];
-  for(let i=0;i<n;i++)for(let j=0;j<LAYERS[li+1];j++){const w=R3();if(w>0.25)conns.push({i,j,w:(w-0.25)/0.75})}
-  return conns;
-});
+/* ---- attention data (final slot gathers context) ---- */
+const ATT_A=["Elon","Musk","wants","to","colon","ize","▁"];
+const ATT_B=["The","British","Empire","wants","to","colon","ize","▁"];
+const AW_A={1:.44,5:.21,4:.10,2:.08};   // ▁ → Musk, ize, colon, wants
+const AW_B={2:.41,6:.20,5:.10,3:.08};   // ▁ → Empire, ize, colon, wants
 
-/* attention sentence */
-const ATT=["The","trophy","didn’t","fit","in","the","suitcase","because","it","was","too","big"];
-const ATT_W_BIG={1:.62,6:.14,11:.12},ATT_W_SMALL={6:.60,1:.16,11:.12};
+/* ---- neuron (semantic features of OUR sentence) ---- */
+const NIN=[["mentions Musk",0.9],["about space",0.7],["past tense",0.1],["is a question",0.2]];
+const NWT=[2.1,1.4,-1.3,-0.6];
+const NSUM=NIN.reduce((a,[,v],i)=>a+v*NWT[i],0);   // 2.62
+const NOUT=Math.tanh(NSUM);                        // 0.99
 
-/* probability bars */
-const PROBS=[["Chennai",92.4],["Madurai",2.1],["Coimbatore",1.3],["the",0.9],["its",0.4]];
+/* ---- prediction ---- */
+const PRED=[["Mars",87.3],["the Moon",5.1],["space",2.4],["the",1.6],["Twitter",0.8]];
 
-/* loop scene data */
-const LOOPW=["there","was","a","king","who","loved","his","people","and","built","a","library"];
-const LOOPALT=[["there","once","a"],["was","lived","came"],["a","one","his"],["king","farmer","queen"],["who","that","and"],["loved","ruled","built"],["his","the","all"],["people","land","city"],["and","more","who"],["built","made","gave"],["a","the","one"],["library","bridge","school"]];
+/* ---- loop continuation ---- */
+const LOOPW=["Mars",".","He","wants","a","million","people","there","by","2050","."];
+const LOOPALT=[["Mars","the","space"],[".","this","first"],["He","Musk","And"],["wants","plans","hopes"],["a","one","his"],["million","city","fleet"],["people","humans","settlers"],["there","living","working"],["by","before","around"],["2050","2040","2060"],[".","!","…"]];
 
-/* training data */
-const STREAM=["once upon a time there was","import numpy as np","வணக்கம் மதுரை !","dear sir, with reference to","the mitochondria is the","fn main() { println! }","q3 revenue grew 12%","to be or not to be","SELECT * FROM users;","el sol sale por el este","η = mc² / kT","def train(model, data):"];
+/* ---- training checkpoints: same prompt, model growing up ---- */
+const CKPT=[["step 0","purple",0.4,3.61],["step 10k","the",9.2,2.90],["step 1M","planet",31.5,1.74],["step 1B","Mars",87.3,0.61]];
 const R4=mulberry(99);
 const WGRID=Array.from({length:26*15},()=>({jx:R4()-.5,jy:R4()-.5,ph:R4()*6.28}));
 const R5=mulberry(5);
 const STARS=Array.from({length:420},()=>({a:R5()*6.283,r:Math.pow(R5(),0.6),tw:R5()*6.28}));
 
-/* ============================================================
-   SCENES — each: {kicker,title,beats,cap[beat],draw(t,tb,beat)}
-============================================================ */
+/* ================================================================
+   SCENES
+================================================================ */
+function heading(kicker,title,a){
+  fg.textAlign="left";fg.globalAlpha=a;
+  fg.font=mono(Math.max(12,H*0.016),700);fg.fillStyle=DIM;
+  fg.fillText("<|"+kicker+"|>",W*0.045,Math.max(44,H*0.075));
+  fg.font=serif(Math.max(23,H*0.044),560);fg.fillStyle=INK;
+  fg.fillText(title,W*0.045,Math.max(44,H*0.075)+Math.max(31,H*0.057));
+  fg.globalAlpha=1;
+}
+function caption(lines,tb){
+  if(!lines||!lines.length)return;
+  const a=io(seg(tb,0.1,0.7));
+  fg.textAlign="center";fg.globalAlpha=a;
+  const fs=Math.max(17,H*0.029);
+  lines.forEach((s,i)=>{
+    fg.font=serif(s.startsWith("(")?fs*0.78:fs,470);
+    fg.fillStyle=s.startsWith("(")?DIM:INK;
+    fg.fillText(s,W/2,H-Math.max(64,H*0.112)+i*fs*1.45);
+  });
+  fg.globalAlpha=1;
+}
+
 const SCENES=[
 
 /* 0 — the question */
-{kicker:"step_0",title:"You press enter. Then what?",beats:2,
- cap:[["You've all typed this — and the machine answered.","But what actually happens in there?"],
-      ["In the next few minutes: the real mechanism.","(no magic, only arithmetic — I promise)"]],
+{kicker:"the question",title:"You press enter. Then what?",beats:2,
+ cap:[["Everyone in this room has typed something like this.","How does the machine know what comes next?"],
+      ["We're going to follow this one sentence","through the entire machine. Every stage. No magic."]],
  draw(t,tb,b){
-   const fs=Math.max(20,H*0.034);
-   x.font=mono(fs,600);x.textAlign="center";x.fillStyle=INK;
-   const s="The capital of Tamil Nadu is";
-   const typed=b===0?ttext(s,t,18):s;
-   glow(BLUE,8);x.fillText(typed+(Math.floor(t*2)%2?" ▌":"  "),W/2,H*0.45);noglow();
+   const fs=Math.max(21,H*0.037);
+   fg.font=mono(fs,600);fg.textAlign="center";
+   const typed=b===0?ttext(PROMPT,t,16):PROMPT;
+   fg.fillStyle=INK;fg.shadowColor=BLUE;fg.shadowBlur=8;
+   fg.fillText(typed+(Math.floor(t*2)%2?" ▌":"  "),W/2,H*0.44);fg.shadowBlur=0;
    if(b>=1){const a=io(seg(tb,0,0.8));
-     x.globalAlpha=a;x.font=mono(fs*1.6,700);glow(YEL,26);x.fillStyle=YEL;
-     x.fillText("?",W/2,H*0.45+fs*2.4);noglow();x.globalAlpha=1;}
+     fg.globalAlpha=a;fg.font=mono(fs*1.5,700);
+     fg.shadowColor=YEL;fg.shadowBlur=24;fg.fillStyle=YEL;
+     fg.fillText("___ ?",W/2,H*0.44+fs*2.3);fg.shadowBlur=0;fg.globalAlpha=1;}
  }},
 
 /* 1 — tokens */
-{kicker:"step_1 · tokens",title:"Text becomes tokens",beats:3,
- cap:[["Here is that same sentence."],
-      ["The model chops it into tokens — pieces from a fixed menu."],
-      ["Each token is just a number. The model never sees letters.","(rare words get split — Tamil costs 3–4× more tokens than English)"]],
+{kicker:"stage 1 · tokens",title:"First, the sentence is chopped",beats:3,
+ cap:[["The model can't read words.","So the tokenizer chops our sentence into tokens — pieces from a fixed menu."],
+      ["Look closely: 'colonize' wasn't common enough to earn its own token.","It got split — colon + ize. Rare words cost more pieces."],
+      ["Then each piece becomes just a number.","From here on, the machine sees only these six numbers."]],
  draw(t,tb,b){
-   const fs=Math.max(15,H*0.024);
-   const cy=H*0.46,pos=sentenceLayout(SENT,cy,fs);
-   if(b===0){ // plain sentence
-     x.font=mono(fs*1.15,600);x.textAlign="center";x.fillStyle=INK;
-     x.fillText(SENT.join(" "),W/2,cy);
+   const cy=H*0.45;
+   if(b===0&&tb<1.2){ // whole sentence splits
+     const p=io(seg(tb,0.2,1.2));
+     fg.font=mono(Math.max(18,H*0.03),600);fg.textAlign="center";fg.fillStyle=INK;
+     fg.globalAlpha=1-p;fg.fillText(PROMPT,W/2,cy);fg.globalAlpha=1;
+     if(p>0.4){const pos=chipRow(TOKS,cy);
+       TOKS.forEach((tok,i)=>tokenChip(pos[i],cy,tok,TCOL[i],(p-0.4)/0.6,0));}
    }else{
-     const spread=io(seg(tb,0,b===1?1.0:0)); // beat1 animates split; beat2 already split
-     SENT.forEach((wd,i)=>{
-       // from packed text position to chip row
-       x.font=mono(fs*1.15,600);
-       const packedTotal=x.measureText(SENT.join(" ")).width;
-       let px=W/2-packedTotal/2;
-       for(let k=0;k<i;k++)px+=x.measureText(SENT[k]+" ").width;
-       px+=x.measureText(wd).width/2;
-       const cxp=b===1?lerp(px,pos[i],spread):pos[i];
-       const wob=Math.sin(t*1.4+i)*2.5;
-       tokenChip(cxp,cy+wob,wd,CAT[i%4],1,1,fakeId(wd),b>=2?io(seg(tb,0.1+i*0.08,0.6+i*0.08)):0);
+     const pos=chipRow(TOKS,cy);
+     TOKS.forEach((tok,i)=>{
+       const wob=Math.sin(t*1.3+i*1.1)*2.5;
+       const hl=b===1&&(i===4||i===5); // highlight the split pieces
+       if(hl){fg.save();fg.shadowColor=PUR;fg.shadowBlur=26;}
+       tokenChip(pos[i],cy+wob,tok,TCOL[i],1,b>=2?io(seg(tb,0.1+i*0.09,0.6+i*0.09)):0);
+       if(hl)fg.restore();
      });
+     if(b===1){ // bracket under colon+ize
+       const a=io(seg(tb,0.2,0.9));
+       fg.globalAlpha=a;fg.strokeStyle=PUR;fg.lineWidth=1.6;
+       const x1=pos[4]-38,x2=pos[5]+30,yb=cy+Math.max(26,H*0.045);
+       fg.beginPath();fg.moveTo(x1,yb);fg.lineTo(x1,yb+8);fg.lineTo(x2,yb+8);fg.lineTo(x2,yb);fg.stroke();
+       fg.font=mono(Math.max(12,H*0.017),650);fg.fillStyle=PUR;fg.textAlign="center";
+       fg.fillText("one word → two tokens",(x1+x2)/2,yb+28);fg.globalAlpha=1;}
    }
  }},
 
 /* 2 — embeddings */
-{kicker:"step_2 · embeddings",title:"Every token becomes a point in space",beats:3,
- cap:[["Each token number is mapped to a vector —","a position in a space with thousands of dimensions."],
-      ["Words used in similar ways end up close together."],
-      ["Meaning isn't stored as definitions.","Meaning is location."]],
+{kicker:"stage 2 · embeddings",title:"Each token becomes a point in space",beats:2,
+ cap:[["Every token number is mapped to a vector —","a position in a space with thousands of dimensions."],
+      ["'Musk' lands among the space companies. 'colonize' among expansion verbs.","Meaning isn't stored as definitions. Meaning is location."]],
  draw(t,tb,b){
-   const born=io(seg(tb,0,1));
-   if(b===0) drawCloud(t,false,false,born);
-   if(b===1) drawCloud(t,true,true,1);
-   if(b>=2){drawCloud(t,true,true,1);
-     // pulse a cluster to show closeness
-     const p=CLOUD.named.king,pr=proj(p,t*0.14);
-     const pulse=4+Math.sin(t*3)*2;
-     x.strokeStyle=alpha(BLUE,0.7);glow(BLUE,18);x.lineWidth=1.6;
-     x.beginPath();x.arc(pr.x,pr.y,16+pulse,0,7);x.stroke();noglow();}
- }},
-
-/* 3 — directions mean things */
-{kicker:"step_3 · vector arithmetic",title:"Directions carry meaning",beats:2,
- cap:[["Watch the man → king direction.","That arrow is the concept of royalty."],
-      ["Add the same arrow to woman… and you land on queen.","king − man + woman = queen. This actually works in real models."]],
- draw(t,tb,b){
-   drawCloud(t*0.001+2.1,true,true,1); // nearly frozen yaw for stable arrows
-   const yaw=2.1*0.14*0.001+2.1*0.14*0; // effectively fixed
-   const P=CLOUD.named;
-   const pm=proj(P.man,0.294),pk=proj(P.king,0.294),pw=proj(P.woman,0.294),pq=proj(P.queen,0.294);
-   if(b>=0){arrow(pm.x,pm.y,pk.x,pk.y,YEL,3,out(seg(tb,b===0?0.1:0,b===0?1.2:0.01)),true);}
-   if(b>=1){
-     arrow(pw.x,pw.y,pq.x,pq.y,YEL,3,out(seg(tb,0.2,1.4)),true);
-     const a=io(seg(tb,1.4,2.2));
-     x.globalAlpha=a;x.strokeStyle=GRN;glow(GRN,22);x.lineWidth=2.5;
-     x.beginPath();x.arc(pq.x,pq.y,17+Math.sin(t*3)*3,0,7);x.stroke();noglow();
-     x.font=mono(Math.max(13,H*0.02),700);x.fillStyle=GRN;x.textAlign="center";
-     x.fillText("≈ queen ✓",pq.x,pq.y-30);x.globalAlpha=1;}
- }},
-
-/* 4 — a single neuron (the 3b1b NN-101 moment) */
-{kicker:"step_4 · a neuron",title:"Multiply, add, squash",beats:3,
- cap:[["Meet one unit of the machine: a neuron.","Inputs arrive; each connection has a weight — a dial."],
-      ["It multiplies each input by its weight, adds them up,","squashes the result — and passes it on. That's ALL it does."],
-      ["Blue weights say 'excite me', red say 'calm me'.","Learning = turning these dials. Nothing more."]],
- draw(t,tb,b){
-   const ins=[0.9,0.2,0.7,0.1], ws=[2.1,-1.3,0.4,0.8];
-   const ix=W*0.30,nx=W*0.60,ny=H*0.47;
-   const ys=ins.map((_,i)=>H*(0.30+i*0.115));
-   const sum=ins.reduce((a,v,i)=>a+v*ws[i],0);
-   ins.forEach((v,i)=>{
-     const w=ws[i],c=w>=0?BLUE:RED,lw=1+Math.abs(w)*2.2;
-     x.strokeStyle=alpha(c,0.7);x.lineWidth=lw;
-     x.beginPath();x.moveTo(ix,ys[i]);x.lineTo(nx,ny);x.stroke();
-     if(b>=1){const ph=(t*0.6+i*0.21)%1;
-       glow(c,12);x.fillStyle=c;
-       x.beginPath();x.arc(lerp(ix,nx,ph),lerp(ys[i],ny,ph),3.4,0,7);x.fill();noglow();}
-     glow(INK,8);x.fillStyle=alpha(INK,0.25+v*0.7);
-     x.beginPath();x.arc(ix,ys[i],9+v*7,0,7);x.fill();noglow();
-     x.font=mono(Math.max(12,H*0.018),600);x.fillStyle=INK;x.textAlign="right";
-     x.fillText(v.toFixed(1),ix-22,ys[i]+4);
-     x.textAlign="center";x.fillStyle=c;x.font=mono(Math.max(11.5,H*0.017),650);
-     x.fillText((w>=0?"+":"")+w.toFixed(1),lerp(ix,nx,0.45),lerp(ys[i],ny,0.45)-9);
-   });
-   const fired=b>=1?io(seg(tb,0.4,1.6)):0;
-   glow(YEL,10+fired*28);x.fillStyle=alpha(YEL,0.14+fired*0.45);x.strokeStyle=YEL;x.lineWidth=2;
-   x.beginPath();x.arc(nx,ny,26+fired*5,0,7);x.fill();x.stroke();noglow();
-   if(b>=1){x.font=mono(Math.max(13,H*0.019),700);x.fillStyle=INK;x.textAlign="center";
-     x.fillText((sum*fired).toFixed(2),nx,ny+5);
-     arrow(nx+36,ny,nx+130,ny,YEL,2.5,io(seg(tb,1.2,1.9)),true);
-     x.font=mono(Math.max(11.5,H*0.016),600);x.fillStyle=DIM;x.textAlign="left";
-     x.fillText("→ to the next layer",nx+142,ny+4);
-     x.font=mono(Math.max(13,H*0.019),600);x.textAlign="center";x.fillStyle=DIM;
-     x.fillText("output = squash( x₁w₁ + x₂w₂ + x₃w₃ + x₄w₄ )",W/2,H*0.78);}
- }},
-
-/* 5 — layers (neurons stack) */
-{kicker:"step_5 · layers",title:"Neurons stack into layers",beats:3,
- cap:[["Now stack thousands of those neurons, layer after layer.","Each layer's outputs are the next layer's inputs."],
-      ["Features build on features —","early layers catch spelling; deeper ones, grammar; deeper still, meaning."],
-      ["'Deep learning' literally means this: many layers deep.","Watch the signal ripple through."]],
- draw(t,tb,b){
-   const pos=netPos();
-   const LBLS=["spelling","patterns","grammar","meaning","intent"];
-   if(b>=1){NETW.forEach((conns,li)=>{conns.forEach(cn=>{
-     const p1=pos[li][cn.i],p2=pos[li+1][cn.j];
-     const a=io(seg(tb,b===1?cn.w*0.8:0,b===1?cn.w*0.8+0.5:0.01));
-     x.globalAlpha=a*(0.06+cn.w*0.22);x.strokeStyle=BLUE;x.lineWidth=0.8+cn.w*1.6;
-     x.beginPath();x.moveTo(p1.x,p1.y);x.lineTo(p2.x,p2.y);x.stroke();});});x.globalAlpha=1;}
-   const wavex=b>=2?((t*0.35)%1.3-0.15):-1;
-   pos.forEach((layer,li)=>{
-     const lu=li/(LAYERS.length-1);
-     layer.forEach((p,i)=>{
-       const near=b>=2?Math.max(0,1-Math.abs(lu-wavex)*4):0;
-       const born=io(seg(b===0?tb:1,li*0.12+i*0.02,li*0.12+i*0.02+0.4));
-       x.globalAlpha=born;
-       glow(near>0.02?YEL:BLUE,10+near*22);
-       x.fillStyle=near>0.02?alpha(YEL,0.5+near*0.5):alpha(BLUE,0.75);
-       x.beginPath();x.arc(p.x,p.y,5+near*4,0,7);x.fill();noglow();
+   if(b===0){
+     // chips fly into the cloud
+     const p=io(seg(tb,0.2,1.4));
+     drawCloud(t,false,false);
+     const targets=["Musk","colonize","wants"];
+     const pos=chipRow(["Musk","colonize","wants"],H*0.12);
+     targets.forEach((w,i)=>{
+       const pt=findP(w),pr=proj(pt,t*0.10);
+       const cx=lerp(pos[i],pr.x,p),cy=lerp(H*0.12,pr.y,p);
+       if(p<0.95)tokenChip(cx,cy,w,pt.c,1-p*0.55,0);
      });
-     if(b>=1){const a=io(seg(tb,b===1?0.6+li*0.25:0,b===1?1.1+li*0.25:0.01));
-       x.globalAlpha=a;x.font=mono(Math.max(11,H*0.016),600);x.fillStyle=DIM;x.textAlign="center";
-       x.fillText(LBLS[li],pos[li][0].x,H*0.80);x.globalAlpha=1;}
-   });
-   x.globalAlpha=1;
+   }else{
+     drawCloud(t,true,false);
+     // halo the two key neighborhoods
+     ["Musk","colonize"].forEach(w=>{
+       const pr=proj(findP(w),t*0.10);
+       fg.strokeStyle=alpha(findP(w).c,0.7);fg.shadowColor=findP(w).c;fg.shadowBlur=16;fg.lineWidth=1.6;
+       fg.beginPath();fg.arc(pr.x,pr.y,17+Math.sin(t*2.6)*3,0,7);fg.stroke();fg.shadowBlur=0;});
+   }
  }},
 
-/* 6 — the transformer (the T in GPT) */
-{kicker:"step_6 · the transformer",title:"The T in GPT",beats:3,
- cap:[["Arrange those layers like THIS — and you get a transformer.","Embedding at the bottom, a stack of identical blocks, prediction on top."],
-      ["Each block has exactly two parts:","attention — words talk to each other · MLP — each word thinks alone"],
-      ["Your prompt rides bottom to top — through ~96 blocks —","in milliseconds. GPT = Generative · Pre-trained · Transformer."]],
+/* 3 — directions (quick aside) */
+{kicker:"stage 2½ · a 20-second aside",title:"Directions in this space mean things",beats:2,
+ cap:[["Proof that this space is real: watch the dog → puppy direction.","That arrow means 'make it a baby'."],
+      ["Add the same arrow to cat… kitten. The space did arithmetic on MEANING.","Now back to our sentence — its vectors are waiting."]],
  draw(t,tb,b){
-   const cx=W/2,sw=Math.min(W*0.4,460);
+   const yaw=0.9; // freeze rotation for stable arrows
+   [...CLOUD].map(p=>({p,pr:proj(p,yaw)})).sort((a,b2)=>a.pr.s-b2.pr.s).forEach(({p,pr})=>{
+     const anim=p.c===YEL?1:0.22;
+     const r=3+pr.s*3.6;
+     fg.globalAlpha=anim*(0.4+0.6*pr.s);
+     orb(fg,pr.x,pr.y,r,p.c,0.5,r*3);
+     fg.fillStyle=p.c;fg.beginPath();fg.arc(pr.x,pr.y,r,0,7);fg.fill();
+     if(p.c===YEL||p.key){fg.font=mono(Math.max(11.5,H*0.0165),p.c===YEL?700:500);
+       fg.fillStyle=p.c===YEL?INK:DIM;fg.textAlign="left";fg.fillText(p.w,pr.x+r+6,pr.y+4);}
+   });
+   fg.globalAlpha=1;
+   const pd=proj(findP("dog"),yaw),pp=proj(findP("puppy"),yaw),
+         pc=proj(findP("cat"),yaw),pk=proj(findP("kitten"),yaw);
+   arrow2(pd.x,pd.y,pp.x,pp.y,YEL,3,out(seg(tb,b===0?0.3:0,b===0?1.4:0.01)));
+   if(b>=1){
+     arrow2(pc.x,pc.y,pk.x,pk.y,YEL,3,out(seg(tb,0.2,1.3)));
+     const a=io(seg(tb,1.3,2.0));
+     fg.globalAlpha=a;fg.strokeStyle=GRN;fg.shadowColor=GRN;fg.shadowBlur=20;fg.lineWidth=2.4;
+     fg.beginPath();fg.arc(pk.x,pk.y,16+Math.sin(t*3)*3,0,7);fg.stroke();fg.shadowBlur=0;
+     fg.font=mono(Math.max(12.5,H*0.019),700);fg.fillStyle=GRN;fg.textAlign="center";
+     fg.fillText("≈ kitten ✓",pk.x,pk.y-28);fg.globalAlpha=1;}
+ }},
+
+/* 4 — attention */
+{kicker:"stage 3 · attention",title:"The blank looks back at the sentence",beats:3,
+ cap:[["Now the 2017 breakthrough. To guess the blank,","the model lets every position look back at every other. Watch where the blank looks."],
+      ["It leans hardest on 'Musk' — WHO is acting —","and on 'colonize' — WHAT he's doing. Context, gathered by attention."],
+      ["Swap the subject and NOTHING else…","and the same machinery gathers different context. The blank will change its mind."]],
+ draw(t,tb,b){
+   const brit=b>=2;
+   const words=brit?ATT_B:ATT_A;
+   const WMAP=brit?AW_B:AW_A;
+   const slot=words.length-1;
+   const cy=H*0.50,pos=chipRow(words,cy);
+   const fs=Math.max(16,H*0.026);
+   // ambient shimmer on beat 0 start
+   if(b===0){for(let i=0;i<words.length-1;i++)for(let j=i+1;j<words.length-1;j++){
+     const ph=Math.sin(t*0.8+i*1.7+j*0.9);if(ph<0.6)continue;
+     fg.strokeStyle=alpha(PUR,(ph-0.6)*0.13);fg.lineWidth=1;
+     const mid=(pos[i]+pos[j])/2,arcH=Math.min(120,Math.abs(pos[j]-pos[i])*0.26+18);
+     fg.beginPath();fg.moveTo(pos[i],cy-fs*1.35);fg.quadraticCurveTo(mid,cy-fs*1.35-arcH,pos[j],cy-fs*1.35);fg.stroke();}}
+   // focused arcs from the blank
+   if(b>=1||tb>1.2){
+     const p0=b===0?seg(tb,1.2,2.2):(b===2?io(seg(tb,0.3,1.2)):1);
+     Object.entries(WMAP).forEach(([j,wt])=>{j=+j;
+       const a=(0.25+wt*0.75)*p0,lw=(1+wt*10)*p0;
+       const mid=(pos[slot]+pos[j])/2,arcH=Math.min(170,Math.abs(pos[slot]-pos[j])*0.30+26);
+       fg.strokeStyle=alpha(PUR,a);fg.shadowColor=PUR;fg.shadowBlur=10+wt*20;fg.lineWidth=lw;fg.lineCap="round";
+       fg.beginPath();fg.moveTo(pos[slot],cy-fs*1.35);
+       fg.quadraticCurveTo(mid,cy-fs*1.35-arcH,pos[j],cy-fs*1.35);fg.stroke();fg.shadowBlur=0;
+       if(p0>0.5){fg.font=mono(fs*0.64,650);fg.fillStyle=alpha("#C9B3F5",p0);fg.textAlign="center";
+         fg.fillText(Math.round(wt*100)+"%",pos[j],cy+fs*1.7);}
+     });
+   }
+   // words
+   words.forEach((wd,i)=>{
+     const isSlot=i===slot,hot=WMAP[i]!=null;
+     if(isSlot){
+       const pul=1+Math.sin(t*3)*0.06;
+       fg.save();fg.translate(pos[i],cy);fg.scale(pul,pul);fg.translate(-pos[i],-cy);
+       tokenChip(pos[i],cy,"▁",YEL,1,0);fg.restore();
+     }else{
+       fg.font=mono(fs,hot?750:600);fg.textAlign="center";
+       if(hot){fg.shadowColor=PUR;fg.shadowBlur=10;}
+       fg.fillStyle=hot?"#D3C2F8":alpha(INK,0.8);
+       fg.fillText(wd,pos[i],cy);fg.shadowBlur=0;}
+   });
+   if(b>=2){const a=io(seg(tb,1.2,2));
+     fg.globalAlpha=a;fg.font=mono(Math.max(12.5,H*0.018),650);fg.textAlign="center";fg.fillStyle=DIM;
+     fg.fillText("same dials, different context → a different prediction is coming",W/2,cy+fs*3.6);
+     fg.globalAlpha=1;}
+ }},
+
+/* 5 — one neuron */
+{kicker:"stage 4 · one neuron",title:"Multiply, add, squash",beats:3,
+ cap:[["The gathered context flows into neurons. Here's one, somewhere in layer 17,","reading four features of OUR sentence."],
+      ["Each connection has a dial — its weight. Multiply, add, squash. That's all a neuron does.","This one just decided: 'this sentence is about a space venture.'"],
+      ["GPT-4 reportedly has ~1.8 trillion of these dials.","Everything it 'knows' lives in them."]],
+ draw(t,tb,b){
+   const ix=W*0.24,nx=W*0.56,ny=H*0.47;
+   const ys=NIN.map((_,i)=>H*(0.26+i*0.14));
+   const sx=W*0.72,ox=W*0.87;
+   const CY=4.2,ct=t%CY;
+   const fired=io(seg(ct,1.5,2.1)),outp=io(seg(ct,2.3,2.9));
+   // pulses on trail
+   NIN.forEach(([_,v],i)=>{
+     const w=NWT[i],c=w>=0?BLUE:RED;
+     const ph=seg(ct,0.2+i*0.12,1.5+i*0.08);
+     if(ph>0&&ph<1)puff(lerp(ix,nx,io(ph)),lerp(ys[i],ny,io(ph)),c,(2.6+Math.abs(w)*2.6)*(0.8+v*0.6)*4);
+   });
+   if(outp>0&&outp<1)puff(lerp(nx+34,ox+10,outp),ny,YEL,16);
+   // edges + dials
+   NIN.forEach(([lab,v],i)=>{
+     const w=NWT[i],c=w>=0?BLUE:RED,lw=1.4+Math.abs(w)*2.6;
+     const grad=fg.createLinearGradient(ix,ys[i],nx,ny);
+     grad.addColorStop(0,alpha(c,0.15));grad.addColorStop(0.5,alpha(c,0.5));grad.addColorStop(1,alpha(c,0.85));
+     fg.strokeStyle=grad;fg.lineWidth=lw;fg.lineCap="round";
+     fg.beginPath();fg.moveTo(ix,ys[i]);fg.lineTo(nx,ny);fg.stroke();
+     const mx=lerp(ix,nx,0.47),my=lerp(ys[i],ny,0.47);
+     fg.save();fg.translate(mx,my);
+     fg.fillStyle="#0B0F16";fg.strokeStyle=alpha(c,0.8);fg.lineWidth=1.4;
+     fg.beginPath();fg.arc(0,0,15,0,7);fg.fill();fg.stroke();
+     for(let k=-3;k<=3;k++){const a=Math.PI*0.75+(k+3)/6*Math.PI*1.5;
+       fg.strokeStyle=k===0?alpha(INK,0.5):alpha(DIM,0.35);fg.lineWidth=1;
+       fg.beginPath();fg.moveTo(Math.cos(a)*11,Math.sin(a)*11);fg.lineTo(Math.cos(a)*14,Math.sin(a)*14);fg.stroke();}
+     const na=Math.PI*0.75+(Math.max(-3,Math.min(3,w))+3)/6*Math.PI*1.5;
+     fg.strokeStyle=c;fg.lineWidth=2;fg.shadowColor=c;fg.shadowBlur=8;
+     fg.beginPath();fg.moveTo(0,0);fg.lineTo(Math.cos(na)*11,Math.sin(na)*11);fg.stroke();fg.shadowBlur=0;
+     fg.restore();
+     fg.font=mono(Math.max(11.5,H*0.016),700);fg.textAlign="center";fg.fillStyle=c;
+     fg.fillText((w>=0?"+":"")+w.toFixed(1),mx,my+32);
+     // input node + semantic label
+     const ir=10+v*9;
+     orb(fg,ix,ys[i],ir,INK,0.14+v*0.4,ir*2.1);
+     fg.fillStyle=alpha(INK,0.25+v*0.75);fg.strokeStyle=alpha(INK,0.8);fg.lineWidth=1.4;
+     fg.beginPath();fg.arc(ix,ys[i],ir,0,7);fg.fill();fg.stroke();
+     fg.font=mono(Math.max(12.5,H*0.018),700);fg.textAlign="right";fg.fillStyle=INK;
+     fg.fillText(v.toFixed(1),ix-ir-12,ys[i]+5);
+     fg.font=mono(Math.max(11,H*0.0155),500);fg.fillStyle=DIM;
+     fg.fillText(lab,ix-ir-12,ys[i]-14);
+   });
+   // neuron body
+   const nr=30+fired*7;
+   orb(fg,nx,ny,nr,YEL,0.10+fired*0.4,nr*3);
+   fg.fillStyle="#0C1017";fg.strokeStyle=alpha(YEL,0.55+fired*0.45);fg.lineWidth=2;
+   fg.shadowColor=YEL;fg.shadowBlur=6+fired*22;
+   fg.beginPath();fg.arc(nx,ny,nr,0,7);fg.fill();fg.stroke();fg.shadowBlur=0;
+   fg.font=mono(Math.max(15,H*0.024),750);fg.textAlign="center";
+   fg.fillStyle=fired>0.5?YEL:"#5A6478";
+   fg.fillText((NSUM*io(seg(ct,1.5,2.2))).toFixed(2),nx,ny+7);
+   fg.font=mono(Math.max(10.5,H*0.014),600);fg.fillStyle=DIM;
+   fg.fillText("Σ xᵢwᵢ",nx,ny-nr-12);
+   // squash box
+   const bw=Math.max(72,W*0.075),bh=bw*0.72,bx=sx-bw/2,by=ny-bh/2;
+   fg.fillStyle="#0B0F16";fg.strokeStyle=alpha(GRN,0.75);fg.lineWidth=1.6;
+   rr(fg,bx,by,bw,bh,10);fg.fill();fg.stroke();
+   fg.strokeStyle=FAINT;fg.lineWidth=1;
+   fg.beginPath();fg.moveTo(bx+6,ny);fg.lineTo(bx+bw-6,ny);fg.stroke();
+   fg.beginPath();fg.moveTo(sx,by+6);fg.lineTo(sx,by+bh-6);fg.stroke();
+   fg.strokeStyle=GRN;fg.lineWidth=2;fg.shadowColor=GRN;fg.shadowBlur=6;
+   fg.beginPath();
+   for(let k=0;k<=40;k++){const u=k/40;
+     const yy=ny-Math.tanh((u-0.5)*6)*(bh/2-10);
+     k===0?fg.moveTo(bx+8+u*(bw-16),yy):fg.lineTo(bx+8+u*(bw-16),yy);}
+   fg.stroke();fg.shadowBlur=0;
+   fg.font=mono(Math.max(10.5,H*0.014),650);fg.textAlign="center";fg.fillStyle=GRN;
+   fg.fillText("squash",sx,by-10);
+   // output
+   const or_=10+outp*4;
+   fg.strokeStyle=alpha(YEL,0.35);fg.lineWidth=1.6;
+   fg.beginPath();fg.moveTo(nx+nr+4,ny);fg.lineTo(ox-or_-6,ny);fg.stroke();
+   orb(fg,ox,ny,or_,YEL,0.15+outp*0.5,or_*2.6);
+   fg.fillStyle=alpha(YEL,0.25+outp*0.75);fg.strokeStyle=alpha(YEL,0.9);fg.lineWidth=1.6;
+   fg.beginPath();fg.arc(ox,ny,or_,0,7);fg.fill();fg.stroke();
+   fg.font=mono(Math.max(12.5,H*0.018),700);fg.textAlign="center";fg.fillStyle=INK;
+   fg.fillText(NOUT.toFixed(2),ox,ny-or_-12);
+   fg.font=mono(Math.max(10.5,H*0.0145),600);fg.fillStyle=DIM;
+   fg.fillText(b>=1?'"space venture!"':"to the next layer",ox,ny+or_+22);
+ }},
+
+/* 6 — the stack */
+{kicker:"stage 5 · the transformer",title:"Attention, neurons — stacked 96 deep",beats:3,
+ cap:[["Wrap one attention layer and one sheet of neurons into a block.","That block IS the transformer — the T in GPT."],
+      ["Now stack ~96 of them.","Each block refines the guess: grammar → facts → intent."],
+      ["Our six tokens ride bottom to top in milliseconds.","At the top: one vector, ready to become a guess."]],
+ draw(t,tb,b){
+   const cx=W/2,sw=Math.min(W*0.42,470);
    const yBot=H*0.78,yTop=H*0.22;
    const NB=5,gap=(yBot-yTop)/(NB+1),sh=gap*0.66;
    const slabs=Array.from({length:NB},(_,i)=>yBot-gap*(i+1));
    const born=i=>b>0?1:io(seg(tb,0.1+i*0.16,0.6+i*0.16));
-   x.textAlign="center";
-   // tokens in
-   x.globalAlpha=born(0);x.font=mono(Math.max(12,H*0.017),600);x.fillStyle=DIM;
-   x.fillText("tokens in ↑",cx,yBot+gap*0.55);
-   // embedding slab
-   glow(GRN,9);x.strokeStyle=GRN;x.fillStyle=alpha(GRN,0.08);x.lineWidth=1.5;
-   rr(cx-sw/2,yBot-sh/2,sw,sh,9);x.fill();x.stroke();noglow();
-   x.fillStyle=INK;x.font=mono(Math.max(11.5,H*0.0165),650);
-   x.fillText("embedding — tokens become vectors",cx,yBot+4);
-   x.globalAlpha=1;
-   // blocks (middle one expands on beat 1)
+   fg.textAlign="center";
+   fg.globalAlpha=born(0);
+   fg.font=mono(Math.max(12,H*0.017),600);fg.fillStyle=DIM;
+   fg.fillText("our 6 tokens ↑",cx,yBot+gap*0.55);
+   fg.shadowColor=GRN;fg.shadowBlur=8;fg.strokeStyle=alpha(GRN,0.8);fg.fillStyle=alpha(GRN,0.08);fg.lineWidth=1.5;
+   rr(fg,cx-sw/2,yBot-sh/2,sw,sh,9);fg.fill();fg.stroke();fg.shadowBlur=0;
+   fg.fillStyle=INK;fg.font=mono(Math.max(11.5,H*0.0165),650);
+   fg.fillText("embedding — tokens become vectors",cx,yBot+4);
+   fg.globalAlpha=1;
    slabs.forEach((sy,i)=>{
      const a=born(i+1);
-     const expand=b>=1&&i===2?io(seg(tb,0,0.8)):0;
-     const hh=sh*(1+expand*1.15);
-     x.globalAlpha=a;glow(BLUE,9);x.strokeStyle=BLUE;x.fillStyle=alpha(BLUE,0.07);x.lineWidth=1.5;
-     rr(cx-sw/2,sy-hh/2,sw,hh,9);x.fill();x.stroke();noglow();
-     if(expand>0.45){
+     const expand=b>=1&&i===2?io(seg(tb,b===1?0:0,0.8)):0;
+     const hh=sh*(1+ (b>=1&&i===2?io(seg(b===1?tb:1,0,0.8)):0)*1.15);
+     fg.globalAlpha=a;fg.shadowColor=BLUE;fg.shadowBlur=8;
+     fg.strokeStyle=alpha(BLUE,0.8);fg.fillStyle=alpha(BLUE,0.07);fg.lineWidth=1.5;
+     rr(fg,cx-sw/2,sy-hh/2,sw,hh,9);fg.fill();fg.stroke();fg.shadowBlur=0;
+     if(b>=1&&i===2&&hh>sh*1.6){
        const half=(hh-24)/2;
-       x.strokeStyle=PUR;x.fillStyle=alpha(PUR,0.12);x.lineWidth=1.3;
-       rr(cx-sw/2+10,sy-hh/2+7,sw-20,half,6);x.fill();x.stroke();
-       x.fillStyle=INK;x.font=mono(Math.max(10.5,H*0.0148),650);
-       x.fillText("attention — words talk to each other",cx,sy-hh/2+7+half/2+4);
-       x.strokeStyle=YEL;x.fillStyle=alpha(YEL,0.10);
-       rr(cx-sw/2+10,sy+hh/2-7-half,sw-20,half,6);x.fill();x.stroke();
-       x.fillStyle=INK;
-       x.fillText("MLP — each word thinks alone",cx,sy+hh/2-7-half/2+4);
-     }else if(a>0.5){x.fillStyle=DIM;x.font=mono(Math.max(10.5,H*0.0148),600);
-       x.fillText("transformer block",cx,sy+4);}
-     x.globalAlpha=1;
+       fg.strokeStyle=alpha(PUR,0.9);fg.fillStyle=alpha(PUR,0.12);fg.lineWidth=1.3;
+       rr(fg,cx-sw/2+10,sy-hh/2+7,sw-20,half,6);fg.fill();fg.stroke();
+       fg.fillStyle=INK;fg.font=mono(Math.max(10.5,H*0.0148),650);
+       fg.fillText("attention — the blank gathers context",cx,sy-hh/2+7+half/2+4);
+       fg.strokeStyle=alpha(YEL,0.9);fg.fillStyle=alpha(YEL,0.10);
+       rr(fg,cx-sw/2+10,sy+hh/2-7-half,sw-20,half,6);fg.fill();fg.stroke();
+       fg.fillStyle=INK;
+       fg.fillText("neurons — 'space venture' lights up",cx,sy+hh/2-7-half/2+4);
+     }else if(a>0.5){fg.fillStyle=DIM;fg.font=mono(Math.max(10.5,H*0.0148),600);
+       fg.fillText("transformer block",cx,sy+4);}
+     fg.globalAlpha=1;
    });
-   // ×96
-   x.globalAlpha=born(NB+1);
-   x.font=mono(Math.max(16,H*0.03),750);x.fillStyle=YEL;x.textAlign="left";
-   glow(YEL,14);x.fillText("× 96",cx+sw/2+22,slabs[2]+6);noglow();
-   // unembedding
-   x.textAlign="center";glow(GRN,9);x.strokeStyle=GRN;x.fillStyle=alpha(GRN,0.08);x.lineWidth=1.5;
-   rr(cx-sw/2,yTop-sh/2,sw,sh,9);x.fill();x.stroke();noglow();
-   x.fillStyle=INK;x.font=mono(Math.max(11.5,H*0.0165),650);
-   x.fillText("unembedding — vectors become probabilities",cx,yTop+4);
-   x.font=mono(Math.max(12,H*0.017),600);x.fillStyle=DIM;
-   x.fillText("next-token guess ↑",cx,yTop-gap*0.5);
-   x.globalAlpha=1;
-   // rising signal dots (beat 2)
-   if(b>=2){for(let k=0;k<6;k++){const ph=((t*0.30)+k*0.17)%1;
-     const dy=lerp(yBot-sh/2,yTop+sh/2,ph),dx=cx-sw*0.38+((k*97)%Math.floor(sw*0.76));
-     x.globalAlpha=Math.sin(ph*Math.PI);glow(INK,12);x.fillStyle=INK;
-     x.beginPath();x.arc(dx,dy,3,0,7);x.fill();noglow();}
-     x.globalAlpha=1;}
- }},
-
-/* 5 — attention */
-{kicker:"step_7 · attention",title:"Every word looks at every other word",beats:3,
- cap:[["Zoom into that attention layer — the 2017 breakthrough.","Every word scores every other word: who matters for understanding me?"],
-      ["“it” was too big → it attends to trophy.","(weights illustrative)"],
-      ["Change one word — big → small —","and “it” flips to suitcase. Nobody programmed that rule. It's learned."]],
- draw(t,tb,b){
-   const small=b>=2;
-   const words=[...ATT];words[11]=small?"small":"big";
-   const fs=Math.max(13,Math.min(H*0.022,W/46));
-   const cy=H*0.52,pos=sentenceLayout(words,cy,fs);
-   // faint all-pair arcs (ambient shimmer)
-   x.lineCap="round";
-   if(b===0){for(let i=0;i<words.length;i++)for(let j=i+1;j<words.length;j++){
-     const ph=Math.sin(t*0.9+i*1.7+j*0.9);if(ph<0.55)continue;
-     const a=(ph-0.55)*0.16;
-     x.strokeStyle=alpha(PUR,a);x.lineWidth=1;
-     const mid=(pos[i]+pos[j])/2,arcH=Math.min(140,Math.abs(pos[j]-pos[i])*0.3+20);
-     x.beginPath();x.moveTo(pos[i],cy-fs*1.3);x.quadraticCurveTo(mid,cy-fs*1.3-arcH,pos[j],cy-fs*1.3);x.stroke();}}
-   // focused arcs from "it"
-   if(b>=1){const WMAP=small?ATT_W_SMALL:ATT_W_BIG;const i=8;
-     const flip=b>=2?io(seg(tb,0,0.8)):1;
-     Object.entries(WMAP).forEach(([j,w])=>{j=+j;
-       const p=out(seg(tb,b===1?0.15:0,b===1?1.0:0.01));
-       const a=(0.25+w*0.75)*p*(b>=2?flip:1);
-       const lw=(1+w*9)*p;
-       const mid=(pos[8]+pos[j])/2,arcH=Math.min(170,Math.abs(pos[j]-pos[8])*0.34+26);
-       x.strokeStyle=alpha(PUR,a);glow(PUR,10+w*18);x.lineWidth=lw;
-       x.beginPath();x.moveTo(pos[8],cy-fs*1.3);x.quadraticCurveTo(mid,cy-fs*1.3-arcH,pos[j],cy-fs*1.3);x.stroke();noglow();
-       // percent labels
-       x.font=mono(fs*0.72,600);x.fillStyle=alpha("#C9B3F5",Math.min(1,p));x.textAlign="center";
-       x.fillText(Math.round(w*100)+"%",pos[j],cy+fs*1.8);
+   fg.globalAlpha=born(NB+1);
+   fg.font=mono(Math.max(16,H*0.03),750);fg.fillStyle=YEL;fg.textAlign="left";
+   fg.shadowColor=YEL;fg.shadowBlur=14;fg.fillText("× 96",cx+sw/2+22,slabs[2]+6);fg.shadowBlur=0;
+   fg.textAlign="center";fg.shadowColor=GRN;fg.shadowBlur=8;
+   fg.strokeStyle=alpha(GRN,0.8);fg.fillStyle=alpha(GRN,0.08);fg.lineWidth=1.5;
+   rr(fg,cx-sw/2,yTop-sh/2,sw,sh,9);fg.fill();fg.stroke();fg.shadowBlur=0;
+   fg.fillStyle=INK;fg.font=mono(Math.max(11.5,H*0.0165),650);
+   fg.fillText("unembedding — vector becomes probabilities",cx,yTop+4);
+   fg.font=mono(Math.max(12,H*0.017),600);fg.fillStyle=DIM;
+   fg.fillText("the guess ↑",cx,yTop-gap*0.5);
+   fg.globalAlpha=1;
+   if(b>=2){ // our six tokens ride up (trail pulses, token-colored)
+     TOKS.forEach((tok,k)=>{
+       const ph=((t*0.22)+k*0.14)%1;
+       const dy=lerp(yBot-sh/2,yTop+sh/2,ph),dx=cx-sw*0.36+k*(sw*0.72/5);
+       puff(dx,dy,TCOL[k],9);
      });}
-   // words
-   words.forEach((wd,i)=>{
-     const hot=(b>=1)&&(i===8||((b>=1)&&((small?ATT_W_SMALL:ATT_W_BIG)[i])));
-     const col=i===8?PUR:(hot?PUR:FAINT);
-     x.font=mono(fs,i===8||i===11?750:600);
-     x.textAlign="center";
-     if(hot){glow(PUR,12)}
-     x.fillStyle=i===8?"#D9C8FA":(hot?"#C9B3F5":(i===11?YEL:INK));
-     x.fillText(wd,pos[i],cy);noglow();
-   });
  }},
 
-/* 6 — the prediction */
-{kicker:"step_8 · prediction",title:"Out comes one guess: the next token",beats:2,
- cap:[["At the top of the stack, the output is just a list:","every token it knows, with a probability."],
-      ["It picks one, and generates it. That's the G in GPT.","One. Single. Token."]],
+/* 7 — the prediction */
+{kicker:"stage 6 · the guess",title:"The blank becomes a probability list",beats:2,
+ cap:[["Here it is — the machine's answer sheet for OUR sentence.","Every token it knows, scored. (values illustrative)"],
+      ["It picks the winner and GENERATES it — the G in GPT.","One single token. Mars."]],
  draw(t,tb,b){
    const fs=Math.max(15,H*0.022);
-   x.font=mono(fs,600);x.textAlign="center";x.fillStyle=DIM;
-   x.fillText("The capital of Tamil Nadu is ▁",W/2,H*0.26);
-   const bw=Math.min(W*0.5,620),x0=W/2-bw*0.32,y0=H*0.36,rh=Math.max(34,H*0.062);
-   PROBS.forEach(([wd,p],i)=>{
-     const grow=out(seg(b===0?tb:1,0.15+i*0.14,0.9+i*0.14));
-     const y=y0+i*rh;
-     x.font=mono(fs,650);x.textAlign="right";x.fillStyle=INK;
-     x.globalAlpha=Math.min(1,grow*1.4);
-     x.fillText(wd,x0-14,y+fs*0.36);
+   fg.font=mono(fs,600);fg.textAlign="center";fg.fillStyle=DIM;
+   fg.fillText(PROMPT+" ▁",W/2,H*0.25);
+   const bw=Math.min(W*0.46,600),x0=W/2-bw*0.30,y0=H*0.35,rh=Math.max(36,H*0.065);
+   PRED.forEach(([wd,p],i)=>{
+     const grow=out(seg(b===0?tb:1,0.15+i*0.14,0.95+i*0.14));
+     const y=y0+i*rh,top=i===0;
+     fg.font=mono(fs,650);fg.textAlign="right";
+     fg.globalAlpha=Math.min(1,grow*1.4);fg.fillStyle=INK;
+     fg.fillText(wd,x0-14,y+fs*0.36);
      const w=bw*(p/100)*grow;
-     const top=i===0;
-     glow(top?BLUE:FAINT,top?16:0);
-     x.fillStyle=top?BLUE:alpha(BLUE,0.35);
-     rr(x0,y-fs*0.55,Math.max(3,w),fs*1.1,4);x.fill();noglow();
-     x.textAlign="left";x.fillStyle=top?INK:DIM;x.font=mono(fs*0.82,600);
-     x.fillText((p*grow).toFixed(1)+"%",x0+Math.max(3,w)+12,y+fs*0.3);
-     x.globalAlpha=1;
+     if(top){fg.shadowColor=BLUE;fg.shadowBlur=14;}
+     fg.fillStyle=top?BLUE:alpha(BLUE,0.32);
+     rr(fg,x0,y-fs*0.55,Math.max(3,w),fs*1.1,4);fg.fill();fg.shadowBlur=0;
+     fg.textAlign="left";fg.fillStyle=top?INK:DIM;fg.font=mono(fs*0.82,600);
+     fg.fillText((p*grow).toFixed(1)+"%",x0+Math.max(3,w)+12,y+fs*0.3);
+     fg.globalAlpha=1;
    });
-   if(b>=1){ // Chennai flies up into the sentence
-     const p=io(seg(tb,0.1,1.1));
-     const fromY=y0,toY=H*0.26;
-     x.font=mono(fs,700);x.textAlign="center";
-     glow(BLUE,20);x.fillStyle=BLUE;
-     x.fillText("Chennai",W/2+x.measureText("The capital of Tamil Nadu is ").width/2-x.measureText("▁").width,lerp(fromY,toY,p));
-     noglow();}
+   if(b>=1){ // Mars flies into the blank
+     const p=io(seg(tb,0.15,1.1));
+     fg.font=mono(fs,700);fg.textAlign="center";
+     fg.shadowColor=BLUE;fg.shadowBlur=18;fg.fillStyle=BLUE;
+     const tw=fg.measureText(PROMPT+" ").width/2;
+     fg.fillText("Mars",lerp(W/2-bw*0.30+40,W/2+tw+18,p),lerp(y0,H*0.25,p));
+     fg.shadowBlur=0;
+     if(p>0.9)puff(W/2+tw+18,H*0.25,BLUE,20);
+   }
  }},
 
-/* 7 — the loop */
-{kicker:"step_9 · the loop",title:"Predict → pick → append → repeat",beats:2,
- cap:[["To write a paragraph, it just repeats the loop —","its own last word becomes part of the next question."],
-      ["Watch it run. This is all ChatGPT is doing —","predict, pick, append. Fast."]],
+/* 8 — the loop */
+{kicker:"stage 7 · the loop",title:"Append. Ask again. Repeat.",beats:2,
+ cap:[["'Mars' is glued on, and the WHOLE machine runs again","on the new, longer sentence. Predict → pick → append."],
+      ["That's all ChatGPT is doing when it 'writes' —","this loop, ~100 times a second. Watch it finish our thought."]],
  draw(t,tb,b){
-   if(b===0){ // the cycle diagram
+   if(b===0){
      const cx=W/2,cy=H*0.47,R=Math.min(W,H)*0.20;
-     const nodes=[["PREDICT",BLUE,-90],["PICK",YEL,30],["APPEND",GRN,150]];
-     const rot=t*20; // slow degrees
-     nodes.forEach(([lab,c,deg])=>{
-       const a=(deg)*Math.PI/180;
-       const nx=cx+Math.cos(a)*R,ny=cy+Math.sin(a)*R;
-       glow(c,18);x.strokeStyle=c;x.lineWidth=1.8;x.fillStyle=alpha(c,0.10);
-       const wpx=Math.max(96,H*0.15),hpx=Math.max(34,H*0.055);
-       rr(nx-wpx/2,ny-hpx/2,wpx,hpx,10);x.fill();x.stroke();noglow();
-       x.font=mono(Math.max(13,H*0.02),750);x.fillStyle=INK;x.textAlign="center";
-       x.fillText(lab,nx,ny+5);});
-     // arc arrows between nodes
+     [["PREDICT",BLUE,-90],["PICK",YEL,30],["APPEND",GRN,150]].forEach(([lab,c,deg])=>{
+       const a=deg*Math.PI/180,nx2=cx+Math.cos(a)*R,ny2=cy+Math.sin(a)*R;
+       const wpx=Math.max(100,H*0.155),hpx=Math.max(36,H*0.058);
+       orb(fg,nx2,ny2,hpx,c,0.08,hpx*1.6);
+       fg.strokeStyle=alpha(c,0.85);fg.lineWidth=1.8;fg.fillStyle=alpha(c,0.10);
+       rr(fg,nx2-wpx/2,ny2-hpx/2,wpx,hpx,10);fg.fill();fg.stroke();
+       fg.font=mono(Math.max(13,H*0.02),750);fg.fillStyle=INK;fg.textAlign="center";
+       fg.fillText(lab,nx2,ny2+5);});
      [[-90,30,BLUE],[30,150,YEL],[150,270,GRN]].forEach(([d1,d2,c])=>{
-       const pad=26*Math.PI/180;
-       const a1=d1*Math.PI/180+pad,a2=d2*Math.PI/180-pad;
-       x.strokeStyle=alpha(c,0.7);x.lineWidth=2;glow(c,8);
-       x.beginPath();x.arc(cx,cy,R,a1,a2);x.stroke();noglow();
-       const ex=cx+Math.cos(a2)*R,ey=cy+Math.sin(a2)*R;
-       const tx=-Math.sin(a2),ty=Math.cos(a2);
-       x.fillStyle=c;x.beginPath();x.moveTo(ex+tx*10,ey+ty*10);
-       x.lineTo(ex-tx*2-Math.cos(a2)*7,ey-ty*2-Math.sin(a2)*7);
-       x.lineTo(ex-tx*2+Math.cos(a2)*7,ey-ty*2+Math.sin(a2)*7);x.closePath();x.fill();});
-     // orbiting token
-     const oa=t*1.5;
-     glow(INK,16);x.fillStyle=INK;
-     x.beginPath();x.arc(cx+Math.cos(oa)*R,cy+Math.sin(oa)*R,5,0,7);x.fill();noglow();
-   }else{ // live generation
-     const step=Math.min(LOOPW.length,Math.floor(tb/0.85));
-     const frac=(tb%0.85)/0.85;
+       const pad=27*Math.PI/180,a1=d1*Math.PI/180+pad,a2=d2*Math.PI/180-pad;
+       fg.strokeStyle=alpha(c,0.7);fg.lineWidth=2;fg.shadowColor=c;fg.shadowBlur=8;
+       fg.beginPath();fg.arc(cx,cy,R,a1,a2);fg.stroke();fg.shadowBlur=0;
+       const ex=cx+Math.cos(a2)*R,ey=cy+Math.sin(a2)*R,tx=-Math.sin(a2),ty=Math.cos(a2);
+       fg.fillStyle=c;fg.beginPath();fg.moveTo(ex+tx*10,ey+ty*10);
+       fg.lineTo(ex-tx*2-Math.cos(a2)*7,ey-ty*2-Math.sin(a2)*7);
+       fg.lineTo(ex-tx*2+Math.cos(a2)*7,ey-ty*2+Math.sin(a2)*7);fg.closePath();fg.fill();});
+     const oa=t*1.4;
+     puff(cx+Math.cos(oa)*R,cy+Math.sin(oa)*R,INK,10);
+   }else{
+     const step=Math.min(LOOPW.length,Math.floor(tb/0.8));
+     const frac=(tb%0.8)/0.8;
      const fs=Math.max(16,H*0.026);
-     x.font=mono(fs,600);x.textAlign="center";
-     const words=["Once","upon","a","time",...LOOPW.slice(0,step)];
-     x.fillStyle=INK;
-     const line=words.join(" ");
-     glow(BLUE,6);x.fillText(line+" ▌",W/2,H*0.40);noglow();
-     // flickering candidates under the line
+     fg.font=mono(fs,600);fg.textAlign="center";
+     const words=[PROMPT,...LOOPW.slice(0,step)];
+     fg.fillStyle=INK;fg.shadowColor=BLUE;fg.shadowBlur=5;
+     fg.fillText(words.join(" ")+" ▌",W/2,H*0.40);fg.shadowBlur=0;
      if(step<LOOPW.length){
-       const cands=LOOPALT[step];
-       cands.forEach((c,i)=>{
-         const a=(i===0?0.9:0.35)*io(seg(frac,0.1,0.5));
-         x.globalAlpha=a;x.font=mono(fs*0.8,600);
-         x.fillStyle=i===0?BLUE:DIM;
-         x.fillText(c+(i===0?"  ← 61%":i===1?"  22%":"  9%"),W/2,H*0.52+i*fs*1.3);
-         x.globalAlpha=1;});
-     } else {
-       x.font=serif(fs*0.95,470);x.fillStyle=DIM;
-       x.fillText("…and so on, forever, at ~100 tokens a second.",W/2,H*0.54);
+       LOOPALT[step].forEach((c,i)=>{
+         const a=(i===0?0.95:0.4)*io(seg(frac,0.1,0.5));
+         fg.globalAlpha=a;fg.font=mono(fs*0.78,600);
+         fg.fillStyle=i===0?BLUE:DIM;fg.textAlign="center";
+         fg.fillText(c+(i===0?"  ← 64%":i===1?"  19%":"  8%"),W/2,H*0.52+i*fs*1.25);
+         fg.globalAlpha=1;});
+     }else{
+       fg.font=serif(fs*0.95,470);fg.fillStyle=DIM;
+       fg.fillText("…and that is a paragraph: guesses, glued together.",W/2,H*0.54);
      }
    }
  }},
 
-/* 8 — training */
-{kicker:"step_10 · training",title:"Where do the dials come from?",beats:3,
- cap:[["Before you ever met it, the model read the internet —","and played guess-the-next-word on trillions of tokens."],
-      ["Every wrong guess nudges every dial a tiny bit.","Billions of nudges later, the guesses get good."],
-      ["That's the P in GPT — Pre-trained.","Nobody wrote rules. The rules grew."]],
+/* 9 — training */
+{kicker:"stage 8 · training",title:"Same sentence, before it learned",beats:3,
+ cap:[["Where did all those dial settings come from? Watch the SAME prompt","asked to the model at four moments of its training."],
+      ["Every wrong guess nudged every dial a tiny bit — that's the whole algorithm.","Trillions of sentences. Billions of nudges. The error falls."],
+      ["That's the P in GPT — Pre-trained.","Nobody wrote a Mars rule. The rule grew."]],
  draw(t,tb,b){
-   // streaming text (left → center)
-   const prog=b===0?seg(tb,0,3):1;
-   STREAM.forEach((s,i)=>{
-     const speed=0.12+((i*37)%10)/55;
-     const ph=((t*speed)+i/STREAM.length)%1;
-     const sx=lerp(-W*0.2,W*0.55,ph);
-     const sy=H*(0.18+((i*53)%100)/100*0.55);
-     x.globalAlpha=prog*(0.10+0.3*Math.sin(ph*Math.PI));
-     x.font=mono(Math.max(11,H*0.016),500);x.textAlign="left";x.fillStyle=DIM;
-     x.fillText(s,sx,sy);x.globalAlpha=1;});
-   // weight grid (right): jitter settles as beat advances
-   const settle=b===0?0:(b===1?io(seg(tb,0,3)):1);
-   const gx0=W*0.60,gy0=H*0.22,gw=W*0.32,gh=H*0.5;
-   WGRID.forEach((p,i)=>{
-     const col=i%26,row=(i/26)|0;
-     const jx=p.jx*14*(1-settle)*Math.sin(t*2.4+p.ph);
-     const jy=p.jy*14*(1-settle)*Math.cos(t*2.1+p.ph);
-     const px=gx0+col/25*gw+jx,py=gy0+row/14*gh+jy;
-     const c=settle>0.6?BLUE:DIM;
-     x.globalAlpha=0.25+settle*0.55;
-     x.fillStyle=c;x.beginPath();x.arc(px,py,1.6+settle*0.9,0,7);x.fill();});
-   x.globalAlpha=1;
-   x.font=mono(Math.max(11,H*0.015),600);x.fillStyle=DIM;x.textAlign="center";
-   x.fillText("the dials (weights)",gx0+gw/2,gy0+gh+26);
-   // loss curve bottom-left (beat >=1)
-   if(b>=1){const lx0=W*0.10,ly0=H*0.68,lw=W*0.34,lh=H*0.16;
-     const p=b===1?seg(tb,0,4):1;
-     x.strokeStyle=FAINT;x.lineWidth=1;
-     x.beginPath();x.moveTo(lx0,ly0);x.lineTo(lx0,ly0+lh);x.lineTo(lx0+lw,ly0+lh);x.stroke();
-     x.strokeStyle=RED;x.lineWidth=2;glow(RED,10);
-     x.beginPath();
-     const N=90;
-     for(let i=0;i<=N*p;i++){const u=i/N;
-       const v=Math.exp(-u*3.2)+0.16+Math.sin(u*40+2)*0.035*Math.exp(-u*2);
+   // four checkpoint cards of the same prompt
+   const cw=Math.min(W*0.21,270),ch=H*0.30,gap2=W*0.015;
+   const total=cw*4+gap2*3,x0=W/2-total/2,y0=H*0.22;
+   CKPT.forEach(([tag,guess,pct,loss],i)=>{
+     const a=b===0?io(seg(tb,0.2+i*0.5,0.9+i*0.5)):1;
+     const cx=x0+i*(cw+gap2);
+     fg.globalAlpha=a;
+     fg.fillStyle="#0B0F16";fg.strokeStyle=i===3?alpha(BLUE,0.8):FAINT;fg.lineWidth=1.5;
+     if(i===3){fg.shadowColor=BLUE;fg.shadowBlur=12;}
+     rr(fg,cx,y0,cw,ch,12);fg.fill();fg.stroke();fg.shadowBlur=0;
+     fg.font=mono(Math.max(11,H*0.0155),700);fg.textAlign="center";fg.fillStyle=DIM;
+     fg.fillText(tag,cx+cw/2,y0+ch*0.16);
+     fg.font=mono(Math.max(10.5,H*0.0145),500);fg.fillStyle=DIM;
+     fg.fillText("…colonize ▁",cx+cw/2,y0+ch*0.34);
+     fg.font=mono(Math.max(15,H*0.024),750);
+     fg.fillStyle=i===0?RED:(i===3?BLUE:INK);
+     fg.fillText(guess,cx+cw/2,y0+ch*0.56);
+     fg.font=mono(Math.max(10.5,H*0.0145),600);fg.fillStyle=DIM;
+     fg.fillText(pct+"%  ·  loss "+loss.toFixed(2),cx+cw/2,y0+ch*0.74);
+     fg.globalAlpha=1;
+   });
+   // loss curve + settling dial grid (beats 1+)
+   if(b>=1){
+     const p=b===1?seg(tb,0,3.5):1;
+     const lx0=W*0.12,ly0=H*0.62,lw=W*0.36,lh=H*0.18;
+     fg.strokeStyle=FAINT;fg.lineWidth=1;
+     fg.beginPath();fg.moveTo(lx0,ly0);fg.lineTo(lx0,ly0+lh);fg.lineTo(lx0+lw,ly0+lh);fg.stroke();
+     fg.strokeStyle=RED;fg.lineWidth=2;fg.shadowColor=RED;fg.shadowBlur=8;
+     fg.beginPath();
+     for(let i=0;i<=90*p;i++){const u=i/90;
+       const v=Math.exp(-u*3.2)+0.16+Math.sin(u*40+2)*0.03*Math.exp(-u*2);
        const px=lx0+u*lw,py=ly0+lh-(v/1.2)*lh*0.92;
-       i===0?x.moveTo(px,py):x.lineTo(px,py);}
-     x.stroke();noglow();
-     x.font=mono(Math.max(11,H*0.015),600);x.fillStyle=DIM;x.textAlign="left";
-     x.fillText("error (loss) ↓",lx0,ly0-8);}
+       i===0?fg.moveTo(px,py):fg.lineTo(px,py);}
+     fg.stroke();fg.shadowBlur=0;
+     fg.font=mono(Math.max(11,H*0.015),600);fg.textAlign="left";fg.fillStyle=DIM;
+     fg.fillText("error (loss) ↓",lx0,ly0-8);
+     const settle=b===1?io(seg(tb,0,3.5)):1;
+     const gx0=W*0.56,gy0=H*0.60,gw=W*0.32,gh=H*0.22;
+     WGRID.forEach((pt,i)=>{
+       const col=i%26,row=(i/26)|0;
+       const jx=pt.jx*13*(1-settle)*Math.sin(t*2.4+pt.ph);
+       const jy=pt.jy*13*(1-settle)*Math.cos(t*2.1+pt.ph);
+       fg.globalAlpha=0.25+settle*0.55;
+       fg.fillStyle=settle>0.6?BLUE:DIM;
+       fg.beginPath();fg.arc(gx0+col/25*gw+jx,gy0+row/14*gh+jy,1.6+settle*0.9,0,7);fg.fill();});
+     fg.globalAlpha=1;
+     fg.font=mono(Math.max(11,H*0.015),600);fg.textAlign="center";fg.fillStyle=DIM;
+     fg.fillText("1.8T dials, settling",gx0+gw/2,gy0+gh+24);
+   }
  }},
 
-/* 9 — scale */
-{kicker:"step_11 · scale",title:"Now multiply by a few billion",beats:2,
- cap:[["Everything you just saw is the real mechanism.","The only thing left is scale."],
+/* 10 — scale / close */
+{kicker:"the close",title:"That's the whole machine",beats:2,
+ cap:[["Six tokens → vectors → attention → neurons → 96 blocks → 'Mars'.","Everything you saw is the real mechanism. The rest is scale."],
       []],
  draw(t,tb,b){
-   // starfield
    STARS.forEach(s=>{
-     const drift=(t*0.02)%1;
-     const r=((s.r+drift)%1);
+     const r=((s.r+(t*0.02))%1);
      const px=W/2+Math.cos(s.a)*r*W*0.6,py=H/2+Math.sin(s.a)*r*H*0.6;
-     const tw=0.4+0.6*Math.abs(Math.sin(t*1.3+s.tw));
-     x.globalAlpha=r*0.75*tw;x.fillStyle=BLUE;
-     x.beginPath();x.arc(px,py,1.3+r*1.6,0,7);x.fill();});
-   x.globalAlpha=1;
-   // counter (beat 0 only — the end card takes over on beat 1)
+     fg.globalAlpha=r*0.7*(0.4+0.6*Math.abs(Math.sin(t*1.3+s.tw)));
+     fg.fillStyle=BLUE;fg.beginPath();fg.arc(px,py,1.3+r*1.6,0,7);fg.fill();});
+   fg.globalAlpha=1;
    if(b===0){
      const p=out(seg(tb,0.2,3.2));
      const val=Math.floor(Math.pow(p,3)*1.8e12);
-     x.font=serif(Math.max(34,H*0.075),600);x.textAlign="center";
-     glow(BLUE,24);x.fillStyle=INK;
-     x.fillText(val.toLocaleString("en-US"),W/2,H*0.44);noglow();
-     x.font=mono(Math.max(13,H*0.019),600);x.fillStyle=DIM;
-     x.fillText("dials, reportedly, in GPT-4 — trained on ~13,000,000,000,000 tokens",W/2,H*0.44+Math.max(30,H*0.055));
+     fg.font=serif(Math.max(34,H*0.075),600);fg.textAlign="center";
+     fg.shadowColor=BLUE;fg.shadowBlur=22;fg.fillStyle=INK;
+     fg.fillText(val.toLocaleString("en-US"),W/2,H*0.44);fg.shadowBlur=0;
+     fg.font=mono(Math.max(13,H*0.019),600);fg.fillStyle=DIM;
+     fg.fillText("dials, reportedly, in GPT-4 — pre-trained on ~13 trillion tokens",W/2,H*0.44+Math.max(30,H*0.055));
    }
-   if(b>=1){endEl.classList.add("show");}else{endEl.classList.remove("show");}
+   if(b>=1)endEl.classList.add("show");else endEl.classList.remove("show");
  }},
 ];
 
-/* ============================================================
+/* ================================================================
    engine
-============================================================ */
+================================================================ */
 const endEl=document.getElementById("end");
-let si=0,beat=0,tScene=0,tBeat=0,last=0;
-function total(){return SCENES.length}
+let si=0,beat=0,sceneStart=performance.now(),beatStart=sceneStart;
 function advance(dir){
-  const sc=SCENES[si];
-  if(dir>0){ if(beat<sc.beats-1){beat++;tBeat=0;} else if(si<SCENES.length-1){si++;beat=0;tScene=0;tBeat=0;} }
-  else{ if(beat>0){beat--;tBeat=0;} else if(si>0){si--;beat=SCENES[si].beats-1;tScene=0;tBeat=0;} }
-  if(!(si===SCENES.length-1&&beat>=1)) endEl.classList.remove("show");
+  const sc=SCENES[si],now=performance.now();
+  if(dir>0){ if(beat<sc.beats-1){beat++;beatStart=now;} else if(si<SCENES.length-1){si++;beat=0;sceneStart=now;beatStart=now;} }
+  else{ if(beat>0){beat--;beatStart=now;} else if(si>0){si--;beat=SCENES[si].beats-1;sceneStart=now;beatStart=now;} }
+  if(!(si===SCENES.length-1&&beat>=1))endEl.classList.remove("show");
+  tr.clearRect(0,0,W,H);
   hint.classList.add("faded");
 }
 addEventListener("keydown",e=>{
   if(e.key==="ArrowRight"||e.key===" "||e.key==="ArrowDown"||e.key==="PageDown"){e.preventDefault();advance(1)}
   else if(e.key==="ArrowLeft"||e.key==="ArrowUp"||e.key==="PageUp"){e.preventDefault();advance(-1)}
-  else if(e.key==="r"||e.key==="R"){tBeat=0;tScene=0}
+  else if(e.key==="r"||e.key==="R"){sceneStart=beatStart=performance.now()}
   else if(e.key==="f"||e.key==="F"){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
 });
-cv.addEventListener("click",()=>advance(1));
-document.getElementById("replay").addEventListener("click",e=>{e.stopPropagation();si=0;beat=0;tScene=0;tBeat=0;endEl.classList.remove("show")});
+fgc.addEventListener("click",()=>advance(1));
+document.getElementById("replay").addEventListener("click",e=>{e.stopPropagation();si=0;beat=0;sceneStart=beatStart=performance.now();endEl.classList.remove("show");tr.clearRect(0,0,W,H)});
 const hint=document.getElementById("hint");
 setTimeout(()=>hint.classList.add("faded"),7000);
 
 function frame(now){
-  const dt=Math.min(0.05,(now-last)/1000||0);last=now;
-  tScene+=dt;tBeat+=dt;
-  // bg
-  x.fillStyle=BG;x.fillRect(0,0,W,H);
-  // vignette
-  const g=x.createRadialGradient(W/2,H/2,Math.min(W,H)*0.2,W/2,H/2,Math.max(W,H)*0.75);
-  g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,0.5)");
-  x.fillStyle=g;x.fillRect(0,0,W,H);
+  const tScene=(now-sceneStart)/1000,tBeat=(now-beatStart)/1000;
+  // fade trail layer
+  tr.fillStyle="rgba(7,9,14,0.14)";tr.fillRect(0,0,W,H);
+  fg.clearRect(0,0,W,H);
   const sc=SCENES[si];
   sc.draw(tScene,tBeat,beat);
   heading(sc.kicker,sc.title,io(seg(tScene,0,0.7)));
   caption(sc.cap[beat],tBeat);
-  // progress: scene dots + beat pips
-  const n=total(),dotGap=Math.min(26,W/(n+6));
-  const px0=W/2-(n-1)*dotGap/2,py=H-Math.max(22,H*0.035);
+  // progress
+  const n=SCENES.length,dotGap=Math.min(26,W/(n+6));
+  const px0=W/2-(n-1)*dotGap/2,py=H-Math.max(22,H*0.034);
   for(let i=0;i<n;i++){
-    x.globalAlpha=i===si?1:0.35;
-    x.fillStyle=i<si?BLUE:(i===si?INK:DIM);
-    x.beginPath();x.arc(px0+i*dotGap,py,i===si?4:2.6,0,7);x.fill();}
-  x.globalAlpha=0.8;x.font=mono(11,600);x.fillStyle=DIM;x.textAlign="right";
-  x.fillText((si+1)+"/"+n+" · "+(beat+1)+"/"+sc.beats,W-20,H-16);
-  x.globalAlpha=1;
+    fg.globalAlpha=i===si?1:0.4;
+    fg.fillStyle=i<si?BLUE:(i===si?INK:DIM);
+    fg.beginPath();fg.arc(px0+i*dotGap,py,i===si?4:2.6,0,7);fg.fill();}
+  fg.globalAlpha=0.8;fg.font=mono(11,600);fg.fillStyle=DIM;fg.textAlign="right";
+  fg.fillText((si+1)+"/"+n+" · "+(beat+1)+"/"+sc.beats,W-20,H-16);
+  fg.globalAlpha=1;
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
