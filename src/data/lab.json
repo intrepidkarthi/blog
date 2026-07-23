@@ -71,7 +71,7 @@
           "url_label": "intrepidkarthi.com/genai",
           "year": 2026,
           "image": "/images/lab/07-genai-course.svg",
-          "summary": "Six sessions from \"what's a token?\" to a shipped app. Built for TCE Madurai, free for everyone. Opens with an interactive explainer where a real language model tokenizes, embeds, attends, predicts and trains — live in the browser.",
+          "summary": "Six sessions from \"what's a token?\" to a shipped app. Built for TCE Madurai, free for everyone. Opens with a 3Blue1Brown-style visual walkthrough of how GPT works — neuron to transformer — plus a hands-on playground where a real model trains in the browser.",
           "highlights": [
             {
               "k": "format",
@@ -79,7 +79,7 @@
             },
             {
               "k": "opener",
-              "v": "interactive how-LLMs-work explainer, runs offline"
+              "v": "step-by-step animated GPT explainer + live playground"
             },
             {
               "k": "stack",

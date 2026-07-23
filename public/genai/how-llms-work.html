@@ -3,779 +3,689 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How LLMs actually work — an interactive explainer</title>
-<meta name="description" content="Tokens, embeddings, attention, next-token prediction, temperature and training — every step animated and running live in your browser. The opening demo for Session 1 of the Generative AI course.">
-<meta property="og:title" content="How LLMs actually work — an interactive explainer">
-<meta property="og:description" content="Watch a language model tokenize, embed, attend, predict and train — live in your browser. No API, no internet needed.">
+<title>How LLMs work — a step-by-step visual explainer</title>
+<meta name="description" content="Tokens, embeddings, attention, next-token prediction and training — explained step by step with animated visuals. The opening walkthrough for Session 1 of the Generative AI course.">
+<meta property="og:title" content="How LLMs work — a step-by-step visual explainer">
+<meta property="og:description" content="A dark, animated, step-by-step walkthrough of what actually happens when you press enter on ChatGPT.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://intrepidkarthi.com/genai/assets/og-card.png">
-<meta name="theme-color" content="#FFFFFF">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2314171F'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23FFFFFF' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B0E14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230B0E14'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%2358C4DD' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <style>
   @font-face{font-family:'Fraunces';src:url('assets/fonts/fraunces.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
-  :root{
-    --paper:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;
-    --line:#E8EAEF;--linedark:#C5CAD4;--panel:#F4F6F9;
-    --h1:#2B4EFF;--d1:#1D3AD1;--t1:#E3E9FF;
-    --h2:#8526E0;--d2:#6B1FBF;--t2:#EFE2FE;
-    --h3:#ED2E7C;--d3:#C2186A;--t3:#FDE0EE;
-    --h4:#F08C00;--d4:#A85E00;--t4:#FFEBCC;
-    --h5:#00A87A;--d5:#00755A;--t5:#D6F3E7;
-    --h6:#E8442E;--d6:#C22B18;--t6:#FDE2DC;
-    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
-    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
-    --display:'Fraunces',Georgia,serif}
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  body{background:radial-gradient(var(--line) 1.05px,transparent 1.05px) 0 0/26px 26px,var(--paper);
-    color:var(--body);font-family:var(--font);line-height:1.6;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:940px;margin:0 auto;padding:0 24px}
-  a{color:inherit}
-  :focus-visible{outline:2.5px solid var(--h1);outline-offset:2px;border-radius:4px}
-  .mono{font-family:var(--mono)}
-
-  /* ---------- header ---------- */
-  header.top{padding:26px 0 0}
-  .top-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px}
-  .top-row a{text-decoration:none;color:var(--muted);font-family:var(--mono)}
-  .top-row a:hover{color:var(--ink)}
-  .hero{padding:66px 0 30px;text-align:left}
-  .kicker{font-size:13px;font-weight:700;font-family:var(--mono);letter-spacing:.06em;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:12px}
-  .kicker:after{content:"";flex:1;height:1.5px;background:var(--line)}
-  .kicker b{color:var(--ink);font-weight:700}
-  .kicker b:before{content:"<|";color:var(--faint);font-weight:400}
-  .kicker b:after{content:"|>";color:var(--faint);font-weight:400}
-  h1{font-family:var(--display);font-size:clamp(2.2rem,5.4vw,3.6rem);font-weight:640;letter-spacing:-.02em;line-height:1.06;color:var(--ink);margin-bottom:18px}
-  h1 em{font-style:italic;color:var(--h1)}
-  .lede{font-size:clamp(1.02rem,1.6vw,1.16rem);max-width:640px;color:var(--body)}
-  .lede b{color:var(--ink)}
-  .hero-hint{margin-top:26px;font-size:13px;color:var(--faint);font-family:var(--mono)}
-  .hero-hint kbd{border:1.5px solid var(--linedark);border-bottom-width:3px;border-radius:5px;padding:1px 7px;font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--paper)}
-
-  /* ---------- sections ---------- */
-  section.step{padding:84px 0 10px;min-height:72vh}
-  h2{font-family:var(--display);font-size:clamp(1.5rem,3.1vw,2.15rem);font-weight:620;letter-spacing:-.02em;line-height:1.14;color:var(--ink);margin-bottom:10px}
-  .sub{max-width:660px;margin-bottom:26px}
-  .sub b{color:var(--ink)}
-  .panel{background:var(--paper);border:1.5px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 1px 0 var(--line)}
-  .note{font-size:13px;color:var(--muted);margin-top:14px;max-width:660px}
-  .note b{color:var(--ink)}
-  .why{margin-top:16px;font-size:14.5px;color:var(--body);border-left:3px solid var(--line);padding-left:14px;max-width:640px}
-  .why b{color:var(--ink)}
-
-  /* ---------- progress rail ---------- */
-  .rail{position:fixed;left:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:10}
-  .rail a{width:10px;height:10px;border-radius:50%;background:var(--linedark);display:block;position:relative;transition:background .2s,transform .2s}
-  .rail a.on{background:var(--ink);transform:scale(1.3)}
-  .rail a span{position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:12px;font-family:var(--mono);color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:2px 8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
-  .rail a:hover span{opacity:1}
-  @media(max-width:1120px){.rail{display:none}}
-
-  /* ---------- shared controls ---------- */
-  .btn{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--ink);background:var(--paper);border:1.5px solid var(--linedark);border-bottom-width:3px;border-radius:9px;padding:8px 15px;cursor:pointer;transition:transform .06s}
-  .btn:hover{border-color:var(--ink)}
-  .btn:active{transform:translateY(1px);border-bottom-width:1.5px}
-  .btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-  .chip{font-family:var(--mono);font-size:12.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer}
-  .chip:hover{color:var(--ink);border-color:var(--linedark)}
-  input[type=text]{width:100%;font-family:var(--font);font-size:16px;color:var(--ink);background:var(--paper);border:1.5px solid var(--linedark);border-radius:10px;padding:12px 14px}
-  input[type=text]:focus{outline:none;border-color:var(--h1);box-shadow:0 0 0 3px var(--t1)}
-  input[type=range]{accent-color:var(--h1)}
-
-  /* ---------- §1 tokens ---------- */
-  .tokrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;min-height:44px}
-  .tok{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--ink);border-radius:8px;padding:6px 10px;border:1.5px solid transparent;animation:pop .18s ease both}
-  @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
-  @media (prefers-reduced-motion:reduce){.tok{animation:none}}
-  .tok small{display:block;font-size:10.5px;font-weight:500;color:var(--muted);margin-top:1px}
-  .tokstats{margin-top:14px;font-family:var(--mono);font-size:13px;color:var(--muted)}
-  .tokstats b{color:var(--ink)}
-  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-
-  /* ---------- §2 embeddings ---------- */
-  .embwrap{position:relative}
-  svg text{font-family:var(--font)}
-  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:13px;color:var(--body)}
-  .legend span{display:inline-flex;align-items:center;gap:7px}
-  .legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
-
-  /* ---------- §3 attention ---------- */
-  .sentbox{padding:64px 6px 8px;position:relative}
-  .sent{display:flex;flex-wrap:wrap;gap:6px;position:relative}
-  .w{font-family:var(--mono);font-size:16.5px;font-weight:600;color:var(--ink);padding:7px 10px;border-radius:8px;border:1.5px solid var(--line);cursor:default;background:var(--paper);position:relative}
-  .w:hover,.w.hot{border-color:var(--d2);background:var(--t2)}
-  .w .pct{position:absolute;left:50%;transform:translateX(-50%);bottom:-22px;font-size:10.5px;color:var(--muted);font-weight:500;white-space:nowrap}
-  .attsvg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-  .toggles{display:flex;gap:8px;margin-bottom:8px}
-  .toggles .chip.on{background:var(--t2);border-color:var(--d2);color:var(--d2);font-weight:700}
-
-  /* ---------- §4/§5 prediction ---------- */
-  .genbox{font-size:17px;line-height:1.75;background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;min-height:64px;margin-bottom:18px}
-  .genbox .ctx{color:var(--ink)}
-  .genbox .new{color:var(--d1);font-weight:600;border-bottom:2px solid var(--t1)}
-  .genbox .cursor{display:inline-block;width:9px;height:1.15em;background:var(--h1);vertical-align:text-bottom;margin-left:2px;animation:blink 1s steps(1) infinite}
-  @keyframes blink{50%{opacity:0}}
-  @media (prefers-reduced-motion:reduce){.genbox .cursor{animation:none}}
-  .bars{display:flex;flex-direction:column;gap:6px;margin-top:6px}
-  .bar{display:grid;grid-template-columns:120px 1fr 58px;align-items:center;gap:12px;cursor:pointer;border-radius:8px;padding:3px 6px}
-  .bar:hover{background:var(--panel)}
-  .bar .lab{font-family:var(--mono);font-size:13.5px;color:var(--ink);font-weight:600;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .bar .track{height:14px;border-radius:0 4px 4px 0;background:transparent;position:relative}
-  .bar .fill{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--h1);min-width:2px;transition:width .25s}
-  .bar.top .fill{background:var(--d1)}
-  .bar .val{font-family:var(--mono);font-size:12.5px;color:var(--muted);text-align:left}
-  .bar.top .val{color:var(--ink);font-weight:700}
-  .ctlrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px}
-  .ctlrow .spacer{flex:1}
-  .tval{font-family:var(--mono);font-weight:700;color:var(--ink);min-width:44px;display:inline-block}
-
-  /* ---------- §6 training ---------- */
-  .traingrid{display:grid;grid-template-columns:1.25fr 1fr;gap:22px}
-  @media(max-width:760px){.traingrid{grid-template-columns:1fr}}
-  .losslab{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
-  .samples{display:flex;flex-direction:column;gap:8px;font-family:var(--mono);font-size:13.5px;max-height:260px;overflow-y:auto}
-  .samples .srow{display:flex;gap:10px;align-items:baseline}
-  .samples .stp{color:var(--faint);font-size:11.5px;min-width:74px}
-  .samples .stx{color:var(--ink)}
-  .statrow{display:flex;gap:18px;font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:12px;flex-wrap:wrap}
-  .statrow b{color:var(--ink);font-size:15px}
-
-  /* ---------- §7 scale ---------- */
-  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-  .tile{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:20px}
-  .tile .n{font-family:var(--display);font-size:clamp(1.6rem,3vw,2.3rem);font-weight:640;color:var(--ink);letter-spacing:-.02em;line-height:1.1}
-  .tile .l{font-size:13px;color:var(--muted);margin-top:6px}
-  .tile.hi{border-color:var(--ink)}
-
-  footer{padding:70px 0 46px;font-size:13px;color:var(--muted)}
-  footer a{color:var(--ink)}
-  .progress{position:fixed;top:0;left:0;height:3px;background:var(--h1);width:0;z-index:20}
+  html,body{height:100%;overflow:hidden;background:#0B0E14}
+  body{font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;color:#E8ECF4}
+  canvas{display:block;position:fixed;inset:0;cursor:pointer}
+  .hint{position:fixed;top:18px;right:22px;font:12.5px/1.5 ui-monospace,"SF Mono",Consolas,monospace;color:#8B94A8;text-align:right;opacity:1;transition:opacity 1.2s;pointer-events:none;z-index:5}
+  .hint kbd{border:1px solid #2A3242;border-radius:4px;padding:0 6px;color:#B8C0D0}
+  .hint.faded{opacity:0}
+  .end{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:10}
+  .end.show{display:flex}
+  .endcard{text-align:center;max-width:720px;padding:0 24px}
+  .endcard h2{font-family:'Fraunces',Georgia,serif;font-weight:560;font-size:clamp(1.7rem,4vw,2.8rem);letter-spacing:-.015em;line-height:1.15;margin-bottom:14px}
+  .endcard p{color:#8B94A8;font-size:15px;margin-bottom:30px}
+  .endrow{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .endrow a,.endrow button{font:600 14px ui-monospace,monospace;color:#E8ECF4;background:transparent;border:1.5px solid #2A3242;border-radius:10px;padding:12px 20px;cursor:pointer;text-decoration:none;transition:border-color .2s,transform .1s}
+  .endrow a:hover,.endrow button:hover{border-color:#58C4DD;transform:translateY(-1px)}
+  .endrow a.primary{background:#58C4DD;border-color:#58C4DD;color:#0B0E14}
+  .endnote{margin-top:26px;font:11.5px ui-monospace,monospace;color:#5A6478}
 </style>
 </head>
 <body>
-<div class="progress" id="progress"></div>
-
-<nav class="rail" aria-label="Sections">
-  <a href="#s1" data-s="s1"><span>1 · tokens</span></a>
-  <a href="#s2" data-s="s2"><span>2 · embeddings</span></a>
-  <a href="#s3" data-s="s3"><span>3 · attention</span></a>
-  <a href="#s4" data-s="s4"><span>4 · next token</span></a>
-  <a href="#s5" data-s="s5"><span>5 · temperature</span></a>
-  <a href="#s6" data-s="s6"><span>6 · training</span></a>
-  <a href="#s7" data-s="s7"><span>7 · scale</span></a>
-</nav>
-
-<header class="top wrap">
-  <div class="top-row">
-    <a href="index.html">&larr; course home</a>
-    <a href="#s1">start &darr;</a>
+<canvas id="cv"></canvas>
+<div class="hint" id="hint"><kbd>→</kbd> / click — next step<br><kbd>←</kbd> back &nbsp;·&nbsp; <kbd>R</kbd> replay step &nbsp;·&nbsp; <kbd>F</kbd> fullscreen</div>
+<div class="end" id="end">
+  <div class="endcard">
+    <h2>Every answer AI has ever given you<br>is this loop, at scale.</h2>
+    <p>Tokens → vectors → attention → a probability → one more token. Repeat.</p>
+    <div class="endrow">
+      <a class="primary" href="presentations/session-1-how-machines-learned-to-talk.html">Start Session 1 →</a>
+      <a href="llm-playground.html">Open the playground — drive it yourself</a>
+      <button id="replay">↺ replay</button>
+    </div>
+    <div class="endnote">parameter &amp; data figures are reported estimates · attention weights shown are illustrative</div>
   </div>
-  <div class="hero">
-    <div class="kicker"><b>how-llms-work</b></div>
-    <h1>Every AI you've used is doing <em>one</em> thing:<br>guessing the next token.</h1>
-    <p class="lede">This page is that one thing, taken apart. Seven steps, each one <b>running live in your browser</b> — no API, no internet, no tricks. By the end you'll know what ChatGPT actually does when you press enter.</p>
-    <p class="hero-hint">presenting? <kbd>&rarr;</kbd> next section &nbsp;·&nbsp; <kbd>&larr;</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen</p>
-  </div>
-</header>
-
-<!-- ============ 1 · TOKENS ============ -->
-<section class="step wrap" id="s1">
-  <div class="kicker"><b>step 1 · tokens</b></div>
-  <h2>Models don't read words. They read tokens.</h2>
-  <p class="sub">Before a model sees your message, a <b>tokenizer</b> chops it into pieces from a fixed menu — common words stay whole, rare words get split, and anything unknown falls back to characters. Type anything:</p>
-  <div class="panel">
-    <input type="text" id="tokin" value="Generative AI turns tokenization into intelligence" aria-label="Text to tokenize">
-    <div class="presets">
-      <button class="chip" data-t="Generative AI turns tokenization into intelligence">default</button>
-      <button class="chip" data-t="Madurai's unbelievable jasmine">rare words</button>
-      <button class="chip" data-t="வணக்கம் Madurai!">Tamil script</button>
-      <button class="chip" data-t="supercalifragilisticexpialidocious">made-up word</button>
-    </div>
-    <div class="tokrow" id="tokrow"></div>
-    <div class="tokstats" id="tokstats"></div>
-    <div class="ctlrow">
-      <label style="font-size:13.5px;color:var(--muted);display:flex;gap:8px;align-items:center;cursor:pointer">
-        <input type="checkbox" id="tokids"> show what the model actually sees (token IDs)
-      </label>
-    </div>
-  </div>
-  <p class="note"><b>Notice:</b> "tokenization" isn't one token — it's three. Tamil text costs far more tokens than English, because the menu was built mostly from English text. This is why the same sentence costs different amounts in different languages.</p>
-  <p class="why"><b>Why it matters:</b> everything downstream — cost, context limits, why models are bad at counting letters — starts here. A model never sees letters. It sees a sequence of numbers.</p>
-</section>
-
-<!-- ============ 2 · EMBEDDINGS ============ -->
-<section class="step wrap" id="s2">
-  <div class="kicker"><b>step 2 · embeddings</b></div>
-  <h2>Every token becomes a point in space. Meaning = location.</h2>
-  <p class="sub">Each token ID is mapped to a list of numbers — a <b>vector</b>. Words used in similar ways end up near each other. Hover any word to see its neighbours, then run the famous arithmetic.</p>
-  <div class="panel embwrap">
-    <svg id="emb" viewBox="0 0 700 470" width="100%" role="img" aria-label="Word embedding scatter plot with four clusters"></svg>
-    <div class="legend" id="emblegend"></div>
-    <div class="ctlrow">
-      <button class="btn primary" id="analogyBtn">run: king &minus; man + woman = ?</button>
-      <button class="btn" id="analogyReset" hidden>reset</button>
-      <span id="analogyOut" class="mono" style="font-size:14px;color:var(--d5);font-weight:700"></span>
-    </div>
-  </div>
-  <p class="note"><b>Honest label:</b> real embeddings have thousands of dimensions, not two — this is a flattened sketch of the idea. But the arithmetic is real: in actual models, <span class="mono">king &minus; man + woman</span> lands nearest to <span class="mono">queen</span>.</p>
-  <p class="why"><b>Why it matters:</b> the model never stores definitions. "Meaning" is nothing but geometry — and that's why it can generalize to sentences it has never seen.</p>
-</section>
-
-<!-- ============ 3 · ATTENTION ============ -->
-<section class="step wrap" id="s3">
-  <div class="kicker"><b>step 3 · attention</b></div>
-  <h2>Attention: every word looks at every other word.</h2>
-  <p class="sub">The 2017 breakthrough behind the T in GPT. Each token asks: <b>"which other tokens matter for understanding me?"</b> Hover any word — especially <b>"it"</b> — and watch where it looks. Then flip the last word.</p>
-  <div class="panel">
-    <div class="toggles">
-      <button class="chip on" id="vbig">…because it was too <b>big</b></button>
-      <button class="chip" id="vsmall">…because it was too <b>small</b></button>
-    </div>
-    <div class="sentbox">
-      <svg class="attsvg" id="attsvg"></svg>
-      <div class="sent" id="sent"></div>
-    </div>
-  </div>
-  <p class="note"><b>What just happened:</b> with "big", <b>it</b> attends to <b>trophy</b>; with "small", <b>it</b> attends to <b>suitcase</b>. No rule was written for this — it's learned. (Weights here are illustrative; a real model runs ~100 layers of these, with dozens of attention heads each.)</p>
-  <p class="why"><b>Why it matters:</b> this is how the model handles context — pronouns, long-range references, "the report I sent you last Tuesday". Attention is the mechanism; everything else is plumbing.</p>
-</section>
-
-<!-- ============ 4 · NEXT TOKEN ============ -->
-<section class="step wrap" id="s4">
-  <div class="kicker"><b>step 4 · next token</b></div>
-  <h2>The whole game: predict the next token. That's it.</h2>
-  <p class="sub">Below is a <b>real language model</b> — a tiny one, trained on a 3&nbsp;KB storybook corpus, computing live in your browser. The bars are its actual probabilities for the next word. <b>Click a bar</b> to choose it, and watch the loop.</p>
-  <div class="panel">
-    <div class="presets" style="margin:0 0 14px">
-      <button class="chip" data-p="once upon a">once upon a…</button>
-      <button class="chip" data-p="the king">the king…</button>
-      <button class="chip" data-p="students in the">students in the…</button>
-      <button class="chip" data-p="the model">the model…</button>
-    </div>
-    <div class="genbox" id="gen4"></div>
-    <div class="bars" id="bars4" aria-live="polite"></div>
-    <div class="ctlrow">
-      <button class="btn primary" id="auto4">auto-complete 12 tokens</button>
-      <button class="btn" id="undo4">undo</button>
-      <button class="btn" id="reset4">reset</button>
-      <span class="spacer"></span>
-      <span class="mono" style="font-size:12.5px;color:var(--faint)" id="model4stats"></span>
-    </div>
-  </div>
-  <p class="note"><b>Not faked:</b> these probabilities are counted from the corpus as you watch. ChatGPT does the same thing with ~13 <i>trillion</i> training tokens and a vastly better model of context — but the loop is identical: predict, pick, append, repeat. (Did auto-complete get stuck repeating itself? That's <b>greedy decoding</b> — always taking the #1 token. The fix is the next section.)</p>
-  <p class="why"><b>Why it matters:</b> once you see this loop, "hallucination" stops being mysterious. The model isn't lying — it's completing. Plausibility is the objective; truth is a side effect.</p>
-</section>
-
-<!-- ============ 5 · TEMPERATURE ============ -->
-<section class="step wrap" id="s5">
-  <div class="kicker"><b>step 5 · temperature</b></div>
-  <h2>Temperature: the boring&harr;wild knob.</h2>
-  <p class="sub">The model gives probabilities; <b>sampling</b> decides how to pick. Low temperature = always take the safest token. High = give underdogs a chance. Same model, same prompt — drag the slider and generate.</p>
-  <div class="panel">
-    <div class="ctlrow" style="margin:0 0 16px">
-      <span class="mono" style="font-size:13px;color:var(--muted)">temperature</span>
-      <input type="range" id="temp" min="0.1" max="2" step="0.1" value="0.8" style="flex:1;max-width:340px">
-      <span class="tval" id="tval">0.8</span>
-      <span class="spacer"></span>
-      <button class="btn primary" id="gen5btn">generate 25 tokens</button>
-    </div>
-    <div class="bars" id="bars5"></div>
-    <div class="genbox" id="gen5" style="margin:16px 0 0"><span style="color:var(--faint)">press generate…</span></div>
-  </div>
-  <p class="note"><b>Try it:</b> at <span class="mono">0.1</span> the model loops the same safe phrases. At <span class="mono">1.8</span> it rambles into nonsense. Real products live around 0.7–1.0 — and that's the whole "creativity" setting demystified.</p>
-  <p class="why"><b>Why it matters:</b> the same model can feel like a careful lawyer or a drunk poet. When an AI product feels different, sometimes nothing changed but this number.</p>
-</section>
-
-<!-- ============ 6 · TRAINING ============ -->
-<section class="step wrap" id="s6">
-  <div class="kicker"><b>step 6 · training</b></div>
-  <h2>Watch a model learn. Live. Right now.</h2>
-  <p class="sub">This is a neural network with <b>729 parameters</b> learning to generate Indian names from scratch, using the same algorithm that trained GPT: guess, measure the error (<b>loss</b>), nudge every weight, repeat. Press train.</p>
-  <div class="panel">
-    <div class="traingrid">
-      <div>
-        <div class="losslab" style="margin-bottom:6px">loss (lower = better guesses)</div>
-        <svg id="loss" viewBox="0 0 520 240" width="100%" role="img" aria-label="Training loss curve"></svg>
-        <div class="ctlrow">
-          <button class="btn primary" id="trainBtn">&#9654; train</button>
-          <button class="btn" id="trainReset">reset</button>
-          <span class="spacer"></span>
-          <span class="mono" style="font-size:12.5px;color:var(--muted)">step <b id="stepN" style="color:var(--ink)">0</b> · loss <b id="lossN" style="color:var(--ink)">—</b></span>
-        </div>
-      </div>
-      <div>
-        <div class="losslab" style="margin-bottom:6px">names it invents as it learns</div>
-        <div class="samples" id="samples"></div>
-      </div>
-    </div>
-    <div class="statrow">
-      <span>parameters: <b>729</b></span><span>training data: <b id="nameCount">—</b></span><span>algorithm: <b>gradient descent</b> — same as GPT</span>
-    </div>
-  </div>
-  <p class="note"><b>Watch the samples:</b> step 0 is random letters. By a few thousand steps it invents names that don't exist but <i>sound</i> right — <b>that</b> is what "learning" means here: absorbing the statistics of the data. Nobody taught it rules.</p>
-  <p class="why"><b>Why it matters:</b> GPT was trained exactly like this — just with 2.5 billion times more parameters and the internet as its name-list. The gibberish&rarr;fluency curve you just watched is the same curve, compressed from months into seconds.</p>
-</section>
-
-<!-- ============ 7 · SCALE ============ -->
-<section class="step wrap" id="s7">
-  <div class="kicker"><b>step 7 · scale</b></div>
-  <h2>Now multiply by a few billion.</h2>
-  <p class="sub">Everything you just saw is the actual mechanism. The only thing separating this page from ChatGPT is <b>scale</b> — and scale, it turned out, was the magic ingredient.</p>
-  <div class="tiles">
-    <div class="tile"><div class="n">729</div><div class="l">parameters in the model you just trained</div></div>
-    <div class="tile"><div class="n">3 KB</div><div class="l">corpus behind the next-token demo</div></div>
-    <div class="tile hi"><div class="n">~1.8T</div><div class="l">reported parameters in GPT-4 — 2.5 billion &times; this page</div></div>
-    <div class="tile hi"><div class="n">~13T</div><div class="l">tokens reportedly used to train it — an internet, not a storybook</div></div>
-  </div>
-  <p class="note"><b>Honest label:</b> frontier-lab figures are reported/leaked, not official — treat them as order-of-magnitude. The point stands at any rounding: same loop, different zip code.</p>
-  <p class="why" style="border-color:var(--ink)"><b>So when you use ChatGPT tonight</b>, you'll know: your words became tokens, the tokens became vectors, attention decided what mattered, and a next-token loop — the one you clicked through yourself — wrote the answer one guess at a time. Now let's go build with it. &rarr; <a href="index.html" style="font-weight:700">Session 1 starts here</a></p>
-</section>
-
-<footer class="wrap">
-  Built as the opening demo for <a href="index.html">Generative AI: Foundations &amp; Applications</a> · a free course by <a href="https://intrepidkarthi.com">Karthikeyan NG</a> · runs 100% in your browser, works offline · inspired by the visual style of 3Blue1Brown's neural-network series
-</footer>
+</div>
 
 <script>
 "use strict";
-/* ================================================================
-   §0 shared
-================================================================ */
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const CAT = ["#2B4EFF","#F08C00","#8526E0","#00A87A"]; // validated categorical order
-const TINTS = ["--t1","--t2","--t3","--t4","--t5","--t6"].map(v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+/* ============================================================
+   How LLMs work — step-by-step animated explainer
+   Presenter model: each scene has N "beats" (builds).
+   → / click advances a beat; scenes animate continuously.
+   All drawing is procedural from (sceneTime, beatTime, beat).
+============================================================ */
+const cv=document.getElementById("cv"),x=cv.getContext("2d");
+let W=0,H=0,DPR=1;
+function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+"px";cv.style.height=H+"px";x.setTransform(DPR,0,0,DPR,0,0);}
+resize();addEventListener("resize",resize);
 
-/* progress bar + rail */
-addEventListener("scroll", () => {
-  const h = document.documentElement;
-  $("#progress").style.width = (h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%";
-}, {passive:true});
-const io = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) $$(".rail a").forEach(a => a.classList.toggle("on", a.dataset.s===e.target.id));
-}), {rootMargin:"-40% 0px -50% 0px"});
-$$("section.step").forEach(s => io.observe(s));
+/* palette (3b1b-ish on near-black) */
+const BG="#0B0E14",INK="#E8ECF4",DIM="#8B94A8",FAINT="#3A4356",
+      BLUE="#58C4DD",YEL="#F0C674",GRN="#5CD0B3",RED="#FC6255",PUR="#B48CF2";
+const CAT=[BLUE,YEL,GRN,RED];
 
-/* keyboard presenter nav */
-const sections = ["s1","s2","s3","s4","s5","s6","s7"];
-addEventListener("keydown", e => {
-  if (e.target.matches("input[type=text]")) return;
-  if (e.key==="f"||e.key==="F"){ document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen(); return; }
-  if (!["ArrowRight","ArrowLeft","ArrowDown","ArrowUp"].includes(e.key)) return;
-  const fwd = e.key==="ArrowRight"||e.key==="ArrowDown";
-  const mid = innerHeight*0.45;
-  let cur = -1;
-  sections.forEach((id,i) => { const r=$("#"+id).getBoundingClientRect(); if (r.top<mid) cur=i; });
-  const next = Math.min(sections.length-1, Math.max(0, cur+(fwd?1:-1)));
-  e.preventDefault();
-  $("#"+sections[next]).scrollIntoView({behavior:reduceMotion?"auto":"smooth"});
-});
-
-/* ================================================================
-   §1 tokenizer — greedy longest-match over a mini subword vocab
-================================================================ */
-const VOCAB = [
-  "generative","intelligence","unbelievable","expialidocious","supercali","fragilistic",
-  "attention","transformer","language","students","because","different","understand",
-  "token","tokens","jasmine","madurai","chennai","model","models","turns","into","the",
-  "ation","tion","izing","ized","iz","ing","ness","ment","able","ible","ful","est","ers",
-  "er","ed","ly","un","re","pre","dis","over","under","out","up","al","ic","ous","ive",
-  "intelli","gence","gener","ative","and","for","are","was","has","not","you","your",
-  "with","that","this","how","what","why","chat","gpt","ai","a","i","in","on","at","it",
-  "an","of","to","is","'s","'t","'re"
-].sort((a,b)=>b.length-a.length);
-const isLatin = c => /[a-zA-Z']/.test(c);
-
-function tokenizeWord(word){
-  const out=[]; let i=0; const lower=word.toLowerCase();
-  while(i<lower.length){
-    let hit=null;
-    for(const v of VOCAB){ if(lower.startsWith(v,i)){hit=v;break;} }
-    if(hit){ out.push(word.slice(i,i+hit.length)); i+=hit.length; }
-    else { out.push(word[i]); i++; }
-  }
-  return out;
+/* helpers */
+const clamp01=v=>Math.max(0,Math.min(1,v));
+const seg=(t,a,b)=>clamp01((t-a)/(b-a));
+const io=t=>{t=clamp01(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+const out=t=>{t=clamp01(t);return 1-Math.pow(1-t,3)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+function mulberry(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function glow(c,b){x.shadowColor=c;x.shadowBlur=b}
+function noglow(){x.shadowBlur=0}
+function rr(x0,y0,w,h,r){x.beginPath();x.moveTo(x0+r,y0);x.arcTo(x0+w,y0,x0+w,y0+h,r);x.arcTo(x0+w,y0+h,x0,y0+h,r);x.arcTo(x0,y0+h,x0,y0,r);x.arcTo(x0,y0,x0+w,y0,r);x.closePath()}
+function alpha(c,a){const n=parseInt(c.slice(1),16);return`rgba(${n>>16},${n>>8&255},${n&255},${a})`}
+function arrow(x1,y1,x2,y2,c,w,p,glo){ // p = draw progress 0..1
+  const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+  const ex=x1+dx*p,ey=y1+dy*p;
+  x.strokeStyle=c;x.lineWidth=w;x.lineCap="round";if(glo)glow(c,14);
+  x.beginPath();x.moveTo(x1,y1);x.lineTo(ex,ey);x.stroke();
+  if(p>0.05){const hs=9+w*1.6;
+    x.fillStyle=c;x.beginPath();x.moveTo(ex,ey);
+    x.lineTo(ex-ux*hs-uy*hs*.5,ey-uy*hs+ux*hs*.5);
+    x.lineTo(ex-ux*hs+uy*hs*.5,ey-uy*hs-ux*hs*.5);x.closePath();x.fill();}
+  noglow();
 }
-function tokenize(text){
-  const toks=[]; let buf="";
-  const flush=()=>{ if(buf){ tokenizeWord(buf).forEach(t=>toks.push({t,kind:"sub"})); buf=""; } };
-  for(const ch of text){
-    if(isLatin(ch)) buf+=ch;
-    else { flush();
-      if(ch===" ") continue;
-      toks.push({t:ch, kind:/[0-9]/.test(ch)?"num":(ch.codePointAt(0)>0x2000?"rare":"punct")});
-    }
-  }
-  flush(); return toks;
+function mono(px,weight){return`${weight||600} ${px}px ui-monospace,"SF Mono",Consolas,monospace`}
+function serif(px,weight){return`${weight||480} ${px}px Fraunces,Georgia,serif`}
+function ttext(s,t,cps){const n=Math.floor(t*(cps||22));return s.slice(0,n)}
+
+/* caption + heading */
+function heading(kicker,title,a){
+  x.textAlign="left";x.globalAlpha=a;
+  x.font=mono(Math.max(12,H*0.016),700);x.fillStyle=DIM;
+  x.fillText("<|"+kicker+"|>",Math.max(28,W*0.045),Math.max(44,H*0.075));
+  x.font=serif(Math.max(22,H*0.042),560);x.fillStyle=INK;
+  x.fillText(title,Math.max(28,W*0.045),Math.max(44,H*0.075)+Math.max(30,H*0.055));
+  x.globalAlpha=1;
 }
-function fakeId(piece){ // stable pseudo-ID for display
-  let h=0; for(const c of piece.toLowerCase()) h=(h*31+c.codePointAt(0))>>>0;
-  return 100 + (h % 49900);
-}
-function renderTokens(){
-  const text=$("#tokin").value;
-  const toks=tokenize(text);
-  const showIds=$("#tokids").checked;
-  const row=$("#tokrow"); row.innerHTML="";
-  toks.forEach((tk,i)=>{
-    const el=document.createElement("span");
-    el.className="tok";
-    el.style.background=TINTS[i%TINTS.length];
-    el.style.animationDelay=(i*0.03)+"s";
-    el.textContent=tk.t;
-    if(showIds){ const s=document.createElement("small"); s.textContent="#"+fakeId(tk.t); el.appendChild(s); }
-    if(tk.kind==="rare") el.title="rare script → falls back to raw pieces (expensive!)";
-    row.appendChild(el);
+function caption(lines,tb){
+  if(!lines)return;
+  const a=io(seg(tb,0.1,0.7));
+  x.textAlign="center";x.globalAlpha=a;
+  const fs=Math.max(17,H*0.030);
+  x.font=serif(fs,470);x.fillStyle=INK;
+  const arr=Array.isArray(lines)?lines:[lines];
+  arr.forEach((s,i)=>{
+    // dim parenthetical lines
+    x.fillStyle=s.startsWith("(")?DIM:INK;
+    x.fillText(s,W/2,H-Math.max(64,H*0.115)+i*fs*1.45);
   });
-  const chars=[...text].length;
-  $("#tokstats").innerHTML =
-    `<b>${toks.length}</b> tokens from <b>${chars}</b> characters · ratio <b>${chars?(chars/Math.max(1,toks.length)).toFixed(1):0}</b> chars/token` +
-    ([...text].some(c=>c.codePointAt(0)>0x0B80&&c.codePointAt(0)<0x0BFF) ? ` · <span style="color:var(--d4)">Tamil detected — see the cost?</span>` : "");
+  x.globalAlpha=1;
 }
-$("#tokin").addEventListener("input", renderTokens);
-$("#tokids").addEventListener("change", renderTokens);
-$$("#s1 .presets .chip").forEach(c=>c.addEventListener("click",()=>{ $("#tokin").value=c.dataset.t; renderTokens(); }));
-renderTokens();
 
-/* ================================================================
-   §2 embeddings — hand-placed 2D sketch + analogy walk
-================================================================ */
-const CLUSTERS=[
-  {name:"people & royalty", color:CAT[0], words:[
-    ["king",190,120],["queen",250,180],["prince",130,140],["princess",190,200],
-    ["man",130,200],["woman",190,260],["boy",80,230],["girl",140,290]]},
-  {name:"places", color:CAT[1], words:[
-    ["Madurai",470,90],["Chennai",540,120],["Paris",590,70],["London",630,110],
-    ["temple",440,145],["beach",520,170]]},
-  {name:"food", color:CAT[2], words:[
-    ["dosa",120,390],["idli",175,420],["biryani",245,395],["pizza",320,425],
-    ["coffee",90,345],["mango",255,350]]},
-  {name:"animals", color:CAT[3], words:[
-    ["dog",480,365],["cat",535,395],["tiger",590,345],["elephant",630,395],
-    ["parrot",450,415],["cow",545,435]]}
-];
-const ALLW=[]; CLUSTERS.forEach(c=>c.words.forEach(([w,x,y])=>ALLW.push({w,x,y,color:c.color})));
-const svgNS="http://www.w3.org/2000/svg";
-function el(tag,attrs,parent){ const n=document.createElementNS(svgNS,tag); for(const k in attrs) n.setAttribute(k,attrs[k]); if(parent)parent.appendChild(n); return n; }
-(function drawEmb(){
-  const svg=$("#emb");
-  // recessive axes hint
-  el("text",{x:12,y:462,fill:"#98A0AD","font-size":"11","font-family":"ui-monospace,monospace"},svg).textContent="dimension 1 →";
-  const yl=el("text",{x:-458,y:16,fill:"#98A0AD","font-size":"11",transform:"rotate(-90)","font-family":"ui-monospace,monospace"},svg); yl.textContent="dimension 2 →";
-  const links=el("g",{id:"nbrlinks"},svg);
-  ALLW.forEach(p=>{
-    const g=el("g",{class:"embw",style:"cursor:default"},svg);
-    el("circle",{cx:p.x,cy:p.y,r:6,fill:p.color,stroke:"#FFFFFF","stroke-width":2},g);
-    const t=el("text",{x:p.x+10,y:p.y+4,fill:"#14171F","font-size":"12.5","font-weight":"600"},g);
-    t.textContent=p.w;
-    g.addEventListener("mouseenter",()=>{
-      links.innerHTML="";
-      const near=ALLW.filter(q=>q!==p).map(q=>({q,d:Math.hypot(q.x-p.x,q.y-p.y)})).sort((a,b)=>a.d-b.d).slice(0,3);
-      near.forEach(({q})=>el("line",{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:"#C5CAD4","stroke-width":1.5,"stroke-dasharray":"4 3"},links));
-      t.setAttribute("font-weight","800");
-    });
-    g.addEventListener("mouseleave",()=>{ links.innerHTML=""; t.setAttribute("font-weight","600"); });
-  });
-  const lg=$("#emblegend");
-  CLUSTERS.forEach(c=>{ const s=document.createElement("span"); s.innerHTML=`<i style="background:${c.color}"></i>${c.name}`; lg.appendChild(s); });
+/* ============ shared visual pieces ============ */
+const SENT=["The","capital","of","Tamil","Nadu","is"];
+function fakeId(s){let h=0;for(const c of s.toLowerCase())h=(h*31+c.charCodeAt(0))>>>0;return 100+(h%49900)}
+function tokenChip(cx,cy,label,color,a,scale,id,idA){
+  const fs=Math.max(15,H*0.024)*(scale||1);
+  x.font=mono(fs,650);
+  const w=x.measureText(label).width+fs*1.1,h=fs*1.9;
+  x.globalAlpha=a;
+  glow(color,16);x.strokeStyle=color;x.lineWidth=1.6;
+  x.fillStyle=alpha(color,0.10);rr(cx-w/2,cy-h/2,w,h,8);x.fill();x.stroke();noglow();
+  x.fillStyle=INK;x.textAlign="center";x.textBaseline="middle";
+  x.fillText(label,cx,cy+1);
+  if(idA>0){x.globalAlpha=a*idA;x.font=mono(fs*0.62,500);x.fillStyle=DIM;
+    x.fillText("#"+(id??fakeId(label)),cx,cy+h*0.95);}
+  x.globalAlpha=1;x.textBaseline="alphabetic";
+}
+function sentenceLayout(words,cy,fs){ // centered chip row positions
+  x.font=mono(fs,650);
+  const ws=words.map(wd=>x.measureText(wd).width+fs*1.1);
+  const gap=fs*0.55,total=ws.reduce((a,b)=>a+b,0)+gap*(words.length-1);
+  let cxp=W/2-total/2;const pos=[];
+  ws.forEach(w=>{pos.push(cxp+w/2);cxp+=w+gap});
+  return pos;
+}
+
+/* 3D embedding cloud */
+const R2=mulberry(7);
+const CLOUD=(()=>{
+  const mk=(cx,cy,cz,n,color,words)=>{const pts=[];for(let i=0;i<n;i++){pts.push({
+    x:cx+(R2()-.5)*.5,y:cy+(R2()-.5)*.45,z:cz+(R2()-.5)*.5,c:color,w:words[i]||null})}return pts};
+  // royalty anchored so king-man+woman = queen exactly
+  const man={x:-.55,y:-.28,z:.05,c:BLUE,w:"man"},woman={x:-.18,y:-.55,z:.22,c:BLUE,w:"woman"},
+        king={x:-.38,y:.42,z:-.08,c:BLUE,w:"king"},
+        queen={x:king.x-man.x+woman.x,y:king.y-man.y+woman.y,z:king.z-man.z+woman.z,c:BLUE,w:"queen"};
+  return{
+    named:{man,woman,king,queen},
+    pts:[man,woman,king,queen,
+      ...mk(-.42,.05,.05,4,BLUE,["prince","girl","boy","aunt"]),
+      ...mk(.62,.5,.1,6,YEL,["Madurai","Chennai","Paris","temple","beach","London"]),
+      ...mk(-.5,-.75,-.2,6,GRN,["dosa","idli","biryani","coffee","mango","pizza"]),
+      ...mk(.6,-.6,.25,6,RED,["dog","cat","tiger","parrot","cow","elephant"])]
+  };
 })();
-/* analogy animation: man→king arrow, translate to woman, land on queen */
-const findW=w=>ALLW.find(p=>p.w===w);
-let analogyEls=[];
-function arrow(svg,x1,y1,x2,y2,color,delay){
-  const len=Math.hypot(x2-x1,y2-y1);
-  const line=el("line",{x1,y1,x2,y2,stroke:color,"stroke-width":2.5,"marker-end":"url(#arrhead)"},svg);
-  if(!reduceMotion){
-    line.setAttribute("stroke-dasharray",len);
-    line.setAttribute("stroke-dashoffset",len);
-    line.style.transition=`stroke-dashoffset .8s ease ${delay}s`;
-    requestAnimationFrame(()=>requestAnimationFrame(()=>line.setAttribute("stroke-dashoffset",0)));
-  }
-  analogyEls.push(line); return line;
+function proj(p,yaw){ // rotate about Y then perspective
+  const cs=Math.cos(yaw),sn=Math.sin(yaw);
+  const rx=p.x*cs+p.z*sn, rz=-p.x*sn+p.z*cs;
+  const d=2.6,s=d/(d+rz);
+  const scale=Math.min(W,H)*0.34;
+  return{x:W*0.5+rx*scale*s,y:H*0.52-p.y*scale*s,s};
 }
-$("#analogyBtn").addEventListener("click",()=>{
-  const svg=$("#emb");
-  if(!$("#arrhead")){
-    const defs=el("defs",{},svg);
-    const m=el("marker",{id:"arrhead",viewBox:"0 0 10 10",refX:9,refY:5,markerWidth:7,markerHeight:7,orient:"auto-start-reverse"},defs);
-    el("path",{d:"M0 0L10 5L0 10z",fill:"#14171F"},m);
-  }
-  analogyEls.forEach(e=>e.remove()); analogyEls=[];
-  const k=findW("king"),m=findW("man"),w=findW("woman"),q=findW("queen");
-  arrow(svg,m.x,m.y,k.x,k.y,"#14171F",0);                       // the "royalty" direction
-  arrow(svg,w.x,w.y,w.x+(k.x-m.x),w.y+(k.y-m.y),"#14171F",0.9); // same direction from woman
-  const halo=el("circle",{cx:q.x,cy:q.y,r:6,fill:"none",stroke:"#00A87A","stroke-width":3},svg);
-  analogyEls.push(halo);
-  if(!reduceMotion){ halo.style.transition="r .5s ease 1.8s, opacity .5s ease 1.8s"; requestAnimationFrame(()=>requestAnimationFrame(()=>halo.setAttribute("r",16))); }
-  else halo.setAttribute("r",16);
-  setTimeout(()=>{ $("#analogyOut").textContent="≈ queen ✓"; $("#analogyReset").hidden=false; }, reduceMotion?0:1900);
-});
-$("#analogyReset").addEventListener("click",()=>{ analogyEls.forEach(e=>e.remove()); analogyEls=[]; $("#analogyOut").textContent=""; $("#analogyReset").hidden=true; });
+function drawCloud(t,colorized,labels,aAll){
+  const yaw=t*0.14;
+  const order=[...CLOUD.pts].map(p=>({p,pr:proj(p,yaw)})).sort((a,b)=>a.pr.s-b.pr.s);
+  order.forEach(({p,pr})=>{
+    const c=colorized?p.c:DIM;
+    const r=(3.2+pr.s*3.4);
+    x.globalAlpha=aAll*(0.35+0.65*pr.s*0.9);
+    glow(c,12*pr.s);x.fillStyle=c;
+    x.beginPath();x.arc(pr.x,pr.y,r,0,7);x.fill();noglow();
+    if(labels&&p.w){x.font=mono(Math.max(10.5,H*0.015),500);x.fillStyle=colorized?INK:DIM;
+      x.textAlign="left";x.fillText(p.w,pr.x+r+5,pr.y+3);}
+  });
+  x.globalAlpha=1;
+}
 
-/* ================================================================
-   §3 attention — Winograd pair with illustrative weights
-================================================================ */
-const SENT=["The","trophy","didn’t","fit","in","the","suitcase","because","it","was","too","BIG"];
-let variant="big";
-const OVERRIDES={
-  big:  {8:{1:.62,6:.14,11:.12}, 3:{1:.45,6:.30}, 11:{8:.40,1:.28}},
-  small:{8:{6:.60,1:.16,11:.12}, 3:{1:.45,6:.30}, 11:{8:.40,6:.28}}
-};
-function attnRow(i){
-  const n=SENT.length, o=(OVERRIDES[variant][i])||{};
-  const row=new Array(n).fill(0);
-  let rem=1-Object.values(o).reduce((a,b)=>a+b,0);
-  row[i]=Math.min(rem*.35,.15); rem-=row[i];
-  if(i>0){ row[i-1]=Math.min(rem*.5,.2); rem-=row[i-1]; }
-  const others=n-Object.keys(o).length-(i>0?2:1);
-  for(let j=0;j<n;j++){ if(o[j]!=null) row[j]=o[j]; else if(row[j]===0&&j!==i&&j!==i-1) row[j]=Math.max(rem/Math.max(1,others),0); }
-  const s=row.reduce((a,b)=>a+b,0); return row.map(v=>v/s);
-}
-function drawSent(){
-  const box=$("#sent"); box.innerHTML="";
-  SENT.forEach((w,i)=>{
-    const s=document.createElement("span"); s.className="w"; s.dataset.i=i;
-    s.textContent=(i===11)?(variant==="big"?"big":"small"):w;
-    s.addEventListener("mouseenter",()=>showAttn(i));
-    s.addEventListener("mouseleave",clearAttn);
-    box.appendChild(s);
+/* neural net for scene 4 */
+const LAYERS=[6,8,8,6,3];
+function netPos(){
+  const left=W*0.24,right=W*0.76,top=H*0.24,bot=H*0.72;
+  return LAYERS.map((n,li)=>{
+    const lx=lerp(left,right,li/(LAYERS.length-1));
+    return Array.from({length:n},(_,i)=>({x:lx,y:lerp(top,bot,n===1?0.5:i/(n-1))}));
   });
 }
-function showAttn(i){
-  const svg=$("#attsvg"); svg.innerHTML="";
-  const words=$$("#sent .w"); const box=$("#s3 .sentbox").getBoundingClientRect();
-  const row=attnRow(i);
-  const src=words[i].getBoundingClientRect();
-  const sx=src.left-box.left+src.width/2, sy=src.top-box.top;
-  words.forEach((wd,j)=>{
-    if(j===i) return;
-    const r=wd.getBoundingClientRect();
-    const tx=r.left-box.left+r.width/2, ty=r.top-box.top;
-    const wgt=row[j];
-    if(wgt<0.02) return;
-    const arc=Math.min(64,18+Math.abs(tx-sx)*0.22);
-    const p=el("path",{d:`M ${sx} ${sy} Q ${(sx+tx)/2} ${Math.min(sy,ty)-arc} ${tx} ${ty}`,
-      fill:"none",stroke:"#8526E0","stroke-width":(1+wgt*7).toFixed(1),opacity:(0.25+wgt*0.75).toFixed(2)},svg);
-    p.setAttribute("stroke-linecap","round");
-    if(wgt>=0.10){
-      const pct=document.createElement("span"); pct.className="pct"; pct.textContent=Math.round(wgt*100)+"%";
-      wd.appendChild(pct); wd.classList.add("hot");
-    }
-  });
-  words[i].classList.add("hot");
-}
-function clearAttn(){ $("#attsvg").innerHTML=""; $$("#sent .pct").forEach(e=>e.remove()); $$("#sent .w").forEach(e=>e.classList.remove("hot")); }
-$("#vbig").addEventListener("click",()=>{variant="big";$("#vbig").classList.add("on");$("#vsmall").classList.remove("on");drawSent();});
-$("#vsmall").addEventListener("click",()=>{variant="small";$("#vsmall").classList.add("on");$("#vbig").classList.remove("on");drawSent();});
-drawSent();
-
-/* ================================================================
-   §4/§5 — a real word-trigram LM over an embedded corpus
-================================================================ */
-const CORPUS = `
-once upon a time there was a king . the king lived in a palace near the temple . the king loved his people and the people loved the king .
-once upon a time there was a queen . the queen was wise and the queen was kind . the queen ruled the land with a calm mind .
-the king had a daughter . the daughter loved to read . she read every book in the palace library .
-the king had a son . the son loved to build . he built a small boat and sailed on the river .
-once upon a time a farmer lived near the river . the farmer grew rice and the farmer grew mangoes . the mangoes were sweet .
-the farmer had a clever parrot . the parrot learned to speak . the parrot said good morning to everyone in the village .
-students in the class opened their laptops . students in the class asked good questions . the teacher smiled and started the demo .
-students in the college built a small model . the model learned to predict the next word . the model surprised everyone .
-the model reads tokens . the model turns tokens into vectors . the model predicts the next token one step at a time .
-the model does not know the truth . the model knows patterns . patterns come from the data .
-the teacher said practice every day . the students said we will build something real . they built a chatbot for the library .
-in the morning the sun rises over the temple . in the morning the city wakes up slowly . the streets fill with the smell of coffee and jasmine .
-in the evening the sun sets over the sea . in the evening the lights come on one by one . the city hums like a quiet machine .
-the elephant walked through the village . the children followed the elephant . the elephant loved bananas more than anything .
-the cat sat on the warm wall . the dog slept under the neem tree . the parrot watched them both and laughed .
-once upon a time there was a young engineer . the engineer asked why not . the engineer built a tool that saved everyone time .
-the king asked the engineer to build a bridge . the engineer built the bridge in one year . the people crossed the river every day .
-data is the food of the model . more data makes the model stronger . clean data makes the model honest .
-the queen asked the students a question . the students answered with a demo . the queen smiled and said well done .
-the library was quiet . the library was full of old books . every book held a small world inside it .
-`.trim().toLowerCase();
-
-const WORDS = CORPUS.split(/\s+/);
-const uni=new Map(), bi=new Map(), tri=new Map();
-for(let i=0;i<WORDS.length;i++){
-  uni.set(WORDS[i],(uni.get(WORDS[i])||0)+1);
-  if(i>0){ const k=WORDS[i-1]; if(!bi.has(k))bi.set(k,new Map()); const m=bi.get(k); m.set(WORDS[i],(m.get(WORDS[i])||0)+1); }
-  if(i>1){ const k=WORDS[i-2]+" "+WORDS[i-1]; if(!tri.has(k))tri.set(k,new Map()); const m=tri.get(k); m.set(WORDS[i],(m.get(WORDS[i])||0)+1); }
-}
-const UNITOT=WORDS.length;
-function dist(context){
-  const ws=context.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  const w1=ws[ws.length-1], w2k=ws.length>1?ws[ws.length-2]+" "+w1:null;
-  const scores=new Map();
-  const add=(m,tot,wgt)=>{ if(!m)return; for(const [w,c] of m) scores.set(w,(scores.get(w)||0)+wgt*c/tot); };
-  const tm=w2k?tri.get(w2k):null; const bm=w1?bi.get(w1):null;
-  if(tm){ let t=0; tm.forEach(c=>t+=c); add(tm,t,0.6); }
-  if(bm){ let t=0; bm.forEach(c=>t+=c); add(bm,t,tm?0.3:0.75); }
-  { for(const [w,c] of uni) scores.set(w,(scores.get(w)||0)+((tm||bm)?0.1:0.25)*c/UNITOT); }
-  let tot=0; scores.forEach(v=>tot+=v);
-  return [...scores.entries()].map(([w,p])=>[w,p/tot]).sort((a,b)=>b[1]-a[1]);
-}
-function applyTemp(pairs,T){
-  const powed=pairs.map(([w,p])=>[w,Math.pow(p,1/T)]);
-  const tot=powed.reduce((a,[,p])=>a+p,0);
-  return powed.map(([w,p])=>[w,p/tot]).sort((a,b)=>b[1]-a[1]);
-}
-function samplePairs(pairs){
-  let r=Math.random();
-  for(const [w,p] of pairs){ r-=p; if(r<=0) return w; }
-  return pairs[0][0];
-}
-function renderBars(elId,pairs,onPick){
-  const box=$(elId); box.innerHTML="";
-  const top=pairs.slice(0,10); const max=top[0]?.[1]||1;
-  top.forEach(([w,p],i)=>{
-    const b=document.createElement("div"); b.className="bar"+(i===0?" top":"");
-    b.title=`"${w}" — ${(p*100).toFixed(1)}% ${i===0?"(most likely)":""}`;
-    b.innerHTML=`<span class="lab">${w}</span><span class="track"><span class="fill" style="width:${(p/max*100).toFixed(1)}%"></span></span><span class="val">${(p*100).toFixed(1)}%</span>`;
-    if(onPick) b.addEventListener("click",()=>onPick(w));
-    box.appendChild(b);
-  });
-}
-/* §4 state */
-let ctx4="once upon a", picked4=[];
-function paint4(){
-  $("#gen4").innerHTML=`<span class="ctx">${ctx4}</span> <span class="new">${picked4.join(" ")}</span><span class="cursor"></span>`;
-  renderBars("#bars4",dist(ctx4+" "+picked4.join(" ")),w=>{ picked4.push(w); paint4(); });
-  $("#model4stats").textContent=`vocab ${uni.size} · corpus ${WORDS.length} tokens`;
-}
-$$("#s4 .presets .chip").forEach(c=>c.addEventListener("click",()=>{ ctx4=c.dataset.p; picked4=[]; paint4(); }));
-$("#reset4").addEventListener("click",()=>{ picked4=[]; paint4(); });
-$("#undo4").addEventListener("click",()=>{ picked4.pop(); paint4(); });
-$("#auto4").addEventListener("click",async()=>{
-  for(let i=0;i<12;i++){
-    const p=dist(ctx4+" "+picked4.join(" "));
-    picked4.push(p[0][0]); // greedy — §5 introduces sampling
-    paint4();
-    if(!reduceMotion) await new Promise(r=>setTimeout(r,220));
-  }
+const R3=mulberry(21);
+const NETW=LAYERS.slice(0,-1).map((n,li)=>{ // sparse-ish weights
+  const conns=[];
+  for(let i=0;i<n;i++)for(let j=0;j<LAYERS[li+1];j++){const w=R3();if(w>0.25)conns.push({i,j,w:(w-0.25)/0.75})}
+  return conns;
 });
-paint4();
-/* §5 state */
-const PROMPT5="the king";
-function paint5bars(){ renderBars("#bars5",applyTemp(dist(PROMPT5),parseFloat($("#temp").value)),null); }
-$("#temp").addEventListener("input",()=>{ $("#tval").textContent=parseFloat($("#temp").value).toFixed(1); paint5bars(); });
-$("#gen5btn").addEventListener("click",async()=>{
-  const T=parseFloat($("#temp").value);
-  let words=[PROMPT5]; const out=$("#gen5");
-  out.innerHTML=`<span class="ctx">${PROMPT5}</span><span class="new"></span><span class="cursor"></span>`;
-  const span=out.querySelector(".new");
-  for(let i=0;i<25;i++){
-    const p=applyTemp(dist(words.join(" ")),T);
-    const w=samplePairs(p); words.push(w);
-    span.textContent+=" "+w;
-    if(!reduceMotion) await new Promise(r=>setTimeout(r,90));
-  }
-});
-paint5bars();
 
-/* ================================================================
-   §6 — char-level neural bigram trained live (729 params)
-================================================================ */
-const NAMES=("arun,priya,karthik,meena,vijay,lakshmi,suresh,divya,ramesh,kavitha,anand,deepa,ganesh,shruti,mohan,anitha,rajesh,pooja,senthil,revathi,kumar,nithya,prakash,janani,dinesh,sowmya,murugan,keerthi,balaji,ishwarya,saravanan,gayathri,vignesh,ramya,harish,malathi,gopal,vidya,aravind,sangeetha,manoj,bhavani,naveen,padma,santosh,rani,krishnan,devi,siva,uma,raja,geetha,selvam,indira,mani,kalpana,arjun,vasanthi,ashok,radha,sundar,valli,mukesh,rukmini,vimal,chitra,ajith,latha,surya,ambika,hari,rohini,vel,thenmozhi,muthu,amudha,kannan,ezhil,tamil,selvi,ilango,vani,cheran,kayal,pandian,thamarai,maran,kuyil,anbu,mullai,elango,nila,oviya,adyah,mithra,iyan,azhagu,kani,thendral,vetri,amirtha,inba,mazhai,aadhavan,yazhini,ponni,maayan,thirumal,angayarkanni,parthiban,kundavai,vanathi,aditha,poonguzhali,sembiyan,vaanmathi,rajendra,kotravai,ilaiya,madhavi,anirudh,vasuki,jayam,kalki,ponniyin,selvan,karikala,nandini,aditya,kaveri,cholan,vaigai,pandya,tamarai,kadal,malar,kadhir,nangai,thennavan,kalaivani,maadhavan,poongodi,vendhan,ezhilarasi,cheliyan,maragatham,peruvazhuthi,aandaal,nedunchezhiyan,madhura,ilavarasan,kanimozhi,thirumagan,azhagi,senthamizh,vanji,perunthevi,kizhavan,kuralamudhu,maaran,inbam,vazhuthi,aram,porkodi,neduman,anji,peran,aay,kaari,ori,adigan,paari,vel,evvi,malli,nalli,began,kumanan,athan,anthuvan,irungo,killi,valavan,perunar,killi,mudi,tharan,elini,ezhini,senni,cheral,athiyan,anduvan,irumporai,kadungo,kuttuvan,palyanai,selkezhu,nedum,cheralathan,imayavaramban,vel,kezhu,mantharan,poraiyan,kadalpirakottiya,vazhiyathan"
-).split(",").map(s=>s.trim()).filter(Boolean);
-const CHARS=".abcdefghijklmnopqrstuvwxyz"; const V=CHARS.length; // 27 → 27×27 = 729
-const cIdx=Object.fromEntries([...CHARS].map((c,i)=>[c,i]));
-const PAIRS=[];
-NAMES.forEach(n=>{ const s="."+n+"."; for(let i=0;i<s.length-1;i++){ const a=cIdx[s[i]],b=cIdx[s[i+1]]; if(a!=null&&b!=null) PAIRS.push([a,b]); }});
-let W,stepN,lossHist,running=false,rafId=null;
-function initTrain(){
-  W=new Float64Array(V*V);
-  for(let i=0;i<W.length;i++) W[i]=(Math.random()-0.5)*0.2;
-  stepN=0; lossHist=[]; running=false;
-  $("#stepN").textContent="0"; $("#lossN").textContent="—";
-  $("#samples").innerHTML=""; drawLoss();
-  addSamples("step 0");
-  $("#trainBtn").innerHTML="&#9654; train";
+/* attention sentence */
+const ATT=["The","trophy","didn’t","fit","in","the","suitcase","because","it","was","too","big"];
+const ATT_W_BIG={1:.62,6:.14,11:.12},ATT_W_SMALL={6:.60,1:.16,11:.12};
+
+/* probability bars */
+const PROBS=[["Chennai",92.4],["Madurai",2.1],["Coimbatore",1.3],["the",0.9],["its",0.4]];
+
+/* loop scene data */
+const LOOPW=["there","was","a","king","who","loved","his","people","and","built","a","library"];
+const LOOPALT=[["there","once","a"],["was","lived","came"],["a","one","his"],["king","farmer","queen"],["who","that","and"],["loved","ruled","built"],["his","the","all"],["people","land","city"],["and","more","who"],["built","made","gave"],["a","the","one"],["library","bridge","school"]];
+
+/* training data */
+const STREAM=["once upon a time there was","import numpy as np","வணக்கம் மதுரை !","dear sir, with reference to","the mitochondria is the","fn main() { println! }","q3 revenue grew 12%","to be or not to be","SELECT * FROM users;","el sol sale por el este","η = mc² / kT","def train(model, data):"];
+const R4=mulberry(99);
+const WGRID=Array.from({length:26*15},()=>({jx:R4()-.5,jy:R4()-.5,ph:R4()*6.28}));
+const R5=mulberry(5);
+const STARS=Array.from({length:420},()=>({a:R5()*6.283,r:Math.pow(R5(),0.6),tw:R5()*6.28}));
+
+/* ============================================================
+   SCENES — each: {kicker,title,beats,cap[beat],draw(t,tb,beat)}
+============================================================ */
+const SCENES=[
+
+/* 0 — the question */
+{kicker:"step_0",title:"You press enter. Then what?",beats:2,
+ cap:[["You've all typed this — and the machine answered.","But what actually happens in there?"],
+      ["In the next few minutes: the real mechanism.","(no magic, only arithmetic — I promise)"]],
+ draw(t,tb,b){
+   const fs=Math.max(20,H*0.034);
+   x.font=mono(fs,600);x.textAlign="center";x.fillStyle=INK;
+   const s="The capital of Tamil Nadu is";
+   const typed=b===0?ttext(s,t,18):s;
+   glow(BLUE,8);x.fillText(typed+(Math.floor(t*2)%2?" ▌":"  "),W/2,H*0.45);noglow();
+   if(b>=1){const a=io(seg(tb,0,0.8));
+     x.globalAlpha=a;x.font=mono(fs*1.6,700);glow(YEL,26);x.fillStyle=YEL;
+     x.fillText("?",W/2,H*0.45+fs*2.4);noglow();x.globalAlpha=1;}
+ }},
+
+/* 1 — tokens */
+{kicker:"step_1 · tokens",title:"Text becomes tokens",beats:3,
+ cap:[["Here is that same sentence."],
+      ["The model chops it into tokens — pieces from a fixed menu."],
+      ["Each token is just a number. The model never sees letters.","(rare words get split — Tamil costs 3–4× more tokens than English)"]],
+ draw(t,tb,b){
+   const fs=Math.max(15,H*0.024);
+   const cy=H*0.46,pos=sentenceLayout(SENT,cy,fs);
+   if(b===0){ // plain sentence
+     x.font=mono(fs*1.15,600);x.textAlign="center";x.fillStyle=INK;
+     x.fillText(SENT.join(" "),W/2,cy);
+   }else{
+     const spread=io(seg(tb,0,b===1?1.0:0)); // beat1 animates split; beat2 already split
+     SENT.forEach((wd,i)=>{
+       // from packed text position to chip row
+       x.font=mono(fs*1.15,600);
+       const packedTotal=x.measureText(SENT.join(" ")).width;
+       let px=W/2-packedTotal/2;
+       for(let k=0;k<i;k++)px+=x.measureText(SENT[k]+" ").width;
+       px+=x.measureText(wd).width/2;
+       const cxp=b===1?lerp(px,pos[i],spread):pos[i];
+       const wob=Math.sin(t*1.4+i)*2.5;
+       tokenChip(cxp,cy+wob,wd,CAT[i%4],1,1,fakeId(wd),b>=2?io(seg(tb,0.1+i*0.08,0.6+i*0.08)):0);
+     });
+   }
+ }},
+
+/* 2 — embeddings */
+{kicker:"step_2 · embeddings",title:"Every token becomes a point in space",beats:3,
+ cap:[["Each token number is mapped to a vector —","a position in a space with thousands of dimensions."],
+      ["Words used in similar ways end up close together."],
+      ["Meaning isn't stored as definitions.","Meaning is location."]],
+ draw(t,tb,b){
+   const born=io(seg(tb,0,1));
+   if(b===0) drawCloud(t,false,false,born);
+   if(b===1) drawCloud(t,true,true,1);
+   if(b>=2){drawCloud(t,true,true,1);
+     // pulse a cluster to show closeness
+     const p=CLOUD.named.king,pr=proj(p,t*0.14);
+     const pulse=4+Math.sin(t*3)*2;
+     x.strokeStyle=alpha(BLUE,0.7);glow(BLUE,18);x.lineWidth=1.6;
+     x.beginPath();x.arc(pr.x,pr.y,16+pulse,0,7);x.stroke();noglow();}
+ }},
+
+/* 3 — directions mean things */
+{kicker:"step_3 · vector arithmetic",title:"Directions carry meaning",beats:2,
+ cap:[["Watch the man → king direction.","That arrow is the concept of royalty."],
+      ["Add the same arrow to woman… and you land on queen.","king − man + woman = queen. This actually works in real models."]],
+ draw(t,tb,b){
+   drawCloud(t*0.001+2.1,true,true,1); // nearly frozen yaw for stable arrows
+   const yaw=2.1*0.14*0.001+2.1*0.14*0; // effectively fixed
+   const P=CLOUD.named;
+   const pm=proj(P.man,0.294),pk=proj(P.king,0.294),pw=proj(P.woman,0.294),pq=proj(P.queen,0.294);
+   if(b>=0){arrow(pm.x,pm.y,pk.x,pk.y,YEL,3,out(seg(tb,b===0?0.1:0,b===0?1.2:0.01)),true);}
+   if(b>=1){
+     arrow(pw.x,pw.y,pq.x,pq.y,YEL,3,out(seg(tb,0.2,1.4)),true);
+     const a=io(seg(tb,1.4,2.2));
+     x.globalAlpha=a;x.strokeStyle=GRN;glow(GRN,22);x.lineWidth=2.5;
+     x.beginPath();x.arc(pq.x,pq.y,17+Math.sin(t*3)*3,0,7);x.stroke();noglow();
+     x.font=mono(Math.max(13,H*0.02),700);x.fillStyle=GRN;x.textAlign="center";
+     x.fillText("≈ queen ✓",pq.x,pq.y-30);x.globalAlpha=1;}
+ }},
+
+/* 4 — a single neuron (the 3b1b NN-101 moment) */
+{kicker:"step_4 · a neuron",title:"Multiply, add, squash",beats:3,
+ cap:[["Meet one unit of the machine: a neuron.","Inputs arrive; each connection has a weight — a dial."],
+      ["It multiplies each input by its weight, adds them up,","squashes the result — and passes it on. That's ALL it does."],
+      ["Blue weights say 'excite me', red say 'calm me'.","Learning = turning these dials. Nothing more."]],
+ draw(t,tb,b){
+   const ins=[0.9,0.2,0.7,0.1], ws=[2.1,-1.3,0.4,0.8];
+   const ix=W*0.30,nx=W*0.60,ny=H*0.47;
+   const ys=ins.map((_,i)=>H*(0.30+i*0.115));
+   const sum=ins.reduce((a,v,i)=>a+v*ws[i],0);
+   ins.forEach((v,i)=>{
+     const w=ws[i],c=w>=0?BLUE:RED,lw=1+Math.abs(w)*2.2;
+     x.strokeStyle=alpha(c,0.7);x.lineWidth=lw;
+     x.beginPath();x.moveTo(ix,ys[i]);x.lineTo(nx,ny);x.stroke();
+     if(b>=1){const ph=(t*0.6+i*0.21)%1;
+       glow(c,12);x.fillStyle=c;
+       x.beginPath();x.arc(lerp(ix,nx,ph),lerp(ys[i],ny,ph),3.4,0,7);x.fill();noglow();}
+     glow(INK,8);x.fillStyle=alpha(INK,0.25+v*0.7);
+     x.beginPath();x.arc(ix,ys[i],9+v*7,0,7);x.fill();noglow();
+     x.font=mono(Math.max(12,H*0.018),600);x.fillStyle=INK;x.textAlign="right";
+     x.fillText(v.toFixed(1),ix-22,ys[i]+4);
+     x.textAlign="center";x.fillStyle=c;x.font=mono(Math.max(11.5,H*0.017),650);
+     x.fillText((w>=0?"+":"")+w.toFixed(1),lerp(ix,nx,0.45),lerp(ys[i],ny,0.45)-9);
+   });
+   const fired=b>=1?io(seg(tb,0.4,1.6)):0;
+   glow(YEL,10+fired*28);x.fillStyle=alpha(YEL,0.14+fired*0.45);x.strokeStyle=YEL;x.lineWidth=2;
+   x.beginPath();x.arc(nx,ny,26+fired*5,0,7);x.fill();x.stroke();noglow();
+   if(b>=1){x.font=mono(Math.max(13,H*0.019),700);x.fillStyle=INK;x.textAlign="center";
+     x.fillText((sum*fired).toFixed(2),nx,ny+5);
+     arrow(nx+36,ny,nx+130,ny,YEL,2.5,io(seg(tb,1.2,1.9)),true);
+     x.font=mono(Math.max(11.5,H*0.016),600);x.fillStyle=DIM;x.textAlign="left";
+     x.fillText("→ to the next layer",nx+142,ny+4);
+     x.font=mono(Math.max(13,H*0.019),600);x.textAlign="center";x.fillStyle=DIM;
+     x.fillText("output = squash( x₁w₁ + x₂w₂ + x₃w₃ + x₄w₄ )",W/2,H*0.78);}
+ }},
+
+/* 5 — layers (neurons stack) */
+{kicker:"step_5 · layers",title:"Neurons stack into layers",beats:3,
+ cap:[["Now stack thousands of those neurons, layer after layer.","Each layer's outputs are the next layer's inputs."],
+      ["Features build on features —","early layers catch spelling; deeper ones, grammar; deeper still, meaning."],
+      ["'Deep learning' literally means this: many layers deep.","Watch the signal ripple through."]],
+ draw(t,tb,b){
+   const pos=netPos();
+   const LBLS=["spelling","patterns","grammar","meaning","intent"];
+   if(b>=1){NETW.forEach((conns,li)=>{conns.forEach(cn=>{
+     const p1=pos[li][cn.i],p2=pos[li+1][cn.j];
+     const a=io(seg(tb,b===1?cn.w*0.8:0,b===1?cn.w*0.8+0.5:0.01));
+     x.globalAlpha=a*(0.06+cn.w*0.22);x.strokeStyle=BLUE;x.lineWidth=0.8+cn.w*1.6;
+     x.beginPath();x.moveTo(p1.x,p1.y);x.lineTo(p2.x,p2.y);x.stroke();});});x.globalAlpha=1;}
+   const wavex=b>=2?((t*0.35)%1.3-0.15):-1;
+   pos.forEach((layer,li)=>{
+     const lu=li/(LAYERS.length-1);
+     layer.forEach((p,i)=>{
+       const near=b>=2?Math.max(0,1-Math.abs(lu-wavex)*4):0;
+       const born=io(seg(b===0?tb:1,li*0.12+i*0.02,li*0.12+i*0.02+0.4));
+       x.globalAlpha=born;
+       glow(near>0.02?YEL:BLUE,10+near*22);
+       x.fillStyle=near>0.02?alpha(YEL,0.5+near*0.5):alpha(BLUE,0.75);
+       x.beginPath();x.arc(p.x,p.y,5+near*4,0,7);x.fill();noglow();
+     });
+     if(b>=1){const a=io(seg(tb,b===1?0.6+li*0.25:0,b===1?1.1+li*0.25:0.01));
+       x.globalAlpha=a;x.font=mono(Math.max(11,H*0.016),600);x.fillStyle=DIM;x.textAlign="center";
+       x.fillText(LBLS[li],pos[li][0].x,H*0.80);x.globalAlpha=1;}
+   });
+   x.globalAlpha=1;
+ }},
+
+/* 6 — the transformer (the T in GPT) */
+{kicker:"step_6 · the transformer",title:"The T in GPT",beats:3,
+ cap:[["Arrange those layers like THIS — and you get a transformer.","Embedding at the bottom, a stack of identical blocks, prediction on top."],
+      ["Each block has exactly two parts:","attention — words talk to each other · MLP — each word thinks alone"],
+      ["Your prompt rides bottom to top — through ~96 blocks —","in milliseconds. GPT = Generative · Pre-trained · Transformer."]],
+ draw(t,tb,b){
+   const cx=W/2,sw=Math.min(W*0.4,460);
+   const yBot=H*0.78,yTop=H*0.22;
+   const NB=5,gap=(yBot-yTop)/(NB+1),sh=gap*0.66;
+   const slabs=Array.from({length:NB},(_,i)=>yBot-gap*(i+1));
+   const born=i=>b>0?1:io(seg(tb,0.1+i*0.16,0.6+i*0.16));
+   x.textAlign="center";
+   // tokens in
+   x.globalAlpha=born(0);x.font=mono(Math.max(12,H*0.017),600);x.fillStyle=DIM;
+   x.fillText("tokens in ↑",cx,yBot+gap*0.55);
+   // embedding slab
+   glow(GRN,9);x.strokeStyle=GRN;x.fillStyle=alpha(GRN,0.08);x.lineWidth=1.5;
+   rr(cx-sw/2,yBot-sh/2,sw,sh,9);x.fill();x.stroke();noglow();
+   x.fillStyle=INK;x.font=mono(Math.max(11.5,H*0.0165),650);
+   x.fillText("embedding — tokens become vectors",cx,yBot+4);
+   x.globalAlpha=1;
+   // blocks (middle one expands on beat 1)
+   slabs.forEach((sy,i)=>{
+     const a=born(i+1);
+     const expand=b>=1&&i===2?io(seg(tb,0,0.8)):0;
+     const hh=sh*(1+expand*1.15);
+     x.globalAlpha=a;glow(BLUE,9);x.strokeStyle=BLUE;x.fillStyle=alpha(BLUE,0.07);x.lineWidth=1.5;
+     rr(cx-sw/2,sy-hh/2,sw,hh,9);x.fill();x.stroke();noglow();
+     if(expand>0.45){
+       const half=(hh-24)/2;
+       x.strokeStyle=PUR;x.fillStyle=alpha(PUR,0.12);x.lineWidth=1.3;
+       rr(cx-sw/2+10,sy-hh/2+7,sw-20,half,6);x.fill();x.stroke();
+       x.fillStyle=INK;x.font=mono(Math.max(10.5,H*0.0148),650);
+       x.fillText("attention — words talk to each other",cx,sy-hh/2+7+half/2+4);
+       x.strokeStyle=YEL;x.fillStyle=alpha(YEL,0.10);
+       rr(cx-sw/2+10,sy+hh/2-7-half,sw-20,half,6);x.fill();x.stroke();
+       x.fillStyle=INK;
+       x.fillText("MLP — each word thinks alone",cx,sy+hh/2-7-half/2+4);
+     }else if(a>0.5){x.fillStyle=DIM;x.font=mono(Math.max(10.5,H*0.0148),600);
+       x.fillText("transformer block",cx,sy+4);}
+     x.globalAlpha=1;
+   });
+   // ×96
+   x.globalAlpha=born(NB+1);
+   x.font=mono(Math.max(16,H*0.03),750);x.fillStyle=YEL;x.textAlign="left";
+   glow(YEL,14);x.fillText("× 96",cx+sw/2+22,slabs[2]+6);noglow();
+   // unembedding
+   x.textAlign="center";glow(GRN,9);x.strokeStyle=GRN;x.fillStyle=alpha(GRN,0.08);x.lineWidth=1.5;
+   rr(cx-sw/2,yTop-sh/2,sw,sh,9);x.fill();x.stroke();noglow();
+   x.fillStyle=INK;x.font=mono(Math.max(11.5,H*0.0165),650);
+   x.fillText("unembedding — vectors become probabilities",cx,yTop+4);
+   x.font=mono(Math.max(12,H*0.017),600);x.fillStyle=DIM;
+   x.fillText("next-token guess ↑",cx,yTop-gap*0.5);
+   x.globalAlpha=1;
+   // rising signal dots (beat 2)
+   if(b>=2){for(let k=0;k<6;k++){const ph=((t*0.30)+k*0.17)%1;
+     const dy=lerp(yBot-sh/2,yTop+sh/2,ph),dx=cx-sw*0.38+((k*97)%Math.floor(sw*0.76));
+     x.globalAlpha=Math.sin(ph*Math.PI);glow(INK,12);x.fillStyle=INK;
+     x.beginPath();x.arc(dx,dy,3,0,7);x.fill();noglow();}
+     x.globalAlpha=1;}
+ }},
+
+/* 5 — attention */
+{kicker:"step_7 · attention",title:"Every word looks at every other word",beats:3,
+ cap:[["Zoom into that attention layer — the 2017 breakthrough.","Every word scores every other word: who matters for understanding me?"],
+      ["“it” was too big → it attends to trophy.","(weights illustrative)"],
+      ["Change one word — big → small —","and “it” flips to suitcase. Nobody programmed that rule. It's learned."]],
+ draw(t,tb,b){
+   const small=b>=2;
+   const words=[...ATT];words[11]=small?"small":"big";
+   const fs=Math.max(13,Math.min(H*0.022,W/46));
+   const cy=H*0.52,pos=sentenceLayout(words,cy,fs);
+   // faint all-pair arcs (ambient shimmer)
+   x.lineCap="round";
+   if(b===0){for(let i=0;i<words.length;i++)for(let j=i+1;j<words.length;j++){
+     const ph=Math.sin(t*0.9+i*1.7+j*0.9);if(ph<0.55)continue;
+     const a=(ph-0.55)*0.16;
+     x.strokeStyle=alpha(PUR,a);x.lineWidth=1;
+     const mid=(pos[i]+pos[j])/2,arcH=Math.min(140,Math.abs(pos[j]-pos[i])*0.3+20);
+     x.beginPath();x.moveTo(pos[i],cy-fs*1.3);x.quadraticCurveTo(mid,cy-fs*1.3-arcH,pos[j],cy-fs*1.3);x.stroke();}}
+   // focused arcs from "it"
+   if(b>=1){const WMAP=small?ATT_W_SMALL:ATT_W_BIG;const i=8;
+     const flip=b>=2?io(seg(tb,0,0.8)):1;
+     Object.entries(WMAP).forEach(([j,w])=>{j=+j;
+       const p=out(seg(tb,b===1?0.15:0,b===1?1.0:0.01));
+       const a=(0.25+w*0.75)*p*(b>=2?flip:1);
+       const lw=(1+w*9)*p;
+       const mid=(pos[8]+pos[j])/2,arcH=Math.min(170,Math.abs(pos[j]-pos[8])*0.34+26);
+       x.strokeStyle=alpha(PUR,a);glow(PUR,10+w*18);x.lineWidth=lw;
+       x.beginPath();x.moveTo(pos[8],cy-fs*1.3);x.quadraticCurveTo(mid,cy-fs*1.3-arcH,pos[j],cy-fs*1.3);x.stroke();noglow();
+       // percent labels
+       x.font=mono(fs*0.72,600);x.fillStyle=alpha("#C9B3F5",Math.min(1,p));x.textAlign="center";
+       x.fillText(Math.round(w*100)+"%",pos[j],cy+fs*1.8);
+     });}
+   // words
+   words.forEach((wd,i)=>{
+     const hot=(b>=1)&&(i===8||((b>=1)&&((small?ATT_W_SMALL:ATT_W_BIG)[i])));
+     const col=i===8?PUR:(hot?PUR:FAINT);
+     x.font=mono(fs,i===8||i===11?750:600);
+     x.textAlign="center";
+     if(hot){glow(PUR,12)}
+     x.fillStyle=i===8?"#D9C8FA":(hot?"#C9B3F5":(i===11?YEL:INK));
+     x.fillText(wd,pos[i],cy);noglow();
+   });
+ }},
+
+/* 6 — the prediction */
+{kicker:"step_8 · prediction",title:"Out comes one guess: the next token",beats:2,
+ cap:[["At the top of the stack, the output is just a list:","every token it knows, with a probability."],
+      ["It picks one, and generates it. That's the G in GPT.","One. Single. Token."]],
+ draw(t,tb,b){
+   const fs=Math.max(15,H*0.022);
+   x.font=mono(fs,600);x.textAlign="center";x.fillStyle=DIM;
+   x.fillText("The capital of Tamil Nadu is ▁",W/2,H*0.26);
+   const bw=Math.min(W*0.5,620),x0=W/2-bw*0.32,y0=H*0.36,rh=Math.max(34,H*0.062);
+   PROBS.forEach(([wd,p],i)=>{
+     const grow=out(seg(b===0?tb:1,0.15+i*0.14,0.9+i*0.14));
+     const y=y0+i*rh;
+     x.font=mono(fs,650);x.textAlign="right";x.fillStyle=INK;
+     x.globalAlpha=Math.min(1,grow*1.4);
+     x.fillText(wd,x0-14,y+fs*0.36);
+     const w=bw*(p/100)*grow;
+     const top=i===0;
+     glow(top?BLUE:FAINT,top?16:0);
+     x.fillStyle=top?BLUE:alpha(BLUE,0.35);
+     rr(x0,y-fs*0.55,Math.max(3,w),fs*1.1,4);x.fill();noglow();
+     x.textAlign="left";x.fillStyle=top?INK:DIM;x.font=mono(fs*0.82,600);
+     x.fillText((p*grow).toFixed(1)+"%",x0+Math.max(3,w)+12,y+fs*0.3);
+     x.globalAlpha=1;
+   });
+   if(b>=1){ // Chennai flies up into the sentence
+     const p=io(seg(tb,0.1,1.1));
+     const fromY=y0,toY=H*0.26;
+     x.font=mono(fs,700);x.textAlign="center";
+     glow(BLUE,20);x.fillStyle=BLUE;
+     x.fillText("Chennai",W/2+x.measureText("The capital of Tamil Nadu is ").width/2-x.measureText("▁").width,lerp(fromY,toY,p));
+     noglow();}
+ }},
+
+/* 7 — the loop */
+{kicker:"step_9 · the loop",title:"Predict → pick → append → repeat",beats:2,
+ cap:[["To write a paragraph, it just repeats the loop —","its own last word becomes part of the next question."],
+      ["Watch it run. This is all ChatGPT is doing —","predict, pick, append. Fast."]],
+ draw(t,tb,b){
+   if(b===0){ // the cycle diagram
+     const cx=W/2,cy=H*0.47,R=Math.min(W,H)*0.20;
+     const nodes=[["PREDICT",BLUE,-90],["PICK",YEL,30],["APPEND",GRN,150]];
+     const rot=t*20; // slow degrees
+     nodes.forEach(([lab,c,deg])=>{
+       const a=(deg)*Math.PI/180;
+       const nx=cx+Math.cos(a)*R,ny=cy+Math.sin(a)*R;
+       glow(c,18);x.strokeStyle=c;x.lineWidth=1.8;x.fillStyle=alpha(c,0.10);
+       const wpx=Math.max(96,H*0.15),hpx=Math.max(34,H*0.055);
+       rr(nx-wpx/2,ny-hpx/2,wpx,hpx,10);x.fill();x.stroke();noglow();
+       x.font=mono(Math.max(13,H*0.02),750);x.fillStyle=INK;x.textAlign="center";
+       x.fillText(lab,nx,ny+5);});
+     // arc arrows between nodes
+     [[-90,30,BLUE],[30,150,YEL],[150,270,GRN]].forEach(([d1,d2,c])=>{
+       const pad=26*Math.PI/180;
+       const a1=d1*Math.PI/180+pad,a2=d2*Math.PI/180-pad;
+       x.strokeStyle=alpha(c,0.7);x.lineWidth=2;glow(c,8);
+       x.beginPath();x.arc(cx,cy,R,a1,a2);x.stroke();noglow();
+       const ex=cx+Math.cos(a2)*R,ey=cy+Math.sin(a2)*R;
+       const tx=-Math.sin(a2),ty=Math.cos(a2);
+       x.fillStyle=c;x.beginPath();x.moveTo(ex+tx*10,ey+ty*10);
+       x.lineTo(ex-tx*2-Math.cos(a2)*7,ey-ty*2-Math.sin(a2)*7);
+       x.lineTo(ex-tx*2+Math.cos(a2)*7,ey-ty*2+Math.sin(a2)*7);x.closePath();x.fill();});
+     // orbiting token
+     const oa=t*1.5;
+     glow(INK,16);x.fillStyle=INK;
+     x.beginPath();x.arc(cx+Math.cos(oa)*R,cy+Math.sin(oa)*R,5,0,7);x.fill();noglow();
+   }else{ // live generation
+     const step=Math.min(LOOPW.length,Math.floor(tb/0.85));
+     const frac=(tb%0.85)/0.85;
+     const fs=Math.max(16,H*0.026);
+     x.font=mono(fs,600);x.textAlign="center";
+     const words=["Once","upon","a","time",...LOOPW.slice(0,step)];
+     x.fillStyle=INK;
+     const line=words.join(" ");
+     glow(BLUE,6);x.fillText(line+" ▌",W/2,H*0.40);noglow();
+     // flickering candidates under the line
+     if(step<LOOPW.length){
+       const cands=LOOPALT[step];
+       cands.forEach((c,i)=>{
+         const a=(i===0?0.9:0.35)*io(seg(frac,0.1,0.5));
+         x.globalAlpha=a;x.font=mono(fs*0.8,600);
+         x.fillStyle=i===0?BLUE:DIM;
+         x.fillText(c+(i===0?"  ← 61%":i===1?"  22%":"  9%"),W/2,H*0.52+i*fs*1.3);
+         x.globalAlpha=1;});
+     } else {
+       x.font=serif(fs*0.95,470);x.fillStyle=DIM;
+       x.fillText("…and so on, forever, at ~100 tokens a second.",W/2,H*0.54);
+     }
+   }
+ }},
+
+/* 8 — training */
+{kicker:"step_10 · training",title:"Where do the dials come from?",beats:3,
+ cap:[["Before you ever met it, the model read the internet —","and played guess-the-next-word on trillions of tokens."],
+      ["Every wrong guess nudges every dial a tiny bit.","Billions of nudges later, the guesses get good."],
+      ["That's the P in GPT — Pre-trained.","Nobody wrote rules. The rules grew."]],
+ draw(t,tb,b){
+   // streaming text (left → center)
+   const prog=b===0?seg(tb,0,3):1;
+   STREAM.forEach((s,i)=>{
+     const speed=0.12+((i*37)%10)/55;
+     const ph=((t*speed)+i/STREAM.length)%1;
+     const sx=lerp(-W*0.2,W*0.55,ph);
+     const sy=H*(0.18+((i*53)%100)/100*0.55);
+     x.globalAlpha=prog*(0.10+0.3*Math.sin(ph*Math.PI));
+     x.font=mono(Math.max(11,H*0.016),500);x.textAlign="left";x.fillStyle=DIM;
+     x.fillText(s,sx,sy);x.globalAlpha=1;});
+   // weight grid (right): jitter settles as beat advances
+   const settle=b===0?0:(b===1?io(seg(tb,0,3)):1);
+   const gx0=W*0.60,gy0=H*0.22,gw=W*0.32,gh=H*0.5;
+   WGRID.forEach((p,i)=>{
+     const col=i%26,row=(i/26)|0;
+     const jx=p.jx*14*(1-settle)*Math.sin(t*2.4+p.ph);
+     const jy=p.jy*14*(1-settle)*Math.cos(t*2.1+p.ph);
+     const px=gx0+col/25*gw+jx,py=gy0+row/14*gh+jy;
+     const c=settle>0.6?BLUE:DIM;
+     x.globalAlpha=0.25+settle*0.55;
+     x.fillStyle=c;x.beginPath();x.arc(px,py,1.6+settle*0.9,0,7);x.fill();});
+   x.globalAlpha=1;
+   x.font=mono(Math.max(11,H*0.015),600);x.fillStyle=DIM;x.textAlign="center";
+   x.fillText("the dials (weights)",gx0+gw/2,gy0+gh+26);
+   // loss curve bottom-left (beat >=1)
+   if(b>=1){const lx0=W*0.10,ly0=H*0.68,lw=W*0.34,lh=H*0.16;
+     const p=b===1?seg(tb,0,4):1;
+     x.strokeStyle=FAINT;x.lineWidth=1;
+     x.beginPath();x.moveTo(lx0,ly0);x.lineTo(lx0,ly0+lh);x.lineTo(lx0+lw,ly0+lh);x.stroke();
+     x.strokeStyle=RED;x.lineWidth=2;glow(RED,10);
+     x.beginPath();
+     const N=90;
+     for(let i=0;i<=N*p;i++){const u=i/N;
+       const v=Math.exp(-u*3.2)+0.16+Math.sin(u*40+2)*0.035*Math.exp(-u*2);
+       const px=lx0+u*lw,py=ly0+lh-(v/1.2)*lh*0.92;
+       i===0?x.moveTo(px,py):x.lineTo(px,py);}
+     x.stroke();noglow();
+     x.font=mono(Math.max(11,H*0.015),600);x.fillStyle=DIM;x.textAlign="left";
+     x.fillText("error (loss) ↓",lx0,ly0-8);}
+ }},
+
+/* 9 — scale */
+{kicker:"step_11 · scale",title:"Now multiply by a few billion",beats:2,
+ cap:[["Everything you just saw is the real mechanism.","The only thing left is scale."],
+      []],
+ draw(t,tb,b){
+   // starfield
+   STARS.forEach(s=>{
+     const drift=(t*0.02)%1;
+     const r=((s.r+drift)%1);
+     const px=W/2+Math.cos(s.a)*r*W*0.6,py=H/2+Math.sin(s.a)*r*H*0.6;
+     const tw=0.4+0.6*Math.abs(Math.sin(t*1.3+s.tw));
+     x.globalAlpha=r*0.75*tw;x.fillStyle=BLUE;
+     x.beginPath();x.arc(px,py,1.3+r*1.6,0,7);x.fill();});
+   x.globalAlpha=1;
+   // counter (beat 0 only — the end card takes over on beat 1)
+   if(b===0){
+     const p=out(seg(tb,0.2,3.2));
+     const val=Math.floor(Math.pow(p,3)*1.8e12);
+     x.font=serif(Math.max(34,H*0.075),600);x.textAlign="center";
+     glow(BLUE,24);x.fillStyle=INK;
+     x.fillText(val.toLocaleString("en-US"),W/2,H*0.44);noglow();
+     x.font=mono(Math.max(13,H*0.019),600);x.fillStyle=DIM;
+     x.fillText("dials, reportedly, in GPT-4 — trained on ~13,000,000,000,000 tokens",W/2,H*0.44+Math.max(30,H*0.055));
+   }
+   if(b>=1){endEl.classList.add("show");}else{endEl.classList.remove("show");}
+ }},
+];
+
+/* ============================================================
+   engine
+============================================================ */
+const endEl=document.getElementById("end");
+let si=0,beat=0,tScene=0,tBeat=0,last=0;
+function total(){return SCENES.length}
+function advance(dir){
+  const sc=SCENES[si];
+  if(dir>0){ if(beat<sc.beats-1){beat++;tBeat=0;} else if(si<SCENES.length-1){si++;beat=0;tScene=0;tBeat=0;} }
+  else{ if(beat>0){beat--;tBeat=0;} else if(si>0){si--;beat=SCENES[si].beats-1;tScene=0;tBeat=0;} }
+  if(!(si===SCENES.length-1&&beat>=1)) endEl.classList.remove("show");
+  hint.classList.add("faded");
 }
-function softmaxRow(row){
-  let mx=-1e9; for(let j=0;j<V;j++) mx=Math.max(mx,row[j]);
-  const e=new Float64Array(V); let s=0;
-  for(let j=0;j<V;j++){ e[j]=Math.exp(row[j]-mx); s+=e[j]; }
-  for(let j=0;j<V;j++) e[j]/=s; return e;
-}
-function trainSteps(n){
-  const lr=Math.max(0.08,0.5*Math.pow(0.9995,stepN));
-  let lossAcc=0,cnt=0;
-  for(let s=0;s<n;s++){
-    // minibatch of 32
-    const grad=new Float64Array(V*V); const seen=new Set();
-    for(let b=0;b<32;b++){
-      const [a,y]=PAIRS[(Math.random()*PAIRS.length)|0];
-      seen.add(a);
-      const row=W.subarray(a*V,a*V+V);
-      const p=softmaxRow(row);
-      lossAcc+=-Math.log(Math.max(p[y],1e-9)); cnt++;
-      for(let j=0;j<V;j++) grad[a*V+j]+=p[j];
-      grad[a*V+y]-=1;
-    }
-    seen.forEach(a=>{ for(let j=0;j<V;j++) W[a*V+j]-=lr*grad[a*V+j]/32; });
-    stepN++;
-  }
-  return lossAcc/cnt;
-}
-function sampleName(){
-  let c=0,out="",guard=0;
-  while(guard++<24){
-    const p=softmaxRow(W.subarray(c*V,c*V+V));
-    let r=Math.random(),n=0;
-    for(let j=0;j<V;j++){ r-=p[j]; if(r<=0){n=j;break;} }
-    if(n===0){ if(out.length>=2) break; else continue; }
-    out+=CHARS[n]; c=n;
-  }
-  return out||"—";
-}
-function addSamples(tag){
-  const box=$("#samples");
-  const row=document.createElement("div"); row.className="srow";
-  row.innerHTML=`<span class="stp">${tag}</span><span class="stx">${Array.from({length:4},sampleName).join("  ·  ")}</span>`;
-  box.prepend(row);
-  while(box.children.length>9) box.lastChild.remove();
-}
-function drawLoss(hover){
-  const svg=$("#loss"); svg.innerHTML="";
-  const Wd=520,H=240,padL=40,padB=24,padT=10,padR=8;
-  // recessive grid + axis
-  const yMax=3.6,yMin=1.8;
-  for(const yv of [2.0,2.4,2.8,3.2,3.6]){
-    const y=padT+(H-padT-padB)*(1-(yv-yMin)/(yMax-yMin));
-    el("line",{x1:padL,y1:y,x2:Wd-padR,y2:y,stroke:"#E8EAEF","stroke-width":1},svg);
-    el("text",{x:padL-8,y:y+4,fill:"#98A0AD","font-size":"10.5","text-anchor":"end","font-family":"ui-monospace,monospace"},svg).textContent=yv.toFixed(1);
-  }
-  el("text",{x:Wd-padR,y:H-6,fill:"#98A0AD","font-size":"10.5","text-anchor":"end","font-family":"ui-monospace,monospace"},svg).textContent="training steps →";
-  if(lossHist.length<2) return;
-  const xs=i=>padL+(Wd-padL-padR)*i/(Math.max(60,lossHist.length)-1);
-  const ys=v=>padT+(H-padT-padB)*(1-(Math.min(yMax,Math.max(yMin,v))-yMin)/(yMax-yMin));
-  const pts=lossHist.map((v,i)=>`${xs(i).toFixed(1)},${ys(v).toFixed(1)}`).join(" ");
-  el("polyline",{points:pts,fill:"none",stroke:"#E8442E","stroke-width":2,"stroke-linejoin":"round"},svg);
-  const last=lossHist[lossHist.length-1];
-  el("circle",{cx:xs(lossHist.length-1),cy:ys(last),r:3.5,fill:"#E8442E",stroke:"#fff","stroke-width":1.5},svg);
-}
-$("#nameCount").textContent=NAMES.length+" names";
-const HOP=24; // steps per animation frame (tuned so the curve is watchable)
-function loop(){
-  if(!running) return;
-  const loss=trainSteps(HOP);
-  lossHist.push(loss);
-  $("#stepN").textContent=stepN.toLocaleString();
-  $("#lossN").textContent=loss.toFixed(3);
-  drawLoss();
-  if(stepN%600===0) addSamples("step "+stepN.toLocaleString());
-  if(stepN>=9600){ running=false; $("#trainBtn").innerHTML="&#9654; train more"; addSamples("final"); return; }
-  rafId=requestAnimationFrame(loop);
-}
-$("#trainBtn").addEventListener("click",()=>{
-  running=!running;
-  $("#trainBtn").innerHTML=running?"&#10074;&#10074; pause":"&#9654; train";
-  if(running) loop(); else cancelAnimationFrame(rafId);
+addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"||e.key===" "||e.key==="ArrowDown"||e.key==="PageDown"){e.preventDefault();advance(1)}
+  else if(e.key==="ArrowLeft"||e.key==="ArrowUp"||e.key==="PageUp"){e.preventDefault();advance(-1)}
+  else if(e.key==="r"||e.key==="R"){tBeat=0;tScene=0}
+  else if(e.key==="f"||e.key==="F"){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
 });
-$("#trainReset").addEventListener("click",initTrain);
-initTrain();
+cv.addEventListener("click",()=>advance(1));
+document.getElementById("replay").addEventListener("click",e=>{e.stopPropagation();si=0;beat=0;tScene=0;tBeat=0;endEl.classList.remove("show")});
+const hint=document.getElementById("hint");
+setTimeout(()=>hint.classList.add("faded"),7000);
+
+function frame(now){
+  const dt=Math.min(0.05,(now-last)/1000||0);last=now;
+  tScene+=dt;tBeat+=dt;
+  // bg
+  x.fillStyle=BG;x.fillRect(0,0,W,H);
+  // vignette
+  const g=x.createRadialGradient(W/2,H/2,Math.min(W,H)*0.2,W/2,H/2,Math.max(W,H)*0.75);
+  g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,0.5)");
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+  const sc=SCENES[si];
+  sc.draw(tScene,tBeat,beat);
+  heading(sc.kicker,sc.title,io(seg(tScene,0,0.7)));
+  caption(sc.cap[beat],tBeat);
+  // progress: scene dots + beat pips
+  const n=total(),dotGap=Math.min(26,W/(n+6));
+  const px0=W/2-(n-1)*dotGap/2,py=H-Math.max(22,H*0.035);
+  for(let i=0;i<n;i++){
+    x.globalAlpha=i===si?1:0.35;
+    x.fillStyle=i<si?BLUE:(i===si?INK:DIM);
+    x.beginPath();x.arc(px0+i*dotGap,py,i===si?4:2.6,0,7);x.fill();}
+  x.globalAlpha=0.8;x.font=mono(11,600);x.fillStyle=DIM;x.textAlign="right";
+  x.fillText((si+1)+"/"+n+" · "+(beat+1)+"/"+sc.beats,W-20,H-16);
+  x.globalAlpha=1;
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
 </script>
 </body>
 </html>
