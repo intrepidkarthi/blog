@@ -18,7 +18,7 @@ The role growing in its place is harder to name because it is less pure. It is t
 
 ## The India-specific part
 
-The services-versus-product split I have written about before is widening under this pressure, and it matters more for a fresher now than it did a few years ago. The large services firms are under real margin pressure from exactly this shift, which makes a generic role there a shakier bet than it looks. The product companies and the better-funded startups are where the growing role lives, and they hire on evidence, which means the same thing it always meant: a real project you can defend beats a stack of certificates. I laid out that path in [how to become an ML engineer here](/writing/how-to-become-machine-learning-engineer-india), and the direction has not changed, only sharpened.
+The services-versus-product split I have written about before is widening under this pressure, and it matters more for a fresher now than it did a few years ago. The large services firms are under real margin pressure from exactly this shift, which makes a generic role there a shakier bet than it looks. The product companies and the better-funded startups are where the growing role lives, and they hire on evidence, which means the same thing it always meant: a real project you can defend beats a stack of certificates. I laid out that path in [how to become an ML engineer here](/writing/how-to-become-machine-learning-engineer-india), and the direction has not changed, only sharpened. Most freshers have no cheap way to build the generative AI half of that evidence, which is why [the course I teach on it](/genai/) is online in full, labs included.
 
 ## What this means for how you prepare
 

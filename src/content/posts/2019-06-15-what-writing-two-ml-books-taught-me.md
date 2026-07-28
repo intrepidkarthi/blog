@@ -68,4 +68,4 @@ None of these were planned. None of them showed up in the royalty statement. All
 
 The reason to write a technical book is not the book. It is the everything-else that the book attracts toward you over the following decade. The book is the signal. The signal selects for the kind of opportunities you would not otherwise have known existed.
 
-If you are weighing whether to write a technical book, do not weigh it against the royalty. Weigh it against the next decade of byproducts. The byproducts are what justify the twenty months. Almost everything else does not.
+If you are weighing whether to write a technical book, do not weigh it against the royalty. Weigh it against the next decade of byproducts. The byproducts are what justify the twenty months. Almost everything else does not. That is also why the [generative AI course I teach now](/genai/teach-this-course.html) is published with its decks, labs and instructor notes intact, so somebody else can run it without asking me first.

@@ -555,6 +555,31 @@
       "source": "/blog/:path*",
       "destination": "/writing/",
       "permanent": true
+    },
+    {
+      "source": "/genai/LEARNING-GUIDE.html",
+      "destination": "/genai/learning-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/genai/TEACH-THIS-YOURSELF.html",
+      "destination": "/genai/teach-this-course.html",
+      "permanent": true
+    },
+    {
+      "source": "/genai/ZERO-SETUP.html",
+      "destination": "/genai/zero-setup.html",
+      "permanent": true
+    },
+    {
+      "source": "/genai/TIMING.html",
+      "destination": "/genai/timing-guide.html",
+      "permanent": true
+    },
+    {
+      "source": "/genai/LOCALIZATION.html",
+      "destination": "/genai/localization.html",
+      "permanent": true
     }
   ],
   "headers": [

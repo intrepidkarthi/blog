@@ -28,4 +28,4 @@ There is a moment, usually a few weeks in, where the next chapter stops adding a
 
 *Mobile Artificial Intelligence Projects* is structured the way it is on purpose: it is seven projects, not seven lectures. You build a thing in each chapter and ship it to a device. I wrote it that way because I do not believe the reading is where the learning is, and I was not going to write a book that pretended otherwise. If you take one thing from a book about ML, including mine, it should be a project you finished, not a definition you memorised.
 
-Read one. Maybe two. Then close it and build ten small things badly. The books are a map. Nobody ever learned the terrain by studying the map harder.
+Read one. Maybe two. Then close it and build ten small things badly. The books are a map. Nobody ever learned the terrain by studying the map harder. For generative AI I stopped looking for a book to recommend and built the thing instead: [six sessions](/genai/), each ending in something you shipped rather than something you read.

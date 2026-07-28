@@ -26,4 +26,4 @@ Constrain the output to a schema so a drifted answer is at least a well-formed o
 
 I have argued that [generation got cheap and verification became the bottleneck](/writing/the-gauge-broke). Non-determinism is that lesson at the level of a single call. You cannot trust the output because it generated cleanly. You trust it because something downstream checked it. The model is a generator. It is fast, it is useful, and it does not promise you the same answer twice. The reliability has to live in what you build around it.
 
-Temperature zero does not make the model honest. It makes it confident. Those are not the same thing, and in a system where a wrong token moves money, the difference is the whole job.
+Temperature zero does not make the model honest. It makes it confident. Those are not the same thing, and in a system where a wrong token moves money, the difference is the whole job. I built [a page that walks one sentence through the machine](/genai/how-llms-work.html) with the temperature knob exposed, which makes the non-determinism a lot less mystical.
