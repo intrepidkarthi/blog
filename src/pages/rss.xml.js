@@ -2,7 +2,10 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
 export async function GET(context) {
-  const posts = await getCollection("posts", ({ data }) => !data.draft && data.date <= new Date());
+  const posts = await getCollection(
+    "posts",
+    ({ data }) => !data.draft && !data.noindex && data.date <= new Date()
+  );
   return rss({
     title: "intrepidkarthi",
     description:

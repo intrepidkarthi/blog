@@ -64,7 +64,6 @@ Career highlights: CTO at Pi42 (crypto exchange), Director of Engineering at nfe
 
 - [18 Years of WordPress. I'm Done.](https://intrepidkarthi.com/writing/why-i-left-wordpress-after-18-years.md): Full migration story from WordPress to Astro + Markdown + Vercel.
 - [What the 2022 webshell compromise taught me about owning my archive](https://intrepidkarthi.com/writing/what-2022-webshell-compromise-taught-me.md): Own the content, do not rent the runtime.
-- [Personal site as compounding asset — the 18-year retrospective](https://intrepidkarthi.com/writing/personal-site-as-compounding-asset.md): What compounded, what did not, what to do differently.
 - [llms.txt in practice](https://intrepidkarthi.com/writing/llms-txt-in-practice.md): What it is, what to put in it, the current crawler landscape.
 - [Building topical authority from zero traffic](https://intrepidkarthi.com/writing/building-topical-authority-from-zero-traffic.md): The 3-5-7 framework and the 12-month compounding curve.
 

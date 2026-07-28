@@ -39,7 +39,7 @@ Most of those projects came directly from hackathon weekends.
 
 ## The TEDx invitation
 
-In November 2017 [TEDxSOAUniversity](/tedx-building-better-software) invited me to speak. The talk was titled *"Building Better Software"* — but the actual content was an attempt to compress what I'd absorbed from 15+ hackathons + writing two books into 18 minutes.
+In November 2017 [TEDxSOAUniversity](/writing/tedx-building-better-software/) invited me to speak. The talk was titled *"Building Better Software"* — but the actual content was an attempt to compress what I'd absorbed from 15+ hackathons + writing two books into 18 minutes.
 
 The TEDx happened *while I was writing the books*. It was the same material, in three forms, simultaneously: hackathon → book chapter → talk. That triangulation forced clarity. You cannot give a TEDx talk on something you can't say in three sentences. You cannot write a book on something you can't say in three pages. You cannot win a hackathon with something you can't demo in 90 seconds. All three forced me to compress.
 
@@ -70,4 +70,4 @@ That's how most useful careers work, I think.
 
 ---
 
-*Code repo for the projects book: [intrepidkarthi/Machine-Learning-Projects-for-Mobile-Applications](https://github.com/intrepidkarthi/Machine-Learning-Projects-for-Mobile-Applications). The TEDx talk: [Building Better Software](/tedx-building-better-software).*
+*Code repo for the projects book: [intrepidkarthi/Machine-Learning-Projects-for-Mobile-Applications](https://github.com/intrepidkarthi/Machine-Learning-Projects-for-Mobile-Applications). The TEDx talk: [Building Better Software](/writing/tedx-building-better-software/).*

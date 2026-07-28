@@ -1,6 +1,6 @@
 ---
 title: "building topical authority from zero traffic"
-date: 2026-08-08
+date: 2026-07-28
 slug: building-topical-authority-from-zero-traffic
 excerpt: "Three months. Five posts in a single narrow niche. The trajectory you can actually hit, and the mistakes that compound badly if you skip them."
 tags: [seo, topical-authority, blogging, niche, content-strategy]

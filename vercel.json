@@ -3,558 +3,591 @@
   "redirects": [
     {
       "source": "/writing/onthego-civic-tech-hackathon",
-      "destination": "/writing/onthego-civic-accountability-at-mobilesparks-2015",
+      "destination": "/writing/onthego-civic-accountability-at-mobilesparks-2015/",
       "permanent": true
     },
     {
       "source": "/writing/onthego-civic-tech-hackathon/",
-      "destination": "/writing/onthego-civic-accountability-at-mobilesparks-2015",
+      "destination": "/writing/onthego-civic-accountability-at-mobilesparks-2015/",
       "permanent": true
     },
     {
       "source": "/2007/12/17/hello-world",
-      "destination": "/writing/hello-world",
+      "destination": "/writing/hello-world/",
       "permanent": true
     },
     {
       "source": "/2007/12/17/hello-world/",
-      "destination": "/writing/hello-world",
+      "destination": "/writing/hello-world/",
       "permanent": true
     },
     {
       "source": "/2007/12/27/mybook",
-      "destination": "/writing/mybook",
+      "destination": "/writing/mybook/",
       "permanent": true
     },
     {
       "source": "/2007/12/27/mybook/",
-      "destination": "/writing/mybook",
+      "destination": "/writing/mybook/",
       "permanent": true
     },
     {
       "source": "/2007/12/27/natpu",
-      "destination": "/writing/natpu",
+      "destination": "/writing/natpu/",
       "permanent": true
     },
     {
       "source": "/2007/12/27/natpu/",
-      "destination": "/writing/natpu",
+      "destination": "/writing/natpu/",
       "permanent": true
     },
     {
       "source": "/2007/12/27/to-my-god",
-      "destination": "/writing/to-my-god",
+      "destination": "/writing/to-my-god/",
       "permanent": true
     },
     {
       "source": "/2007/12/27/to-my-god/",
-      "destination": "/writing/to-my-god",
+      "destination": "/writing/to-my-god/",
       "permanent": true
     },
     {
       "source": "/2007/12/27/what-is-memory-leak",
-      "destination": "/writing/what-is-memory-leak",
+      "destination": "/writing/what-is-memory-leak/",
       "permanent": true
     },
     {
       "source": "/2007/12/27/what-is-memory-leak/",
-      "destination": "/writing/what-is-memory-leak",
+      "destination": "/writing/what-is-memory-leak/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/c-online-test",
-      "destination": "/writing/c-online-test-2007",
+      "destination": "/writing/c-online-test-2007/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/c-online-test/",
-      "destination": "/writing/c-online-test-2007",
+      "destination": "/writing/c-online-test-2007/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/eula-vs-gpl",
-      "destination": "/writing/eula-vs-gpl",
+      "destination": "/writing/eula-vs-gpl/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/eula-vs-gpl/",
-      "destination": "/writing/eula-vs-gpl",
+      "destination": "/writing/eula-vs-gpl/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/googles-new-service",
-      "destination": "/writing/googles-new-service",
+      "destination": "/writing/googles-new-service/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/googles-new-service/",
-      "destination": "/writing/googles-new-service",
+      "destination": "/writing/googles-new-service/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/kaadhal",
-      "destination": "/writing/kaadhal",
+      "destination": "/writing/kaadhal/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/kaadhal/",
-      "destination": "/writing/kaadhal",
+      "destination": "/writing/kaadhal/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/kalloori",
-      "destination": "/writing/kalloori",
+      "destination": "/writing/kalloori/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/kalloori/",
-      "destination": "/writing/kalloori",
+      "destination": "/writing/kalloori/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/news-today",
-      "destination": "/writing/news-today",
+      "destination": "/writing/news-today/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/news-today/",
-      "destination": "/writing/news-today",
+      "destination": "/writing/news-today/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/polladhavan",
-      "destination": "/writing/polladhavan",
+      "destination": "/writing/polladhavan/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/polladhavan/",
-      "destination": "/writing/polladhavan",
+      "destination": "/writing/polladhavan/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/saw-iv",
-      "destination": "/writing/saw-iv",
+      "destination": "/writing/saw-iv/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/saw-iv/",
-      "destination": "/writing/saw-iv",
+      "destination": "/writing/saw-iv/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/simple-triangle-but-4-diff-approach",
-      "destination": "/writing/simple-triangle-but-4-diff-approach",
+      "destination": "/writing/simple-triangle-but-4-diff-approach/",
       "permanent": true
     },
     {
       "source": "/2007/12/28/simple-triangle-but-4-diff-approach/",
-      "destination": "/writing/simple-triangle-but-4-diff-approach",
+      "destination": "/writing/simple-triangle-but-4-diff-approach/",
       "permanent": true
     },
     {
       "source": "/2007/12/30/about-my-city",
-      "destination": "/writing/about-my-city",
+      "destination": "/writing/about-my-city/",
       "permanent": true
     },
     {
       "source": "/2007/12/30/about-my-city/",
-      "destination": "/writing/about-my-city",
+      "destination": "/writing/about-my-city/",
       "permanent": true
     },
     {
       "source": "/2007/12/30/factory-waste-produces-enough-energy-for-750-homes-nice-one",
-      "destination": "/writing/factory-waste-produces-enough-energy-for-750-homes-nice-one",
+      "destination": "/writing/factory-waste-produces-enough-energy-for-750-homes-nice-one/",
       "permanent": true
     },
     {
       "source": "/2007/12/30/factory-waste-produces-enough-energy-for-750-homes-nice-one/",
-      "destination": "/writing/factory-waste-produces-enough-energy-for-750-homes-nice-one",
+      "destination": "/writing/factory-waste-produces-enough-energy-for-750-homes-nice-one/",
       "permanent": true
     },
     {
       "source": "/2007/12/30/mig33",
-      "destination": "/writing/mig33",
+      "destination": "/writing/mig33/",
       "permanent": true
     },
     {
       "source": "/2007/12/30/mig33/",
-      "destination": "/writing/mig33",
+      "destination": "/writing/mig33/",
       "permanent": true
     },
     {
       "source": "/2007/12/31/let-us-walk-on-2008",
-      "destination": "/writing/let-us-walk-on-2008",
+      "destination": "/writing/let-us-walk-on-2008/",
       "permanent": true
     },
     {
       "source": "/2007/12/31/let-us-walk-on-2008/",
-      "destination": "/writing/let-us-walk-on-2008",
+      "destination": "/writing/let-us-walk-on-2008/",
       "permanent": true
     },
     {
       "source": "/2008/01/02/new-year",
-      "destination": "/writing/new-year",
+      "destination": "/writing/new-year/",
       "permanent": true
     },
     {
       "source": "/2008/01/02/new-year/",
-      "destination": "/writing/new-year",
+      "destination": "/writing/new-year/",
       "permanent": true
     },
     {
       "source": "/2008/01/08/yo-yo-robo-on-d-track",
-      "destination": "/writing/yo-yo-robo-on-d-track",
+      "destination": "/writing/yo-yo-robo-on-d-track/",
       "permanent": true
     },
     {
       "source": "/2008/01/08/yo-yo-robo-on-d-track/",
-      "destination": "/writing/yo-yo-robo-on-d-track",
+      "destination": "/writing/yo-yo-robo-on-d-track/",
       "permanent": true
     },
     {
       "source": "/2009/06/28/generating-random-number-using-mysql-query",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/06/28/generating-random-number-using-mysql-query/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/09/27/converting-a-string-to-upper-case",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/09/27/converting-a-string-to-upper-case/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/09/27/reverse-a-linked-list",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/09/27/reverse-a-linked-list/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/09/28/how-to-calculate-the-no-of-bits-in-an-integer",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/09/28/how-to-calculate-the-no-of-bits-in-an-integer/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/10/28/scheme-language-basic-programs-set-1",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/10/28/scheme-language-basic-programs-set-1/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/10/28/scheme-language-basic-programs-set-2",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2009/10/28/scheme-language-basic-programs-set-2/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2010/10/07/movie-review-endhiranrobo",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2010/10/07/movie-review-endhiranrobo/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2011/10/13/i-was-always-on-facebook",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2011/10/13/i-was-always-on-facebook/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/04/29/cygwin_child_info_fork_abort-address-space_issue",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/04/29/cygwin_child_info_fork_abort-address-space_issue/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/05/12/firefox-banned-on-windows-8",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/05/12/firefox-banned-on-windows-8/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/05/15/an-alternative-attitude",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/05/15/an-alternative-attitude/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/06/19/running-out-of-money-time-and-sleep-for-the-month",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/06/19/running-out-of-money-time-and-sleep-for-the-month/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/06/26/reality-is-a-bullshit-really",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/06/26/reality-is-a-bullshit-really/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/06/29/presentation-on-foss-and-lamp-architecture",
-      "destination": "/writing/presentation-on-foss-and-lamp-architecture",
+      "destination": "/writing/presentation-on-foss-and-lamp-architecture/",
       "permanent": true
     },
     {
       "source": "/2012/06/29/presentation-on-foss-and-lamp-architecture/",
-      "destination": "/writing/presentation-on-foss-and-lamp-architecture",
+      "destination": "/writing/presentation-on-foss-and-lamp-architecture/",
       "permanent": true
     },
     {
       "source": "/2012/07/09/the-books-i-read",
-      "destination": "/writing/books-i-have-read",
+      "destination": "/writing/books-i-have-read/",
       "permanent": true
     },
     {
       "source": "/2012/07/09/the-books-i-read/",
-      "destination": "/writing/books-i-have-read",
+      "destination": "/writing/books-i-have-read/",
       "permanent": true
     },
     {
       "source": "/2012/07/23/mongo-db-with-php-using-xampp-in-windows",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/07/23/mongo-db-with-php-using-xampp-in-windows/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/09/22/from-microsoft-windows-8-appfest-contest",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2012/09/22/from-microsoft-windows-8-appfest-contest/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2013/02/03/copying-contacts-from-nokia-symbian-mobile-to-android-mobile",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2013/02/03/copying-contacts-from-nokia-symbian-mobile-to-android-mobile/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2013/05/26/rabbitmq-setup-in-android",
-      "destination": "/writing/twelve-hours-setting-up-rabbitmq-on-ubuntu-for-android",
+      "destination": "/writing/twelve-hours-setting-up-rabbitmq-on-ubuntu-for-android/",
       "permanent": true
     },
     {
       "source": "/2013/05/26/rabbitmq-setup-in-android/",
-      "destination": "/writing/twelve-hours-setting-up-rabbitmq-on-ubuntu-for-android",
+      "destination": "/writing/twelve-hours-setting-up-rabbitmq-on-ubuntu-for-android/",
       "permanent": true
     },
     {
       "source": "/2013/07/08/frequent-wlan-disconnection-in-ubuntu-12-04",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2013/07/08/frequent-wlan-disconnection-in-ubuntu-12-04/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2014/01/vodafone-is-reading-smsmms",
-      "destination": "/writing/vodafone-is-reading-smsmms",
+      "destination": "/writing/vodafone-is-reading-smsmms/",
       "permanent": true
     },
     {
       "source": "/2014/01/vodafone-is-reading-smsmms/",
-      "destination": "/writing/vodafone-is-reading-smsmms",
+      "destination": "/writing/vodafone-is-reading-smsmms/",
       "permanent": true
     },
     {
       "source": "/2014/07/03/what-did-i-learn-in-25-years",
-      "destination": "/writing/what-did-i-learn-in-25-years",
+      "destination": "/writing/what-did-i-learn-in-25-years/",
       "permanent": true
     },
     {
       "source": "/2014/07/03/what-did-i-learn-in-25-years/",
-      "destination": "/writing/what-did-i-learn-in-25-years",
+      "destination": "/writing/what-did-i-learn-in-25-years/",
       "permanent": true
     },
     {
       "source": "/2023/01/15/an-overview-on-indian-tax-system",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2023/01/15/an-overview-on-indian-tax-system/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2023/01/15/available-income-tax-returns-forms-in-india",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2023/01/15/available-income-tax-returns-forms-in-india/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/autosyngen",
-      "destination": "/writing/automatic-synonym-generator",
+      "destination": "/writing/automatic-synonym-generator/",
       "permanent": true
     },
     {
       "source": "/autosyngen/",
-      "destination": "/writing/automatic-synonym-generator",
+      "destination": "/writing/automatic-synonym-generator/",
       "permanent": true
     },
     {
       "source": "/projects/autosyngen.html",
-      "destination": "/writing/automatic-synonym-generator",
+      "destination": "/writing/automatic-synonym-generator/",
       "permanent": true
     },
     {
       "source": "/projects/autosyngen.html/",
-      "destination": "/writing/automatic-synonym-generator",
+      "destination": "/writing/automatic-synonym-generator/",
       "permanent": true
     },
     {
       "source": "/projects",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/projects/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/toss",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/toss/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/tedx-building-better-software",
-      "destination": "/writing",
+      "destination": "/writing/tedx-building-better-software/",
       "permanent": true
     },
     {
       "source": "/tedx-building-better-software/",
-      "destination": "/writing",
+      "destination": "/writing/tedx-building-better-software/",
       "permanent": true
     },
     {
       "source": "/blog/sitemap.xml",
-      "destination": "/sitemap-index.xml",
+      "destination": "/sitemap-index.xml/",
       "permanent": true
     },
     {
       "source": "/blog/sitemap.xml/",
-      "destination": "/sitemap-index.xml",
+      "destination": "/sitemap-index.xml/",
       "permanent": true
     },
     {
       "source": "/sitemap/xml",
-      "destination": "/sitemap-index.xml",
+      "destination": "/sitemap-index.xml/",
       "permanent": true
     },
     {
       "source": "/sitemap/xml/",
-      "destination": "/sitemap-index.xml",
+      "destination": "/sitemap-index.xml/",
       "permanent": true
     },
     {
       "source": "/2007/12",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/2007/12/",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/page/:n*",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/sitemap.xml",
-      "destination": "/sitemap-index.xml",
+      "destination": "/sitemap-index.xml/",
       "permanent": true
     },
     {
       "source": "/:path((?:19|20)[0-9]{2}/.*)",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/blog",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
     },
     {
       "source": "/blog/:path*",
-      "destination": "/writing",
+      "destination": "/writing/",
       "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/genai/(.*)\\.(md|ipynb|py|pdf)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/genai/instructor-notes/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/writing/(.*)\\.md",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        }
+      ]
     }
   ]
 }

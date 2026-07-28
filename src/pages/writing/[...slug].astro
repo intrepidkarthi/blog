@@ -27,7 +27,6 @@ const ogImage = `/og/${slug}.png`;
   description={post.data.excerpt ?? `${post.data.title} — by Karthikeyan NG`}
   active="writing"
   file={`~/intrepidkarthi/writing/${slug}.md`}
-  canonicalUrl={post.data.canonical_url}
   ogType="article"
   ogImage={ogImage}
   publishedTime={post.data.date.toISOString()}
@@ -57,8 +56,8 @@ const ogImage = `/og/${slug}.png`;
       {post.data.excerpt && <p class="excerpt">{post.data.excerpt}</p>}
       {post.data.canonical_url && (
         <p class="canonical">
-          <span class="dim">canonical:</span>{" "}
-          <a href={post.data.canonical_url} rel="noopener" target="_blank">
+          <span class="dim">also published at:</span>{" "}
+          <a href={post.data.canonical_url} rel="noopener nofollow" target="_blank">
             {post.data.canonical_url}
           </a>
         </p>
