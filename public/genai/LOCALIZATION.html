@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teaching this somewhere else — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="A swap-kit for instructors running this GenAI course outside Madurai — what to localize, what is load-bearing, and what not to touch.">
+<meta property="og:title" content="Teaching this somewhere else">
+<meta property="og:description" content="A swap-kit for instructors running this GenAI course outside Madurai.">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#1D3AD1;--accentpale:#E3E9FF;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="index.html">← Course home</a></nav>
+  <div class="kicker">For instructors</div>
+  <h1>Teaching this somewhere else</h1>
+  <p class="lead">A swap-kit for instructors outside Madurai.</p>
+
+  <p>This course was built for Thiagarajar College of Engineering and it shows — the examples are full of jigarthanda, Meenakshi Amman temple, rupees and Tamil. <strong>That is deliberate, and you should not strip it out.</strong> Specific beats generic every time: a room remembers &quot;a pirate poem about jigarthanda&quot; and forgets &quot;a poem about a beverage.&quot; The examples work because they are somebody&#x27;s, not because they are Madurai&#x27;s.</p>
+  <p>So this file is not a de-localization guide. It is a <strong>re-localization</strong> guide: which references are load-bearing, which are decoration, and how to make them <em>yours</em> in about twenty minutes.</p>
+  <p>Everything here is free to use, fork, localize and teach — no permission needed, no attribution required (though it&#x27;s nice).</p>
+
+  <hr>
+
+  <h2 id="the-minute-version">The 20-minute version</h2>
+  <p>If you do nothing else, do these four. They cover the references students will actually notice.</p>
+  <table>
+    <tr><th>#</th><th>Find</th><th>Replace with</th><th>Where</th></tr>
+    <tr><td>1</td><td><code>TCE</code> · <code>Thiagarajar College of Engineering</code> · <code>TCE Madurai</code></td><td>your institution, long and short form</td><td>84 hits — mostly deck footers, <code>&lt;title&gt;</code>, and og: meta</td></tr>
+    <tr><td>2</td><td><code>Madurai</code> · <code>Meenakshi</code> · <code>jigarthanda</code> · <code>Vaigai</code></td><td>your city, its landmark, its signature food/drink, a local landmark journey</td><td>73 hits</td></tr>
+    <tr><td>3</td><td><code>₹</code> and <code>₹95.5</code> per USD</td><td>your currency and the current rate</td><td>37 hits — and see <em>Money</em> below, the arithmetic is already dual-currency</td></tr>
+    <tr><td>4</td><td><code>Tamil</code> / <code>தமிழ்</code></td><td><strong>keep it, and add your language</strong> — see <em>Language</em> below, this one is technical, not decorative</td><td>44 hits</td></tr>
+  </table>
+  <p>A blunt <code>sed</code> over the repo gets you 80% of the way:</p>
+  <pre><code># from the repo root — review the diff before committing, some hits are inside prose
+grep -rl &quot;Madurai&quot; --include=&quot;*.html&quot; --include=&quot;*.md&quot; --include=&quot;*.ipynb&quot; . \
+  | xargs sed -i &#x27;&#x27; &#x27;s/Madurai/Coimbatore/g&#x27;          # macOS; drop the &#x27;&#x27; on Linux</code></pre>
+  <p>Then read the diff. Roughly a dozen hits sit inside a sentence built around the word (&quot;the Vaigai Express through a dead zone&quot;), and those want rewriting, not substituting.</p>
+
+  <hr>
+
+  <h2 id="what-each-category-is-actually-doing">What each category is actually doing</h2>
+  <p>Not all 278 locale references are the same kind of thing. Three tiers:</p>
+
+  <h3>Tier 1 — Decoration. Swap freely, or keep.</h3>
+  <p><code>idli</code> · <code>dosa</code> · <code>biryani</code> · <code>filter coffee</code> · <code>Chennai</code> · <code>Coimbatore</code> · <code>Trichy</code> · <code>Bengaluru</code> · <code>A. R. Rahman</code> · <code>Roja</code> · <code>Thirukkural</code></p>
+  <p>These are flavour: the words in the embedding map, the &quot;who composed the music for X&quot; eval question, the cities in the temperature demo&#x27;s probability bars. Swap them for equivalents your room knows — but swap them for something equally <strong>specific</strong>. The embedding map only teaches if students already <em>feel</em> that two of the words are neighbours; &quot;idli ↔ dosa&quot; works in Madurai and does nothing in Nairobi. Pick two foods your students would agree belong together, and one that obviously doesn&#x27;t.</p>
+  <p>The one constraint: in the S1 embedding map, keep the <em>structure</em> — two near-synonyms, one far-away technical term. In the S2 eval example, keep a question with <strong>one unambiguous factual answer</strong> that a model might phrase five different ways; that&#x27;s the whole point of the scorer demo.</p>
+
+  <h3>Tier 2 — Institutional. You must swap these.</h3>
+  <p><code>TCE</code> · <code>Thiagarajar College of Engineering</code> · <code>Anna University</code> · <code>condonation</code> · <code>internal exam</code> · <code>end-semester</code> · <code>aggregate to pass</code> · <code>attendance shortage</code></p>
+  <p>The academic vocabulary is concentrated in <strong>Session 4</strong> (17 hits), and for a good reason: the whole RAG session is built on &quot;your college&#x27;s syllabus, which the model has never read.&quot; That premise is what makes the session land, so it needs to be <em>your</em> institution&#x27;s rules, with your terminology. A student in a system with no internal/external split will find &quot;internal exam is 25 marks&quot; meaningless, and the RAG failure examples (&quot;the user asks &#x27;attendance shortage rules&#x27;, the notes say &#x27;condonation policy&#x27;&quot;) depend on the vocabulary gap being real to them.</p>
+  <p>Rewrite these with two words from your own regulations that mean the same thing but share no letters. That mismatch <em>is</em> the lesson.</p>
+
+  <h3>Tier 3 — Load-bearing. Keep the structure, change the content.</h3>
+  <p><code>Tamil</code> · <code>₹</code> · <code>GST</code></p>
+  <p>These aren&#x27;t decoration. They carry a technical claim, and swapping them carelessly breaks the teaching. Details below.</p>
+
+  <hr>
+
+  <h2 id="language-the-one-to-keep">Language — the one to keep</h2>
+  <p>The tokenizer demo (S1, &quot;Models don&#x27;t read words&quot;) is not a cute nod to Tamil. It is the course&#x27;s argument that <strong>tokenizers are trained on English-heavy text, so most of the world pays more</strong> — on price, on latency, and on how much of their own language fits in a context window.</p>
+  <p>The slide already ships four scripts: English, Tamil, Hindi, Arabic. <strong>Add yours as a fifth button</strong> rather than replacing one — the point gets stronger with more evidence, not less:</p>
+  <pre><code>&lt;button class=&quot;btn&quot; data-tk=&quot;your sentence, same meaning as the English one&quot;&gt;Language&lt;/button&gt;</code></pre>
+  <p>Two rules: use the <strong>same sentence</strong> in every language (otherwise you&#x27;re comparing lengths, not tokenizers), and keep at least one non-Latin script so the gap is visible. If your teaching language uses Latin script, the demo still works — Swahili, Vietnamese and Turkish all tokenize worse than English despite the shared alphabet — but the effect is smaller, so keep one of the shipped non-Latin buttons for contrast.</p>
+  <p>The illustrative tokenizer in the deck understates the real gap. The S1 lab measures the true ratio against Gemini&#x27;s actual tokenizer; that cell is worth running live if your language is the point you want to make.</p>
+
+  <h2 id="money">Money</h2>
+  <p>All the cost arithmetic is already <strong>dual-currency</strong> — USD is computed first and the rupee is derived. To re-base:</p>
+  <table>
+    <tr><th>File</th><th>Constant</th><th>Meaning</th></tr>
+    <tr><td><code>presentations/session-1-*.html</code></td><td><code>inr = usd*95.5</code></td><td>tokenizer cost meter</td></tr>
+    <tr><td><code>presentations/session-4-*.html</code></td><td><code>INR_PER_USD = 95.5</code></td><td>&quot;price the paste&quot; slider</td></tr>
+    <tr><td><code>presentations/session-6-*.html</code></td><td><code>INR_PER_USD</code> near <code>PRICE_IN</code></td><td>cost-per-month calculator</td></tr>
+  </table>
+  <p>Change the one constant in each and every derived figure follows. If your currency is close to USD, you may prefer to delete the second figure entirely — search for the <code>var(--faint)</code> span that wraps it.</p>
+  <p><code>PRICE_IN</code> / <code>PRICE_OUT</code> (1.50 / 9.00 per 1M tokens) are Gemini 3.5 Flash as of July 2026. <strong>Check these before you teach</strong> — they move, and the S6 depth panel makes an argument about the ~6× input/output ratio that only works while the ratio holds.</p>
+  <p><code>GST</code> at 18% appears in a few tool-use examples (S3, S5). Any sales tax works; the arithmetic is the point, not the rate.</p>
+
+  <h2 id="names-faces-and-the-bio">Names, faces and the bio</h2>
+  <p>The instructor slide (S1, slide 2) is Karthikeyan&#x27;s — replace it wholesale with your own, and keep it short. The line that makes it work is the self-deprecating one, not the credentials.</p>
+  <p><code>assets/img/</code> holds photographs of the original instructor. Delete them and drop in your own, or delete the bio slide&#x27;s image references entirely; nothing else depends on them.</p>
+  <p>Also swap: the footer line in every deck (<code>Session N · TCE Madurai</code>), each deck&#x27;s <code>&lt;title&gt;</code> and <code>og:</code> meta, and the placeholder link <code>tinyurl.com/tce-genai</code> in the S1 lab-kit slide — that one is a <strong>required</strong> change, it points at materials you&#x27;ll need to host yourself.</p>
+
+  <h2 id="jurisdiction">Jurisdiction</h2>
+  <p>S6 slide 15 (&quot;Your users decide whose law you&#x27;re under&quot;) covers the EU, US, India and the UAE/Gulf. If you teach somewhere else, add your jurisdiction as a fifth card or replace the one least relevant to your students — the slide&#x27;s argument is that regulation follows <em>your users</em>, so it survives any set of four examples. Brazil&#x27;s LGPD, Nigeria&#x27;s NDPA, Singapore&#x27;s Model AI Governance Framework and China&#x27;s generative-AI measures all slot in cleanly.</p>
+  <p>Keep the closing line whatever you swap: compliance is mostly engineering they already did.</p>
+
+  <hr>
+
+  <h2 id="what-not-to-change">What not to change</h2>
+  <ul>
+    <li><strong>The technical spine.</strong> Sessions in this order, for reasons: prediction → measurement → multimodal → retrieval → tools → production. Every session&#x27;s lab consumes the previous session&#x27;s artifact.</li>
+    <li><strong>The raw-before-frameworks decision.</strong> RAG as a numpy array, tools as plain Python functions. Swapping in LangChain saves 20 lines of lab time and costs students the understanding the whole course is for.</li>
+    <li><strong>The failure content.</strong> Hallucination, injection, cost and the compounding-reliability maths are first-class sessions, not footnotes. They are the reason the course claims to teach engineering rather than prompting.</li>
+    <li><strong>The escape hatch.</strong> <code>&quot;I don&#x27;t know based on the provided documents.&quot;</code> Every grounded prompt in the course has it, and several later demos depend on it being there.</li>
+    <li><strong>The depth layer.</strong> The <code>&lt;|deeper|&gt;</code> panels (press <strong>D</strong>) are collapsed by default and cost you nothing in the room. Leave them in even if you never open one; students revisit the decks afterwards.</li>
+  </ul>
+
+  <h2 id="after-you-localize-the-minute-check">After you localize — the 5-minute check</h2>
+  <pre><code># 1. slide/DATA parity must hold in every deck (this is the invariant that breaks silently)
+python3 - &lt;&lt;&#x27;PY&#x27;
+import re,json,glob
+for f in sorted(glob.glob(&#x27;presentations/*.html&#x27;)):
+    h=open(f).read(); n=len(re.findall(r&#x27;&lt;section class=&quot;slide&#x27;,h))
+    i=h.find(&#x27;var DATA = [&#x27;); seg=h[i+len(&#x27;var DATA = &#x27;):]; d=0
+    for j,c in enumerate(seg):
+        if c==&#x27;[&#x27;: d+=1
+        elif c==&#x27;]&#x27;:
+            d-=1
+            if d==0: seg=seg[:j+1]; break
+    a=json.loads(seg)
+    print((&#x27;OK  &#x27; if n==len(a) else &#x27;FAIL&#x27;), f, n, len(a))
+PY
+
+# 2. no leftovers
+grep -ril &quot;madurai\|thiagarajar\|\bTCE\b&quot; --include=&quot;*.html&quot; --include=&quot;*.md&quot; --include=&quot;*.ipynb&quot; .</code></pre>
+  <p>Then open each deck, press <strong>O</strong> for the overview grid, and skim all six. Anything that reads oddly in a thumbnail will read oddly on a projector.</p>
+
+  <hr>
+  <p><em>Built for TCE Madurai, meant to travel. If you teach it somewhere, that was the point.</em></p>
+
+  <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="index.html">course home</a> · free to use, fork, localize and teach</footer>
+</div>
+</body>
+</html>

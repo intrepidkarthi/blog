@@ -13,7 +13,9 @@ Open **`index.html`** in a browser — it's the course home page linking every s
 index.html                  ← course home page (links every deck + guide)
 course-plan.md              ← master plan: structure, capstone, bootcamp format, currency & future-proofing
 LEARNING-GUIDE.md           ← every concept in one document — read this to LEARN or refresh the whole course
+                              (Parts 1–7 = the main line; Part 8 = the depth layer, mechanism-level)
 TEACH-THIS-YOURSELF.md      ← run the course at any scale (12 hours / one session / a 45-min talk)
+LOCALIZATION.md             ← swap-kit for teaching it outside Madurai (what to localize, what is load-bearing)
 ZERO-SETUP.md               ← the any-laptop, zero-cost guarantee + free-tier budget math
 TIMING.md                   ← per-slide timing for all sessions (mirrors the in-deck presenter timer)
 presentations/              ← 6 interactive HTML decks (offline; F fullscreen, O overview, S presenter mode)
@@ -22,6 +24,8 @@ instructor-notes/
   session-N-notes.md        ← DELIVERY DAY: minute-by-minute run sheet, slide beats, timing
   lab-facilitation-guide.md ← how to run every lab hour (failure playbook, timing template)
   fact-check.md             ← every substantive claim + source + status (re-verify volatile facts before teaching)
+  all-notes-source.html     ← the single source for instructor-notes-all-sessions.pdf (reprint with headless Chrome)
+  instructor-notes-all-sessions.pdf ← 119pp: 6 prep packs + 6 run sheets + facilitation guide
 labs/session-N/
   lab-handout.md            ← student-facing lab sheet with checkpoints + stretch goals
   session_N_lab.ipynb       ← ready-to-run Colab notebook

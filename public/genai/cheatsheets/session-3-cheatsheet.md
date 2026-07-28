@@ -37,3 +37,5 @@ STT is near-human (lectures → notes is solved). TTS is convincingly human. **C
 
 ## Carry forward
 Everything from S1–S2 applies to images unchanged: prompting, format control, grounding, **evals** (5 images + expected answers = vision eval). **Tonight: 2–3 real documents on your laptop — Day 2 builds "chat with my notes" over them.**
+
+**Go deeper (press D on the deck):** ViT patches as tokens — why resolution costs tokens quadratically and small text fails suddenly · what a diffusion model actually predicts (the noise), plus steps / guidance / seed / latent diffusion · constrained decoding: how a schema makes malformed JSON unreachable. Prose versions: Learning Guide **Part 8**.

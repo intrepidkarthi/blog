@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 3 · AI Beyond Text — GenAI Foundations · TCE</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/presentations/session-3-ai-beyond-text.html">
 <meta name="description" content="Session 3 of the TCE Madurai GenAI course: vision that reads documents, diffusion image generation, and speech — the same loop with new kinds of tokens.">
 <meta property="og:title" content="Session 3 · AI Beyond Text — GenAI Foundations · TCE">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/presentations/session-3-ai-beyond-text.html">
 <meta property="og:description" content="Session 3 of the TCE Madurai GenAI course: vision that reads documents, diffusion image generation, and speech — the same loop with new kinds of tokens.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
@@ -31,7 +29,7 @@
     --accent:var(--deep); --accent2:var(--hue); --accentpale:var(--tint);
     --accentmark:color-mix(in srgb,var(--hue) 35%,white);
     --stagebg:#14171F; --stageink:#FFFFFF;
-    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -186,6 +184,36 @@
   .flip.open .q{display:none}
   .flip .hintline{color:var(--accent);font-size:.82rem;font-weight:600;margin-top:10px}
   .flip.open .hintline{display:none}
+  /* ---- depth layer: optional <|deeper|> panels. Collapsed by default, so they cost the
+     running clock nothing; opened on demand when a sharp student asks, or after class. ---- */
+  .deep{margin-top:20px;border-top:1px dashed var(--linedark)}
+  .deeptog{appearance:none;background:none;border:0;padding:12px 0 0;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;text-align:left;
+    font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.07em;color:var(--deep)}
+  .deeptog .lbl:before{content:"<|";color:var(--faint);font-weight:400;margin-right:2px}
+  .deeptog .lbl:after{content:"|>";color:var(--faint);font-weight:400;margin-left:2px}
+  .deeptog .cv{display:inline-block;width:.46em;height:.46em;border-right:2px solid currentColor;
+    border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .2s;margin-bottom:.18em}
+  .deep.open .deeptog .cv{transform:rotate(-135deg);margin-bottom:0}
+  .deeptog:hover{color:var(--ink)}
+  .deeptog:focus-visible{outline:2px solid var(--hue);outline-offset:3px;border-radius:4px}
+  .deepbody{display:none;padding:14px 0 2px}
+  .deep.open .deepbody{display:block}
+  .deepbody p{font-size:.93rem;color:var(--body);line-height:1.62;max-width:76ch}
+  .deepbody p+p{margin-top:10px}
+  .deepbody b{color:var(--ink);font-weight:650}
+  .deepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px;margin-top:13px}
+  .dcell{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .dcell h4{font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+  .dcell h4 .em{display:inline-block;width:.5em;height:.5em;border-radius:3px;background:var(--accent);margin-right:8px;vertical-align:.06em}
+  .dcell p{font-size:.85rem;color:var(--muted);line-height:1.55;max-width:none}
+  .fx{display:block;font-family:var(--mono);font-size:.9rem;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-left:3px solid var(--hue);border-radius:8px;
+    padding:11px 14px;margin:12px 0;overflow-x:auto;white-space:pre;line-height:1.7}
+  .fx .cm{color:var(--muted)}
+  .fx b{color:var(--deep)}
+  /* an open panel makes its slide scroll — deep content must never clip off the bottom */
+  .slide.deepopen{justify-content:flex-start;overflow-y:auto}
   /* context window */
   .cw{display:flex;height:58px;border-radius:9px;overflow:hidden;border:1.5px solid var(--linedark);background:var(--panel)}
   .cw .seg{display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;
@@ -326,7 +354,7 @@
   <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b> &nbsp;·&nbsp; Session 3 · TCE Madurai</span>
   <span id="counter">1 / 1</span>
 </div>
-<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview</div>
+<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>D</kbd> deeper</div>
 
 <main class="deck" id="deck">
 
@@ -398,6 +426,19 @@
         <p class="note">This is why vision arrived so fast once transformers worked — the hard part was already built.</p></div>
     </div>
   </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">a patch is a token, so an image has a token bill</span></button>
+    <div class="deepbody">
+      <p>Take "patches are visual words" completely literally, because the billing does. The image is cut into a grid — classically 16×16 pixels per patch — and each patch is flattened and multiplied by one learned matrix into a vector the same width as a word embedding. From that point the network cannot tell picture from prose. This is the <b>Vision Transformer</b> (ViT, 2020), and its whole contribution was noticing that you didn't need a special architecture for images at all.</p>
+      <p>Two consequences you can feel in the lab:</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Resolution costs tokens, quadratically</h4><p>Double an image's width and height and you quadruple the patch count. Providers therefore tile large images and charge roughly per tile — a full-page scan can cost more than a page of text. Downscaling before upload is a real cost lever.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Small text falls off a cliff</h4><p>If a digit is smaller than a patch, its evidence is averaged into a single vector alongside its neighbours. There is no zoom. Below a certain size the information is simply gone — which is why a low-res receipt fails suddenly rather than gradually.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Counting is structurally hard</h4><p>Attention pools and summarises; it does not enumerate. Asking "how many chairs?" makes the model estimate from a blended impression — the same disease as long multiplication in Session 1, and it shows up again on slide 13.</p></div>
+      </div>
+      <p class="note">Practical version of all three: photograph documents straight-on and close, crop to the region you care about, and prefer one tight image over one wide one. You are not being fussy — you are raising the pixels-per-patch on the thing you actually want read.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 5 WHAT VISION DOES -->
@@ -454,6 +495,23 @@
         <p>Take billions of real images, add noise step by step until pure static, and train a network to <b>reverse each step</b>.</p>
         <p class="mt"><b>Generation:</b> start from fresh random static and apply the repair over and over. The "repair" invents a plausible image — steered at every step by your <b>text prompt</b> ("a gopuram at sunset"), which is embedded with the same trick from Session 1.</p>
         <p class="note">Our canvas fakes the pixels, honestly — but the choreography is true: <b>coarse shapes resolve first, details last</b>. Silhouette by step ~15, sun by ~30, window by ~45.</p></div>
+    </div>
+  </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">what the network is actually trained to output</span></button>
+    <div class="deepbody">
+      <p>Here is the twist that makes diffusion trainable. The network is not asked to produce a clean image — that would be an impossibly hard target. It is asked, given a noisy image and a step number: <b>"which part of this is the noise?"</b> Predicting noise is easy to supervise, because <i>you</i> added it, so you have the exact answer for free. Subtract a little of the predicted noise, and you have a slightly cleaner image. Repeat.</p>
+      <span class="fx">noisy = clean + noise        <span class="cm">forward: fixed recipe, no learning at all</span>
+predict → noisê          <span class="cm">reverse: the only thing the network learns</span>
+cleaner = noisy − ε·noisê  <span class="cm">repeat 20–50 times</span></span>
+      <p>Three knobs from that loop show up in every image tool you will ever touch:</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Steps</h4><p>How many repair passes. More steps, more coherence, more time and money. Returns flatten fast — the gap between 20 and 50 is far smaller than between 4 and 20.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Guidance scale</h4><p>Run the prediction twice — once with your prompt, once without — and push <i>away</i> from the promptless one. Low: creative, loose. High: obedient, and eventually oversaturated and stiff. This is the "prompt strength" slider.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Seed</h4><p>The starting static is random. Fix the seed and the same prompt reproduces the same image — the only reason image generation is debuggable at all.</p></div>
+      </div>
+      <p>And the reason this runs in seconds instead of hours: modern systems are <b>latent</b> diffusion. They don't denoise pixels. An encoder first compresses the image roughly 8× per side into a small latent grid, all the denoising happens there, and a decoder expands the result back to pixels at the very end — around 48× less to compute per step.</p>
+      <p class="note">Same maths, different medium: video models denoise across space <i>and</i> time, which is why they cost so much more and why physics is where they still slip. And note the family tree — this is a different lineage from the next-token models in Session 1. Some newer image models are autoregressive after all; the two families now borrow from each other freely.</p>
     </div>
   </div>
 </section>
@@ -540,6 +598,21 @@ r = client.models.<span class="f">generate_content</span>(
         <div class="payload pre" style="min-height:150px;margin-top:0"><span class="mono" id="mm-out">…</span></div>
       </div>
       <div class="btnrow mt"><button class="btn primary" id="mm-run">Run it </button></div>
+    </div>
+  </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">why a schema beats begging for JSON</span></button>
+    <div class="deepbody">
+      <p>In the lab you'll do this twice. First you'll <i>ask</i> for JSON in the prompt — and it works, until the day the model opens with "Certainly! Here's the data:" or wraps everything in a code fence, and your parser dies in production at 2 a.m. Then you'll pass a <b>schema</b> with the request, and it stops being possible to fail.</p>
+      <p>The difference is where the rule is enforced. Remember from Session 1 that every step produces a score for every token in the vocabulary. Constrained decoding inserts one operation between the scores and the sampling:</p>
+      <span class="fx">logits → <b>mask illegal tokens to −∞</b> → softmax → sample</span>
+      <p>A tiny state machine tracks where you are in the schema. Just after <span style="font-family:var(--mono)">{"total":</span> it knows only a digit or a minus sign can legally come next, so every other token in the vocabulary has its score driven to negative infinity and its probability to exactly zero. Not discouraged — <b>unreachable</b>. The model is free to choose <i>what</i> the total is, and has no ability to choose a malformed shape.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>A prompt requests</h4><p>Format lives in text the model may or may not honour. Failures are rare, random, and therefore worst — they survive your testing and appear under load.</p></div>
+        <div class="dcell"><h4><span class="em"></span>A schema enforces</h4><p>Format lives in the decoder. <span style="font-family:var(--mono)">json.loads</span> cannot throw. Your format instructions also leave the prompt entirely, which frees tokens and attention for the actual task.</p></div>
+        <div class="dcell"><h4><span class="em"></span>What it does not fix</h4><p>Shape, not truth. A schema guarantees <span style="font-family:var(--mono)">"total"</span> is a number; it has no opinion on whether it's the <i>right</i> number. Grounding and evals remain your job.</p></div>
+      </div>
+      <p class="note">One caution worth carrying to production: over-constraining can hurt quality. Force a terse schema on a genuinely hard question and you remove the model's room to reason before answering. The usual fix is to give the schema a "reasoning" field <i>before</i> the answer fields — order matters, because the model fills them in that order, and it can only condition on what it has already written.</p>
     </div>
   </div>
 </section>
@@ -672,6 +745,15 @@ r = client.models.<span class="f">generate_content</span>(
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1);}
     else if(e.key==='Home')go(0);
     else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='d'||e.key==='D'){
+      // D = open/close every depth panel on this slide at once
+      const s=slides[cur];if(!s)return;
+      const ds=[...s.querySelectorAll('.deep')];if(!ds.length)return;
+      const opening=!ds[0].classList.contains('open');
+      ds.forEach(d=>{d.classList.toggle('open',opening);
+        const b=d.querySelector('.deeptog');if(b)b.setAttribute('aria-expanded',opening?'true':'false');});
+      s.classList.toggle('deepopen',opening);
+    }
     else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
     else if(e.key==='o'||e.key==='O')overview();
     else if(e.key==='Escape'){if(deck.classList.contains('overview'))overview();}
@@ -690,6 +772,16 @@ document.addEventListener('click',e=>{
   if(e.target.closest('button,canvas,input,a'))return; // demos nested in flip cards shouldn't toggle them
   const f=e.target.closest('.flip');
   if(f)f.classList.toggle('open');
+});
+
+/* ============ depth layer: <|deeper|> disclosure panels ============ */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.deeptog');
+  if(!t)return;
+  const d=t.closest('.deep');
+  t.setAttribute('aria-expanded',d.classList.toggle('open')?'true':'false');
+  const s=d.closest('.slide');
+  if(s)s.classList.toggle('deepopen',!!s.querySelector('.deep.open'));
 });
 
 /* ============ shared lib ============ */
@@ -884,7 +976,7 @@ mkQuiz('wr',[
 
 /* ===== presenter mode ===== */
 (function(){
-  var DATA = [{"m": 1.5, "n": "Post-lunch — if flat, open with the Seoul story (45s) first. ‘Same machine, new kinds of tokens.’", "c": false, "title": "AI beyond text: eyes, ears and a paintbrush"}, {"m": 2.5, "n": "<b>Recap quiz.</b> Q on hallucination-in-pixels sets up today.", "c": false, "title": "Still true after the break?"}, {"m": 2, "n": "THE bridge: ‘new eyes wired into the same brain.’ Everything from yesterday transfers.", "c": false, "title": "Same loop. New kinds of tokens."}, {"m": 5, "n": "<b>Patchify.</b> Click grid→tokens→‘same attention loop.’ Hover a pill ↔ its patch. Note: this gopuram scene returns in the diffusion demo (callback).", "c": false, "title": "How a model reads a picture"}, {"m": 3.5, "n": "It doesn’t just see — it READS. The KYC card is your fintech credibility beat.", "c": false, "title": "It doesn't just see. It reads."}, {"m": 5, "n": "<b>GAME. Vote each.</b> CAPTCHA item is a trick question — it plants ‘capability ≠ permission’ — say those words (Session 6 flag).", "c": false, "title": "Will it read it? Place your bets"}, {"m": 2.5, "n": "‘Reading is prediction; making is un-destruction.’ Set up diffusion. The 4o token-by-token aside is one breath — don’t derail.", "c": false, "title": "Reading is prediction. Making is un-destruction."}, {"m": 6, "n": "<b>CENTERPIECE. Drag the slider slowly left→right</b> — narrate ‘shapes arrive before details’: silhouette ~15, sun ~30, window ~45. THEN Generate. Honest: canvas fakes the pixels, the coarse-to-fine direction is true.", "c": false, "title": "Diffusion: a picture emerges from static"}, {"m": 3.5, "n": "Honest limits: subtle details, style ethics, deepfakes. Land the camera line slowly. ‘Plausible not verified — now in pixels.’", "c": true, "title": "Image generation: magic with fine print"}, {"m": 4.5, "n": "Hit the three stats first — 3 s, ~₹0, ∞. <b>Family-password beat is serious — deliver straight.</b> ‘Tell your parents this weekend.’", "c": false, "title": "Speech: solved enough to be dangerous"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Your mother’s voice is no longer proof of your mother"}, {"m": 4, "n": "The payoff: 4 lines. contents=[img, question]. Run it — the highlight finds the total, then the JSON lands. ‘Prompting, format, evals — all apply unchanged.’ New beat: response_schema = guaranteed JSON — lab does both ways.", "c": false, "title": "All of it is one API call"}, {"m": 5, "n": "<b>Failure flips.</b> Counting = S1 multiplication disease in pixels — run the dot flash, the room estimates too. Blur-invention = S2 hallucination in pixels. The course rhymes.", "c": false, "title": "Where vision quietly fails"}, {"m": 3.5, "n": "Read 2–3 Madurai project seeds with enthusiasm. ‘Steal any for your capstone.’", "c": false, "title": "Vision ideas that belong to Madurai"}, {"m": 3, "n": "<b>Recall flips.</b> Class says each before clicking.", "c": false, "title": "Five ideas you own now"}, {"m": 53, "n": "<b>3 min brief, then 50 MIN LAB.</b> Demo the folder-upload ONCE first. Push Part B until json.loads passes. Collect 2 best inventions. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 3: interrogate your photos"}, {"m": 14, "n": "<b>Show &amp; tell + DAY 1 CLOSE — don’t rush.</b> Recap 4 artifacts built. Name the strongest hot-take counter-argument. ONE overnight task: 2–3 real documents. Say it twice. ‘Sleep. Tomorrow we build for real.’ <b>Links are on screen</b> — point at them.", "c": false, "title": "Day 1: understand the machine. Day 2: arm it."}];
+  var DATA = [{"m": 1.5, "n": "Post-lunch — if flat, open with the Seoul story (45s) first. ‘Same machine, new kinds of tokens.’", "c": false, "title": "AI beyond text: eyes, ears and a paintbrush"}, {"m": 2.5, "n": "<b>Recap quiz.</b> Q on hallucination-in-pixels sets up today.", "c": false, "title": "Still true after the break?"}, {"m": 2, "n": "THE bridge: ‘new eyes wired into the same brain.’ Everything from yesterday transfers.", "c": false, "title": "Same loop. New kinds of tokens."}, {"m": 5, "n": "<b>Patchify.</b> Click grid→tokens→‘same attention loop.’ Hover a pill ↔ its patch. Note: this gopuram scene returns in the diffusion demo (callback). <b>[D] deeper:</b> ViT patches as tokens &mdash; resolution costs tokens quadratically, small text falls off a cliff, counting is structurally hard. Explains the failures on slide 13 in advance.", "c": false, "title": "How a model reads a picture"}, {"m": 3.5, "n": "It doesn’t just see — it READS. The KYC card is your fintech credibility beat.", "c": false, "title": "It doesn't just see. It reads."}, {"m": 5, "n": "<b>GAME. Vote each.</b> CAPTCHA item is a trick question — it plants ‘capability ≠ permission’ — say those words (Session 6 flag).", "c": false, "title": "Will it read it? Place your bets"}, {"m": 2.5, "n": "‘Reading is prediction; making is un-destruction.’ Set up diffusion. The 4o token-by-token aside is one breath — don’t derail.", "c": false, "title": "Reading is prediction. Making is un-destruction."}, {"m": 6, "n": "<b>CENTERPIECE. Drag the slider slowly left→right</b> — narrate ‘shapes arrive before details’: silhouette ~15, sun ~30, window ~45. THEN Generate. Honest: canvas fakes the pixels, the coarse-to-fine direction is true. <b>[D] deeper:</b> the network predicts the <i>noise</i>, not the image; steps / guidance / seed; latent diffusion. Open it when someone asks what the sliders in an image tool do.", "c": false, "title": "Diffusion: a picture emerges from static"}, {"m": 3.5, "n": "Honest limits: subtle details, style ethics, deepfakes. Land the camera line slowly. ‘Plausible not verified — now in pixels.’", "c": true, "title": "Image generation: magic with fine print"}, {"m": 4.5, "n": "Hit the three stats first — 3 s, ~₹0, ∞. <b>Family-password beat is serious — deliver straight.</b> ‘Tell your parents this weekend.’", "c": false, "title": "Speech: solved enough to be dangerous"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Your mother’s voice is no longer proof of your mother"}, {"m": 4, "n": "The payoff: 4 lines. contents=[img, question]. Run it — the highlight finds the total, then the JSON lands. ‘Prompting, format, evals — all apply unchanged.’ New beat: response_schema = guaranteed JSON — lab does both ways. <b>[D] deeper:</b> constrained decoding &mdash; a schema masks illegal tokens to &minus;&infin; at the decoder, so json.loads cannot fail. Pairs with lab cell 4b.", "c": false, "title": "All of it is one API call"}, {"m": 5, "n": "<b>Failure flips.</b> Counting = S1 multiplication disease in pixels — run the dot flash, the room estimates too. Blur-invention = S2 hallucination in pixels. The course rhymes.", "c": false, "title": "Where vision quietly fails"}, {"m": 3.5, "n": "Read 2–3 Madurai project seeds with enthusiasm. ‘Steal any for your capstone.’", "c": false, "title": "Vision ideas that belong to Madurai"}, {"m": 3, "n": "<b>Recall flips.</b> Class says each before clicking.", "c": false, "title": "Five ideas you own now"}, {"m": 53, "n": "<b>3 min brief, then 50 MIN LAB.</b> Demo the folder-upload ONCE first. Push Part B until json.loads passes. Collect 2 best inventions. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 3: interrogate your photos"}, {"m": 14, "n": "<b>Show &amp; tell + DAY 1 CLOSE — don’t rush.</b> Recap 4 artifacts built. Name the strongest hot-take counter-argument. ONE overnight task: 2–3 real documents. Say it twice. ‘Sleep. Tomorrow we build for real.’ <b>Links are on screen</b> — point at them.", "c": false, "title": "Day 1: understand the machine. Day 2: arm it."}];
   var deck=document.getElementById('deck');
   var total=DATA.reduce(function(a,d){return a+d.m;},0);
   var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});

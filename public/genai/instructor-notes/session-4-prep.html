@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 4 — Instructor Prep Pack (the deep version) — Generative AI · Foundations &amp; Applications</title>
 <meta name="description" content="Deep mastery guide for Session 4: embeddings geometry, chunking, vector stores, RAG failure taxonomy, demo playbooks, Q&amp;A bank, timing map.">
@@ -315,6 +314,25 @@ answer = client.models.generate_content(model=MODEL, contents=prompt).text
     <tr><td>Slider economics: $1.50/1M input (Gemini 3.5 Flash), ₹95.5/USD, 900 q/month — matches deck footer</td><td>deck slide 4 footer text</td></tr>
     <tr><td>Backup: 3 spare lecture PDFs for students who brought nothing</td><td>your drive, downloaded</td></tr>
   </table>
+
+
+  <hr>
+
+  <h2 id="the-depth-layer">The depth layer — 4 <code>&lt;|deeper|&gt;</code> panels in this deck</h2>
+
+  <p>Collapsed by default, so they cost the clock nothing. Press <strong>D</strong> on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as <code>[D] deeper:</code>.</p>
+
+  <p>Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.</p>
+
+  <table>
+    <tr><th>Deck slide</th><th>Slide</th><th>Panel</th></tr>
+    <tr><td><code>#7</code></td><td>Embeddings, now for whole paragraphs</td><td>why that one line is allowed to be that short</td></tr>
+    <tr><td><code>#9</code></td><td>Chunking: how you cut the book</td><td>four upgrades once paragraph-with-overlap stops being enough</td></tr>
+    <tr><td><code>#11</code></td><td>RAG, end to end</td><td>the stage production adds between retrieve and augment</td></tr>
+    <tr><td><code>#13</code></td><td>Where RAG breaks in the wild</td><td>debugging this properly: two scores, never one</td></tr>
+  </table>
+
+  <p>Prose versions of all of these, with the same section order, are in <a href="../LEARNING-GUIDE.html#part-8">the Learning Guide, <strong>Part 8</strong></a>. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.</p>
 
   <footer class="foot">
     <div style="margin-bottom:8px">deck: <a href="../presentations/session-4-giving-ai-your-own-knowledge.html">session-4-giving-ai-your-own-knowledge.html</a> · run sheet: <code>session-4-notes.md</code> · lab: <a href="../labs/session-4/lab-handout.html">lab-handout.html</a> · cheatsheet: <a href="../cheatsheets/session-4-cheatsheet.html">session-4-cheatsheet.html</a></div>

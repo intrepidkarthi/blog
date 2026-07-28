@@ -2,7 +2,7 @@
 
 > Deep prep: work through `session-6-prep.md` first — this file is delivery-day only.
 
-> Prep with `session-6-prep.md`. **Deck:** `session-6-breaking-securing-shipping.html` (20 slides, 7 interactives). The finale — highest energy, ends with student demos. Timing is different: shorter talk, long demo block.
+> Prep with `session-6-prep.md`. **Deck:** `session-6-breaking-securing-shipping.html` (21 slides, 7 interactives). The finale — highest energy, ends with student demos. Timing is different: shorter talk, long demo block.
 
 ## Timing
 
@@ -10,13 +10,13 @@
 |---|---|---|
 | 0:00–0:05 | Final recap quiz | 1–2 |
 | 0:05–0:30 | Attacks (3–6) → defense (7–8) | 3–8 |
-| 0:30–0:48 | Shipping: cost/speed/reliability/UX/checklist | 9–13 |
-| 0:48–0:52 | Capstone brief + demo rules | 14–15 |
-| 0:52–1:22 | **Lab 6 Parts A–D** (attack, harden, red-team, audit) | — |
-| 1:22–1:55 | **Capstone demos** — every pair, 3 min | — |
-| 1:55–2:00 | Course close (arc, what's next, thanks) | 16–18 |
+| 0:30–0:50 | Shipping: cost/speed/reliability/UX/jurisdictions/checklist | 9–14 |
+| 0:50–0:54 | Capstone brief + demo rules | 15–16 |
+| 0:54–1:24 | **Lab 6 Parts A–D** (attack, harden, red-team, audit) | — |
+| 1:24–1:55 | **Capstone demos** — every pair, 3 min | — |
+| 1:55–2:00 | Course close (arc, what's next, thanks) | 17–19 |
 
-This session compresses talk to ~43 min to protect the demo block. If demos run long, cut slides 16–17 to one sentence each and go straight to slide 18.
+This session compresses talk to ~43 min to protect the demo block. If demos run long, cut slides 17–18 to one sentence each and go straight to slide 19.
 
 ## Slide beats
 
@@ -36,11 +36,13 @@ This session compresses talk to ~43 min to protect the demo block. If demos run 
 
 **11 · Speed/reliability/observability.** Streaming = "users forgive slow, they hate frozen." And the payoff: "your S2 evals become the regression test."
 
-**13 · Ship checklist (3 min).** Toggle honestly against a hypothetical. "The gaps are your roadmap, not your shame." Sets up lab Part D.
+**13 · Who regulates you (2.5 min, compressible).** Four rulebooks, one rule: **you are judged where your USERS are, not where you sit.** EU reaches you through the output; the US has no single law but "the model decided" is not a defence; India's binding law is data protection — *whose* data is in that context window?; the Gulf's real constraint is data residency (callback: that's the Ollama argument from S5). Close on: they already built all four duties this weekend. Say once, plainly: dates move, not legal advice, check the current text. **If demos are going to run long, this is the first slide to trim.**
 
-**14 · Capstone brief.** Read the structure clearly: 30 min red-team+harden, then 3-min demos. "The failure story matters more than the polish."
+**14 · Ship checklist (3 min).** Toggle honestly against a hypothetical. "The gaps are your roadmap, not your shame." Sets up lab Part D.
 
-**15 · Demo rules.** Pre-run, lead with problem, show the failure. Critical — bad demos are avoidable.
+**15 · Capstone brief.** Read the structure clearly: 30 min red-team+harden, then 3-min demos. "The failure story matters more than the polish."
+
+**16 · Demo rules.** Pre-run, lead with problem, show the failure. Critical — bad demos are avoidable.
 
 ## Lab + demo block — your job
 
@@ -53,7 +55,7 @@ If class is large (>12 pairs): demo in two parallel rooms, or pre-select via a 1
 
 ## Course close (1:55–2:00)
 
-Slide 16 (the six-session arc) → 17 (what's next: ship it, go deeper, the meta-skill) → 18 (thanks). Land it: "You came as users. You leave as builders." Mean it — they earned it. Point them to the repo they keep.
+Slide 17 (the six-session arc) → 18 (what's next: ship it, go deeper, the meta-skill) → 19 (thanks). Land it: "You came as users. You leave as builders." Mean it — they earned it. Point them to the repo they keep.
 
 ## Anticipated questions
 

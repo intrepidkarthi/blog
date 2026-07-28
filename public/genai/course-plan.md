@@ -9,9 +9,21 @@
 ## Design principles
 
 1. **Every session ships something.** Students leave each session with working code in their own Colab.
-2. **Intuition before jargon.** Analogies first, terms second, math never (this course).
+2. **Intuition before jargon.** Analogies first, terms second. The main line stays math-free — but it is not capped there (see *The depth layer* below).
 3. **Honest engineering.** Cover failure modes (hallucination, injection, cost) as first-class content, not footnotes.
 4. **Zero-install.** Google Colab + Gemini free tier. Works on any college machine with a browser.
+
+## The depth layer
+
+The audience is 3rd- and 4th-year CSE students who have already done linear algebra and probability. Pitching everything at analogy level wastes that, but adding mechanism to the main line would blow a 12-hour budget that is already tight. So depth is a **second layer, not a longer first one**.
+
+Every deck carries collapsible `<|deeper|>` panels — **21 of them across the six sessions** — sitting under the slide they belong to. Collapsed by default, so they cost the running clock nothing; press **D** (or click the panel label) to open every panel on the current slide. Each one is flagged in the presenter notes as `[D] deeper:` with a one-line summary, so the instructor can decide in the moment.
+
+They exist for three situations: a sharp student asks the question the slide provokes ("but where do the probabilities come from?"), the room is running ahead of the clock, or a student revisits the deck after the session. `LEARNING-GUIDE.md` **Part 8** is the same material in prose, section-by-section cross-referenced to the panel it matches.
+
+What's in them: logits/softmax/top-k/top-p · cross-entropy loss and perplexity · positional encoding (RoPE) and attention's n² cost · scaling laws and the Chinchilla correction · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT · precision/recall/F1 and LLM-judge position bias · eval sample size (±1/√n) · ViT patches and vision's token bill · what a diffusion model actually predicts · constrained decoding · embedding pooling, normalization and task types · chunking upgrades and filter-before-rank · reranking, bi- vs cross-encoders, hybrid search · recall@k / MRR / faithfulness · the tool-use wire format · agent loop guards and trajectory eval · quantization arithmetic for local models · why prompt injection has no escape character, and the three-legged exfiltration model · the input/output price asymmetry and cost-per-user · p50/p99 latency and what to log.
+
+None of it is examinable and none of it is required. It is there so the ceiling of the course is set by the student, not by the slide.
 
 ## Session structure (every session)
 
@@ -126,7 +138,9 @@ Seeded end of Day 1 ("start thinking about what you'd build"), data gathered ove
 
 This course's spine — LLM fundamentals → prompting → evaluation → RAG → tools/agents → production & security — matches how GenAI is taught across 2026's leading curricula (IBM's RAG & Agentic AI certificate, the major LLM-engineering courses, the frontier labs' own material) and what employers expect: chunking strategies, embedding selection, vector DBs, citations, failure-mode analysis, golden-dataset evals, regression testing, function calling, workflow orchestration, and cost/latency/observability.
 
-**Deliberate pedagogy: build raw, then name the frameworks.** Where most bootcamps teach LangChain/LlamaIndex/CrewAI first, this course builds RAG as a numpy array and tools as plain Python functions — so students understand the machinery before an abstraction hides it. Frameworks, rerankers, LoRA/QLoRA, MCP, and LLMOps tooling are named as honest "next steps" (see `LEARNING-GUIDE.md` §7.2), not taught, keeping the 12 hours focused on durable fundamentals.
+**Deliberate pedagogy: build raw, then name the frameworks.** Where most bootcamps teach LangChain/LlamaIndex/CrewAI first, this course builds RAG as a numpy array and tools as plain Python functions — so students understand the machinery before an abstraction hides it. Frameworks, LoRA/QLoRA, and LLMOps tooling are named as honest "next steps" (see `LEARNING-GUIDE.md` §7.2), not taught, keeping the 12 hours focused on durable fundamentals.
+
+**Where this goes deeper than a typical 2026 syllabus.** Most short GenAI courses stop at "temperature controls creativity" and "RAG retrieves relevant chunks." The depth layer takes the same 12 hours down to mechanism — the softmax that temperature divides, the KV cache behind every latency and caching claim, the n² curve that makes long context expensive, the bi-encoder/cross-encoder split that justifies reranking, and the structural reason prompt injection has no fix. Reranking, hybrid search, retrieval metrics (recall@k, MRR, faithfulness), agent trajectory evaluation, and quantization arithmetic are typically absent from introductory syllabi entirely; here they are one keypress from the slide that motivates them.
 
 **Future-proofing:** model names, prices, free-tier limits, and fashionable frameworks change every few months; tokens, embeddings, attention, evaluation, retrieval, tool use, and security failure modes do not. The course is built on that stable layer, with one `MODEL` variable per notebook for the single thing that changes. `LEARNING-GUIDE.md` §7.3 makes this explicit for students — it's the most valuable idea in the course.
 

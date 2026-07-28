@@ -3,7 +3,7 @@
 
 You are about to run the finale in front of sharp 4th-years *and* their professors. This session has one job the others don't: it is where you tell the room, out loud, that the thing they built this weekend can be turned against them and there is no complete fix. That honesty is the whole lesson — but only if you can hold it under fire. This pack takes every slide one honest level deeper than the deck, with numbers you can reproduce on a whiteboard.
 
-Deck: `../presentations/session-6-breaking-securing-shipping.html` — 20 slides, 7 interactives. Lab: `../labs/session-6/`. Cheatsheet: `../cheatsheets/session-6-cheatsheet.html`.
+Deck: `../presentations/session-6-breaking-securing-shipping.html` — 21 slides, 7 interactives. Lab: `../labs/session-6/`. Cheatsheet: `../cheatsheets/session-6-cheatsheet.html`.
 
 ---
 
@@ -20,7 +20,7 @@ Ten beats. If you can say these aloud, in order, in **3 minutes with no notes**,
 7. **Hot take.** There is no secure AI agent — only one whose blast radius you've made small enough to survive. The question is never "is it safe?" but "what is the worst it can do when fooled, and can we live with that?" *(hot-take slide)*
 8. **The 80% nobody demos.** It works in Colab was the easy 20%. Cost, speed, reliability, observability — the other 80% that separates a demo from a product. *(slides 9–12)*
 9. **The legal names.** Bias, provenance, privacy, accountability — the four questions auditors ask, now backed by the EU AI Act and NIST AI RMF. You already practiced all four this weekend. *(slide 13)*
-10. **Now you ship.** Checklist honestly, red-team a peer, harden yours, demo the failure — because the failure story beats the polish. *(slides 14–19)*
+10. **Now you ship.** Checklist honestly, red-team a peer, harden yours, demo the failure — because the failure story beats the polish. *(slides 15–20)*
 
 The spine in one breath: *every power is a surface → injection has no fix because instructions and data share one stream → so you layer defenses and shrink blast radius → and the real work is the 80% after the demo.*
 
@@ -282,7 +282,27 @@ The Act is **in force, obligations phasing in through 2027.** The US complement 
 
 ---
 
-### Slide 14 — The ship-it checklist
+### Slide 14 — Who regulates you (the slide that travels)
+
+**Claims:** you're judged where your *users* are; four rulebooks — EU AI Act, the US patchwork + NIST, India's DPDP, the Gulf's strategy-plus-residency; and none of the four asks anything you didn't already build this weekend.
+
+**Mechanism, one level deeper.** The idea students get wrong is jurisdiction. They assume the law that applies is the law where they sit. It isn't — modern digital regulation reaches on the basis of **where the effect lands**. The EU AI Act binds providers outside the EU when the system's *output* is used inside it, exactly as GDPR bound anyone processing EU residents' data. So a two-person team in Madurai shipping a study bot that a student in Berlin uses is inside the EU's scope, and nobody sent them a letter to say so.
+
+The second idea worth landing: the four regimes are not four copies of the same thing.
+- **EU** — a genuine AI *statute*, structured by risk tier, with a transparency floor that applies even to low-risk apps: disclose that it's an AI, label synthetic media.
+- **US** — no single federal AI law. Existing consumer-protection and anti-discrimination law already reaches AI, regulators have been explicit that "the model decided" is not a defence, and states keep adding their own statutes. **NIST AI RMF** is voluntary, but it is the shared *vocabulary* — Govern, Map, Measure, Manage.
+- **India** — no dedicated AI statute; the binding instrument is **data protection** (DPDP). So the question that lands on an Indian engineer isn't "is your model fair?", it's "whose personal data is in that context window, that RAG index, and those logs — and on what consent?"
+- **UAE/Gulf** — national AI strategy and a dedicated minister; in the DIFC, data-protection rules that specifically name automated decision-making. But the constraint that actually shapes architecture is **data residency**: in Gulf finance and healthcare, some data legally cannot leave the country — which is the strongest real-world argument for the local models from S5 that the course makes anywhere.
+
+**Worked example (use it if the room is engaged).** Take their own capstone: a RAG bot over college notes. Where does each regime bite? EU — is it doing anything high-risk like grading or admissions? If yes, a pile of obligations; if it's a study aid, mostly the transparency floor. India — the notes contain other students' names and marks; that's personal data, so consent and purpose limitation apply. US — if they ever claim "95% accurate" in marketing, that claim is now enforceable. Gulf — if the college is a UAE branch campus, can the data even go to a US API? That single walk-through is worth more than the four cards.
+
+**Pushback.** *"This is a student project, none of this applies."* Two honest halves: correct today, and the point isn't to comply now — it's that the day a project gets users, these questions arrive already answered or already wrong, and the answers are architectural (where data lives, what gets logged, what a human approves), so they're cheap now and expensive later. *"Isn't regulation just going to kill Indian startups?"* Don't take a side; note that every one of the four regimes is asking for measurement, grounding, logging and human oversight — which is the same list good engineering already wants.
+
+**Landmine.** Do **not** free-style dates, thresholds or tier names — they move, and a professor in the room may know the current text better than you. Say the shape confidently and the specifics carefully: "risk-tiered, phasing in through 2027", "no single US federal law", "India's binding law is data protection". Add "this isn't legal advice, check the current text" once, plainly — it costs three seconds and buys the whole slide credibility. And keep it to ~2.5 min; it is a compressible slide, so if the red-team lab is going to run long, this is the one to trim to the last line: *you are judged where your users are, and you already built all four duties.*
+
+---
+
+### Slide 15 — The ship-it checklist
 **Claims:** eight safeguards; tick the ones your capstone honestly has; the gaps are your roadmap.
 
 **Mechanism.** Each checklist item maps 1:1 to something in this session — grounded + escape hatch (S4), delimit untrusted text (slide 7 L1), output validated (L3), human gate on side effects (L4/slide 8), retries+timeouts (slide 11), logging (slide 11), evals-as-regression (slide 11), citations shown (slide 12). It's the whole session compressed into a self-audit.
@@ -291,7 +311,7 @@ The Act is **in force, obligations phasing in through 2027.** The US complement 
 
 ---
 
-### Slide 15 — Capstone brief & grading
+### Slide 16 — Capstone brief & grading
 **Claims:** 30 min red-team + harden, then 3-min demos per pair; ≥2 techniques, a 10-example eval, one documented failure + mitigation; graded /100.
 
 **The rubric:** Working demo **40** · Honest eval numbers **25** · Failure analysis **15** · Right-tool-for-job **10** · Presentation **10**.
@@ -318,11 +338,11 @@ The Act is **in force, obligations phasing in through 2027.** The US complement 
 
 ---
 
-### Slides 16–19 — Demo rules, the arc, what's next, thanks
-- **Slide 16 (demo rules):** pre-run your best example (live-typing to a room is how demos crash), lead with the problem not the stack, show the failure. These are avoidable mistakes — 90 seconds, high value.
-- **Slide 17 (the arc):** Predict → Measure → See → Know → Act → Ship, each verb igniting in its session's color. The one-line thesis: "You didn't learn to use ChatGPT — you learned how these systems work, where they fail, and how to build safely." This is the emotional payoff; slow down.
-- **Slide 18 (what's next):** ship for real (Streamlit/Vercel free tier — a live URL beats any certificate), rebuild one lab without the notebook, the meta-skill (you own the fundamentals under the buzzwords).
-- **Slide 19 (thanks):** "You came as users. You leave as builders." Mean it. Point to the repo they keep.
+### Slides 17–20 — Demo rules, the arc, what's next, thanks
+- **Slide 17 (demo rules):** pre-run your best example (live-typing to a room is how demos crash), lead with the problem not the stack, show the failure. These are avoidable mistakes — 90 seconds, high value.
+- **Slide 18 (the arc):** Predict → Measure → See → Know → Act → Ship, each verb igniting in its session's color. The one-line thesis: "You didn't learn to use ChatGPT — you learned how these systems work, where they fail, and how to build safely." This is the emotional payoff; slow down.
+- **Slide 19 (what's next):** ship for real (Streamlit/Vercel free tier — a live URL beats any certificate), rebuild one lab without the notebook, the meta-skill (you own the fundamentals under the buzzwords).
+- **Slide 20 (thanks):** "You came as users. You leave as builders." Mean it. Point to the repo they keep.
 
 ---
 
@@ -441,3 +461,19 @@ If demos run long, collapse slides 17–18 to one sentence each and go straight 
 - **Wallace et al. (OpenAI), "The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions" (2024)** — why newer models weight system prompts higher, and why that's mitigation not a fix. This is your source when a student asks "can't the model just prioritize its rules?"
 - **NIST AI Risk Management Framework 1.0** — the Govern/Map/Measure/Manage functions; the US vocabulary auditors use. One read gives you the framework names to say precisely on slide 13.
 - **Google Gemini API — context caching docs (ai.google.dev)** — confirm the caching mechanics and current discount before you quote the −90% number; this is the one cost lever the demo actually models.
+
+---
+
+## The depth layer — 3 `<|deeper|>` panels in this deck
+
+Collapsed by default, so they cost the clock nothing. Press **D** on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as `[D] deeper:`.
+
+Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.
+
+| Deck slide | Slide | Panel |
+|---|---|---|
+| `#7` | Defense in depth: no single fix, so layer them | why filtering will never be the fix — and what is |
+| `#11` | Cost: every token is a coin | read the price list again — the two numbers aren't the same |
+| `#12` | Speed, reliability, observability | measure the tail, not the average |
+
+Prose versions of all of these, with the same section order, are in `LEARNING-GUIDE.md` **Part 8**. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.

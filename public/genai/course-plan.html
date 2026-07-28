@@ -4,17 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Course Plan — Generative AI · Foundations &amp; Applications</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/course-plan.html">
 <meta name="description" content="The full design of the 12-hour weekend bootcamp: six sessions, labs, the capstone sprint, tech decisions, and the risk/fallback plan.">
 <meta property="og:title" content="The Course Plan">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/course-plan.html">
 <meta property="og:description" content="The full design of the 12-hour weekend bootcamp: six sessions, labs, the capstone sprint, tech decisions, and the risk/fallback plan.">
 <meta property="og:type" content="article">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <style>
   :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
     --accent:#1D3AD1;--accentpale:#E3E9FF;--panel:#F4F6F9;
-    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
@@ -60,10 +58,18 @@
   <h2>Design principles</h2>
   <ol>
     <li><strong>Every session ships something.</strong> Students leave each session with working code in their own Colab.</li>
-    <li><strong>Intuition before jargon.</strong> Analogies first, terms second, math never (this course).</li>
+    <li><strong>Intuition before jargon.</strong> Analogies first, terms second. The main line stays math-free — but it is not capped there (see <em>The depth layer</em> below).</li>
     <li><strong>Honest engineering.</strong> Cover failure modes (hallucination, injection, cost) as first-class content, not footnotes.</li>
     <li><strong>Zero-install.</strong> Google Colab + Gemini free tier. Works on any college machine with a browser.</li>
   </ol>
+
+
+  <h2>The depth layer</h2>
+  <p>The audience is 3rd- and 4th-year CSE students who have already done linear algebra and probability. Pitching everything at analogy level wastes that, but adding mechanism to the main line would blow a 12-hour budget that is already tight. So depth is a <strong>second layer, not a longer first one</strong>.</p>
+  <p>Every deck carries collapsible <code>&lt;|deeper|&gt;</code> panels — <strong>21 of them across the six sessions</strong> — sitting under the slide they belong to. Collapsed by default, so they cost the running clock nothing; press <strong>D</strong> (or click the panel label) to open every panel on the current slide. Each one is flagged in the presenter notes as <code>[D] deeper:</code> with a one-line summary, so the instructor can decide in the moment.</p>
+  <p>They exist for three situations: a sharp student asks the question the slide provokes (&quot;but where do the probabilities come from?&quot;), the room is running ahead of the clock, or a student revisits the deck after the session. <a href="LEARNING-GUIDE.html#part-8">the Learning Guide, <strong>Part 8</strong></a> is the same material in prose, section-by-section cross-referenced to the panel it matches.</p>
+  <p>What&#x27;s in them: logits/softmax/top-k/top-p · cross-entropy loss and perplexity · positional encoding (RoPE) and attention&#x27;s n² cost · scaling laws and the Chinchilla correction · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT · precision/recall/F1 and LLM-judge position bias · eval sample size (±1/√n) · ViT patches and vision&#x27;s token bill · what a diffusion model actually predicts · constrained decoding · embedding pooling, normalization and task types · chunking upgrades and filter-before-rank · reranking, bi- vs cross-encoders, hybrid search · recall@k / MRR / faithfulness · the tool-use wire format · agent loop guards and trajectory eval · quantization arithmetic for local models · why prompt injection has no escape character, and the three-legged exfiltration model · the input/output price asymmetry and cost-per-user · p50/p99 latency and what to log.</p>
+  <p>None of it is examinable and none of it is required. It is there so the ceiling of the course is set by the student, not by the slide.</p>
 
   <h2>Session structure (every session)</h2>
   <table>
@@ -146,7 +152,8 @@
 
   <h2>Currency, alignment &amp; future-proofing</h2>
   <p>This course's spine — LLM fundamentals → prompting → evaluation → RAG → tools/agents → production &amp; security — matches how GenAI is taught across 2026's leading curricula (IBM's RAG &amp; Agentic AI certificate, the major LLM-engineering courses, the frontier labs' own material) and what employers expect: chunking strategies, embedding selection, vector DBs, citations, failure-mode analysis, golden-dataset evals, regression testing, function calling, workflow orchestration, and cost/latency/observability.</p>
-  <p><strong>Deliberate pedagogy: build raw, then name the frameworks.</strong> Where most bootcamps teach LangChain/LlamaIndex/CrewAI first, this course builds RAG as a numpy array and tools as plain Python functions — so students understand the machinery before an abstraction hides it. Frameworks, rerankers, LoRA/QLoRA, MCP, and LLMOps tooling are named as honest "next steps" (see <a href="LEARNING-GUIDE.html#s7-2">the Learning Guide, §7.2</a>), not taught, keeping the 12 hours focused on durable fundamentals.</p>
+  <p><strong>Deliberate pedagogy: build raw, then name the frameworks.</strong> Where most bootcamps teach LangChain/LlamaIndex/CrewAI first, this course builds RAG as a numpy array and tools as plain Python functions — so students understand the machinery before an abstraction hides it. Frameworks, LoRA/QLoRA, and LLMOps tooling are named as honest &quot;next steps&quot; (see <a href="LEARNING-GUIDE.html#s7-2">the Learning Guide, §7.2</a>), not taught, keeping the 12 hours focused on durable fundamentals.</p>
+  <p><strong>Where this goes deeper than a typical 2026 syllabus.</strong> Most short GenAI courses stop at &quot;temperature controls creativity&quot; and &quot;RAG retrieves relevant chunks.&quot; The depth layer takes the same 12 hours down to mechanism — the softmax that temperature divides, the KV cache behind every latency and caching claim, the n² curve that makes long context expensive, the bi-encoder/cross-encoder split that justifies reranking, and the structural reason prompt injection has no fix. Reranking, hybrid search, retrieval metrics (recall@k, MRR, faithfulness), agent trajectory evaluation, and quantization arithmetic are typically absent from introductory syllabi entirely; here they are one keypress from the slide that motivates them.</p>
   <p><strong>Future-proofing:</strong> model names, prices, free-tier limits, and fashionable frameworks change every few months; tokens, embeddings, attention, evaluation, retrieval, tool use, and security failure modes do not. The course is built on that stable layer, with one <code>MODEL</code> variable per notebook for the single thing that changes. <a href="LEARNING-GUIDE.html#s7-3">The Learning Guide, §7.3</a> makes this explicit for students — it's the most valuable idea in the course.</p>
 
   <h2>Risk / fallback plan</h2>

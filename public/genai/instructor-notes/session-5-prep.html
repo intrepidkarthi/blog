@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 5 — Instructor Prep Pack (deep version) — Generative AI · Foundations &amp; Applications</title>
 <meta name="description" content="Deep instructor prep for Session 5: function calling wire format, agent-loop failure math, MCP, multi-agent patterns, quantization and hybrid economics.">
@@ -472,6 +471,24 @@
 <li><strong>Gemini function-calling docs — ai.google.dev.</strong> The exact wire format from §2.3 (functionDeclarations, functionCall, functionResponse), parallel calls, and forced tool choice — your reference if a student's notebook emits something unexpected.</li>
 <li><strong>"Toolformer: Language Models Can Teach Themselves to Use Tools" — Schick et al., 2023.</strong> How tool-use ability gets INTO the weights via training data — the mechanism behind "it's trained to emit calls," one level below this deck.</li>
 </ol>
+
+
+  <hr>
+
+  <h2 id="the-depth-layer">The depth layer — 3 <code>&lt;|deeper|&gt;</code> panels in this deck</h2>
+
+  <p>Collapsed by default, so they cost the clock nothing. Press <strong>D</strong> on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as <code>[D] deeper:</code>.</p>
+
+  <p>Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.</p>
+
+  <table>
+    <tr><th>Deck slide</th><th>Slide</th><th>Panel</th></tr>
+    <tr><td><code>#6</code></td><td>Function declarations: the description IS the prompt</td><td>what the SDK is actually sending, and why it works at all</td></tr>
+    <tr><td><code>#9</code></td><td>The agent loop: while it wants tools, feed it</td><td>the loop condition nobody writes, and the score nobody keeps</td></tr>
+    <tr><td><code>#19</code></td><td>Ollama: a model in your pocket</td><td>will it fit on my laptop? arithmetic, not vibes</td></tr>
+  </table>
+
+  <p>Prose versions of all of these, with the same section order, are in <a href="../LEARNING-GUIDE.html#part-8">the Learning Guide, <strong>Part 8</strong></a>. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.</p>
 
   <footer class="foot">
     <div style="margin-bottom:8px">run sheet: <a href="session-5-notes.md">session-5-notes.html</a> · deck: <a href="../presentations/session-5-making-ai-do-things.html">session-5-making-ai-do-things.html</a> · lab: <a href="../labs/session-5/lab-handout.html">lab-handout.html</a> · <a href="../cheatsheets/session-5-cheatsheet.html">cheatsheet</a></div>

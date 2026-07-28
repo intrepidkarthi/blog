@@ -341,3 +341,18 @@ Deck budget 102.5 min total = 47.5 talk + 52 lab-block (2 brief + 50 lab) + 3 cl
 5. **Zheng et al. 2023, "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena"** — quantifies verbosity/position/self-preference biases and the mitigations; the source behind slide 15's judge caveats.
 6. **Liu et al. 2023, "Lost in the Middle: How Language Models Use Long Contexts"** — why instruction placement matters and why over-stuffed prompts degrade; backs the "attention dilution" line on slide 5.
 7. **Hamel Husain, "Your AI Product Needs Evals" (blog, 2024)** — the practitioner's doctrine for everything in slides 13–18; the closest thing to how real teams actually run the loop this session teaches.
+
+---
+
+## The depth layer — 2 `<|deeper|>` panels in this deck
+
+Collapsed by default, so they cost the clock nothing. Press **D** on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as `[D] deeper:`.
+
+Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.
+
+| Deck slide | Slide | Panel |
+|---|---|---|
+| `#15` | Same answer, three verdicts | one number is usually the wrong number |
+| `#16` | Prompt A vs Prompt B: the arena | B won 4–3. Did B actually win? |
+
+Prose versions of all of these, with the same section order, are in `LEARNING-GUIDE.md` **Part 8**. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.

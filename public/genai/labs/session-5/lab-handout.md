@@ -24,5 +24,7 @@ Four scenarios → pick Prompt / RAG / Tools / Fine-tune, justify in 2 sentences
 ## Stretch
 **Plug your Session 4 `search_notes` in as a tool** — your capstone becomes a real assistant (knowledge + hands) · manual agent loop · break-it-then-fix-the-docstring (proves docstrings are prompts).
 
+**Going deeper (S3, S4 in the notebook).** *Grade the trajectory* — score which tool it reaches for first, including the questions that need **no** tool; over-calling is as much a bug as missing a call, and this number drops the moment a docstring goes vague. *Put the loop on a leash* — step cap, tool allow-list, validated arguments, readable errors. That guarded loop, not the bare `while`, is what production looks like. Deck: press **D** on "The agent loop".
+
 ## Capstone
 You now hold all three pieces: **RAG (knowledge) + tools (hands) + evals (judge).** Save the notebook. The finale attacks it, you harden it, then demo. Bring it charged.

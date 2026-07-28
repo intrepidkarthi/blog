@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 2 — Instructor Prep Pack (deep) — Generative AI · Foundations &amp; Applications</title>
 <meta name="description" content="The deep instructor prep for Session 2: prompt anatomy mechanisms, hallucination with real court receipts, scorer design, demo playbooks, Q&amp;A bank, timing map.">
@@ -262,6 +261,23 @@ Code:   data = json.loads(response)   →  data[&quot;year&quot;] + 1  →  4</c
 <li><strong>Zheng et al. 2023, "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena"</strong> — quantifies verbosity/position/self-preference biases and the mitigations; the source behind slide 15's judge caveats.</li>
 <li><strong>Liu et al. 2023, "Lost in the Middle: How Language Models Use Long Contexts"</strong> — why instruction placement matters and why over-stuffed prompts degrade; backs the "attention dilution" line on slide 5.</li>
 <li><strong>Hamel Husain, "Your AI Product Needs Evals" (blog, 2024)</strong> — the practitioner's doctrine for everything in slides 13–18; the closest thing to how real teams actually run the loop this session teaches.</li></ol>
+
+
+  <hr>
+
+  <h2 id="the-depth-layer">The depth layer — 2 <code>&lt;|deeper|&gt;</code> panels in this deck</h2>
+
+  <p>Collapsed by default, so they cost the clock nothing. Press <strong>D</strong> on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as <code>[D] deeper:</code>.</p>
+
+  <p>Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.</p>
+
+  <table>
+    <tr><th>Deck slide</th><th>Slide</th><th>Panel</th></tr>
+    <tr><td><code>#15</code></td><td>Same answer, three verdicts</td><td>one number is usually the wrong number</td></tr>
+    <tr><td><code>#16</code></td><td>Prompt A vs Prompt B: the arena</td><td>B won 4–3. Did B actually win?</td></tr>
+  </table>
+
+  <p>Prose versions of all of these, with the same section order, are in <a href="../LEARNING-GUIDE.html#part-8">the Learning Guide, <strong>Part 8</strong></a>. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.</p>
 
   <footer class="foot">
     <div style="margin-bottom:8px">deck: <a href="../presentations/session-2-talking-to-ai-and-catching-its-lies.html">session-2-talking-to-ai-and-catching-its-lies.html</a> · run sheet: <code>session-2-notes.md</code> · <a href="../cheatsheets/session-2-cheatsheet.html">student cheatsheet</a> · <a href="../labs/session-2/lab-handout.html">lab handout</a></div>

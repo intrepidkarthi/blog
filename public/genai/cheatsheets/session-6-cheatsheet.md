@@ -38,3 +38,5 @@ Grounded + escape hatch · untrusted text delimited · output validated · human
 3 min: **what it does + techniques · one failure you found · one fix.** Pre-run your best example. Lead with the problem. **Show the failure — honesty about limits beats a fragile "perfect" demo.**
 
 You came as users. You leave as builders. Ship something. — @intrepidkarthi
+
+**Go deeper (press D on the deck):** why a token stream has no escape character, and the three-legged exfiltration model (private data + untrusted content + a way out — remove one leg) · why output costs ~6× input, and cost per *user* · p50 vs p99, retry jitter, idempotency, what to log. Prose versions: Learning Guide **Part 8**.

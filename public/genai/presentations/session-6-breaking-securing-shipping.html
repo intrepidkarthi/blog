@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 6 · Breaking, Securing, Shipping — GenAI Foundations · TCE</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/presentations/session-6-breaking-securing-shipping.html">
 <meta name="description" content="Session 6 of GenAI Foundations at TCE Madurai — break it, defend it, ship it: live prompt injection, jailbreaks, defense in depth, cost & reliability, and the capstone demo.">
 <meta property="og:title" content="Session 6 · Breaking, Securing, Shipping — GenAI Foundations · TCE">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/presentations/session-6-breaking-securing-shipping.html">
 <meta property="og:description" content="Attack it, defend it, ship it: prompt injection, jailbreaks, defense in depth, cost / latency / observability, and the capstone demo.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
@@ -32,7 +30,7 @@
     --accentmark:color-mix(in srgb,var(--hue) 35%,white);
     --stagebg:#14171F; --stageink:#FFFFFF;
     --s1:var(--d1); --s2:var(--d2); --s3:var(--d3); --s4:var(--d4); --s5:var(--d5); --s6:var(--d6);
-    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -183,6 +181,36 @@
   .flip.open .q{display:none}
   .flip .hintline{color:var(--accent);font-size:.82rem;font-weight:600;margin-top:10px}
   .flip.open .hintline{display:none}
+  /* ---- depth layer: optional <|deeper|> panels. Collapsed by default, so they cost the
+     running clock nothing; opened on demand when a sharp student asks, or after class. ---- */
+  .deep{margin-top:20px;border-top:1px dashed var(--linedark)}
+  .deeptog{appearance:none;background:none;border:0;padding:12px 0 0;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;text-align:left;
+    font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.07em;color:var(--deep)}
+  .deeptog .lbl:before{content:"<|";color:var(--faint);font-weight:400;margin-right:2px}
+  .deeptog .lbl:after{content:"|>";color:var(--faint);font-weight:400;margin-left:2px}
+  .deeptog .cv{display:inline-block;width:.46em;height:.46em;border-right:2px solid currentColor;
+    border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .2s;margin-bottom:.18em}
+  .deep.open .deeptog .cv{transform:rotate(-135deg);margin-bottom:0}
+  .deeptog:hover{color:var(--ink)}
+  .deeptog:focus-visible{outline:2px solid var(--hue);outline-offset:3px;border-radius:4px}
+  .deepbody{display:none;padding:14px 0 2px}
+  .deep.open .deepbody{display:block}
+  .deepbody p{font-size:.93rem;color:var(--body);line-height:1.62;max-width:76ch}
+  .deepbody p+p{margin-top:10px}
+  .deepbody b{color:var(--ink);font-weight:650}
+  .deepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px;margin-top:13px}
+  .dcell{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .dcell h4{font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+  .dcell h4 .em{display:inline-block;width:.5em;height:.5em;border-radius:3px;background:var(--accent);margin-right:8px;vertical-align:.06em}
+  .dcell p{font-size:.85rem;color:var(--muted);line-height:1.55;max-width:none}
+  .fx{display:block;font-family:var(--mono);font-size:.9rem;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-left:3px solid var(--hue);border-radius:8px;
+    padding:11px 14px;margin:12px 0;overflow-x:auto;white-space:pre;line-height:1.7}
+  .fx .cm{color:var(--muted)}
+  .fx b{color:var(--deep)}
+  /* an open panel makes its slide scroll — deep content must never clip off the bottom */
+  .slide.deepopen{justify-content:flex-start;overflow-y:auto}
   /* context window */
   .cw{display:flex;height:58px;border-radius:9px;overflow:hidden;border:1.5px solid var(--linedark);background:var(--panel)}
   .cw .seg{display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;
@@ -366,7 +394,7 @@
   <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b> &nbsp;·&nbsp; Session 6 · Finale · TCE Madurai</span>
   <span id="counter">1 / 1</span>
 </div>
-<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview</div>
+<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>D</kbd> deeper</div>
 
 <main class="deck" id="deck">
 
@@ -475,6 +503,21 @@
       </div>
     </div>
   </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">why filtering will never be the fix — and what is</span></button>
+    <div class="deepbody">
+      <p>Every defence on this slide that inspects <i>text</i> — delimiters, instruction hierarchy, injection classifiers — raises the cost of an attack. None of them ends it. The reason is structural, and worth saying precisely: in every other injection problem in computing there is an <b>escape character</b>. SQL has quoting. HTML has entity encoding. Shell has argument arrays. Each works because the parser has a hard, mechanical boundary between code and data.</p>
+      <p>A transformer has no such boundary. Your system prompt, the user's message and a retrieved document arrive as one flat sequence of tokens, and "these tokens are instructions, those are data" is a <i>preference learned in training</i>, not a rule enforced by the machine. A preference can be outvoted by a sufficiently persuasive sequence — which is exactly what a jailbreak is. This is why the honest slide two ahead says there is no secure AI agent, and why OWASP has kept injection at #1 rather than marking it solved.</p>
+      <p><b>So stop trying to make the model trustworthy, and make the damage impossible instead.</b> The one framing that reliably predicts whether an AI feature can be catastrophically exploited: danger needs all three of these at once.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>1 · Access to private data</h4><p>Your documents, the user's records, internal APIs, the file system.</p></div>
+        <div class="dcell"><h4><span class="em"></span>2 · Exposure to untrusted content</h4><p>Anything you didn't write: web pages, uploaded PDFs, emails, tool results, other users' text.</p></div>
+        <div class="dcell"><h4><span class="em"></span>3 · A way to send data out</h4><p>Sending mail, calling a webhook, writing to a shared doc — even rendering an image whose URL contains the data.</p></div>
+      </div>
+      <p><b>Remove any one leg and the exfiltration attack dies</b>, regardless of how clever the prompt was. That is a design decision you can actually verify, unlike "our filter catches it." A RAG bot that reads private notes and is fed untrusted documents is fine <i>as long as it cannot transmit</i>. Add one innocent-looking "email this summary" tool and you have completed the triangle.</p>
+      <p class="note">Practical consequences, in order of value: give the model the narrowest possible tool set; make anything that writes, spends, or sends require a human click; never let a tool's <i>output</i> expand the model's permissions; run the model with the privileges of the <i>user who asked</i>, never with the app's own; and treat every tool result as hostile input — because in an indirect injection, it is. Match trust to blast radius, and the blast radius is something you control even when the model is fooled.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 8 HUMAN LOOP -->
@@ -529,6 +572,20 @@
         <p class="note">Cheap-by-default is the whole game: run the free local model (S5) for the boring 90%, pay the API only for the hard 10%.</p></div>
     </div>
   </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">read the price list again — the two numbers aren't the same</span></button>
+    <div class="deepbody">
+      <p>Look at the rate under the calculator: <b>$1.50 in / $9.00 out per million tokens</b>. Output costs six times input, and every provider prices this way. That asymmetry is not arbitrary — it falls straight out of the KV cache from Session 1. Input is <i>prefill</i>: the whole prompt goes through in parallel, once. Output is <i>decode</i>: one sequential pass per token, and nothing about it can be batched away.</p>
+      <p>Which flips the intuition most people start with. Stuffing 20 extra chunks into a RAG prompt is annoying but survivable. Letting the model ramble for 800 tokens when 150 would do costs far more — and you pay it on every single request, forever. <b>Capping output length is usually the highest-leverage line of code in the whole system</b>, and it's one parameter.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Cache the prefix</h4><p>Pin the unchanging head of your prompt — system rules, few-shot examples, a fixed document — and reuse it for roughly a tenth of the price. Requires only that you put the stable part <b>first</b>. Prompt order is a cost decision.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Batch what isn't urgent</h4><p>Offline work — grading a test set, embedding a corpus, nightly summaries — goes through the batch endpoint at around half price in exchange for waiting. Most back-office AI has no user staring at it.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Route by difficulty</h4><p>Send everything to the small model, and escalate only when it signals low confidence or a validator rejects the output. Reserve reasoning models for genuinely hard steps — their hidden scratchpad bills as output tokens, at output prices.</p></div>
+      </div>
+      <p><b>The number that actually matters is cost per user, not cost per call.</b> Do this arithmetic before you build, because it decides the architecture: <span style="font-family:var(--mono)">cost/user/month = queries per user × (input tokens × in-rate + output tokens × out-rate)</span>. Ten queries a day at ₹0.30 (about $0.003) each is ₹90 &asymp; <b>$0.95 per user per month</b> — fatal for a free app, irrelevant for one billed at ₹2,000 ($21). Same code, opposite verdict. Run it at 100 users and at 100,000; if those two answers don't both work, you have an architecture problem, not a pricing problem.</p>
+      <p class="note">Two habits that separate a demo from a product: log tokens and cost <b>per request</b> from day one — you cannot optimise a number you never recorded — and set a hard spend alert on the key before you launch, because the first thing a runaway agent loop does is spend money quietly.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 11 SPEED + RELIABILITY -->
@@ -541,6 +598,20 @@
     <div class="card rv"><h3><span class="em"></span>Observability → log everything</h3><p>Prompt, response, tokens, latency, cost, thumbs up/down. When it misbehaves at 2 a.m., logs are the only way you'll ever know what happened.</p></div>
   </div>
   <p class="lead rv mt">And your evals from Session 2? They become the <b>regression test</b> — run them on every prompt change, before you ship, forever.</p>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">measure the tail, not the average</span></button>
+    <div class="deepbody">
+      <p><b>"Latency" is two numbers, and averaging them hides the fix.</b> Time to first token is your prefill — dominated by prompt length, and the only part the user experiences as <i>waiting</i>. Tokens per second is your decode — it sets how fast the answer unspools once it starts. A long RAG prompt hurts the first; a long answer hurts the second. Streaming is powerful precisely because it exposes only the first number: 800ms to first token then a steady flow feels alive, while 4 seconds of nothing followed by an instant wall of text feels broken — even though the second one finished sooner.</p>
+      <p>And never report the mean. Report <b>p50 and p99</b>: the median is the experience you designed for, the 99th percentile is the experience that generates complaints. With LLMs the gap is unusually wide, because response length varies and long tails are structural. If p50 is 2s and p99 is 30s, one user in a hundred is watching a spinner for half a minute — and an average of 2.4s tells you none of that.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Retry with jitter</h4><p>Back off exponentially on 429 and 5xx — and add randomness. Synchronised retries after a blip re-hit the API in one wave and cause the next outage themselves. Cap total attempts; a retry storm is self-inflicted.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Timeouts and a fallback</h4><p>Every call gets a deadline. When it expires, degrade deliberately: a cached answer, the smaller model, or an honest "I couldn't reach the model — try again." Never a stack trace, never an infinite spinner.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Idempotency</h4><p>Retrying a read is free; retrying "send the email" sends two. Anything with a side effect needs a key or a check so a repeat is a no-op. This is where the S5 leash and this slide meet.</p></div>
+      </div>
+      <p><b>Then log what makes debugging possible</b>: a request id, the prompt version, the model id, input and output token counts, latency split into TTFT and total, cost, and the user's thumbs up/down. Prompt version and model id matter more than they look — when quality drops next Tuesday, the first question is always "what changed?", and a provider silently updating a model behind an alias is a real answer you can only reach if you recorded it.</p>
+      <p class="note">The habit that ties the whole course together: your Session 2 eval set, run automatically before every prompt change, with the score written into the log. Quality then behaves like any other engineering metric — it has a number, a history, and an alarm — instead of being something you find out about from users.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 12 UX -->
@@ -568,9 +639,32 @@
   <p class="note rv">The frameworks auditors cite: <b>EU AI Act</b> (in force, obligations phasing in through 2027) and <b>NIST AI RMF</b>. You've practiced all four questions this weekend — now you know their legal names.</p>
 </section>
 
+<!-- 13b WHO REGULATES YOU -->
+<section class="slide">
+  <div class="kicker rv"><span class="no">13</span> <span class="tk">ship_across_a_border</span></div>
+  <h2 class="rv">Your users decide <span class="u">whose law you're under</span></h2>
+  <p class="lead rv">Not your laptop, not your registered office — <b>where the people using it are.</b> Four rulebooks, and they do not agree.</p>
+  <div class="cols mt">
+    <div class="card rv"><h3><span class="em"></span>European Union — the AI Act</h3>
+      <p>The only comprehensive AI <i>statute</i>. Sorted by risk: some uses banned, "high-risk" ones (hiring, credit, education, biometrics) heavily regulated, and a transparency floor for everything else — <b>say it's an AI, label synthetic media</b>.</p>
+      <p class="note">Reaches you without you ever entering Europe: it applies where the <i>output</i> is used. Phasing in through 2027.</p></div>
+    <div class="card rv"><h3><span class="em"></span>United States — no single law</h3>
+      <p>Sectoral and state-by-state. Consumer-protection and anti-discrimination law already reach AI, and <b>"the model decided" is not a defence</b>.</p>
+      <p class="note"><b>NIST AI RMF</b> — voluntary, but the shared vocabulary: Govern, Map, Measure, Manage.</p></div>
+    <div class="card rv"><h3><span class="em"></span>India — DPDP Act</h3>
+      <p>No AI statute; the binding law is <b>data protection</b>. Consent and purpose limitation land straight on you — your prompts, your RAG index and your logs are full of personal data.</p>
+      <p class="note">The question isn't "is your model fair?" but <b>"whose data is in that context window?"</b></p></div>
+    <div class="card rv"><h3><span class="em"></span>UAE &amp; the Gulf — residency</h3>
+      <p>A national AI strategy and a dedicated minister; in the DIFC, rules that specifically name <b>automated decision-making</b>.</p>
+      <p class="note">What actually shapes architecture is <b>data residency</b> — some data legally cannot leave the country. That's the Session 5 local-model argument, in law.</p></div>
+  </div>
+  <p class="lead rv mt"><b>None of this asks anything new of you.</b> Measure it, ground it, log it, keep a human on the blast radius — you built all four this weekend.</p>
+  <p class="note rv">Dates move and this isn't legal advice — check the current text before you ship.</p>
+</section>
+
 <!-- 14 CHECKLIST -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">13</span> <span class="tk">tick_the_ones_your_capstone_has</span></div>
+  <div class="kicker rv"><span class="no">14</span> <span class="tk">tick_the_ones_your_capstone_has</span></div>
   <h2 class="rv">The ship-it <span class="u">checklist</span></h2>
   <div class="cols" style="grid-template-columns:1fr 1fr">
     <div class="rv" id="sc-list"></div>
@@ -585,7 +679,7 @@
 
 <!-- 15 CAPSTONE BRIEF -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">14</span> <span class="tk">~30 min build · ~35 min demos (3 min × your pairs)</span></div>
+  <div class="kicker rv"><span class="no">15</span> <span class="tk">~30 min build · ~35 min demos (3 min × your pairs)</span></div>
   <h2 class="rv">Capstone: <span class="u">the sprint &amp; the demo</span></h2>
   <div class="cols" style="grid-template-columns:1fr 1fr">
     <div class="rv">
@@ -608,7 +702,7 @@
 
 <!-- 16 DEMO RULES -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">15</span> <span class="tk">two_minutes_before_you_present</span></div>
+  <div class="kicker rv"><span class="no">16</span> <span class="tk">two_minutes_before_you_present</span></div>
   <h2 class="rv">How to demo <span class="u">without dying</span></h2>
   <div class="cols3">
     <div class="card rv"><h3>Pre-run it</h3><p>Have your best example already worked. Live-typing a fresh prompt to a room is how demos crash. Show the prepared one, then take a wild-card if you're brave.</p></div>
@@ -620,7 +714,7 @@
 
 <!-- 17 THE ARC -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">16</span> <span class="tk">look_how_far</span></div>
+  <div class="kicker rv"><span class="no">17</span> <span class="tk">look_how_far</span></div>
   <h2 class="rv">Six sessions, <span class="u">one throughline</span></h2>
   <div class="spinerow">
     <span class="spineconn" aria-hidden="true"></span>
@@ -636,7 +730,7 @@
 
 <!-- 18 WHATS NEXT -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">17</span> <span class="tk">keep_going</span></div>
+  <div class="kicker rv"><span class="no">18</span> <span class="tk">keep_going</span></div>
   <h2 class="rv">Where to go <span class="u">from here</span></h2>
   <div class="cols">
     <div class="card rv"><h3><span class="em"></span>Ship your capstone for real</h3><p>Put it on Streamlit/Vercel free tier, give it a URL, put it on your resume and GitHub. "I built and deployed a RAG assistant" opens doors. A live link beats any certificate.</p></div>
@@ -647,7 +741,7 @@
 
 <!-- 19 THANKS -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">18</span> <span class="tk">that's_a_wrap</span></div>
+  <div class="kicker rv"><span class="no">19</span> <span class="tk">that's_a_wrap</span></div>
   <h1 class="rv" style="font-size:clamp(2rem,4.6vw,3.6rem)">You came as users.<br><span class="u">You leave as builders.</span></h1>
   <p class="lead rv mt">Knowing how to use ChatGPT expires next semester. Knowing <b>why it breaks</b> — that compounds.</p>
   <p class="lead rv mt">Thank you for a real weekend of work. Now go break things, measure them, and ship anyway. Stay in touch — I want to see what you build.</p>
@@ -697,6 +791,15 @@
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1);}
     else if(e.key==='Home')go(0);
     else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='d'||e.key==='D'){
+      // D = open/close every depth panel on this slide at once
+      const s=slides[cur];if(!s)return;
+      const ds=[...s.querySelectorAll('.deep')];if(!ds.length)return;
+      const opening=!ds[0].classList.contains('open');
+      ds.forEach(d=>{d.classList.toggle('open',opening);
+        const b=d.querySelector('.deeptog');if(b)b.setAttribute('aria-expanded',opening?'true':'false');});
+      s.classList.toggle('deepopen',opening);
+    }
     else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
     else if(e.key==='o'||e.key==='O'||e.key==='Escape')overview();
   });
@@ -713,6 +816,16 @@
 document.addEventListener('click',e=>{
   const f=e.target.closest('.flip');
   if(f)f.classList.toggle('open');
+});
+
+/* ============ depth layer: <|deeper|> disclosure panels ============ */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.deeptog');
+  if(!t)return;
+  const d=t.closest('.deep');
+  t.setAttribute('aria-expanded',d.classList.toggle('open')?'true':'false');
+  const s=d.closest('.slide');
+  if(s)s.classList.toggle('deepopen',!!s.querySelector('.deep.open'));
 });
 
 /* ============ shared lib ============ */
@@ -914,7 +1027,7 @@ mkQuiz('rq',[
 
 /* ===== presenter mode ===== */
 (function(){
-  var DATA = [{"m": 1, "n": "The finale. Highest energy. ‘We attack everything you built, then defend it, then you demo.’", "c": false, "title": "Breaking it, securing it, shipping it"}, {"m": 2, "n": "<b>Final recap — the whole weekend.</b> No notes. Six fast T/F, one per session: S1 numbers, S2 evals, S3 multimodal, S4 grounding, S5 compounding, S6 tool results.", "c": false, "title": "Everything, in 90 seconds"}, {"m": 1.5, "n": "<b>Hat change — make it physical, pause.</b> ‘Five sessions you built. Now think like an attacker. Every capability is a surface.’", "c": false, "title": "For five sessions you built. Now think like an attacker"}, {"m": 3, "n": "<b>CENTERPIECE. Run direct injection.</b> Bot makes a fake certificate. Let the room react. ‘No border between instructions and data. SQL injection reborn.’ Hit ‘Try another payload’ — injection is a family (override, roleplay, translation), not one gimmick.", "c": false, "title": "Prompt injection: data becomes commands"}, {"m": 3, "n": "<b>Run indirect injection — the scary one.</b> The payload is invisible in the chunk until you reveal it: ‘your RAG read what you couldn’t see.’ ‘Attacker never talks to your bot — this is the app you built this morning.’", "c": false, "title": "Indirect injection: the document attacks your RAG"}, {"m": 2.5, "n": "Jailbreak + leak flips. Golden rule (now big on-screen): ‘never put anything in a prompt you couldn’t survive seeing on the front page.’", "c": false, "title": "Jailbreaks &amp; leaks: the two quieter doors"}, {"m": 3.5, "n": "<b>CENTERPIECE. Toggle defense layers (equal weight now).</b> 0–2 layers the bot falls; 3–4 and it holds. ‘No single wall is perfect — four aren’t all weak at once.’ OWASP #1, no complete fix.", "c": false, "title": "Defense in depth: no single fix, so layer them"}, {"m": 2, "n": "‘Match trust to blast radius.’ Read-only relax, side-effects gate. Get this one dial right and most disasters never leave the building.", "c": false, "title": "Keep a human on anything that bites"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "There is no secure AI agent"}, {"m": 1.5, "n": "‘Works in Colab = the easy 20%.’ The 20/80 bar makes it land. Four things change: cost, speed, reliability, observability.", "c": false, "title": "It works in Colab. That was the easy 20%."}, {"m": 3, "n": "<b>Cost slider to 5000 users.</b> Watch $/month climb — and the jigarthanda line (‘N glasses a day’) makes it visceral. Then flip caching ON — watch input cost drop 90%; that’s the ‘cache repeated questions’ lever, real Gemini feature. Cheap-by-default: free local model for the boring 90%, API only for the hard 10%.", "c": false, "title": "Cost: every token is a coin"}, {"m": 2.5, "n": "Speed=stream (‘forgive slow, hate frozen’). Reliability=retries. Observability=log. ‘Your S2 evals become the regression test.’", "c": false, "title": "Speed, reliability, observability"}, {"m": 1.5, "n": "UX for honest AI: sources, retry, uncertainty, escape-to-human. Design for a component that’s sometimes wrong.", "c": true, "title": "UX patterns for honest AI products"}, {"m": 2, "n": "<b>Rename, don’t re-teach.</b> Every card points at something they DID. Faculty in the room: this slide is for them. EU AI Act + NIST AI RMF said once, precisely.", "c": true, "title": "Responsible AI: the four questions auditors ask"}, {"m": 2.5, "n": "<b>Ship checklist, toggle honestly.</b> ‘The gaps are your roadmap, not your shame.’ Sets up lab Part D.", "c": false, "title": "The ship-it checklist"}, {"m": 2, "n": "<b>Capstone brief.</b> ~30 min red-team+harden, then 3-min demos per pair (~35 min total). ‘The failure story matters more than the polish.’ <b>Links are on screen</b> — point at them.", "c": false, "title": "Capstone: the sprint &amp; the demo"}, {"m": 2, "n": "Demo rules: pre-run, lead with the problem, show the failure. Critical — bad demos are avoidable.", "c": false, "title": "How to demo without dying"}, {"m": 43, "n": "<b>(You just ran the ~30-min red-team/harden lab + ~33-min demos in this slot.)</b> Now the course close: the six-session spine — Predict → Measure → See → Know → Act → Ship, each verb igniting in its session’s colour. ‘You didn’t learn to use ChatGPT — you learned how these systems work, where they fail, and how to build safely.’ That’s the difference between a user and an engineer.", "c": false, "title": "Six sessions, one throughline"}, {"m": 2.5, "n": "<b>Where to go from here.</b> Ship it for real (Streamlit/Vercel — a live URL beats any certificate). Go deeper (rebuild one lab without the notebook). The meta-skill: you own the fundamentals under the buzzwords — tokens, evals, retrieval, tools, safety.", "c": true, "title": "Where to go from here"}, {"m": 2, "n": "<b>Thanks.</b> ‘You came as users. You leave as builders.’ ‘Knowing how to use ChatGPT expires next semester — knowing why it breaks compounds.’ Point to the repo they keep. ‘Ship something.’ <b>Links are on screen</b> — point at them.", "c": false, "title": "You came as users. You leave as builders."}];
+  var DATA = [{"m": 1, "n": "The finale. Highest energy. ‘We attack everything you built, then defend it, then you demo.’", "c": false, "title": "Breaking it, securing it, shipping it"}, {"m": 2, "n": "<b>Final recap — the whole weekend.</b> No notes. Six fast T/F, one per session: S1 numbers, S2 evals, S3 multimodal, S4 grounding, S5 compounding, S6 tool results.", "c": false, "title": "Everything, in 90 seconds"}, {"m": 1.5, "n": "<b>Hat change — make it physical, pause.</b> ‘Five sessions you built. Now think like an attacker. Every capability is a surface.’", "c": false, "title": "For five sessions you built. Now think like an attacker"}, {"m": 3, "n": "<b>CENTERPIECE. Run direct injection.</b> Bot makes a fake certificate. Let the room react. ‘No border between instructions and data. SQL injection reborn.’ Hit ‘Try another payload’ — injection is a family (override, roleplay, translation), not one gimmick.", "c": false, "title": "Prompt injection: data becomes commands"}, {"m": 3, "n": "<b>Run indirect injection — the scary one.</b> The payload is invisible in the chunk until you reveal it: ‘your RAG read what you couldn’t see.’ ‘Attacker never talks to your bot — this is the app you built this morning.’", "c": false, "title": "Indirect injection: the document attacks your RAG"}, {"m": 2.5, "n": "Jailbreak + leak flips. Golden rule (now big on-screen): ‘never put anything in a prompt you couldn’t survive seeing on the front page.’", "c": false, "title": "Jailbreaks &amp; leaks: the two quieter doors"}, {"m": 3.5, "n": "<b>CENTERPIECE. Toggle defense layers (equal weight now).</b> 0–2 layers the bot falls; 3–4 and it holds. ‘No single wall is perfect — four aren’t all weak at once.’ OWASP #1, no complete fix. <b>[D] deeper:</b> why there is no escape character in a token stream, and the three-legged framing (private data + untrusted content + a way out) &mdash; remove one leg and exfiltration dies. Strongest security idea in the course.", "c": false, "title": "Defense in depth: no single fix, so layer them"}, {"m": 2, "n": "‘Match trust to blast radius.’ Read-only relax, side-effects gate. Get this one dial right and most disasters never leave the building.", "c": false, "title": "Keep a human on anything that bites"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "There is no secure AI agent"}, {"m": 1.5, "n": "‘Works in Colab = the easy 20%.’ The 20/80 bar makes it land. Four things change: cost, speed, reliability, observability.", "c": false, "title": "It works in Colab. That was the easy 20%."}, {"m": 3, "n": "<b>Cost slider to 5000 users.</b> Watch $/month climb — and the jigarthanda line (‘N glasses a day’) makes it visceral. Then flip caching ON — watch input cost drop 90%; that’s the ‘cache repeated questions’ lever, real Gemini feature. Cheap-by-default: free local model for the boring 90%, API only for the hard 10%. <b>[D] deeper:</b> why output costs ~6&times; input (prefill vs decode), prefix caching, batch endpoints, and the cost-per-user formula that decides the architecture.", "c": false, "title": "Cost: every token is a coin"}, {"m": 2.5, "n": "Speed=stream (‘forgive slow, hate frozen’). Reliability=retries. Observability=log. ‘Your S2 evals become the regression test.’ <b>[D] deeper:</b> TTFT vs tokens/sec, p50 vs p99, retry jitter, idempotency, and exactly what to log.", "c": false, "title": "Speed, reliability, observability"}, {"m": 1.5, "n": "UX for honest AI: sources, retry, uncertainty, escape-to-human. Design for a component that’s sometimes wrong.", "c": true, "title": "UX patterns for honest AI products"}, {"m": 2, "n": "<b>Rename, don’t re-teach.</b> Every card points at something they DID. Faculty in the room: this slide is for them. EU AI Act + NIST AI RMF said once, precisely.", "c": true, "title": "Responsible AI: the four questions auditors ask"}, {"m": 2.5, "n": "<b>The globally-useful slide — go slowly, faculty care about this one.</b> Read the four cards fast, then land the rule: <b>you are judged where your USERS are, not where you are.</b> The EU reaches you through the output; the US has no single law but 'the AI decided' is not a defence; India's binding law is data protection, so ask <i>whose</i> data is in the context window; the Gulf's real constraint is data residency &rarr; callback to Ollama in S5. Close on the last line: they already built all four duties this weekend. <b>Say once, precisely:</b> dates move, this isn't legal advice, check the current text.", "c": true, "title": "Your users decide whose law you're under"}, {"m": 2.5, "n": "<b>Ship checklist, toggle honestly.</b> ‘The gaps are your roadmap, not your shame.’ Sets up lab Part D.", "c": false, "title": "The ship-it checklist"}, {"m": 2, "n": "<b>Capstone brief.</b> ~30 min red-team+harden, then 3-min demos per pair (~35 min total). ‘The failure story matters more than the polish.’ <b>Links are on screen</b> — point at them.", "c": false, "title": "Capstone: the sprint &amp; the demo"}, {"m": 2, "n": "Demo rules: pre-run, lead with the problem, show the failure. Critical — bad demos are avoidable.", "c": false, "title": "How to demo without dying"}, {"m": 43, "n": "<b>(You just ran the ~30-min red-team/harden lab + ~33-min demos in this slot.)</b> Now the course close: the six-session spine — Predict → Measure → See → Know → Act → Ship, each verb igniting in its session’s colour. ‘You didn’t learn to use ChatGPT — you learned how these systems work, where they fail, and how to build safely.’ That’s the difference between a user and an engineer.", "c": false, "title": "Six sessions, one throughline"}, {"m": 2.5, "n": "<b>Where to go from here.</b> Ship it for real (Streamlit/Vercel — a live URL beats any certificate). Go deeper (rebuild one lab without the notebook). The meta-skill: you own the fundamentals under the buzzwords — tokens, evals, retrieval, tools, safety.", "c": true, "title": "Where to go from here"}, {"m": 2, "n": "<b>Thanks.</b> ‘You came as users. You leave as builders.’ ‘Knowing how to use ChatGPT expires next semester — knowing why it breaks compounds.’ Point to the repo they keep. ‘Ship something.’ <b>Links are on screen</b> — point at them.", "c": false, "title": "You came as users. You leave as builders."}];
   var deck=document.getElementById('deck');
   var total=DATA.reduce(function(a,d){return a+d.m;},0);
   var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});

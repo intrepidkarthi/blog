@@ -296,3 +296,20 @@ Deck budget 97.5 min (DATA array) inside a 2:00 slot: talk ≈ 42.5 min, lab 50 
 | pypdf extracts your test PDF; also test one *scanned* page so you can demo the failure | your own machine |
 | Slider economics: $1.50/1M input (Gemini 3.5 Flash), ₹95.5/USD, 900 q/month — matches deck footer | deck slide 4 footer text |
 | Backup: 3 spare lecture PDFs for students who brought nothing | your drive, downloaded |
+
+---
+
+## The depth layer — 4 `<|deeper|>` panels in this deck
+
+Collapsed by default, so they cost the clock nothing. Press **D** on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as `[D] deeper:`.
+
+Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.
+
+| Deck slide | Slide | Panel |
+|---|---|---|
+| `#7` | Embeddings, now for whole paragraphs | why that one line is allowed to be that short |
+| `#9` | Chunking: how you cut the book | four upgrades once paragraph-with-overlap stops being enough |
+| `#11` | RAG, end to end | the stage production adds between retrieve and augment |
+| `#13` | Where RAG breaks in the wild | debugging this properly: two scores, never one |
+
+Prose versions of all of these, with the same section order, are in `LEARNING-GUIDE.md` **Part 8**. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.

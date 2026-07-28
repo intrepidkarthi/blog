@@ -342,3 +342,19 @@ If behind at the hot take: compress slides 9 + HT to ~2.5 min combined and you'r
 4. **"Robust Speech Recognition via Large-Scale Weak Supervision" — Radford et al., 2022 (Whisper).** The template for "capability emerges from weak supervision at scale" — the same argument you make for OCR-in-VLMs.
 5. **"Neural Codec Language Models are Zero-Shot TTS" — Wang et al., 2023 (VALL-E).** The 3-second cloning mechanism precisely: speech as tokens, voice as an in-context prefix.
 6. **"Efficient Guided Generation for Large Language Models" — Willard & Louf, 2023 (Outlines), plus Google's structured-output docs.** How schema→FSM→logit-masking is actually implemented — the ground truth under slide 12's `response_schema` beat.
+
+---
+
+## The depth layer — 3 `<|deeper|>` panels in this deck
+
+Collapsed by default, so they cost the clock nothing. Press **D** on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as `[D] deeper:`.
+
+Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.
+
+| Deck slide | Slide | Panel |
+|---|---|---|
+| `#4` | How a model reads a picture | a patch is a token, so an image has a token bill |
+| `#8` | Diffusion: a picture emerges from static | what the network is actually trained to output |
+| `#12` | All of it is one API call | why a schema beats begging for JSON |
+
+Prose versions of all of these, with the same section order, are in `LEARNING-GUIDE.md` **Part 8**. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.

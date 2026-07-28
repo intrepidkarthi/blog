@@ -27,5 +27,7 @@ Grounded template (ONLY the context · cite chunks · "I don't know" escape hatc
 ## Stretch
 RAG eval — 5 Q + expected through your S2 harness · k=1 vs 3 vs 5 · add your second document · print similarity scores in answers.
 
+**Going deeper (S3, S4 in the notebook).** *Rerank* — retrieve 20, let a model re-order them, keep 4: the biggest RAG upgrade after chunking, in ten lines. *Two scores, never one* — label which chunk should win, then measure `recall@k` (your ceiling on accuracy) and `MRR` (did it arrive near the top) separately from answer quality. High recall with low MRR is the exact signature that says *add the reranker*. Both are unpacked in the deck's `<|deeper|>` panels — press **D**.
+
 ## Capstone note
 **Save this notebook.** It IS your capstone foundation: S5 (after lunch) bolts tools onto it; S6 attacks and hardens it, then you demo. Choose documents you actually care about — the demo is only as interesting as the data.

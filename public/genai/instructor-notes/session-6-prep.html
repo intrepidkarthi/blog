@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 6 · Instructor Deep Prep — Breaking, Securing, Shipping — Generative AI · Foundations &amp; Applications</title>
 <meta name="description" content="Deep instructor prep for Session 6: prompt injection's root cause, the three attack families, defense in depth, the cost ladder, responsible-AI tiers, and capstone grading calibration.">
@@ -53,7 +52,7 @@
 <h1 id="session-6-instructor-prep-pack">Session 6 — Instructor Prep Pack</h1>
 <p class="lead">the deep version</p>
 <p>You are about to run the finale in front of sharp 4th-years <em>and</em> their professors. This session has one job the others don't: it is where you tell the room, out loud, that the thing they built this weekend can be turned against them and there is no complete fix. That honesty is the whole lesson — but only if you can hold it under fire. This pack takes every slide one honest level deeper than the deck, with numbers you can reproduce on a whiteboard.</p>
-<p>Deck: <code>../presentations/session-6-breaking-securing-shipping.html</code> — 20 slides, 7 interactives. Lab: <code>../labs/session-6/</code>. Cheatsheet: <code>../cheatsheets/session-6-cheatsheet.html</code>.</p>
+<p>Deck: <code>../presentations/session-6-breaking-securing-shipping.html</code> — 21 slides, 7 interactives. Lab: <code>../labs/session-6/</code>. Cheatsheet: <code>../cheatsheets/session-6-cheatsheet.html</code>.</p>
 <hr>
 <h2 id="a-narrative-spine-the-session-as-one-argument">A. Narrative spine — the session as one argument</h2>
 <p>Ten beats. If you can say these aloud, in order, in <strong>3 minutes with no notes</strong>, you own the session. Try it before you read further; the gaps you hit are your study list.</p>
@@ -67,7 +66,7 @@
 <li><strong>Hot take.</strong> There is no secure AI agent — only one whose blast radius you've made small enough to survive. The question is never "is it safe?" but "what is the worst it can do when fooled, and can we live with that?" <em>(hot-take slide)</em></li>
 <li><strong>The 80% nobody demos.</strong> It works in Colab was the easy 20%. Cost, speed, reliability, observability — the other 80% that separates a demo from a product. <em>(slides 9–12)</em></li>
 <li><strong>The legal names.</strong> Bias, provenance, privacy, accountability — the four questions auditors ask, now backed by the EU AI Act and NIST AI RMF. You already practiced all four this weekend. <em>(slide 13)</em></li>
-<li><strong>Now you ship.</strong> Checklist honestly, red-team a peer, harden yours, demo the failure — because the failure story beats the polish. <em>(slides 14–19)</em></li>
+<li><strong>Now you ship.</strong> Checklist honestly, red-team a peer, harden yours, demo the failure — because the failure story beats the polish. <em>(slides 15–20)</em></li>
 </ol>
 <p>The spine in one breath: <em>every power is a surface → injection has no fix because instructions and data share one stream → so you layer defenses and shrink blast radius → and the real work is the 80% after the demo.</em></p>
 <hr>
@@ -247,12 +246,34 @@ QUESTION: What are the library timings?</code></pre>
 </ul>
 <p><strong>Landmine.</strong> Don't overstate: the Act is not "fully enforced everywhere now" — it's <em>in force with obligations phasing in through 2027.</em> Don't guess dates for specific tiers; "phasing in through 2027" is the safe, accurate phrasing. Say EU AI Act and NIST AI RMF <em>once, precisely</em> — this slide is for the faculty; precision reads as authority, waffle reads as bluffing.</p>
 <hr>
-<h3 id="slide-14-the-ship-it-checklist">Slide 14 — The ship-it checklist</h3>
+<h3 id="slide-14-who-regulates-you-the-slide-that-travels">Slide 14 — Who regulates you (the slide that travels)</h3>
+
+<p><strong>Claims:</strong> you're judged where your <em>users</em> are; four rulebooks — EU AI Act, the US patchwork + NIST, India's DPDP, the Gulf's strategy-plus-residency; and none of the four asks anything you didn't already build this weekend.</p>
+
+<p><strong>Mechanism, one level deeper.</strong> The idea students get wrong is jurisdiction. They assume the law that applies is the law where they sit. It isn't — modern digital regulation reaches on the basis of <strong>where the effect lands</strong>. The EU AI Act binds providers outside the EU when the system's <em>output</em> is used inside it, exactly as GDPR bound anyone processing EU residents' data. So a two-person team in Madurai shipping a study bot that a student in Berlin uses is inside the EU's scope, and nobody sent them a letter to say so.</p>
+
+<p>The second idea worth landing: the four regimes are not four copies of the same thing.</p>
+<ul>
+  <li><strong>EU</strong> — a genuine AI <em>statute</em>, structured by risk tier, with a transparency floor that applies even to low-risk apps: disclose that it's an AI, label synthetic media.</li>
+  <li><strong>US</strong> — no single federal AI law. Existing consumer-protection and anti-discrimination law already reaches AI, regulators have been explicit that "the model decided" is not a defence, and states keep adding their own statutes. <strong>NIST AI RMF</strong> is voluntary, but it is the shared <em>vocabulary</em> — Govern, Map, Measure, Manage.</li>
+  <li><strong>India</strong> — no dedicated AI statute; the binding instrument is <strong>data protection</strong> (DPDP). So the question that lands on an Indian engineer isn't "is your model fair?", it's "whose personal data is in that context window, that RAG index, and those logs — and on what consent?"</li>
+  <li><strong>UAE/Gulf</strong> — national AI strategy and a dedicated minister; in the DIFC, data-protection rules that specifically name automated decision-making. But the constraint that actually shapes architecture is <strong>data residency</strong>: in Gulf finance and healthcare, some data legally cannot leave the country — which is the strongest real-world argument for the local models from S5 that the course makes anywhere.</li>
+</ul>
+
+<p><strong>Worked example (use it if the room is engaged).</strong> Take their own capstone: a RAG bot over college notes. Where does each regime bite? EU — is it doing anything high-risk like grading or admissions? If yes, a pile of obligations; if it's a study aid, mostly the transparency floor. India — the notes contain other students' names and marks; that's personal data, so consent and purpose limitation apply. US — if they ever claim "95% accurate" in marketing, that claim is now enforceable. Gulf — if the college is a UAE branch campus, can the data even go to a US API? That single walk-through is worth more than the four cards.</p>
+
+<p><strong>Pushback.</strong> <em>"This is a student project, none of this applies."</em> Two honest halves: correct today, and the point isn't to comply now — it's that the day a project gets users, these questions arrive already answered or already wrong, and the answers are architectural (where data lives, what gets logged, what a human approves), so they're cheap now and expensive later. <em>"Isn't regulation just going to kill Indian startups?"</em> Don't take a side; note that every one of the four regimes is asking for measurement, grounding, logging and human oversight — which is the same list good engineering already wants.</p>
+
+<p><strong>Landmine.</strong> Do <strong>not</strong> free-style dates, thresholds or tier names — they move, and a professor in the room may know the current text better than you. Say the shape confidently and the specifics carefully: "risk-tiered, phasing in through 2027", "no single US federal law", "India's binding law is data protection". Add "this isn't legal advice, check the current text" once, plainly — it costs three seconds and buys the whole slide credibility. And keep it to ~2.5 min; it is a compressible slide, so if the red-team lab is going to run long, this is the one to trim to the last line: <em>you are judged where your users are, and you already built all four duties.</em></p>
+
+<hr>
+
+<h3 id="slide-15-the-ship-it-checklist">Slide 15 — The ship-it checklist</h3>
 <p><strong>Claims:</strong> eight safeguards; tick the ones your capstone honestly has; the gaps are your roadmap.</p>
 <p><strong>Mechanism.</strong> Each checklist item maps 1:1 to something in this session — grounded + escape hatch (S4), delimit untrusted text (slide 7 L1), output validated (L3), human gate on side effects (L4/slide 8), retries+timeouts (slide 11), logging (slide 11), evals-as-regression (slide 11), citations shown (slide 12). It's the whole session compressed into a self-audit.</p>
 <p><strong>Delivery.</strong> Toggle it honestly against an imaginary capstone so students see 3/8 is <em>normal</em> after one weekend. "The gaps are your roadmap, not your shame." This sets up Lab Part D directly.</p>
 <hr>
-<h3 id="slide-15-capstone-brief-grading">Slide 15 — Capstone brief &amp; grading</h3>
+<h3 id="slide-16-capstone-brief-grading">Slide 16 — Capstone brief &amp; grading</h3>
 <p><strong>Claims:</strong> 30 min red-team + harden, then 3-min demos per pair; ≥2 techniques, a 10-example eval, one documented failure + mitigation; graded /100.</p>
 <p><strong>The rubric:</strong> Working demo <strong>40</strong> · Honest eval numbers <strong>25</strong> · Failure analysis <strong>15</strong> · Right-tool-for-job <strong>10</strong> · Presentation <strong>10</strong>.</p>
 <p><strong>Calibrate your grading — walk two projects through it (do this in your head before demos so you score consistently):</strong></p>
@@ -276,12 +297,12 @@ QUESTION: What are the library timings?</code></pre>
 </ul>
 <p><strong>Landmine.</strong> Reward the failure-finders publicly, or you train everyone to hide failures next time. The failure story is the assessment target, not the polish.</p>
 <hr>
-<h3 id="slides-1619-demo-rules-the-arc-whats-next-thanks">Slides 16–19 — Demo rules, the arc, what's next, thanks</h3>
+<h3 id="slides-1720-demo-rules-the-arc-whats-next-thanks">Slides 17–20 — Demo rules, the arc, what's next, thanks</h3>
 <ul>
-<li><strong>Slide 16 (demo rules):</strong> pre-run your best example (live-typing to a room is how demos crash), lead with the problem not the stack, show the failure. These are avoidable mistakes — 90 seconds, high value.</li>
-<li><strong>Slide 17 (the arc):</strong> Predict → Measure → See → Know → Act → Ship, each verb igniting in its session's color. The one-line thesis: "You didn't learn to use ChatGPT — you learned how these systems work, where they fail, and how to build safely." This is the emotional payoff; slow down.</li>
-<li><strong>Slide 18 (what's next):</strong> ship for real (Streamlit/Vercel free tier — a live URL beats any certificate), rebuild one lab without the notebook, the meta-skill (you own the fundamentals under the buzzwords).</li>
-<li><strong>Slide 19 (thanks):</strong> "You came as users. You leave as builders." Mean it. Point to the repo they keep.</li>
+<li><strong>Slide 17 (demo rules):</strong> pre-run your best example (live-typing to a room is how demos crash), lead with the problem not the stack, show the failure. These are avoidable mistakes — 90 seconds, high value.</li>
+<li><strong>Slide 18 (the arc):</strong> Predict → Measure → See → Know → Act → Ship, each verb igniting in its session's color. The one-line thesis: "You didn't learn to use ChatGPT — you learned how these systems work, where they fail, and how to build safely." This is the emotional payoff; slow down.</li>
+<li><strong>Slide 19 (what's next):</strong> ship for real (Streamlit/Vercel free tier — a live URL beats any certificate), rebuild one lab without the notebook, the meta-skill (you own the fundamentals under the buzzwords).</li>
+<li><strong>Slide 20 (thanks):</strong> "You came as users. You leave as builders." Mean it. Point to the repo they keep.</li>
 </ul>
 <hr>
 <h2 id="c-demo-playbooks">C. Demo playbooks</h2>
@@ -405,6 +426,24 @@ QUESTION: What are the library timings?</code></pre>
 <li><strong>NIST AI Risk Management Framework 1.0</strong> — the Govern/Map/Measure/Manage functions; the US vocabulary auditors use. One read gives you the framework names to say precisely on slide 13.</li>
 <li><strong>Google Gemini API — context caching docs (ai.google.dev)</strong> — confirm the caching mechanics and current discount before you quote the −90% number; this is the one cost lever the demo actually models.</li>
 </ul>
+
+  <hr>
+
+  <h2 id="the-depth-layer">The depth layer — 3 <code>&lt;|deeper|&gt;</code> panels in this deck</h2>
+
+  <p>Collapsed by default, so they cost the clock nothing. Press <strong>D</strong> on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as <code>[D] deeper:</code>.</p>
+
+  <p>Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.</p>
+
+  <table>
+    <tr><th>Deck slide</th><th>Slide</th><th>Panel</th></tr>
+    <tr><td><code>#7</code></td><td>Defense in depth: no single fix, so layer them</td><td>why filtering will never be the fix — and what is</td></tr>
+    <tr><td><code>#11</code></td><td>Cost: every token is a coin</td><td>read the price list again — the two numbers aren't the same</td></tr>
+    <tr><td><code>#12</code></td><td>Speed, reliability, observability</td><td>measure the tail, not the average</td></tr>
+  </table>
+
+  <p>Prose versions of all of these, with the same section order, are in <a href="../LEARNING-GUIDE.html#part-8">the Learning Guide, <strong>Part 8</strong></a>. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.</p>
+
   <footer class="foot">
     <div style="margin-bottom:8px">deck: <a href="../presentations/session-6-breaking-securing-shipping.html">session-6-breaking-securing-shipping.html</a> · run sheet: <a href="session-6-notes.md">session-6-notes.md</a> · cheatsheet: <a href="../cheatsheets/session-6-cheatsheet.html">session-6-cheatsheet.html</a></div>
     Generative AI: Foundations &amp; Applications · <a href="../index.html">course home</a>

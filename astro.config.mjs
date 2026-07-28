@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import genaiSeo from "./src/integrations/genai-seo.mjs";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -54,11 +55,13 @@ export default defineConfig({
         "https://intrepidkarthi.com/genai/TEACH-THIS-YOURSELF.html",
         "https://intrepidkarthi.com/genai/ZERO-SETUP.html",
         "https://intrepidkarthi.com/genai/TIMING.html",
+        "https://intrepidkarthi.com/genai/LOCALIZATION.html",
         "https://intrepidkarthi.com/minecraft/",
       ],
       changefreq: "weekly",
       priority: 0.7,
     }),
+    genaiSeo(),
   ],
   markdown: {
     shikiConfig: {

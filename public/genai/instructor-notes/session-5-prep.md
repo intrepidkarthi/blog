@@ -362,3 +362,19 @@ Pre-lab budget ≈ 59.5 min against a nominal hour — there is **no slack**, an
 4. **"How We Built Our Multi-Agent Research System" — Anthropic (2025) *paired with* "Don't Build Multi-Agents" — Cognition (2025).** The two posts disagree, and the disagreement IS the lesson: parallel-independent fan-out works, chained hand-offs lose context. Reading both arms you for any multi-agent argument a professor starts.
 5. **Gemini function-calling docs — ai.google.dev.** The exact wire format from §2.3 (functionDeclarations, functionCall, functionResponse), parallel calls, and forced tool choice — your reference if a student's notebook emits something unexpected.
 6. **"Toolformer: Language Models Can Teach Themselves to Use Tools" — Schick et al., 2023.** How tool-use ability gets INTO the weights via training data — the mechanism behind "it's trained to emit calls," one level below this deck.
+
+---
+
+## The depth layer — 3 `<|deeper|>` panels in this deck
+
+Collapsed by default, so they cost the clock nothing. Press **D** on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as `[D] deeper:`.
+
+Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.
+
+| Deck slide | Slide | Panel |
+|---|---|---|
+| `#6` | Function declarations: the description IS the prompt | what the SDK is actually sending, and why it works at all |
+| `#9` | The agent loop: while it wants tools, feed it | the loop condition nobody writes, and the score nobody keeps |
+| `#19` | Ollama: a model in your pocket | will it fit on my laptop? arithmetic, not vibes |
+
+Prose versions of all of these, with the same section order, are in `LEARNING-GUIDE.md` **Part 8**. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.

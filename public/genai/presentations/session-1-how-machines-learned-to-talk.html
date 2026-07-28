@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 1 · How Machines Learned to Talk — GenAI Foundations · TCE</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/presentations/session-1-how-machines-learned-to-talk.html">
 <meta name="description" content="Session 1 of the hands-on GenAI course at TCE Madurai — tokens, embeddings, attention, and the one idea behind ChatGPT, with live demos and your first API call.">
 <meta property="og:title" content="Session 1 · How Machines Learned to Talk — GenAI Foundations · TCE">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/presentations/session-1-how-machines-learned-to-talk.html">
 <meta property="og:description" content="Session 1 of the hands-on GenAI course at TCE Madurai — tokens, embeddings, attention, and the one idea behind ChatGPT, with live demos and your first API call.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
@@ -31,7 +29,7 @@
     --accent:var(--deep); --accent2:var(--hue); --accentpale:var(--tint);
     --accentmark:color-mix(in srgb,var(--hue) 35%,white);
     --stagebg:#14171F; --stageink:#FFFFFF;
-    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -196,6 +194,36 @@
   .flip.open .q{display:none}
   .flip .hintline{color:var(--accent);font-size:.82rem;font-weight:600;margin-top:10px}
   .flip.open .hintline{display:none}
+  /* ---- depth layer: optional <|deeper|> panels. Collapsed by default, so they cost the
+     running clock nothing; opened on demand when a sharp student asks, or after class. ---- */
+  .deep{margin-top:20px;border-top:1px dashed var(--linedark)}
+  .deeptog{appearance:none;background:none;border:0;padding:12px 0 0;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;text-align:left;
+    font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.07em;color:var(--deep)}
+  .deeptog .lbl:before{content:"<|";color:var(--faint);font-weight:400;margin-right:2px}
+  .deeptog .lbl:after{content:"|>";color:var(--faint);font-weight:400;margin-left:2px}
+  .deeptog .cv{display:inline-block;width:.46em;height:.46em;border-right:2px solid currentColor;
+    border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .2s;margin-bottom:.18em}
+  .deep.open .deeptog .cv{transform:rotate(-135deg);margin-bottom:0}
+  .deeptog:hover{color:var(--ink)}
+  .deeptog:focus-visible{outline:2px solid var(--hue);outline-offset:3px;border-radius:4px}
+  .deepbody{display:none;padding:14px 0 2px}
+  .deep.open .deepbody{display:block}
+  .deepbody p{font-size:.93rem;color:var(--body);line-height:1.62;max-width:76ch}
+  .deepbody p+p{margin-top:10px}
+  .deepbody b{color:var(--ink);font-weight:650}
+  .deepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px;margin-top:13px}
+  .dcell{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .dcell h4{font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+  .dcell h4 .em{display:inline-block;width:.5em;height:.5em;border-radius:3px;background:var(--accent);margin-right:8px;vertical-align:.06em}
+  .dcell p{font-size:.85rem;color:var(--muted);line-height:1.55;max-width:none}
+  .fx{display:block;font-family:var(--mono);font-size:.9rem;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-left:3px solid var(--hue);border-radius:8px;
+    padding:11px 14px;margin:12px 0;overflow-x:auto;white-space:pre;line-height:1.7}
+  .fx .cm{color:var(--muted)}
+  .fx b{color:var(--deep)}
+  /* an open panel makes its slide scroll — deep content must never clip off the bottom */
+  .slide.deepopen{justify-content:flex-start;overflow-y:auto}
   /* context window */
   .cw{display:flex;height:58px;border-radius:9px;overflow:hidden;border:1.5px solid var(--linedark);background:var(--panel)}
   .cw .seg{display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--ink);
@@ -329,7 +357,7 @@
   <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b> &nbsp;·&nbsp; Session 1 · TCE Madurai</span>
   <span id="counter">1 / 1</span>
 </div>
-<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview</div>
+<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>D</kbd> deeper</div>
 
 <main class="deck" id="deck">
 
@@ -547,6 +575,20 @@
       <p class="note">This is why your friend's ChatGPT answer ≠ yours. Nobody is lying. It's dice.</p></div>
     </div>
   </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">where the dice actually come from</span></button>
+    <div class="deepbody">
+      <p>The model's last layer does <b>not</b> emit probabilities. It emits one raw score per token in the vocabulary — a <b>logit</b>. Logits are unbounded: +8.2, −1.4, 0.03. To turn a list of scores into a list of probabilities that sums to 1, you run <b>softmax</b>: exponentiate everything, then divide by the total.</p>
+      <span class="fx">p(token i) = exp(z<span class="cm">i</span> / T) / Σ<span class="cm">j</span> exp(z<span class="cm">j</span> / T)     <span class="cm">z = logits · T = temperature</span></span>
+      <p>Now look where <b>T</b> sits: it divides the logits <i>before</i> the exponential. That one placement explains the whole slider. <b>T &lt; 1</b> stretches the gaps between scores apart, so exp() exaggerates the leader — the peak sharpens. <b>T &gt; 1</b> squeezes the gaps together, so the field flattens. <b>T → 0</b> makes the top logit infinitely dominant, which is why temperature 0 is just <b>argmax</b>: always take the highest-scoring token, same answer every time. Temperature isn't a mysterious creativity dial. It is one division.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>top-k</h4><p>Before sampling, throw away everything except the k highest-scoring tokens, then renormalise. Caps how weird the choice can get, no matter what T says.</p></div>
+        <div class="dcell"><h4><span class="em"></span>top-p (nucleus)</h4><p>Keep the smallest set of tokens whose probabilities add up to p (say 0.9). Adapts: a confident step keeps 2 candidates, an open-ended one keeps 50.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Why you'll meet them</h4><p>They're parameters on the same API call you make in the lab. In practice: set temperature for facts vs. flavour, leave top-p near the default, and change one at a time.</p></div>
+      </div>
+      <p class="note">Sampling is also why <b>temperature 0 is not fully deterministic</b> in production: floating-point addition on GPUs isn't associative, so batching can reorder sums and flip a near-tie. Close to reproducible, never guaranteed.</p>
+    </div>
+  </div>
 </section>
 
 <!-- N · NOT A DATABASE -->
@@ -586,6 +628,16 @@
       <p class="note">Those probabilities in the guessing game? They come out of these knobs.</p></div>
     </div>
   </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">how anyone knows the training is working</span></button>
+    <div class="deepbody">
+      <p>You just reduced an error by eye. A lab training for four months cannot do that — so what number do they actually watch? One: the <b>loss</b>. At every step the model predicts a distribution over the next token, and the true next token is known. Loss is <b>how much probability the model put on the right answer</b>, scored so that being confidently wrong hurts most:</p>
+      <span class="fx">loss = −log p(the token that actually came next)   <span class="cm">averaged over billions of guesses</span></span>
+      <p>Put 0.9 on the correct token and you lose 0.11. Put 0.1 on it and you lose 2.3. Put 0.001 on it and you lose 6.9. Confidently wrong is punished roughly twenty times harder than merely unsure — which is exactly the behaviour you want to train out.</p>
+      <p><b>Perplexity</b> is that same number made human: exp(loss). Read it as <i>"how many equally likely options is the model effectively choosing between?"</i> Perplexity 1 means it always knows. Perplexity 50 means it's flailing among fifty. A modern model on ordinary English sits in the low single digits. That single falling curve, watched for months across thousands of GPUs, is the entire feedback signal of pretraining.</p>
+      <p class="note">Worth knowing: loss keeps improving smoothly long after the model stops <i>feeling</i> smarter — and it says nothing about whether answers are true, safe, or useful. That gap is why Session 2 exists. Pretraining measures loss; engineers measure <b>evals</b>.</p>
+    </div>
+  </div>
 </section>
 
 <!-- N · TRAINING VS INFERENCE -->
@@ -618,17 +670,19 @@
   <h2 class="rv">Models don't read words. <span class="u">They read tokens.</span></h2>
   <div class="demo rv">
     <div class="dtitle">Tokenizer — type anything</div>
-    <input type="text" id="tk-input" value="Madurai is famous for Meenakshi Amman temple and jigarthanda" spellcheck="false">
+    <input type="text" id="tk-input" dir="auto" value="Madurai is famous for Meenakshi Amman temple and jigarthanda" spellcheck="false">
     <div class="btnrow mt">
       <button class="btn" data-tk="Madurai is famous for Meenakshi Amman temple and jigarthanda">English</button>
       <button class="btn" data-tk="மதுரை மீனாட்சி அம்மன் கோவிலுக்கும் ஜிகர்தண்டாவுக்கும் பிரபலம்">தமிழ்</button>
+      <button class="btn" data-tk="मदुरै मीनाक्षी अम्मन मंदिर और जिगरतंडा के लिए प्रसिद्ध है">हिन्दी</button>
+      <button class="btn" data-tk="مادوراي مشهورة بمعبد ميناكشي أمان ومشروب الجيغارتاندا">العربية</button>
       <button class="btn" data-tk="for(let i=0;i<n;i++){ sum += arr[i]; }">Code</button>
       <button class="btn" data-tk="Supercalifragilisticexpialidocious">Long word</button>
     </div>
     <div class="tokwrap" id="tk-out"></div>
     <div class="tokcount" id="tk-count"></div>
   </div>
-  <p class="note rv">Tokens are learned letter-chunks (~¾ of an English word each). The meter runs in tokens, not words — and the same sentence in Tamil can cost <b style="color:var(--ink)">several times</b> more than in English. Watch the meter run — then measure the real ratio on Gemini in the lab.</p>
+  <p class="note rv">Tokens are learned letter-chunks (~¾ of an English word each), and the meter runs in tokens, not words. Press the four language buttons: <b style="color:var(--ink)">the same sentence needs far more chips once you leave English</b> — and English is the <i>only</i> one that gets cheap multi-letter merges. That is not a Tamil problem. Tokenizer vocabularies are learned from English-heavy text, so Hindi, Arabic, Thai, Swahili and most of the world pay the same tax three times over: on price, on speed, and on how much of their own language fits in the context window. On real tokenizers the gap is wider than this illustration — you'll measure it on Gemini in the lab.</p>
 </section>
 
 <!-- 9 · DEMO: EMBEDDINGS -->
@@ -664,6 +718,20 @@
     </div>
   </div>
   <p class="lead rv mt">One changed word flips what “it” means — and the model re-weights instantly. That mechanism is the <b>T in GPT</b>: the Transformer, from the 2017 paper <i>“Attention Is All You Need.”</i></p>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">two things this picture is hiding</span></button>
+    <div class="deepbody">
+      <p><b>1 · Attention has no idea what order the words are in.</b> Every word weighs every other word — but "dog bites man" and "man bites dog" would produce the <i>identical</i> set of weights, because a set has no order. Attention is genuinely order-blind. The fix is unglamorous: before the words ever reach attention, the model <b>adds position information into each embedding</b> — so the vector for "man" at slot 1 is not the vector for "man" at slot 3. Early models added a fixed wave pattern; today's standard is <b>RoPE</b> (rotary position embedding), which rotates each vector by an angle proportional to its position, so the maths naturally encodes <i>relative</i> distance. Position is not a detail bolted on — without it a Transformer cannot do grammar at all.</p>
+      <p><b>2 · "Every word looks at every other word" has a price tag.</b> Count the arrows in the picture. For n tokens there are n × n of them, so attention cost scales with <b>n²</b> — double the context, quadruple the work.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>1,000 tokens</h4><p>1 million pairs. Instant.</p></div>
+        <div class="dcell"><h4><span class="em"></span>100,000 tokens</h4><p>10 billion pairs — 10,000× the work of the line above.</p></div>
+        <div class="dcell"><h4><span class="em"></span>1,000,000 tokens</h4><p>10<sup>12</sup> pairs. This is why a 1M-token window was a headline, not a checkbox.</p></div>
+      </div>
+      <p>So when Session 4 tells you "don't paste the whole textbook, retrieve the right three paragraphs" — that isn't tidiness. It's this curve. And it's why the industry keeps shipping attention variants (sliding-window, grouped-query, sparse) whose entire purpose is to dodge the n².</p>
+      <p class="note">One more honest caption for the demo above: real models run <b>many attention heads in parallel</b> — one may track grammatical subject, another long-range topic, another quotation boundaries — across dozens of layers. This picture shows one head's strongest links, once. The mechanism is right; the scale is simplified.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 11 · PIPELINE STEPPER -->
@@ -714,6 +782,19 @@
   </div>
   <p class="lead rv mt"><b>Quantity became quality.</b> Keep scaling the <i>same</i> next-token loop and abilities nobody explicitly programmed start appearing — <b>emergence</b>; researchers still argue how sudden it really is. (And since 2024, labs also <i>train</i> models to think step-by-step before answering — scale isn't the whole story.)</p>
   <p class="note rv">How big did it get? ChatGPT crossed <b style="color:var(--ink)">1 billion monthly users</b> in June 2026 — the fastest app in history to 1B, beating TikTok and Instagram. 900M were using it <i>weekly</i> back in February.</p>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">scale is not one slider — it is three</span></button>
+    <div class="deepbody">
+      <p>The demo above has one slider, parameters. Reality has three, and they have to move together: <b>parameters</b> (how many knobs), <b>data</b> (how many tokens you train on), and <b>compute</b> (how many GPU-hours you can pay for). Around 2020 researchers found these trade off in a smooth, boringly predictable way — <b>scaling laws</b>. Loss falls as a power law in each one. That predictability is the real reason billions got invested: you could forecast the capability of a model that did not exist yet.</p>
+      <p>The correction that changed the industry came in 2022. Everyone had been building models that were <b>too big and too under-fed</b>. The <b>Chinchilla</b> result showed that for a fixed compute budget you should scale parameters and training tokens <i>together</i> — roughly 20 training tokens per parameter. A smaller model trained on far more data beat a much larger one trained on less. Overnight, "make it bigger" stopped being the strategy.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Then: bigger</h4><p>2018–2022. Parameter counts as the headline. Under-trained giants.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Now: better-fed and cheaper to serve</h4><p>Compute-optimal sizing, far more data, heavy filtering and dedup of that data — and models built for the cost of <i>answering</i>, not just training.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Next: think longer</h4><p>The data wall is real — high-quality human text is finite. So the newest axis isn't training at all, it's spending compute at answer time. That's slide 20.</p></div>
+      </div>
+      <p class="note">Keep the shape of the argument, not the constants. The exact ratio has been revised more than once and depends on how you count. What has held for six years: <b>capability follows compute in a predictable curve, and the curve is smooth even when the abilities that pop out of it feel sudden.</b> That's the honest version of "emergence."</p>
+    </div>
+  </div>
 </section>
 
 <!-- 13 · BASE VS TUNED -->
@@ -783,7 +864,20 @@
     <tr><td>Open-weights wave</td><td>Gemma 4 · Qwen · DeepSeek</td><td><span class="tag open">Open</span></td><td>Frontier-chasing open models</td></tr>
   </table>
   </div>
-  <p class="note rv mt">“Open weights” = you download and run the model yourself — we do that with Ollama in Session 5. In today's lab you'll taste the kitchens: identical prompt, three models. Names change monthly; <b style="color:var(--ink)">the mechanics don't</b>.</p>
+  <p class="note rv mt">“Open weights” = you download and run the model yourself — we do that with Ollama in Session 5. Note who is on that last row: <b style="color:var(--ink)">the frontier is not one company or one country any more</b>. Open-weight models out of China, France and the US now trade places at the top every few months, and because you can download them, the gap between “a lab has this” and “you have this” is a weekend. In today's lab you'll taste the kitchens: identical prompt, three models. Names change monthly; <b style="color:var(--ink)">the mechanics don't</b>.</p>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">why every lab ships a cheap fast one and an expensive slow one</span></button>
+    <div class="deepbody">
+      <p>Look at the naming across all three kitchens: Flash and Pro. Haiku and Opus. mini and full. Every lab sells the same two-tier menu, and the free tier you'll use today is always the small one. Three techniques make a small model punch far above its size — and they're the reason your lab is free.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Mixture of Experts (MoE)</h4><p>Instead of one dense block of knobs, the model holds many "expert" sub-networks and a router that wakes only a couple per token. A model can have a trillion <b>total</b> parameters but activate perhaps 3% of them for any given token. Huge knowledge, small bill. This is why "parameter count" stopped predicting cost or speed.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Distillation</h4><p>Train a giant, expensive teacher model, then train a small student to imitate <i>its full output distribution</i> — not just the right answer, but how the teacher spread its doubt. The student inherits much of the judgement at a fraction of the size. Essentially every "mini"/"Flash"/"Haiku" model is a distilled child of a bigger sibling.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Quantization</h4><p>A knob stored as 16 bits can often be stored in 8 or 4 with little quality loss. Four-bit weights make a file a quarter the size, so it fits in less memory and moves faster. This is exactly why a capable model can run on a laptop in Session 5 — and where the quality does drop, it drops on the hard, rare cases first.</p></div>
+      </div>
+      <p>Now the practical consequence, which is the whole point of knowing this: <b>"which model?" is not a question about intelligence, it's a routing decision.</b> The mature production pattern is hybrid — the small fast model handles the routine 90% of traffic, and you escalate only the hard 10% to the expensive one. You'll make exactly that trade with real numbers in Session 6.</p>
+      <p class="note">Also why benchmark tables mislead: a Flash-class model and a Pro-class model can score within a point or two of each other on a public benchmark while differing 10–20× in price and several-fold in latency. The gap shows up on <i>your</i> hard cases, which is a thing only your own eval set can tell you.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 17 · FAILURES (click to reveal) -->
@@ -839,6 +933,23 @@
   <p class="lead rv mt" style="font-weight:700;color:var(--ink)">The twist: it remembers <span class="u">nothing</span> between turns. The app re-sends everything, every turn.</p>
   <p class="lead rv">That’s the whole illusion of “chat memory” — the app quietly stuffs the entire conversation back into this window each time you hit send, which is why long chats get slow and forgetful.</p>
   <p class="note rv">And when your knowledge <b>doesn’t fit</b>? That’s <b>Session 4: RAG</b> — the pattern behind most real AI products.</p>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">then why isn't re-sending everything unbearably slow?</span></button>
+    <div class="deepbody">
+      <p>Good objection — and the answer is the single most useful piece of plumbing to know. If the app really re-ran a 50,000-token conversation through the whole network on every turn, chat would be unusable. It doesn't, because of the <b>KV cache</b>.</p>
+      <p>Remember attention: each token computes a <i>key</i> and a <i>value</i> that later tokens look at. For text already in the context, those keys and values <b>never change</b> — token 4,001 does not alter what token 12 was. So the model computes them once and keeps them. Answering therefore splits into two very different phases:</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Prefill — read the prompt</h4><p>Chew through every input token at once, in parallel, and store all their keys/values. Heavy, but done once. This is your <b>time to first token</b> — the pause before anything appears.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Decode — write the answer</h4><p>Each new token attends to the <i>cached</i> keys/values instead of recomputing them. One cheap step per token. This is your <b>tokens per second</b> — the steady stream you watch.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Two metrics, not one</h4><p>"Latency" is really these two numbers. A long prompt hurts the first; a long answer hurts the second. They have different fixes, so engineers never average them.</p></div>
+      </div>
+      <p>Three real-world facts fall straight out of this, and you'll meet all three later in the course:</p>
+      <p><b>Long chats get slow and expensive because the cache grows.</b> It costs GPU memory proportional to context length, and it's per-conversation — which is a large part of what you're paying for.</p>
+      <p><b>The cache dies when your request ends</b>, so a fresh call re-reads everything from scratch. That's why providers sell <b>context caching</b>: pin a long unchanging prefix (your system prompt, a big document) on their side and pay roughly 10% to reuse it. Same idea, rented. It's a headline cost lever in Session 6.</p>
+      <p><b>Put the stable part of your prompt first.</b> Prefix caching only works up to the first byte that differs, so a prompt built as [fixed instructions][fixed document][changing question] is dramatically cheaper than one that varies at the top. Prompt <i>order</i> is a cost decision, not just a style one.</p>
+      <p class="note">So the honest version of the slide above is: it re-sends everything, but it doesn't re-read everything. The illusion of memory is real; the re-computation is not.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 19 · RECAP (active recall) -->
@@ -1049,6 +1160,15 @@ function tokBgs(){return ['var(--t1)','var(--t2)','var(--t3)','var(--t4)','var(-
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1);}
     else if(e.key==='Home')go(0);
     else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='d'||e.key==='D'){
+      // D = open/close every depth panel on this slide at once
+      const s=slides[cur];if(!s)return;
+      const ds=[...s.querySelectorAll('.deep')];if(!ds.length)return;
+      const opening=!ds[0].classList.contains('open');
+      ds.forEach(d=>{d.classList.toggle('open',opening);
+        const b=d.querySelector('.deeptog');if(b)b.setAttribute('aria-expanded',opening?'true':'false');});
+      s.classList.toggle('deepopen',opening);
+    }
     else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
     else if(e.key==='o'||e.key==='O'||e.key==='Escape'){
       if(e.key==='Escape'&&document.fullscreenElement)return; // exiting fullscreen must not toggle overview
@@ -1091,6 +1211,16 @@ function tokBgs(){return ['var(--t1)','var(--t2)','var(--t3)','var(--t4)','var(-
 document.addEventListener('click',e=>{
   const f=e.target.closest('.flip');
   if(f)f.classList.toggle('open');
+});
+
+/* ============ depth layer: <|deeper|> disclosure panels ============ */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.deeptog');
+  if(!t)return;
+  const d=t.closest('.deep');
+  t.setAttribute('aria-expanded',d.classList.toggle('open')?'true':'false');
+  const s=d.closest('.slide');
+  if(s)s.classList.toggle('deepopen',!!s.querySelector('.deep.open'));
 });
 
 /* ============ classify game ============ */
@@ -1275,17 +1405,20 @@ document.addEventListener('click',e=>{
 /* ============ demo: tokenizer ============ */
 (function(){
   const inp=document.getElementById('tk-input'),out=document.getElementById('tk-out'),cnt=document.getElementById('tk-count');
-  function isTamil(ch){const c=ch.codePointAt(0);return c>=0x0B80&&c<=0x0BFF;}
-  let graSeg=null;try{graSeg=new Intl.Segmenter('ta',{granularity:'grapheme'});}catch(e){}
+  // Any script beyond Latin pays the same tax: tokenizer vocabularies are learned from
+  // English-heavy text, so Tamil, Hindi, Arabic, Thai, Cyrillic, CJK... all get chopped
+  // into far smaller pieces for the same meaning. Not a Tamil problem — a coverage problem.
+  function isNonLatin(ch){const c=ch.codePointAt(0);return c>0x02FF;}
+  let graSeg=null;try{graSeg=new Intl.Segmenter(undefined,{granularity:'grapheme'});}catch(e){}
   function graphemes(word){return graSeg?[...graSeg.segment(word)].map(s=>s.segment):[...word];}
   function segment(word){
     const toks=[];let i=0;const chars=graphemes(word);
     while(i<chars.length){
       let size;
-      if(isTamil(chars[i]))size=1+(i%2);
+      if(isNonLatin(chars[i]))size=1;   // one chip per cluster: rare scripts get almost no merges
       else if(/[0-9]/.test(chars[i]))size=1;
       else if(/[^\w]/.test(chars[i]))size=1;
-      else size=Math.min(4,3+((i>>2)%2));
+      else size=Math.min(6,4+((i>>2)%2));   // English gets long learned merges — that IS the privilege
       toks.push(chars.slice(i,i+size).join(''));i+=size;
     }
     return toks;
@@ -1300,10 +1433,12 @@ document.addEventListener('click',e=>{
     out.innerHTML=toks.map((t,k)=>'<span class="tok" style="background:'+bgs[k%5]+
       ';animation-delay:'+(k*16)+'ms">'+t.replace(/</g,'&lt;')+'</span>').join('');
     const words=inp.value.trim().split(/\s+/).filter(Boolean).length;
-    const inr=Math.round(toks.length*0.15*95.5); // 1 lakh sends × $1.50/1M input tokens × ₹95.5/$
+    const usd=toks.length*0.15;                 // 100k sends × $1.50 per 1M input tokens
+    const inr=Math.round(usd*95.5);             // ₹95.5/$ — see LOCALIZATION.md to re-base
     cnt.innerHTML='<b>'+toks.length+'</b> tokens &nbsp;·&nbsp; '+words+' words &nbsp;·&nbsp; ratio '+
       (words?(toks.length/words).toFixed(1):0)+'× &nbsp;<span style="color:var(--faint)">(illustrative tokenizer — real ones are learned from data)</span>'+
-      '<br>send this 1 lakh times ≈ <b>₹'+inr.toLocaleString('en-IN')+'</b> <span style="color:var(--faint)">(Gemini 3.5 Flash input · $1.50/1M tokens · ₹95.5/$) — the meter runs per token, not per word</span>';
+      '<br>send this 100,000 times ≈ <b>$'+usd.toFixed(2)+'</b> &nbsp;≈&nbsp; <b>₹'+inr.toLocaleString('en-IN')+
+      '</b> <span style="color:var(--faint)">(Gemini 3.5 Flash input · $1.50/1M tokens · ₹95.5/$) — the meter runs per token, not per word</span>';
   }
   inp.oninput=render;
   document.querySelectorAll('[data-tk]').forEach(b=>b.onclick=()=>{inp.value=b.dataset.tk;render();});
@@ -1848,7 +1983,7 @@ document.addEventListener('click',e=>{
 
 /* ===== presenter mode ===== */
 (function(){
-  var DATA = [{"m": 1, "n": "<b>Open with energy.</b> “By the end of today, everyone here writes code that talks to a frontier AI model — for free.”", "c": false, "title": "How machines learned to talk"}, {"m": 1, "n": "<b>Under 45 seconds.</b> One line of credibility, one line of humility. The failed-things line gets the laugh — let it land, then move on. The work sells you better than the bio.", "c": true, "title": "I sat in these seats — TCE CSE, class of 2009."}, {"m": 1.5, "n": "Walk the 6 artifacts fast. Plant the capstone seed: “Session 6 you demo — start thinking what you’d build.”", "c": false, "title": "12 hours. 6 things you'll build."}, {"m": 3, "n": "<b>GAME.</b> Class shouts judges/creates before each click. Gotcha = keyboard autocomplete (generative). ~25s/item.", "c": true, "title": "Two kinds of AI: judges vs creators"}, {"m": 2.5, "n": "Click rings outside-in AI→LLM. Land <b>app ≠ model</b>: ChatGPT is WhatsApp, GPT is the network.", "c": false, "title": "AI, ML, GenAI, LLM — who lives inside whom"}, {"m": 1.5, "n": "THE slide. Say slowly: one job — predict the next token, repeat. Pre-empt “but it reasons!” → hold for scale.", "c": false, "title": "ChatGPT is autocomplete with a PhD."}, {"m": 3.5, "n": "<b>GAME.</b> Class shouts the next word BEFORE reveal. Ex2 (idli+__) room disagrees = spread distribution. Finale: Thiagarajar College of ___ → 97% — the room is sitting inside a distribution. Bridge: who picks? dice.", "c": false, "title": "Play the model: guess the next word"}, {"m": 3, "n": "<b>THE demystifier.</b> Click <b>Build the table</b> \u2014 narrate: training is just tallying which word follows which. Then Sample from &lt;|start|&gt;: room shouts a word, you roll. Hit <b>Take the top</b> to contrast greedy vs sampling. Land it: the SAME three steps as Claude \u2014 only step 2 and training differ. It stops when it samples &lt;|end|&gt; \u2014 that is the EOS token. Compress by skipping the greedy toggle.", "c": true, "title": "Those odds aren\u2019t magic \u2014 you just count words."}, {"m": 3, "n": "<b>THE money slide.</b> Play it once in silence — let the room watch. Then Reset and Step through, narrating: tokens→numbers, layers mix, distribution, dice, APPEND. Land the punch: it never plans a sentence. It only ever picks one next token — 650 times for a 500-word answer.", "c": false, "title": "Watch the network think"}, {"m": 3, "n": "<b>SLIDER.</b> T→0.05, Roll 10× (Chennai ×10). T→2, Roll 10× until pizza shows in the tally. Rule: facts low, creative high. Answers “why different answers?”", "c": false, "title": "Why the same question gives different answers"}, {"m": 2.5, "n": "<b>Kills #1 myth.</b> Search → 0 results; Ask model → pirate jigarthanda poem. “Nothing stored. It computed that.”", "c": false, "title": "Wait — is it just searching a giant database?"}, {"m": 3.5, "n": "<b>WIDGET.</b> Invite a student to drag both sliders to ‘trained’. Narrate: w,b are PARAMETERS; a model = a file of knob values.", "c": false, "title": "What's inside a model? Just knobs."}, {"m": 2.5, "n": "Cookbook analogy: write once, cooking doesn’t change the book. Q3 (free-tier trains future) = the privacy warning.", "c": false, "title": "Training vs using: the cookbook rule"}, {"m": 3, "n": "<b>Type a student name, then தமிழ்.</b> The ratio jump is the moment — and the ₹ meter turns it into money: same meaning, bigger bill. Honest: illustrative tokenizer; lab shows real counts.", "c": false, "title": "Models don't read words. They read tokens."}, {"m": 2.5, "n": "idli+dosa high, idli+GPU low. Student predicts a pair. Deliver king−man+woman≈queen. ‘Session 4 turns this into search.’", "c": false, "title": "Embeddings: meaning becomes coordinates"}, {"m": 3.5, "n": "Hover ‘it’ → trophy. Ask “how did YOU know?” Toggle big→small → suitcase. Let it breathe. ‘The T in GPT.’", "c": false, "title": "Attention: every word looks at every other word"}, {"m": 3.5, "n": "<b>STEPPER — hardest 3 min.</b> Step slowly, narrate each stage; then Auto-run — it ends on the stat flash, let it land. ‘500-word answer ≈ 650 loops.’", "c": false, "title": "The whole trick, step by step"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Say it looking at the faculty row — and smile. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "If autocomplete can pass your exam…"}, {"m": 2, "n": "Drag 10M→1T. Pause at 10B: ‘translation appeared — nobody programmed it.’ Emergence; researchers argue how sudden it is.", "c": true, "title": "The loop is old. The scale is new."}, {"m": 2.5, "n": "Click Raw base on 2+2 (laugh), then After finishing school. Point: raw pretraining ≠ assistant.", "c": false, "title": "A freshly trained model is feral"}, {"m": 2, "n": "Three steps, one line each. Land: ‘ChatGPT’s 2022 win was better finishing school, not a smarter brain.’", "c": false, "title": "Finishing school, in three steps"}, {"m": 2, "n": "<b>Dial metaphor.</b> 1 scale, 2 finishing school, 3 thinking time. Land the cost rule: never pay thinking prices for capital-city questions. Pre-empts 'is o-series different magic?' — no, more tokens.", "c": true, "title": "Reasoning models: think longer, not train bigger"}, {"m": 1.5, "n": "Biryani line. Two points only: closed vs open weights, and ‘names change, mechanics don’t.’ Don’t read table.", "c": true, "title": "Why ChatGPT ≠ Gemini ≠ Claude"}, {"m": 3, "n": "<b>REVEAL CARDS.</b> Class explains WHY before each click: strawberry→tokens, math→predict, news→cutoff, citation→plausible.", "c": false, "title": "Famous failures — you explain them"}, {"m": 2.5, "n": "Fill window with chat+notes (green), then textbook → red overflow. Then 1M: textbook fits — ‘the wall moves; the physics doesn’t.’ Twist: <b>no memory — app re-sends everything.</b> Motivates RAG.", "c": false, "title": "The context window: its entire working memory"}, {"m": 2.5, "n": "<b>ACTIVE RECALL.</b> Class says each definition aloud, THEN click. Now includes Parameter + Inference.", "c": false, "title": "Eight words you own now"}, {"m": 2.5, "n": "<b>Press Send.</b> Dot travels code→key→GPUs→response. ‘The model does NOT run on your laptop.’ De-mystifies the lab.", "c": false, "title": "What actually happens when you call an API"}, {"m": 2, "n": "Shown ONCE, applies to all 6 labs. Point at A→E strip; make everyone bookmark the link. ‘Checkpoints are for you, not marks.’", "c": false, "title": "Your lab kit, and the rhythm"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB.</b> 5 steps on board + aistudio.google.com. Pairs, both run code, 5-min rule. Circulate; checkpoint sweep at +40. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 1: your first AI API call"}, {"m": 3, "n": "After lab. The 10-question test set is written in the last 10 min of lab (Part E) — confirm every pair has it. Feeds Session 2.", "c": false, "title": "Two things before the next session"}, {"m": 3, "n": "<b>Show & tell (~5) + close.</b> 2–3 pairs’ model differences. ‘Learned the trick; next you drive it.’ Remind: bring docs for Day 2. <b>Links are on screen</b> — point at them.", "c": false, "title": "You've learned the trick. Next: you drive it."}];
+  var DATA = [{"m": 1, "n": "<b>Open with energy.</b> “By the end of today, everyone here writes code that talks to a frontier AI model — for free.”", "c": false, "title": "How machines learned to talk"}, {"m": 1, "n": "<b>Under 45 seconds.</b> One line of credibility, one line of humility. The failed-things line gets the laugh — let it land, then move on. The work sells you better than the bio.", "c": true, "title": "I sat in these seats — TCE CSE, class of 2009."}, {"m": 1.5, "n": "Walk the 6 artifacts fast. Plant the capstone seed: “Session 6 you demo — start thinking what you’d build.”", "c": false, "title": "12 hours. 6 things you'll build."}, {"m": 3, "n": "<b>GAME.</b> Class shouts judges/creates before each click. Gotcha = keyboard autocomplete (generative). ~25s/item.", "c": true, "title": "Two kinds of AI: judges vs creators"}, {"m": 2.5, "n": "Click rings outside-in AI→LLM. Land <b>app ≠ model</b>: ChatGPT is WhatsApp, GPT is the network.", "c": false, "title": "AI, ML, GenAI, LLM — who lives inside whom"}, {"m": 1.5, "n": "THE slide. Say slowly: one job — predict the next token, repeat. Pre-empt “but it reasons!” → hold for scale.", "c": false, "title": "ChatGPT is autocomplete with a PhD."}, {"m": 3.5, "n": "<b>GAME.</b> Class shouts the next word BEFORE reveal. Ex2 (idli+__) room disagrees = spread distribution. Finale: Thiagarajar College of ___ → 97% — the room is sitting inside a distribution. Bridge: who picks? dice.", "c": false, "title": "Play the model: guess the next word"}, {"m": 3, "n": "<b>THE demystifier.</b> Click <b>Build the table</b> — narrate: training is just tallying which word follows which. Then Sample from &lt;|start|&gt;: room shouts a word, you roll. Hit <b>Take the top</b> to contrast greedy vs sampling. Land it: the SAME three steps as Claude — only step 2 and training differ. It stops when it samples &lt;|end|&gt; — that is the EOS token. Compress by skipping the greedy toggle.", "c": true, "title": "Those odds aren’t magic — you just count words."}, {"m": 3, "n": "<b>THE money slide.</b> Play it once in silence — let the room watch. Then Reset and Step through, narrating: tokens→numbers, layers mix, distribution, dice, APPEND. Land the punch: it never plans a sentence. It only ever picks one next token — 650 times for a 500-word answer.", "c": false, "title": "Watch the network think"}, {"m": 3, "n": "<b>SLIDER.</b> T→0.05, Roll 10× (Chennai ×10). T→2, Roll 10× until pizza shows in the tally. Rule: facts low, creative high. Answers “why different answers?” <b>[D] deeper:</b> logits &rarr; softmax &rarr; temperature <i>divides the logits</i>, so T=0 is argmax; plus top-k / top-p. Open it if anyone asks &ldquo;but where does the probability come from?&rdquo;", "c": false, "title": "Why the same question gives different answers"}, {"m": 2.5, "n": "<b>Kills #1 myth.</b> Search → 0 results; Ask model → pirate jigarthanda poem. “Nothing stored. It computed that.”", "c": false, "title": "Wait — is it just searching a giant database?"}, {"m": 3.5, "n": "<b>WIDGET.</b> Invite a student to drag both sliders to ‘trained’. Narrate: w,b are PARAMETERS; a model = a file of knob values. <b>[D] deeper:</b> cross-entropy loss + perplexity &mdash; the one number a lab watches for months. Good answer to &ldquo;how do they know it&rsquo;s working?&rdquo;", "c": false, "title": "What's inside a model? Just knobs."}, {"m": 2.5, "n": "Cookbook analogy: write once, cooking doesn’t change the book. Q3 (free-tier trains future) = the privacy warning.", "c": false, "title": "Training vs using: the cookbook rule"}, {"m": 3, "n": "<b>Type a student name, then தமிழ்.</b> The ratio jump is the moment — and the ₹ meter turns it into money: same meaning, bigger bill. Honest: illustrative tokenizer; lab shows real counts.", "c": false, "title": "Models don't read words. They read tokens."}, {"m": 2.5, "n": "idli+dosa high, idli+GPU low. Student predicts a pair. Deliver king−man+woman≈queen. ‘Session 4 turns this into search.’", "c": false, "title": "Embeddings: meaning becomes coordinates"}, {"m": 3.5, "n": "Hover ‘it’ → trophy. Ask “how did YOU know?” Toggle big→small → suitcase. Let it breathe. ‘The T in GPT.’ <b>[D] deeper:</b> attention is order-blind &rarr; positional encoding / RoPE; and the n&sup2; cost curve. Open this the moment a sharp student asks about word order.", "c": false, "title": "Attention: every word looks at every other word"}, {"m": 3.5, "n": "<b>STEPPER — hardest 3 min.</b> Step slowly, narrate each stage; then Auto-run — it ends on the stat flash, let it land. ‘500-word answer ≈ 650 loops.’", "c": false, "title": "The whole trick, step by step"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Say it looking at the faculty row — and smile. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "If autocomplete can pass your exam…"}, {"m": 2, "n": "Drag 10M→1T. Pause at 10B: ‘translation appeared — nobody programmed it.’ Emergence; researchers argue how sudden it is. <b>[D] deeper:</b> scaling laws + the Chinchilla correction (params and data together), and the data wall. Pairs with slide 22 on test-time compute.", "c": true, "title": "The loop is old. The scale is new."}, {"m": 2.5, "n": "Click Raw base on 2+2 (laugh), then After finishing school. Point: raw pretraining ≠ assistant.", "c": false, "title": "A freshly trained model is feral"}, {"m": 2, "n": "Three steps, one line each. Land: ‘ChatGPT’s 2022 win was better finishing school, not a smarter brain.’", "c": false, "title": "Finishing school, in three steps"}, {"m": 2, "n": "<b>Dial metaphor.</b> 1 scale, 2 finishing school, 3 thinking time. Land the cost rule: never pay thinking prices for capital-city questions. Pre-empts 'is o-series different magic?' — no, more tokens.", "c": true, "title": "Reasoning models: think longer, not train bigger"}, {"m": 1.5, "n": "Biryani line. Two points only: closed vs open weights, and ‘names change, mechanics don’t.’ Don’t read table. <b>[D] deeper:</b> MoE, distillation, quantization &mdash; why Flash-class models exist and why parameter count stopped predicting cost. Sets up the S6 routing decision.", "c": true, "title": "Why ChatGPT ≠ Gemini ≠ Claude"}, {"m": 3, "n": "<b>REVEAL CARDS.</b> Class explains WHY before each click: strawberry→tokens, math→predict, news→cutoff, citation→plausible.", "c": false, "title": "Famous failures — you explain them"}, {"m": 2.5, "n": "Fill window with chat+notes (green), then textbook → red overflow. Then 1M: textbook fits — ‘the wall moves; the physics doesn’t.’ Twist: <b>no memory — app re-sends everything.</b> Motivates RAG. <b>[D] deeper:</b> the KV cache: prefill vs decode, TTFT vs tokens/sec, and why context caching is ~90% off. This is the mechanism behind three later cost claims &mdash; worth opening if time allows.", "c": false, "title": "The context window: its entire working memory"}, {"m": 2.5, "n": "<b>ACTIVE RECALL.</b> Class says each definition aloud, THEN click. Now includes Parameter + Inference.", "c": false, "title": "Eight words you own now"}, {"m": 2.5, "n": "<b>Press Send.</b> Dot travels code→key→GPUs→response. ‘The model does NOT run on your laptop.’ De-mystifies the lab.", "c": false, "title": "What actually happens when you call an API"}, {"m": 2, "n": "Shown ONCE, applies to all 6 labs. Point at A→E strip; make everyone bookmark the link. ‘Checkpoints are for you, not marks.’", "c": false, "title": "Your lab kit, and the rhythm"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB.</b> 5 steps on board + aistudio.google.com. Pairs, both run code, 5-min rule. Circulate; checkpoint sweep at +40. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 1: your first AI API call"}, {"m": 3, "n": "After lab. The 10-question test set is written in the last 10 min of lab (Part E) — confirm every pair has it. Feeds Session 2.", "c": false, "title": "Two things before the next session"}, {"m": 3, "n": "<b>Show & tell (~5) + close.</b> 2–3 pairs’ model differences. ‘Learned the trick; next you drive it.’ Remind: bring docs for Day 2. <b>Links are on screen</b> — point at them.", "c": false, "title": "You've learned the trick. Next: you drive it."}];
   var deck=document.getElementById('deck');
   var total=DATA.reduce(function(a,d){return a+d.m;},0);
   var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});

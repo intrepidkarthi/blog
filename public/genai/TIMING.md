@@ -150,7 +150,7 @@ Every deck has a **live presenter timer built in — press `S`** during the talk
 | 23 | Your AI knows, sees, and now acts. | 12 min | 123:30 |  |
 
 ## Session 6 — Breaking, Securing, Shipping
-*20 slides · scheduled total ≈ 84 min*
+*21 slides · scheduled total ≈ 87 min*
 
 | # | Slide | Budget | Cumulative | |
 |---|---|---|---|---|
@@ -168,9 +168,10 @@ Every deck has a **live presenter timer built in — press `S`** during the talk
 | 12 | Speed, reliability, observability | 2.5 min | 27:00 |  |
 | 13 | UX patterns for honest AI products | 1.5 min | 28:30 | ▸ |
 | 14 | Responsible AI: the four questions auditors ask | 2 min | 30:30 | ▸ |
-| 15 | The ship-it checklist | 2.5 min | 33:00 |  |
-| 16 | Capstone: the sprint &amp; the demo | 2 min | 35:00 |  |
-| 17 | How to demo without dying | 2 min | 37:00 |  |
-| 18 | Six sessions, one throughline | 43 min | 80:00 |  |
-| 19 | Where to go from here | 2.5 min | 82:30 | ▸ |
-| 20 | You came as users. You leave as builders. | 2 min | 84:30 |  |
+| 15 | Your users decide whose law you're under | 2.5 min | 33:00 | ▸ |
+| 16 | The ship-it checklist | 2.5 min | 35:30 |  |
+| 17 | Capstone: the sprint &amp; the demo | 2 min | 37:30 |  |
+| 18 | How to demo without dying | 2 min | 39:30 |  |
+| 19 | Six sessions, one throughline | 43 min | 82:30 |  |
+| 20 | Where to go from here | 2.5 min | 85:00 | ▸ |
+| 21 | You came as users. You leave as builders. | 2 min | 87:00 |  |

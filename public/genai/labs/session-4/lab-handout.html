@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lab 4 — Chat With YOUR Notes — Generative AI · Foundations &amp; Applications</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/labs/session-4/lab-handout.html">
 <meta name="description" content="Lab 4 handout: build RAG over your own documents — chunk, embed and store them, sanity-check retrieval, run grounded cited answers, then break it honestly.">
 <meta property="og:title" content="Lab 4 — Chat With YOUR Notes">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/labs/session-4/lab-handout.html">
 <meta property="og:description" content="Lab 4 handout: build RAG over your own documents — chunk, embed and store them, sanity-check retrieval, run grounded cited answers, then break it honestly.">
 <meta property="og:type" content="article">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
@@ -77,6 +75,7 @@
 
   <h2>Stretch</h2>
   <p>RAG eval — 5 Q + expected through your S2 harness · <code>k=1</code> vs <code>3</code> vs <code>5</code> · add your second document · print similarity scores in answers.</p>
+  <p><strong>Going deeper (S3, S4 in the notebook).</strong> <em>Rerank</em> — retrieve 20, let a model re-order them, keep 4: the biggest RAG upgrade after chunking, in ten lines. <em>Two scores, never one</em> — label which chunk should win, then measure <code>recall@k</code> (your ceiling on accuracy) and <code>MRR</code> (did it arrive near the top) separately from answer quality. High recall with low MRR is the exact signature that says <em>add the reranker</em>. Both are unpacked in the deck's <code>&lt;|deeper|&gt;</code> panels — press <strong>D</strong>.</p>
 
   <h2>Capstone note</h2>
   <p><strong>Save this notebook.</strong> It IS your capstone foundation: S5 (after lunch) bolts tools onto it; S6 attacks and hardens it, then you demo. Choose documents you actually care about — the demo is only as interesting as the data.</p>

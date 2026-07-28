@@ -4,12 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Generative AI: Foundations &amp; Applications — a free, hands-on course</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/">
 <meta name="description" content="Learn how ChatGPT, Gemini and Claude actually work — tokens, attention, RAG, agents, security — by building something real in every session. 6 sessions, 12 hours, ₹0. Built for TCE Madurai, free for everyone.">
 <meta property="og:title" content="Generative AI: Foundations &amp; Applications">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/">
 <meta property="og:description" content="A free, hands-on course: learn how ChatGPT actually works by building something in every session. 6 sessions · 50+ live demos · ₹0 · any laptop.">
 <meta property="og:type" content="website">
+<!-- TODO: set the final absolute URL for og:image and og:url once the hosting path on intrepidkarthi.com is decided -->
 <meta property="og:image" content="https://intrepidkarthi.com/genai/assets/og-card.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#FFFFFF">
@@ -32,7 +31,7 @@
     --h4:#F08C00;--d4:#A85E00;--t4:#FFEBCC;
     --h5:#00A87A;--d5:#00755A;--t5:#D6F3E7;
     --h6:#E8442E;--d6:#C22B18;--t6:#FDE2DC;
-    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -300,7 +299,7 @@
     <h1>Learn how AI actually works<br><em>— by building it.</em></h1>
     <p class="fp-sub"><b>Generative AI: Foundations &amp; Applications.</b> Six hands-on sessions, from "what's a token?" to a shipped app. One weekend, zero cost, nothing to install.</p>
     <div class="fp-ctas">
-      <a class="pill" href="how-llms-work.html">First: watch how LLMs work <span class="arr">→</span></a>
+      <a class="pill" href="how-llms-work.html">First: where does the answer live? <span class="arr">→</span></a>
       <a class="pill" href="presentations/session-1-how-machines-learned-to-talk.html">Start Session 1 <span class="arr">→</span></a>
       <a class="quiet" href="TEACH-THIS-YOURSELF.html">Teach this course</a>
     </div>
@@ -490,11 +489,11 @@
 <section class="wrap" id="kit">
   <div class="kicker rv"><b>the_course_kit</b></div>
   <h2 class="rv">Everything is in the box. Take it, teach it.</h2>
-  <p class="sub rv">Six interactive decks, six labs with notebooks and handouts, six cheatsheets, a complete learning guide, per-slide timing, and instructor prep packs. Swap Madurai for your city and run it anywhere.</p>
+  <p class="sub rv">Six interactive decks, six labs with notebooks and handouts, six cheatsheets, a complete learning guide, per-slide timing, and instructor prep packs. Swap Madurai for your city and run it anywhere — there is a <a href="LOCALIZATION.html">swap-kit</a> for exactly that.</p>
   <div class="kit2">
     <div class="kitcol rv">
       <h3>for students &amp; self-learners</h3>
-      <a href="LEARNING-GUIDE.html"><i class="kt">guide</i>Learning Guide<span>Every concept of the course, one honest document</span></a>
+      <a href="LEARNING-GUIDE.html"><i class="kt">guide</i>Learning Guide<span>Every concept of the course, one honest document &mdash; plus a depth layer that goes to mechanism</span></a>
       <a href="cheatsheets/session-1-cheatsheet.html"><i class="kt">sheet</i>Cheatsheets<span>One printable page per session — start with Session 1</span></a>
       <a href="labs/session-1/lab-handout.html"><i class="kt">lab</i>Lab handouts<span>Step-by-step, checkpoint-driven — start with Lab 1</span></a>
       <a href="ZERO-SETUP.html"><i class="kt">setup</i>Zero-Setup Guarantee<span>Any laptop, browser only, free tiers, no credit card</span></a>
@@ -506,7 +505,8 @@
       <a href="TIMING.html"><i class="kt">timing</i>Timing Guide<span>Per-slide budgets for all six sessions</span></a>
       <a href="presentations/session-1-how-machines-learned-to-talk.html"><i class="kt">deck</i>Presenter mode<span>Open any deck, press S — timer, pace badge, speaker notes</span></a>
       <a href="instructor-notes/session-1-prep.html"><i class="kt">prep</i>Deep prep packs<span>Master every concept one level below the slides — start with Session 1</span></a>
-      <a href="instructor-notes/instructor-notes-all-sessions.pdf"><i class="kt">pdf</i>All notes, one PDF<span>120 pages: six deep preps + run sheets + facilitation guide, printable</span></a>
+      <a href="LOCALIZATION.html"><i class="kt">local</i>Teaching this elsewhere<span>Swap-kit: what to localize, what is load-bearing, what not to touch</span></a>
+      <a href="instructor-notes/instructor-notes-all-sessions.pdf"><i class="kt">pdf</i>All notes, one PDF<span>119 pages: six deep preps + run sheets + facilitation guide, printable</span></a>
     </div>
   </div>
   <div class="note rv"><b>Presenting?</b> Open any deck and press <b>S</b> for presenter mode — a live timer, per-slide budgets, a pace badge, and speaker notes. Arrow keys navigate · <b>F</b> fullscreen · <b>O</b> overview grid.</div>
@@ -519,6 +519,7 @@
   <details class="rv"><summary>What laptop do I need?</summary><p>Anything that opens a browser. All heavy computation happens in Google's cloud; your machine just needs a keyboard and Wi-Fi. A ₹15,000 laptop is exactly as capable here as a MacBook Pro.</p></details>
   <details class="rv"><summary>Do I need math or ML background?</summary><p>One line of school math appears in the whole course: <code>y = wx + b</code>. If you can write a for-loop in any language, you have every prerequisite.</p></details>
   <details class="rv"><summary>Can I self-study without an instructor?</summary><p>Yes. The decks are self-contained and interactive, every lab has a step-by-step handout with checkpoints, and pressing <b>S</b> in any deck shows the full speaker narration. The Learning Guide covers every concept in prose.</p></details>
+  <details class="rv"><summary>Is it too basic for someone who already knows some ML?</summary><p>The main line is built so anyone can follow it. Underneath, every deck carries collapsible <b>depth panels</b> &mdash; press <b>D</b> on a slide &mdash; that go to mechanism: logits and softmax, positional encoding and attention&rsquo;s n&sup2; cost, the KV cache behind every latency and caching claim, MoE and distillation, reranking and cross-encoders, retrieval metrics, agent trajectory evaluation, and why prompt injection has no fix. They are collapsed by default, so they never slow the room down. <a href="LEARNING-GUIDE.html#part-8">Part 8 of the Learning Guide</a> is the same material in prose.</p></details>
   <details class="rv"><summary>Is my data private on free tiers?</summary><p>Assume free-tier conversations may train future models. The course drills one rule from Session 1: never paste anything you couldn't survive seeing on the front page of the newspaper.</p></details>
   <details class="rv"><summary>Can I teach or translate this?</summary><p>Please do — that's the point. <a href="TEACH-THIS-YOURSELF.html" style="font-weight:650">Teach This Yourself</a> covers running it at any scale, and the Madurai references are designed to be swapped for your own city's.</p></details>
 </section>

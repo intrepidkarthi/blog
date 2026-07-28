@@ -35,3 +35,5 @@ Wrong tool (sharpen docstrings, "answer directly if no tool needed") · bad args
 Local/open weights (Ollama: `ollama run gemma4:e4b`) win on **privacy** (data never leaves), **cost at scale** (hardware once), **offline/edge**. Frontier APIs win on raw capability and zero-ops upgrades. Real systems: **hybrid** — API for the hard 10%, small/local for the routine 90%.
 
 **Capstone:** RAG (knowledge) + tools (hands) + evals (judge) = your app. Save the notebook — the finale attacks it, you harden it, you demo.
+
+**Go deeper (press D on the deck):** the JSON schema and message roles the SDK actually sends · the loop guard (max steps, allow-list, validated args) and context growth · trajectory eval: tool-choice accuracy, step count, wasted calls · params × bits ÷ 8, and why memory bandwidth sets tokens/sec. Prose versions: Learning Guide **Part 8**.

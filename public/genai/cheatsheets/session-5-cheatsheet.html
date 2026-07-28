@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Making AI Do Things — Cheatsheet — Generative AI · Foundations &amp; Applications</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/cheatsheets/session-5-cheatsheet.html">
 <meta name="description" content="Session 5 on one printable page: tool use, agents vs workflows, the escalation ladder, API vs local.">
 <meta property="og:title" content="Making AI Do Things — Cheatsheet">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/cheatsheets/session-5-cheatsheet.html">
 <meta property="og:description" content="Session 5 on one printable page: tool use, agents vs workflows, the escalation ladder, API vs local.">
 <meta property="og:type" content="article">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
@@ -83,6 +81,8 @@ config = types.GenerateContentConfig(tools=[calculator])   # hand over the menu<
   <p>Local/open weights (Ollama: <code>ollama run gemma4:e4b</code>) win on <strong>privacy</strong> (data never leaves), <strong>cost at scale</strong> (hardware once), <strong>offline/edge</strong>. Frontier APIs win on raw capability and zero-ops upgrades. Real systems: <strong>hybrid</strong> — API for the hard 10%, small/local for the routine 90%.</p>
 
   <p><strong>Capstone:</strong> RAG (knowledge) + tools (hands) + evals (judge) = your app. Save the notebook — the finale attacks it, you harden it, you demo.</p>
+
+  <p><strong>Go deeper (press D on the deck):</strong> the JSON schema and message roles the SDK actually sends · the loop guard (max steps, allow-list, validated args) and context growth · trajectory eval: tool-choice accuracy, step count, wasted calls · params &times; bits &divide; 8, and why memory bandwidth sets tokens/sec. Prose versions: Learning Guide <strong>Part 8</strong>.</p>
 
   <footer class="foot">
     <div style="margin-bottom:8px"><a href="session-4-cheatsheet.html">← Session 4</a> · deck: <a href="../presentations/session-5-making-ai-do-things.html">session-5-making-ai-do-things.html</a> · <a href="session-6-cheatsheet.html">Session 6 →</a></div>

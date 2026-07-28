@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 2 · Talking to AI, and Catching Its Lies — GenAI Foundations · TCE</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/presentations/session-2-talking-to-ai-and-catching-its-lies.html">
 <meta name="description" content="Prompt engineering that works, hallucinations with real court receipts, and your first eval harness — Session 2 of 6, GenAI Foundations at TCE Madurai.">
 <meta property="og:title" content="Session 2 · Talking to AI, and Catching Its Lies">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/presentations/session-2-talking-to-ai-and-catching-its-lies.html">
 <meta property="og:description" content="Prompt engineering that works, hallucinations with real court receipts, and your first eval harness — Session 2 of 6, GenAI Foundations at TCE Madurai.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
@@ -32,7 +30,7 @@
     --accent:var(--deep); --accent2:var(--hue); --accentpale:var(--tint);
     --accentmark:color-mix(in srgb,var(--hue) 35%,white);
     --stagebg:#14171F; --stageink:#FFFFFF;
-    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -188,6 +186,36 @@
   .flip.open .q{display:none}
   .flip .hintline{color:var(--deep);font-size:.82rem;font-weight:700;margin-top:10px}
   .flip.open .hintline{display:none}
+  /* ---- depth layer: optional <|deeper|> panels. Collapsed by default, so they cost the
+     running clock nothing; opened on demand when a sharp student asks, or after class. ---- */
+  .deep{margin-top:20px;border-top:1px dashed var(--linedark)}
+  .deeptog{appearance:none;background:none;border:0;padding:12px 0 0;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;text-align:left;
+    font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.07em;color:var(--deep)}
+  .deeptog .lbl:before{content:"<|";color:var(--faint);font-weight:400;margin-right:2px}
+  .deeptog .lbl:after{content:"|>";color:var(--faint);font-weight:400;margin-left:2px}
+  .deeptog .cv{display:inline-block;width:.46em;height:.46em;border-right:2px solid currentColor;
+    border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .2s;margin-bottom:.18em}
+  .deep.open .deeptog .cv{transform:rotate(-135deg);margin-bottom:0}
+  .deeptog:hover{color:var(--ink)}
+  .deeptog:focus-visible{outline:2px solid var(--hue);outline-offset:3px;border-radius:4px}
+  .deepbody{display:none;padding:14px 0 2px}
+  .deep.open .deepbody{display:block}
+  .deepbody p{font-size:.93rem;color:var(--body);line-height:1.62;max-width:76ch}
+  .deepbody p+p{margin-top:10px}
+  .deepbody b{color:var(--ink);font-weight:650}
+  .deepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px;margin-top:13px}
+  .dcell{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .dcell h4{font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+  .dcell h4 .em{display:inline-block;width:.5em;height:.5em;border-radius:3px;background:var(--accent);margin-right:8px;vertical-align:.06em}
+  .dcell p{font-size:.85rem;color:var(--muted);line-height:1.55;max-width:none}
+  .fx{display:block;font-family:var(--mono);font-size:.9rem;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-left:3px solid var(--hue);border-radius:8px;
+    padding:11px 14px;margin:12px 0;overflow-x:auto;white-space:pre;line-height:1.7}
+  .fx .cm{color:var(--muted)}
+  .fx b{color:var(--deep)}
+  /* an open panel makes its slide scroll — deep content must never clip off the bottom */
+  .slide.deepopen{justify-content:flex-start;overflow-y:auto}
   /* context window */
   .cw{display:flex;height:58px;border-radius:9px;overflow:hidden;border:1.5px solid var(--linedark);background:var(--panel)}
   .cw .seg{display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;
@@ -319,7 +347,7 @@
   <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b> &nbsp;·&nbsp; Session 2 · TCE Madurai</span>
   <span id="counter">1 / 1</span>
 </div>
-<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview</div>
+<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>D</kbd> deeper</div>
 
 <main class="deck" id="deck">
 
@@ -543,6 +571,20 @@
     <div class="payload pre mt" style="min-height:110px"><span class="mono" id="sc-out">Pick a scorer…</span></div>
   </div>
   <p class="lead rv mt">The metric is a design decision. Too strict → punishes correct answers. Too loose → rewards garbage. <b>Your scorer is part of your system</b> — and sometimes the scorer is the liar.</p>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">one number is usually the wrong number</span></button>
+    <div class="deepbody">
+      <p>"Accuracy" hides which <i>kind</i> of mistake you're making, and the two kinds usually have different costs. Take a bot that must flag fee-related questions to a human. Suppose 5% of questions are fee-related. A bot that flags <b>nothing at all</b> scores 95% accuracy — and is completely useless. That's why anything with rare, important cases gets scored on two numbers instead:</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Precision</h4><p>Of the things you flagged, how many deserved it? Low precision = crying wolf; humans stop trusting the flags.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Recall</h4><p>Of the things that deserved flagging, how many did you catch? Low recall = quiet misses, which is how a system fails without anyone noticing.</p></div>
+        <div class="dcell"><h4><span class="em"></span>F1</h4><p>Their harmonic mean — one number when you truly need one. Use it to compare, but never to debug: only precision and recall tell you which way you're broken.</p></div>
+      </div>
+      <p>You trade one against the other on purpose. A medical or fraud screen buys recall and accepts false alarms. A tool that auto-sends an email buys precision and accepts misses. <b>"Which error would I rather explain?"</b> is a product question, and it decides the metric before any code is written.</p>
+      <p><b>Now the part that catches everyone: the AI judge has biases you can name.</b> It systematically prefers <i>longer</i> answers, prefers its <i>own</i> phrasing and its own family of models, and — when shown two candidates — prefers whichever came <b>first</b>. That last one is measurable and often worth several points. The standard fix costs nothing: run every pairwise comparison <b>twice with the order swapped</b>, and count it as a win only if the same answer wins both times. Ties become ties instead of noise.</p>
+      <p class="note">And validate the judge itself: hand-grade 20–30 examples yourself, then check how often the judge agrees with you. If it agrees less than about 80% of the time, you are not measuring your model — you are measuring your judge. An unaudited AI judge is just a second hallucination with a number attached to it.</p>
+    </div>
+  </div>
 </section>
 <!-- 15 ARENA -->
 <section class="slide">
@@ -555,6 +597,20 @@
       <div><div style="font-family:var(--mono);font-size:.78rem;color:var(--muted)">B: role + "answer from known facts only,<br>say I-don't-know otherwise" + format</div><div id="ar-b" class="mt"></div><div class="scorebig mt" id="ar-bs"></div></div>
     </div>
     <div class="btnrow mt"><button class="btn primary" id="ar-run">Fight</button><span class="note" id="ar-note" style="margin:0"></span></div>
+  </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">B won 4–3. Did B actually win?</span></button>
+    <div class="deepbody">
+      <p>No. And knowing why is what separates someone who runs evals from someone who <i>believes</i> them. With 5 questions, the finest distinction you can possibly draw is 20 percentage points — there is no such measurement as 4.5/5. A one-question gap is well inside the noise of which five questions you happened to write.</p>
+      <p>Rough rule of thumb for a pass/fail score out of n items: the wobble on your number is around ±1/√n.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>n = 10</h4><p>±30 points. Detects only catastrophic differences. This is a smoke test, and that is a fine thing to be — just don't quote its number.</p></div>
+        <div class="dcell"><h4><span class="em"></span>n = 100</h4><p>±10 points. Now a 15-point improvement is believable. This is the smallest set worth arguing over.</p></div>
+        <div class="dcell"><h4><span class="em"></span>n = 1,000</h4><p>±3 points. Real regression testing. Note it costs 100× the first row to move one order of magnitude in confidence.</p></div>
+      </div>
+      <p>Two cheap moves buy you most of that confidence without writing 1,000 questions. <b>Pair your comparisons:</b> run A and B on the <i>identical</i> questions and count only the items where they disagree — the questions both get right carry no information, and removing them shrinks the noise a lot. <b>And separate the two kinds of variance:</b> re-running the <i>same</i> prompt three times at T=0 measures the model's flutter; changing the questions measures your test set's flutter. They have different fixes, so never let one hide inside the other.</p>
+      <p class="note">The professional habit that follows: report the gap <b>and the size of the set</b>, always — "B beat A by 12 points on 120 questions" is a claim; "B is better" is a feeling. When someone shows you a leaderboard with no n, they have shown you nothing.</p>
+    </div>
   </div>
 </section>
 <!-- 16 DEMO TRAP -->
@@ -677,6 +733,15 @@
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1);}
     else if(e.key==='Home')go(0);
     else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='d'||e.key==='D'){
+      // D = open/close every depth panel on this slide at once
+      const s=slides[cur];if(!s)return;
+      const ds=[...s.querySelectorAll('.deep')];if(!ds.length)return;
+      const opening=!ds[0].classList.contains('open');
+      ds.forEach(d=>{d.classList.toggle('open',opening);
+        const b=d.querySelector('.deeptog');if(b)b.setAttribute('aria-expanded',opening?'true':'false');});
+      s.classList.toggle('deepopen',opening);
+    }
     else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
     else if(e.key==='o'||e.key==='O')overview();
     else if(e.key==='Escape'&&!document.fullscreenElement)overview(); /* in fullscreen, Escape just exits fullscreen */
@@ -695,6 +760,16 @@ document.addEventListener('click',e=>{
   if(document.getElementById('deck').classList.contains('overview'))return; /* overview clicks navigate, not flip */
   const f=e.target.closest('.flip');
   if(f)f.classList.toggle('open');
+});
+
+/* ============ depth layer: <|deeper|> disclosure panels ============ */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.deeptog');
+  if(!t)return;
+  const d=t.closest('.deep');
+  t.setAttribute('aria-expanded',d.classList.toggle('open')?'true':'false');
+  const s=d.closest('.slide');
+  if(s)s.classList.toggle('deepopen',!!s.querySelector('.deep.open'));
 });
 
 /* ============ shared lib ============ */
@@ -961,7 +1036,7 @@ mkQuiz('rq',[
 
 /* ===== presenter mode ===== */
 (function(){
-  var DATA = [{"m": 1, "n": "‘You can now call the model. But your asks are wishes, not instructions. Today: make them instructions, and catch the lies.’", "c": false, "title": "Talking to AI, and catching its lies"}, {"m": 2, "n": "<b>Recap quiz.</b> Fast energy. Wrong answers = one-line re-teach, don’t lecture.", "c": false, "title": "Still true after the break?"}, {"m": 1.5, "n": "Two artifacts: prompt playbook + eval harness. ‘This one artifact is the difference between using AI and engineering it.’", "c": false, "title": "Two artifacts in two hours"}, {"m": 4, "n": "<b>CENTERPIECE. Makeover v0→v5.</b> Before each Improve click ask ‘what’s still wrong?’ v5 constraint = the punchline (can’t invent awards). Quality meter climbs 10%→85%.", "c": false, "title": "The prompt makeover: five upgrades"}, {"m": 2.5, "n": "Toggle prompt parts live — watch the ~token count climb. Task mandatory, rest are dials; over-stuffing dilutes attention.", "c": false, "title": "Anatomy of a prompt: six switches"}, {"m": 2.5, "n": "Zero vs few-shot. The Tanglish review lands well. ‘2–5 examples pin format + edge cases — the model imitates.’", "c": false, "title": "Few-shot: show, don't tell"}, {"m": 2.5, "n": "Let class compute ₹472 on paper FIRST (30s), then reveal both. Direct = confident wrong; steps = auditable.", "c": false, "title": "Step-by-step beats straight-to-answer"}, {"m": 2, "n": "The word ONLY does real work. ‘Apps don’t read prose — your 2 a.m. parser dies without it.’", "c": true, "title": "Demand a format, or parse chaos forever"}, {"m": 3, "n": "<b>Crime cards.</b> Class guesses each fix before the click. Kitchen-sink previews S5 workflows.", "c": false, "title": "The four classic prompt crimes"}, {"m": 2, "n": "<b>The turn.</b> Read the lawyer + Air Canada cases straight. Room goes quiet — let it. ‘Not bad prompts. Unmeasured ones.’ Point at the receipts line: ‘Unlike the lawyer, I checked mine.’", "c": false, "title": "Your polished prompt still lies beautifully."}, {"m": 4.5, "n": "<b>GAME. 3 rounds, vote A/B/C before each reveal.</b> Lies: C (award invented) · B (India LOST that match) · A (Nobel was for photoelectric, not relativity). Tone-o-meter: identical bars every round. ‘Tone tells you nothing. Only checking does.’", "c": false, "title": "One of these is a confident lie"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Hallucination is not a bug"}, {"m": 2, "n": "Test set + scorer + score = one honest number. Dots fill to ‘7/10 — argument over.’ Then land the line: ‘A prompt without an eval is a superstition.’", "c": false, "title": "\"How do you know it's right?\" You measure."}, {"m": 3.5, "n": "<b>Run eval, then IMMEDIATELY Run-again</b> — score 7→8. ‘Which is true? Neither. T=0, ×3, average.’ Read failures.", "c": false, "title": "Watch an eval run"}, {"m": 3, "n": "Exact-match FAILS a correct answer — the aha. ‘Your scorer can be the liar too.’ Contains = today’s lab scorer.", "c": false, "title": "Same answer, three verdicts"}, {"m": 3.5, "n": "<b>Arena. Fight.</b> B wins 4–2 but Q5 beats both. ‘The loop never ends; it converges. Then grow the test set.’", "c": false, "title": "Prompt A vs Prompt B: the arena"}, {"m": 1.5, "n": "‘It worked when I tried it’ = not evidence. Demo = best case; eval = expected case.", "c": true, "title": "\"It worked when I tried it\" is not evidence."}, {"m": 2.5, "n": "<b>The loop = the job.</b> Prompt→eval→read failures→fix ONE thing→re-run. The pipeline cycles on its own — let it. ‘Failures are the syllabus.’", "c": false, "title": "Eval-driven development: the loop"}, {"m": 2.5, "n": "<b>Recall flips.</b> Class says each before clicking. Six ideas: anatomy, few-shot, step-by-step, hallucination, test set, the loop.", "c": false, "title": "Six ideas you own now"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB.</b> Press L — the 50:00 countdown paces the room. Expected strings SHORT; diagnose every ✗; documentation is the deliverable. A/B on their 10 Qs. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 2: the lie detector"}, {"m": 3, "n": "<b>Show & tell + break.</b> Best improvement + best caught lie + name the strongest hot-take counter-argument. ‘Model, scorer, or question?’ Next: AI gets eyes — have photos. <b>Links are on screen</b> — point at them.", "c": false, "title": "You can now prove whether AI is right."}];
+  var DATA = [{"m": 1, "n": "‘You can now call the model. But your asks are wishes, not instructions. Today: make them instructions, and catch the lies.’", "c": false, "title": "Talking to AI, and catching its lies"}, {"m": 2, "n": "<b>Recap quiz.</b> Fast energy. Wrong answers = one-line re-teach, don’t lecture.", "c": false, "title": "Still true after the break?"}, {"m": 1.5, "n": "Two artifacts: prompt playbook + eval harness. ‘This one artifact is the difference between using AI and engineering it.’", "c": false, "title": "Two artifacts in two hours"}, {"m": 4, "n": "<b>CENTERPIECE. Makeover v0→v5.</b> Before each Improve click ask ‘what’s still wrong?’ v5 constraint = the punchline (can’t invent awards). Quality meter climbs 10%→85%.", "c": false, "title": "The prompt makeover: five upgrades"}, {"m": 2.5, "n": "Toggle prompt parts live — watch the ~token count climb. Task mandatory, rest are dials; over-stuffing dilutes attention.", "c": false, "title": "Anatomy of a prompt: six switches"}, {"m": 2.5, "n": "Zero vs few-shot. The Tanglish review lands well. ‘2–5 examples pin format + edge cases — the model imitates.’", "c": false, "title": "Few-shot: show, don't tell"}, {"m": 2.5, "n": "Let class compute ₹472 on paper FIRST (30s), then reveal both. Direct = confident wrong; steps = auditable.", "c": false, "title": "Step-by-step beats straight-to-answer"}, {"m": 2, "n": "The word ONLY does real work. ‘Apps don’t read prose — your 2 a.m. parser dies without it.’", "c": true, "title": "Demand a format, or parse chaos forever"}, {"m": 3, "n": "<b>Crime cards.</b> Class guesses each fix before the click. Kitchen-sink previews S5 workflows.", "c": false, "title": "The four classic prompt crimes"}, {"m": 2, "n": "<b>The turn.</b> Read the lawyer + Air Canada cases straight. Room goes quiet — let it. ‘Not bad prompts. Unmeasured ones.’ Point at the receipts line: ‘Unlike the lawyer, I checked mine.’", "c": false, "title": "Your polished prompt still lies beautifully."}, {"m": 4.5, "n": "<b>GAME. 3 rounds, vote A/B/C before each reveal.</b> Lies: C (award invented) · B (India LOST that match) · A (Nobel was for photoelectric, not relativity). Tone-o-meter: identical bars every round. ‘Tone tells you nothing. Only checking does.’", "c": false, "title": "One of these is a confident lie"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Hallucination is not a bug"}, {"m": 2, "n": "Test set + scorer + score = one honest number. Dots fill to ‘7/10 — argument over.’ Then land the line: ‘A prompt without an eval is a superstition.’", "c": false, "title": "\"How do you know it's right?\" You measure."}, {"m": 3.5, "n": "<b>Run eval, then IMMEDIATELY Run-again</b> — score 7→8. ‘Which is true? Neither. T=0, ×3, average.’ Read failures.", "c": false, "title": "Watch an eval run"}, {"m": 3, "n": "Exact-match FAILS a correct answer — the aha. ‘Your scorer can be the liar too.’ Contains = today’s lab scorer. <b>[D] deeper:</b> precision / recall / F1, and the AI judge&rsquo;s position + verbosity bias (fix: swap the order and run twice). Open it if anyone proposes an LLM judge.", "c": false, "title": "Same answer, three verdicts"}, {"m": 3.5, "n": "<b>Arena. Fight.</b> B wins 4–2 but Q5 beats both. ‘The loop never ends; it converges. Then grow the test set.’ <b>[D] deeper:</b> why 5 questions cannot settle A vs B: the &plusmn;1/&radic;n rule, paired comparison, and separating model variance from test-set variance.", "c": false, "title": "Prompt A vs Prompt B: the arena"}, {"m": 1.5, "n": "‘It worked when I tried it’ = not evidence. Demo = best case; eval = expected case.", "c": true, "title": "\"It worked when I tried it\" is not evidence."}, {"m": 2.5, "n": "<b>The loop = the job.</b> Prompt→eval→read failures→fix ONE thing→re-run. The pipeline cycles on its own — let it. ‘Failures are the syllabus.’", "c": false, "title": "Eval-driven development: the loop"}, {"m": 2.5, "n": "<b>Recall flips.</b> Class says each before clicking. Six ideas: anatomy, few-shot, step-by-step, hallucination, test set, the loop.", "c": false, "title": "Six ideas you own now"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB.</b> Press L — the 50:00 countdown paces the room. Expected strings SHORT; diagnose every ✗; documentation is the deliverable. A/B on their 10 Qs. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 2: the lie detector"}, {"m": 3, "n": "<b>Show & tell + break.</b> Best improvement + best caught lie + name the strongest hot-take counter-argument. ‘Model, scorer, or question?’ Next: AI gets eyes — have photos. <b>Links are on screen</b> — point at them.", "c": false, "title": "You can now prove whether AI is right."}];
   var deck=document.getElementById('deck');
   var total=DATA.reduce(function(a,d){return a+d.m;},0);
   var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});

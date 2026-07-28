@@ -17,6 +17,8 @@ You need to be **one session ahead of the room**, not an expert. Each session sh
 
 Plus, repo-wide: `course-plan.md` (the whole design), `TIMING.md` (per-slide timing), `fact-check.md` (every claim + source), `lab-facilitation-guide.md` (how to run the labs), `ZERO-SETUP.md` (the no-cost guarantee).
 
+**Teaching outside Madurai?** `LOCALIZATION.md` is the swap-kit: which of the 278 local references are decoration you can swap freely, which are institutional and *must* change, and which three are load-bearing (the Tamil tokenizer demo, the currency constants, the academic vocabulary in Session 4). Twenty minutes of find-and-replace and the course is yours.
+
 ## The decks in 30 seconds
 - Open the `.html` in any browser. Fully offline, nothing to install.
 - **→ / Space** next · **←** back · **F** fullscreen · **O** overview grid · **number + Enter** jump · **`S`** presenter mode (live timer, per-slide budget, pace badge, speaker notes).

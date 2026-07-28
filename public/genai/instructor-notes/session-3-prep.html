@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 3 — Instructor Deep Prep — Generative AI · Foundations &amp; Applications</title>
 <meta name="description" content="Deep mastery guide for Session 3 (AI Beyond Text): patch math, diffusion objective, voice cloning, constrained decoding, demo playbooks, Q&amp;A bank.">
@@ -295,6 +294,24 @@
 <li><strong>"Neural Codec Language Models are Zero-Shot TTS" — Wang et al., 2023 (VALL-E).</strong> The 3-second cloning mechanism precisely: speech as tokens, voice as an in-context prefix.</li>
 <li><strong>"Efficient Guided Generation for Large Language Models" — Willard &amp; Louf, 2023 (Outlines), plus Google's structured-output docs.</strong> How schema→FSM→logit-masking is actually implemented — the ground truth under slide 12's <code>response_schema</code> beat.</li>
 </ol>
+
+
+  <hr>
+
+  <h2 id="the-depth-layer">The depth layer — 3 <code>&lt;|deeper|&gt;</code> panels in this deck</h2>
+
+  <p>Collapsed by default, so they cost the clock nothing. Press <strong>D</strong> on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as <code>[D] deeper:</code>.</p>
+
+  <p>Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.</p>
+
+  <table>
+    <tr><th>Deck slide</th><th>Slide</th><th>Panel</th></tr>
+    <tr><td><code>#4</code></td><td>How a model reads a picture</td><td>a patch is a token, so an image has a token bill</td></tr>
+    <tr><td><code>#8</code></td><td>Diffusion: a picture emerges from static</td><td>what the network is actually trained to output</td></tr>
+    <tr><td><code>#12</code></td><td>All of it is one API call</td><td>why a schema beats begging for JSON</td></tr>
+  </table>
+
+  <p>Prose versions of all of these, with the same section order, are in <a href="../LEARNING-GUIDE.html#part-8">the Learning Guide, <strong>Part 8</strong></a>. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.</p>
 
   <footer class="foot">
     <div style="margin-bottom:8px">deck: <a href="../presentations/session-3-ai-beyond-text.html">session-3-ai-beyond-text.html</a> · run sheet: <code>session-3-notes.md</code> · <a href="../cheatsheets/session-3-cheatsheet.html">student cheatsheet</a></div>

@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Session 5 · Making AI Do Things — GenAI Foundations · TCE</title>
-<link rel="canonical" href="https://intrepidkarthi.com/genai/presentations/session-5-making-ai-do-things.html">
 <meta name="description" content="Session 5 of a 6-part GenAI course at TCE Madurai — tool use, function calling, the agent loop, workflows vs agents, and local models with Ollama.">
 <meta property="og:title" content="Session 5 · Making AI Do Things — GenAI Foundations · TCE">
-<meta property="og:url" content="https://intrepidkarthi.com/genai/presentations/session-5-making-ai-do-things.html">
 <meta property="og:description" content="Session 5 of a 6-part GenAI course at TCE Madurai — tool use, function calling, the agent loop, workflows vs agents, and local models with Ollama.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
@@ -32,7 +30,7 @@
     /* legacy aliases — much CSS/JS reads these */
     --accent:var(--deep); --accent2:var(--hue); --accentpale:var(--tint);
     --accentmark:color-mix(in srgb,var(--hue) 35%,white);
-    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil",sans-serif;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -170,6 +168,36 @@
   .flip.open .q{display:none}
   .flip .hintline{color:var(--deep);font-family:var(--mono);font-size:.8rem;font-weight:700;margin-top:10px}
   .flip.open .hintline{display:none}
+  /* ---- depth layer: optional <|deeper|> panels. Collapsed by default, so they cost the
+     running clock nothing; opened on demand when a sharp student asks, or after class. ---- */
+  .deep{margin-top:20px;border-top:1px dashed var(--linedark)}
+  .deeptog{appearance:none;background:none;border:0;padding:12px 0 0;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;text-align:left;
+    font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.07em;color:var(--deep)}
+  .deeptog .lbl:before{content:"<|";color:var(--faint);font-weight:400;margin-right:2px}
+  .deeptog .lbl:after{content:"|>";color:var(--faint);font-weight:400;margin-left:2px}
+  .deeptog .cv{display:inline-block;width:.46em;height:.46em;border-right:2px solid currentColor;
+    border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .2s;margin-bottom:.18em}
+  .deep.open .deeptog .cv{transform:rotate(-135deg);margin-bottom:0}
+  .deeptog:hover{color:var(--ink)}
+  .deeptog:focus-visible{outline:2px solid var(--hue);outline-offset:3px;border-radius:4px}
+  .deepbody{display:none;padding:14px 0 2px}
+  .deep.open .deepbody{display:block}
+  .deepbody p{font-size:.93rem;color:var(--body);line-height:1.62;max-width:76ch}
+  .deepbody p+p{margin-top:10px}
+  .deepbody b{color:var(--ink);font-weight:650}
+  .deepgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px;margin-top:13px}
+  .dcell{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .dcell h4{font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+  .dcell h4 .em{display:inline-block;width:.5em;height:.5em;border-radius:3px;background:var(--accent);margin-right:8px;vertical-align:.06em}
+  .dcell p{font-size:.85rem;color:var(--muted);line-height:1.55;max-width:none}
+  .fx{display:block;font-family:var(--mono);font-size:.9rem;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-left:3px solid var(--hue);border-radius:8px;
+    padding:11px 14px;margin:12px 0;overflow-x:auto;white-space:pre;line-height:1.7}
+  .fx .cm{color:var(--muted)}
+  .fx b{color:var(--deep)}
+  /* an open panel makes its slide scroll — deep content must never clip off the bottom */
+  .slide.deepopen{justify-content:flex-start;overflow-y:auto}
   /* tables & steps */
   table.tbl{width:100%;border-collapse:collapse;font-size:.94rem}
   .tbl th{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;
@@ -265,7 +293,7 @@
   <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b><span>· Session 5 · Day 2 · TCE Madurai</span></span>
   <span id="counter">1 / 1</span>
 </div>
-<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview</div>
+<div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>D</kbd> deeper</div>
 
 <main class="deck" id="deck">
 
@@ -353,6 +381,28 @@ config = types.GenerateContentConfig(
         <p class="note">The industry-standard version of this menu is called <b>MCP</b> (Model Context Protocol) — a common format so any model can use any tool. Same idea you just learned, standardized.</p></div>
     </div>
   </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">what the SDK is actually sending, and why it works at all</span></button>
+    <div class="deepbody">
+      <p>The convenience hides two things worth seeing once. First, your Python function becomes a <b>JSON schema</b> — the same kind of schema you used to lock output shape in Session 3, now describing an input:</p>
+      <span class="fx">{"name": "get_marks",
+ "description": "<b>Look up a student's marks for one subject.</b>",   <span class="cm">← your docstring</span>
+ "parameters": {"type": "object",
+   "properties": {"roll_no": {"type": "string", <span class="cm">"description": "…"</span>},
+                  "subject": {"type": "string", <span class="cm">"description": "…"</span>}},
+   "required": ["roll_no", "subject"]}}</span>
+      <p>That JSON — name, description, parameter names, parameter descriptions — is <b>the model's entire knowledge of your tool</b>. It cannot read the body. It cannot run it to see what happens. Which is why the slide says the docstring is the prompt: when a model picks the wrong tool, you have a writing bug, not a model bug.</p>
+      <p>Second, the conversation is no longer just user and model turns. Tool use adds two more roles, and they all stay in the context:</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>user</h4><p>"What did roll 21C043 get in DBMS?"</p></div>
+        <div class="dcell"><h4><span class="em"></span>model → functionCall</h4><p>Not prose — a structured request naming the tool and its arguments. The turn <i>ends here</i>. The model has stopped and is waiting.</p></div>
+        <div class="dcell"><h4><span class="em"></span>you → functionResponse</h4><p>Your code runs the function and appends the result as a new turn. Nothing executed on the provider's side.</p></div>
+        <div class="dcell"><h4><span class="em"></span>model → text</h4><p>Now, seeing the result in its context, it writes the answer. Still pure next-token prediction over a longer transcript.</p></div>
+      </div>
+      <p>Two consequences that surprise people. <b>Models can request several tools at once</b> — if two lookups don't depend on each other, a good model returns both calls in one turn and expects both results back; running them in parallel is free latency you get by not assuming one call per turn. And <b>tool use is a trained behaviour, not a feature you switch on</b>: models are fine-tuned to emit these structured calls, which is exactly why a small model can be perfectly fluent in conversation and still poor at choosing tools. It's a separate skill with a separate score.</p>
+      <p class="note">Because the whole exchange lives in the context window, every tool result you feed back is tokens you re-send on every subsequent turn. A tool that returns 5,000 tokens of raw JSON will quietly dominate the conversation and the bill. <b>Return the smallest useful result</b> — that is a design decision about the tool, not about the prompt.</p>
+    </div>
+  </div>
 </section>
 
 <!-- MCP -->
@@ -400,6 +450,25 @@ config = types.GenerateContentConfig(
     result = execute(response.call)   <span class="c"># YOUR code</span>
     response = model.continue_with(result)</div>
       <div class="card mt"><h3>That while-loop is the whole "agent"</h3><p>The model chose the order — nobody scripted read-then-calculate. Impressive. Also exactly where the danger lives → next slide.</p></div>
+    </div>
+  </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">the loop condition nobody writes, and the score nobody keeps</span></button>
+    <div class="deepbody">
+      <p><b>Look hard at <span style="font-family:var(--mono)">while</span>.</b> There is no exit condition except the model deciding it's finished. Ship that and you have written an unbounded loop whose termination is decided by a probabilistic system — with your API key attached to it. The real version of that line always carries a leash:</p>
+      <span class="fx">steps = 0
+<span class="k">while</span> response.wants_tool_call <b>and steps &lt; MAX_STEPS</b>:
+    <b>assert</b> response.call.name <span class="k">in</span> ALLOWED_TOOLS   <span class="cm"># it can invent tool names</span>
+    result = execute(<b>validate</b>(response.call.args))   <span class="cm"># and invent arguments</span>
+    response = model.continue_with(result); steps += 1</span>
+      <p>And watch what happens to the context as that loop turns. Every call and every result is appended and re-sent, so the prompt grows monotonically: turn 10 might be re-reading nine tool outputs to decide the tenth action. Cost per step rises, latency per step rises, and — because models attend worst to the middle of long contexts — the <i>early</i> instructions start losing to recent tool noise. Long agent runs get more expensive and less obedient at the same time. Production systems fight this by summarising older steps and writing intermediate results to a file the agent can re-read on demand, rather than carrying everything in the window.</p>
+      <p><b>Now the score nobody keeps.</b> Session 2 taught you to evaluate answers. An agent's answer being right is not enough — it can reach a correct answer through an absurd, expensive, or dangerous path, and you'd never know. So evaluate the <b>trajectory</b>, not just the destination:</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Tool choice accuracy</h4><p>Given a question, did it pick the right tool? Score this on its own with 20 fixed questions — it's the fastest signal that a docstring needs rewriting, and it needs no full run.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Step count</h4><p>Track the distribution, not the average. A task that usually takes 3 steps and occasionally takes 15 is telling you it gets lost — and the tail is what burns your budget.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Unnecessary calls</h4><p>Did it call a tool when it already had the answer, or call the same one twice with identical arguments? Both are common, both are pure cost, and both are invisible if you only grade the final text.</p></div>
+      </div>
+      <p class="note">The cheapest observability you will ever add: log every tool call with its arguments, its result, and the elapsed time. When the agent misbehaves — and it will — that log is the difference between a five-minute fix and an afternoon of guessing. You'll build exactly this habit in Session 6.</p>
     </div>
   </div>
 </section>
@@ -545,6 +614,23 @@ API, for contrast » <span id="ol-api"></span></div>
         <p class="note">Try at home: 8 GB RAM runs 3–4B models fine. ollama.com — one installer, then the command above. (Last year's <span style="font-family:var(--mono)">gemma3:4b</span> still works too.)</p></div>
     </div>
   </div>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">will it fit on my laptop? arithmetic, not vibes</span></button>
+    <div class="deepbody">
+      <p>You don't have to guess, and you don't have to download 8 GB to find out. A model file is just its parameters, so its size is parameters × bits-per-parameter ÷ 8:</p>
+      <span class="fx">4B params × 16 bits / 8 = <b>8 GB</b>    <span class="cm">full precision — won't fit comfortably in 8 GB RAM</span>
+4B params ×  8 bits / 8 = <b>4 GB</b>    <span class="cm">Q8 — near-identical quality</span>
+4B params ×  4 bits / 8 = <b>2 GB</b>    <span class="cm">Q4 — the usual default, small measurable loss</span></span>
+      <p>That's <b>quantization</b>: store each knob in fewer bits. It works because the exact value of any one parameter barely matters — only the pattern across billions of them does — so rounding them is survivable in a way that deleting them is not. Q4 is the sweet spot almost everyone ships; below that, quality falls off quickly.</p>
+      <p>Two corrections to the arithmetic before you trust it. Add roughly 1–2 GB of headroom for the KV cache from Session 1 — <b>it grows with your context length</b>, which is why a long conversation can make a model that "fit" start swapping. And the number that decides your tokens-per-second isn't compute at all, it's <b>memory bandwidth</b>: generating each token requires reading every active parameter, so a 2 GB model on a laptop pushing ~50 GB/s tops out around 25 tokens/sec no matter how fast the CPU is. This is also precisely why Apple Silicon punches above its weight locally, and why quantization makes models faster as well as smaller — half the bits is half the reading.</p>
+      <div class="deepgrid">
+        <div class="dcell"><h4><span class="em"></span>Where quality actually drops</h4><p>Not evenly. Quantized models hold up on chat and summarising, and degrade first on long multi-step reasoning, exact formats, and rarer languages — the hard tail, which is also the part a casual test never touches.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Test it, don't trust the size</h4><p>You already own the tool: run your Session 2 eval set against the local model and the API model. One table settles "is local good enough for this job" in ten minutes, permanently.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Small ≠ dumb</h4><p>A 4B model distilled from a frontier teacher, doing one narrow job with good prompts, routinely beats a much larger general model on that job. Fit the model to the task, not to the leaderboard.</p></div>
+      </div>
+      <p class="note">Same arithmetic explains the data-centre side. A 70B model at Q4 needs ~35 GB — more than most single consumer GPUs — which is why serious self-hosting starts at multiple cards, and why "we'll just run our own" is a hardware budget conversation, not a weekend.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 17 LOCAL VS API -->
@@ -651,6 +737,15 @@ API, for contrast » <span id="ol-api"></span></div>
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1);}
     else if(e.key==='Home')go(0);
     else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='d'||e.key==='D'){
+      // D = open/close every depth panel on this slide at once
+      const s=slides[cur];if(!s)return;
+      const ds=[...s.querySelectorAll('.deep')];if(!ds.length)return;
+      const opening=!ds[0].classList.contains('open');
+      ds.forEach(d=>{d.classList.toggle('open',opening);
+        const b=d.querySelector('.deeptog');if(b)b.setAttribute('aria-expanded',opening?'true':'false');});
+      s.classList.toggle('deepopen',opening);
+    }
     else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
     else if(e.key==='o'||e.key==='O'||e.key==='Escape')overview();
   });
@@ -668,6 +763,16 @@ document.addEventListener('click',e=>{
   if(document.getElementById('deck').classList.contains('overview'))return;
   const f=e.target.closest('.flip');
   if(f)f.classList.toggle('open');
+});
+
+/* ============ depth layer: <|deeper|> disclosure panels ============ */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.deeptog');
+  if(!t)return;
+  const d=t.closest('.deep');
+  t.setAttribute('aria-expanded',d.classList.toggle('open')?'true':'false');
+  const s=d.closest('.slide');
+  if(s)s.classList.toggle('deepopen',!!s.querySelector('.deep.open'));
 });
 
 /* ============ shared lib ============ */
@@ -884,7 +989,7 @@ mkQuiz('ap',[
 
 /* ===== presenter mode ===== */
 (function(){
-  var DATA = [{"m": 1, "n": "‘Your RAG app is a brain in a jar — text in, text out. Today we wire it to the world. Carefully.’", "c": false, "title": "Making AI do things"}, {"m": 3, "n": "<b>Recap quiz.</b> Reinforces embeddings + grounding from this morning. Answers advance on YOUR click now — let them argue first.", "c": false, "title": "Still true after lunch?"}, {"m": 2, "n": "Brain in a jar: can’t compute, can’t check today, can’t read a file, can’t email. Text in, text out.", "c": false, "title": "Your RAG app is a brain in a jar"}, {"m": 2, "n": "<b>THE trick, read twice.</b> Model writes requests; YOUR code executes. ‘Control stays with you’ — the thread to Session 6. If challenged: strictly true for tools YOU define — providers also offer hosted tools (code execution, search) that run on THEIR servers. Same request-based principle, different executor.", "c": false, "title": "The model never executes anything. It writes requests."}, {"m": 5, "n": "<b>Tool stepper.</b> Step through; stress stage 3 (validate ‘args parse as math, not DROP TABLE’). Stage 5 exact ‘because it delegated.’ Then the malicious run: the model proposes, your code disposes — plant the Session 6 seed.", "c": false, "title": "One tool call, step by step"}, {"m": 3, "n": "‘Docstrings just became prompts.’ Vague docstring → wrong tool. (Lab Stretch 3 proves it.) Name-drop MCP: the standardized menu format — same idea, industry-wide.", "c": false, "title": "Function declarations: the description IS the prompt"}, {"m": 1.5, "n": "<b>One breath.</b> They just hand-wrote a declaration — MCP is that, standardized. USB-C line lands by itself. Don't demo; name it and move.", "c": true, "title": "MCP: USB-C for tools"}, {"m": 4, "n": "<b>GAME. Vote each tool.</b> Item 4 = NO tool (maturity: over-tooling is a failure). Item 5 = chain → next slide. You control the pace — click advances.", "c": false, "title": "Which tool should it call?"}, {"m": 3, "n": "<b>Run agent log.</b> ‘Model chose the order — nobody scripted it. Impressive, and exactly where danger lives.’ Land the stat line: 0 lines of if/else deciding the order.", "c": false, "title": "The agent loop: while it wants tools, feed it"}, {"m": 3.5, "n": "<b>Five failure flips.</b> Flip 4; the 5th (poisoned tool results) is the red card — Session 6 bridge. ‘Tool results are untrusted input.’", "c": false, "title": "Five ways tool use goes sideways"}, {"m": 2.5, "n": "<b>THE takeaway.</b> Workflow (you fix steps) vs agent (model picks). Say the distinction slowly, then the idli line — let it land.", "c": false, "title": "Most problems don't need an agent. They need a workflow."}, {"m": 5, "n": "<b>CENTERPIECE. Reliability slider.</b> 95%→10 steps≈60%. ‘This explains most failed agent demos.’ 99%→20 = 82%. Then run the Monte-Carlo agent three times — it dies at a different step each run. Let them feel it.", "c": false, "title": "Why long agent chains collapse"}, {"m": 2, "n": "<b>Anti-hype with their own math.</b> Ask the room: two 90%-reliable agents chatting — reliability? 81% before any work happens. Parallel fan-out + judge = the legit pattern.", "c": true, "title": "Multi-agent: more agents, more compounding"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Most production “AI agents” are a while-loop"}, {"m": 2.5, "n": "One question decides: do you know the steps in advance? Yes=workflow (most real business AI, by a wide margin). No=agent with a leash.", "c": false, "title": "Workflow or agent? One question decides"}, {"m": 3.5, "n": "<b>Ladder, click each rung.</b> Escalate only when your EVAL says the cheap rung failed. Fine-tune is rung 5, never rung 1.", "c": false, "title": "The escalation ladder: cheapest fix first"}, {"m": 4, "n": "<b>GAME = the exam.</b> Vote + defend. Item 5 (capital of France) = rung ZERO. Over-engineering is a failure mode too. Click advances — pace the argument.", "c": false, "title": "Right approach? Defend your vote"}, {"m": 2, "n": "API vs local: privacy, cost, offline. Your fintech/KYC reality: regulators ask where prompts go.", "c": true, "title": "API models vs models you own"}, {"m": 4, "n": "<b>OLLAMA — Wi-Fi OFF, run live:</b> ollama run gemma4:e4b (gemma3:4b still works). ‘4 billion knobs, on this laptop, no meter.’ 8GB RAM runs it at home. If the live demo sulks, run the typing race — and call it a simulation.", "c": false, "title": "Ollama: a model in your pocket"}, {"m": 1.5, "n": "Local vs API = a trade, not a religion. Production = hybrid: API for hard 10%, local for routine 90%.", "c": true, "title": "Local vs API: an engineering trade, not a religion"}, {"m": 3, "n": "<b>Recall flips.</b> Class says each before clicking. ‘Pick one for me’ = cold-call: point at a student, they answer, THEN flip.", "c": false, "title": "Six ideas you own now"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB.</b> Nudge strong pairs to Stretch (RAG-as-tool = capstone assembles itself). Part C manual loop de-mystifies. Checkpoint 3 is verbal. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 5: give it hands"}, {"m": 12, "n": "<b>Show & tell + last break (12 min).</b> Best ‘called both tools’ + best scenario defense + name the strongest hot-take counter-argument. ‘Knows, sees, acts. Finale: we break it all.’ Bring the notebook. <b>Links are on screen</b> — point at them.", "c": false, "title": "Your AI knows, sees, and now acts."}];
+  var DATA = [{"m": 1, "n": "‘Your RAG app is a brain in a jar — text in, text out. Today we wire it to the world. Carefully.’", "c": false, "title": "Making AI do things"}, {"m": 3, "n": "<b>Recap quiz.</b> Reinforces embeddings + grounding from this morning. Answers advance on YOUR click now — let them argue first.", "c": false, "title": "Still true after lunch?"}, {"m": 2, "n": "Brain in a jar: can’t compute, can’t check today, can’t read a file, can’t email. Text in, text out.", "c": false, "title": "Your RAG app is a brain in a jar"}, {"m": 2, "n": "<b>THE trick, read twice.</b> Model writes requests; YOUR code executes. ‘Control stays with you’ — the thread to Session 6. If challenged: strictly true for tools YOU define — providers also offer hosted tools (code execution, search) that run on THEIR servers. Same request-based principle, different executor.", "c": false, "title": "The model never executes anything. It writes requests."}, {"m": 5, "n": "<b>Tool stepper.</b> Step through; stress stage 3 (validate ‘args parse as math, not DROP TABLE’). Stage 5 exact ‘because it delegated.’ Then the malicious run: the model proposes, your code disposes — plant the Session 6 seed.", "c": false, "title": "One tool call, step by step"}, {"m": 3, "n": "‘Docstrings just became prompts.’ Vague docstring → wrong tool. (Lab Stretch 3 proves it.) Name-drop MCP: the standardized menu format — same idea, industry-wide. <b>[D] deeper:</b> the JSON schema the SDK actually sends, the four message roles, parallel tool calls, and why tool results eat your context budget.", "c": false, "title": "Function declarations: the description IS the prompt"}, {"m": 1.5, "n": "<b>One breath.</b> They just hand-wrote a declaration — MCP is that, standardized. USB-C line lands by itself. Don't demo; name it and move.", "c": true, "title": "MCP: USB-C for tools"}, {"m": 4, "n": "<b>GAME. Vote each tool.</b> Item 4 = NO tool (maturity: over-tooling is a failure). Item 5 = chain → next slide. You control the pace — click advances.", "c": false, "title": "Which tool should it call?"}, {"m": 3, "n": "<b>Run agent log.</b> ‘Model chose the order — nobody scripted it. Impressive, and exactly where danger lives.’ Land the stat line: 0 lines of if/else deciding the order. <b>[D] deeper:</b> the missing loop guard (max steps + allow-list + arg validation), context growth over a long run, and trajectory eval: tool-choice accuracy, step count, wasted calls.", "c": false, "title": "The agent loop: while it wants tools, feed it"}, {"m": 3.5, "n": "<b>Five failure flips.</b> Flip 4; the 5th (poisoned tool results) is the red card — Session 6 bridge. ‘Tool results are untrusted input.’", "c": false, "title": "Five ways tool use goes sideways"}, {"m": 2.5, "n": "<b>THE takeaway.</b> Workflow (you fix steps) vs agent (model picks). Say the distinction slowly, then the idli line — let it land.", "c": false, "title": "Most problems don't need an agent. They need a workflow."}, {"m": 5, "n": "<b>CENTERPIECE. Reliability slider.</b> 95%→10 steps≈60%. ‘This explains most failed agent demos.’ 99%→20 = 82%. Then run the Monte-Carlo agent three times — it dies at a different step each run. Let them feel it.", "c": false, "title": "Why long agent chains collapse"}, {"m": 2, "n": "<b>Anti-hype with their own math.</b> Ask the room: two 90%-reliable agents chatting — reliability? 81% before any work happens. Parallel fan-out + judge = the legit pattern.", "c": true, "title": "Multi-agent: more agents, more compounding"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Most production “AI agents” are a while-loop"}, {"m": 2.5, "n": "One question decides: do you know the steps in advance? Yes=workflow (most real business AI, by a wide margin). No=agent with a leash.", "c": false, "title": "Workflow or agent? One question decides"}, {"m": 3.5, "n": "<b>Ladder, click each rung.</b> Escalate only when your EVAL says the cheap rung failed. Fine-tune is rung 5, never rung 1.", "c": false, "title": "The escalation ladder: cheapest fix first"}, {"m": 4, "n": "<b>GAME = the exam.</b> Vote + defend. Item 5 (capital of France) = rung ZERO. Over-engineering is a failure mode too. Click advances — pace the argument.", "c": false, "title": "Right approach? Defend your vote"}, {"m": 2, "n": "API vs local: privacy, cost, offline. Your fintech/KYC reality: regulators ask where prompts go.", "c": true, "title": "API models vs models you own"}, {"m": 4, "n": "<b>OLLAMA — Wi-Fi OFF, run live:</b> ollama run gemma4:e4b (gemma3:4b still works). ‘4 billion knobs, on this laptop, no meter.’ 8GB RAM runs it at home. If the live demo sulks, run the typing race — and call it a simulation. <b>[D] deeper:</b> params &times; bits &divide; 8 &mdash; will it fit? Plus KV-cache headroom and why memory bandwidth, not compute, sets tokens/sec.", "c": false, "title": "Ollama: a model in your pocket"}, {"m": 1.5, "n": "Local vs API = a trade, not a religion. Production = hybrid: API for hard 10%, local for routine 90%.", "c": true, "title": "Local vs API: an engineering trade, not a religion"}, {"m": 3, "n": "<b>Recall flips.</b> Class says each before clicking. ‘Pick one for me’ = cold-call: point at a student, they answer, THEN flip.", "c": false, "title": "Six ideas you own now"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB.</b> Nudge strong pairs to Stretch (RAG-as-tool = capstone assembles itself). Part C manual loop de-mystifies. Checkpoint 3 is verbal. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 5: give it hands"}, {"m": 12, "n": "<b>Show & tell + last break (12 min).</b> Best ‘called both tools’ + best scenario defense + name the strongest hot-take counter-argument. ‘Knows, sees, acts. Finale: we break it all.’ Bring the notebook. <b>Links are on screen</b> — point at them.", "c": false, "title": "Your AI knows, sees, and now acts."}];
   var deck=document.getElementById('deck');
   var total=DATA.reduce(function(a,d){return a+d.m;},0);
   var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});

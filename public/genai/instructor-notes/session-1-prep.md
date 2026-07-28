@@ -496,3 +496,22 @@ All figures as of **July 2026** — the day before, re-check the free-tier numbe
 3. **Full dry run (55 min):** deck + every demo, out loud, timed, target ≤ 50 min for slides 1–27. Overruns are almost always the stepper and tangents. Cut tangents, not demos.
 4. **Q&A drill (15 min):** read section 4 questions aloud, answer from memory, check against the text. Do the nnviz "where's the attention?" answer twice — it's the one that must be word-perfect.
 5. **Logistics sweep (night before):** deck opens offline ✓ · your key runs the actual notebook top-to-bottom ✓ · real short link replaces `tinyurl.com/tce-genai` in the deck and materials live behind it ✓ · 5 spare keys on paper ✓ · handouts printed/linked ✓ · hotspot charged ✓ · one demo tested on the real projector ✓ · water, and a hard stop for sleep — Day 1 is six hours of you.
+
+---
+
+## The depth layer — 6 `<|deeper|>` panels in this deck
+
+Collapsed by default, so they cost the clock nothing. Press **D** on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as `[D] deeper:`.
+
+Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.
+
+| Deck slide | Slide | Panel |
+|---|---|---|
+| `#10` | Why the same question gives different answers | where the dice actually come from |
+| `#12` | What's inside a model? Just knobs. | how anyone knows the training is working |
+| `#16` | Attention: every word looks at every other word | two things this picture is hiding |
+| `#19` | The loop is old. The scale is new. | scale is not one slider — it is three |
+| `#23` | Why ChatGPT ≠ Gemini ≠ Claude | why every lab ships a cheap fast one and an expensive slow one |
+| `#25` | The context window: its entire working memory | then why isn't re-sending everything unbearably slow? |
+
+Prose versions of all of these, with the same section order, are in `LEARNING-GUIDE.md` **Part 8**. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.

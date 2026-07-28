@@ -59,3 +59,5 @@ Closed APIs (GPT, Gemini, Claude) vs **open weights** you can download (Llama, D
 **Reasoning models** (o-series, Gemini "thinking"): the third dial — **think longer, not train bigger**. Hidden scratchpad ≈ 10–50× tokens per answer; never for easy questions.
 
 **Carry into Session 2:** your 10-question expert test set (written in Lab 1). **Overnight before Day 2:** put 2–3 real documents (notes/PDFs) on your laptop — Day 2 you build "chat with my notes" over them.
+
+**Go deeper (press D on the deck):** logits → softmax and what temperature divides · cross-entropy loss and perplexity · positional encoding (RoPE) and attention's n² cost · scaling laws and Chinchilla · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT. Prose versions: Learning Guide **Part 8**.
