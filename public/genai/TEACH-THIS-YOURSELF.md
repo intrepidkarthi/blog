@@ -17,6 +17,8 @@ You need to be **one session ahead of the room**, not an expert. Each session sh
 
 Plus, repo-wide: `course-plan.md` (the whole design), `TIMING.md` (per-slide timing), `fact-check.md` (every claim + source), `lab-facilitation-guide.md` (how to run the labs), `ZERO-SETUP.md` (the no-cost guarantee).
 
+**Before day one, send them one link.** `how-llms-work.html` — *"Where does the answer live?"* — is a ten-minute interactive walk through what is actually inside a model: the four kinds of table, the residual stream, superposition, and the two-thirds of the file where facts live. It is written to **not** overlap Session 1 (that deck is about what a model *does*; the page is about what it *contains*), so it costs you no class time and buys you a room that already knows a model is a file rather than a database. `session-1-prep.md` has a full briefing on it, including the questions it will send you. The prose version is `LEARNING-GUIDE.md` **Part 9**.
+
 **Teaching outside Madurai?** `LOCALIZATION.md` is the swap-kit: which of the 278 local references are decoration you can swap freely, which are institutional and *must* change, and which three are load-bearing (the Tamil tokenizer demo, the currency constants, the academic vocabulary in Session 4). Twenty minutes of find-and-replace and the course is yours.
 
 ## The decks in 30 seconds

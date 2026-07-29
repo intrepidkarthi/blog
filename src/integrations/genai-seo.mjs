@@ -45,7 +45,7 @@ const META = {
   "learning-guide.html": {
     title: "Learn Generative AI From Scratch — the complete plain-language guide",
     description:
-      "Every concept in generative AI explained in plain language: tokens, embeddings, attention, prompting, evaluation, RAG, tool use, agents and security. The full written companion to the course.",
+      "Every concept in generative AI explained in plain language: tokens, embeddings, attention, prompting, evaluation, RAG, tool use, agents and security, closing with the whole machine walked end to end.",
   },
   "teach-this-course.html": {
     title: "Teach a Generative AI Course — free curriculum, slides and labs",

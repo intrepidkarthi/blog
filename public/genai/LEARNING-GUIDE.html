@@ -53,7 +53,7 @@
 
   <p>Read this to <em>learn</em> or <em>refresh</em> everything the course teaches — whether you're the instructor prepping, or a student who wants the whole picture in one document. It's written in plain language, mental-models first. Each idea comes with <strong>what it is → why it matters → how it fails.</strong> If you understand this guide, you understand modern applied GenAI.</p>
 
-  <p><strong>Parts 1–7 are the main line and stay math-free.</strong> <a href="#part-8">Part 8</a> is the <em>depth layer</em>: the mechanism underneath each idea, for readers who want to know why rather than just what. It mirrors the <code>&lt;|deeper|&gt;</code> panels in the slide decks — press <strong>D</strong> on any slide to open them — and it assumes nothing beyond first-year linear algebra and probability. Skip it on a first read; come back when a claim in Parts 1–7 starts feeling like something you were asked to take on faith.</p>
+  <p><strong>Parts 1–7 are the main line and stay math-free.</strong> <a href="#part-8">Part 8</a> is the <em>depth layer</em>: the mechanism underneath each idea, for readers who want to know why rather than just what. It mirrors the <code>&lt;|deeper|&gt;</code> panels in the slide decks — press <strong>D</strong> on any slide to open them — and it assumes nothing beyond first-year linear algebra and probability. Skip it on a first read; come back when a claim in Parts 1–7 starts feeling like something you were asked to take on faith. <a href="#part-9">Part 9</a> is a single walk through the machine front to back — the prose companion to the <a href="how-llms-work.html"><em>Where does the answer live?</em></a> page, and the place to start if you like seeing the whole object before its parts.</p>
 
   <p><strong>The single mental model to hold onto:</strong> a large language model does exactly one thing — <em>given some text, it predicts the next chunk of text, then repeats.</em> Everything else in this guide is either (a) how that prediction works, (b) how to steer it, or (c) how to build reliable products on top of something that is fluent but not always right.</p>
 
@@ -525,13 +525,90 @@ while response.wants_tool_call and steps &lt; MAX_STEPS:
   <p>Then log what makes debugging possible: request id, <strong>prompt version</strong>, <strong>model id</strong>, input/output token counts, TTFT and total latency, cost, and thumbs up/down. The two bolded ones matter more than they look — when quality drops next Tuesday the first question is &quot;what changed?&quot;, and a provider silently updating a model behind an alias is an answer you can only reach if you recorded it.</p>
   <p>The habit that closes the loop: your Part 2 eval set, run automatically before every prompt change, with the score written into the log. Quality then behaves like any other engineering metric — a number, a history, and an alarm — instead of something users tell you about.</p>
 
+
+  <h2 id="part-9">Part 9 · The whole machine, end to end</h2>
+  <p>Part 8 goes one level under each idea in Parts 1–7. This part does something different: it is a single walk through the machine, front to back, so the pieces connect into one object instead of eight good explanations.</p>
+  <p>It is the prose companion to <strong><a href="how-llms-work.html">Where does the answer live?</a></strong> — the interactive page linked from the course home. If you have twenty minutes, read that first and use this to fix it in memory. Everything here is architecture: what is <em>in</em> a model. Parts 1–6 are what it <em>does</em>.</p>
+  <p>The whole part chases one question. Type <strong>&quot;Elon Musk wants to colonize ___&quot;</strong> into any model and it answers <em>Mars</em>. Nothing was looked up — there is no database inside, no row that reads <code>Musk → Mars</code>, and the file does not change while you type. So where is that fact?</p>
+
+  <h3 id="s9-1">9.1 A model is a file, sorted into four kinds of table</h3>
+  <p>Everything a model has ever produced came out of a file of numbers — about 175 billion of them at GPT-3&#x27;s size. They are not a jumble. They sort into four kinds of table, each with one job:</p>
+  <table>
+    <tr><th>Plain name</th><th>Job</th><th>Size</th><th>Written</th></tr>
+    <tr><td><strong>the dictionary</strong></td><td>turns a word into numbers</td><td>617 million</td><td><code>W_E</code></td></tr>
+    <tr><td><strong>the lookup</strong></td><td>&quot;which other words matter right here?&quot;</td><td>58 billion, 96 copies</td><td><code>W_Q W_K W_V W_O</code></td></tr>
+    <tr><td><strong>the memory</strong></td><td>&quot;what do I know about this thing?&quot;</td><td>116 billion, 96 copies</td><td><code>W_up W_down</code></td></tr>
+    <tr><td><strong>the vote</strong></td><td>turns numbers back into a word</td><td>617 million</td><td><code>W_U</code></td></tr>
+  </table>
+  <p>Those <code>W</code> names are labels people gave the tables; nothing is hiding in them. Every number was fixed during training and never changes again while you chat. Our fact is not in the dictionary and not in the vote — hold that thought.</p>
+
+  <h3 id="s9-2">9.2 The dictionary: a word becomes a direction</h3>
+  <p>The dictionary hands each word a long list of numbers — 12,288 of them. A list that long is an arrow pointing somewhere in a very large space.</p>
+  <p>The useful structure in that space is not <em>where</em> words sit but <strong>which way you travel</strong> to change them. One direction means &quot;more feminine&quot;, another &quot;make it plural&quot;, another &quot;past tense&quot;. Nobody designed these; they fell out of training. It is why <code>king − man + woman ≈ queen</code> works — the space showing you its filing system.</p>
+  <p>To ask <em>&quot;how much of this idea does that arrow carry?&quot;</em>, multiply the two lists element by element and add it all up. One number; big means aligned. That single operation — the <strong>dot product</strong> — is most of what the rest of the machine does.</p>
+
+  <h3 id="s9-3">9.3 Superposition: how everything fits in 12,288 numbers</h3>
+  <p>Obvious objection: if every idea needed its own perpendicular direction, the model could hold 12,288 ideas, and it plainly knows millions.</p>
+  <p>The escape is a genuinely strange fact about large spaces. Directions do not have to be <em>perfectly</em> perpendicular to stay tellable apart — only <strong>nearly</strong> perpendicular. And in a big space, near-perpendicular is not something you arrange; it is what two directions already are. For two random unit vectors in <em>d</em> dimensions the angle between them concentrates hard on 90°, with a spread of roughly <code>57.3/√d</code> degrees:</p>
+  <table>
+    <tr><th>dimensions</th><th>angle between two random directions</th></tr>
+    <tr><td>2</td><td>any angle at all</td></tr>
+    <tr><td>3</td><td>90° ± 33°</td></tr>
+    <tr><td>100</td><td>90° ± 6°</td></tr>
+    <tr><td>12,288</td><td><strong>90° ± 0.5°</strong></td></tr>
+  </table>
+  <p>So you never have to arrange anything — you keep adding ideas and they keep staying distinguishable. This is <strong>superposition</strong>, and it has a consequence that matters for interpretability: a single neuron is usually participating in several unrelated ideas at once, which is exactly why reading one off is so hard.</p>
+
+  <h3 id="s9-4">9.4 The residual stream: a track, and everything adds to it</h3>
+  <p>Here is the idea that makes the rest cohere, and it is rarely said out loud. Every word in your prompt gets its arrow, and each arrow travels the whole length of the model on its own track — the <strong>residual stream</strong>.</p>
+  <p>The tables along the way never <em>replace</em> the arrow. Each one reads it, computes a small correction, and <strong>adds</strong> that correction in. Ninety-six times.</p>
+  <p>So the arrow above the blank starts out meaning almost nothing and arrives meaning <em>&quot;a particular planet&quot;</em>. Nothing overwrote it; it was nudged, ninety-six times. Two kinds of table do that nudging, and they do different jobs.</p>
+
+  <h3 id="s9-5">9.5 The lookup (attention): three matrices, three questions</h3>
+  <p>Before it can recall anything, the blank has to work out what it is completing. &quot;wants to colonize&quot; could follow a person, a company, a century. It has to notice the subject is <strong>Elon Musk</strong> and the verb is about <strong>going somewhere</strong>.</p>
+  <p>So every word&#x27;s arrow is multiplied by three different tables, producing three new arrows with three different jobs:</p>
+  <ul>
+    <li><strong>what I want</strong> — what am I looking for? <em>(the query, Q)</em></li>
+    <li><strong>what I have</strong> — what do I offer? <em>(the key, K)</em></li>
+    <li><strong>what I&#x27;d add</strong> — what do I contribute if picked? <em>(the value, V)</em></li>
+  </ul>
+  <p>Every &quot;what I want&quot; is dot-producted against every &quot;what I have&quot; — that is the &quot;looking&quot;. A high score means listen. The scores become weights, the &quot;what I&#x27;d add&quot; arrows get blended in those proportions, and the result is <strong>added to the residual stream</strong>. That is one head; GPT-3 runs 96 per layer in parallel, each hunting for something different.</p>
+  <p>Attention has now established the topic. It still does not know Mars.</p>
+
+  <h3 id="s9-6">9.6 The memory (the MLP): where the fact actually lives</h3>
+  <p>After each attention block sits a plain pair of tables — the <strong>MLP</strong> — and this is the end of the hunt.</p>
+  <p>Its structure is almost comically literal. The first table is a wall of questions, one per neuron: <em>&quot;is this Elon Musk, and is it about space?&quot;</em> Each row scores the arrow, and the nonlinearity throws away every score that came out negative, so a neuron either fires or stays quiet. GPT-3 has 49,152 of these questions per layer.</p>
+  <p>The second table is the answer sheet. For every neuron that fired, it adds that neuron&#x27;s stored direction back into the stream — <em>&quot;…then add Mars.&quot;</em></p>
+  <p>That is where the fact lives. Not as text, not as a row in a table, but as <strong>a direction that gets added whenever one particular question is answered yes</strong> — with millions of other facts sharing the same space by superposition (§9.3). This structure is often called a <strong>key-value memory</strong>: the first table holds the keys, the second holds the values.</p>
+
+  <h3 id="s9-7">9.7 The parameter budget: two-thirds is a filing cabinet</h3>
+  <p>If facts live in the memory tables, there had better be a great many of them. There are — and every explanation of transformers you have read is busy talking about the other part:</p>
+  <table>
+    <tr><th>Component</th><th>Parameters</th><th>Share</th></tr>
+    <tr><td><strong>the memory</strong> (MLP)</td><td>~116 billion</td><td><strong>66%</strong></td></tr>
+    <tr><td><strong>the lookup</strong> (attention)</td><td>~58 billion</td><td>33%</td></tr>
+    <tr><td>dictionary + vote</td><td>~1.2 billion</td><td>~1%</td></tr>
+  </table>
+  <p>Two things follow. <strong>The lookup decides what is relevant; the memory holds what is known.</strong> And &quot;how many parameters&quot; was never a measure of cleverness — it is mostly a measure of <strong>how many facts fit</strong>.</p>
+  <p>Modern mixture-of-experts models complicate the picture (§8.5) by leaving most of those memory parameters dormant on any given token, which is how a trillion-parameter model can be cheap to run. The split between <em>decide</em> and <em>know</em> survives it.</p>
+
+  <h3 id="s9-8">9.8 The vote: back to a word</h3>
+  <p>After ninety-six rounds of adding, the arrow above the blank has accumulated everything the model worked out. Getting a word out takes one last operation: dot it against every row of the vote table — one row per token in the vocabulary, 50,257 of them. Fifty thousand dot products, fifty thousand scores.</p>
+  <p>Those scores are the <strong>logits</strong>. Softmax turns them into probabilities, temperature stretches or squashes them first (§8.1), and one token is drawn. Then the entire journey runs again for the next token, with the answer-so-far appended to the input.</p>
+
+  <h3 id="s9-9">9.9 Why this is worth knowing</h3>
+  <p>Mars was a direction. Not a row in a table, not a sentence stored somewhere — a direction in a space of 12,288 numbers, added to a running total the moment one neuron out of 49,152 decided that yes, this is Elon Musk and this is about space.</p>
+  <p>Everything a model knows is kept that way, which is the single most useful thing to take from this part: <strong>nothing in there marks the difference between a fact and a very well-worn pattern.</strong> A confident wrong answer and a confident right answer are produced by identical machinery, travelling the identical track. That is not a bug to be patched out; it is what the architecture <em>is</em>, and it is the reason the rest of this course is about measurement (Part 2), grounding (Part 4), and keeping a human on the blast radius (Part 6).</p>
+
   <h2 id="glossary">Glossary (fast reference)</h2>
   <p><strong>Token</strong> — the chunk a model reads (~¾ word). <strong>Embedding</strong> — text turned into meaning-coordinates. <strong>Attention</strong> — words weighing each other to resolve meaning; the Transformer's engine. <strong>Parameter</strong> — one learned knob; a model is a file of billions. <strong>Inference</strong> — using the frozen model (no learning, no memory). <strong>Temperature</strong> — the randomness dial on sampling. <strong>Context window</strong> — the model's working memory, measured in tokens. <strong>Hallucination</strong> — confident, fluent, wrong (plausible ≠ true). <strong>Prompt engineering</strong> — structuring the input (role/task/context/format/examples/constraints). <strong>Few-shot</strong> — steering by examples. <strong>Chain-of-thought</strong> — asking for visible reasoning. <strong>Eval</strong> — measuring quality with a test set + scorer + score. <strong>RAG</strong> — retrieve relevant chunks, augment the prompt, generate a grounded cited answer. <strong>Chunking</strong> — how you split documents for retrieval. <strong>Cosine similarity</strong> — how retrieval measures closeness. <strong>Vector database</strong> — a store that returns nearest-meaning neighbors. <strong>Tool use / function calling</strong> — the model requests, your code executes. <strong>Agent</strong> — an LLM in a loop choosing tools/steps toward a goal. <strong>Workflow</strong> — you fix the steps; the model fills them in. <strong>Fine-tuning</strong> — further training to teach behavior/style (not facts). <strong>Prompt injection</strong> — untrusted text becoming instructions. <strong>Defense in depth</strong> — layered mitigations because no single one is complete. <strong>Streaming</strong> — sending tokens as they generate for responsive UX. <strong>Open weights</strong> — a model whose parameters you can download and run yourself.</p>
+
+<p><strong>Architecture terms (Part 9).</strong> <strong>The dictionary / the lookup / the memory / the vote</strong> — plain names for the four kinds of table in a model file (embedding, attention, MLP, unembedding). <strong>Residual stream</strong> — the track each token&#x27;s vector rides through the whole network; every block <em>adds</em> to it, nothing is replaced. <strong>Query / key / value (Q, K, V)</strong> — &quot;what I want&quot;, &quot;what I have&quot;, &quot;what I&#x27;d add&quot;; attention matches the first against the second and blends the third. <strong>MLP / feed-forward</strong> — the two tables after each attention block; two-thirds of all parameters, and where facts are stored. <strong>Key-value memory</strong> — the MLP read as a wall of questions (keys) plus an answer sheet (values). <strong>Superposition</strong> — packing far more ideas than dimensions by using directions that are only <em>nearly</em> perpendicular. <strong>Unembedding</strong> — the final table that turns the vector back into one score per word.</p>
 
   <p><strong>Depth-layer terms (Part 8).</strong> <strong>Logit</strong> — the raw score a model emits per vocabulary token, before softmax. <strong>Softmax</strong> — turns logits into probabilities summing to 1; temperature divides the logits inside it. <strong>Top-k / top-p</strong> — trim the candidate set before sampling. <strong>Loss (cross-entropy)</strong> — −log of the probability placed on the true next token; the number training minimises. <strong>Perplexity</strong> — exp(loss); &quot;how many options is it effectively choosing between?&quot; <strong>Positional encoding / RoPE</strong> — how order gets into an order-blind attention mechanism. <strong>n²</strong> — attention&#x27;s cost curve in context length. <strong>Scaling laws / Chinchilla</strong> — capability follows compute predictably; scale parameters and data together. <strong>MoE</strong> — many expert sub-networks, few active per token. <strong>Distillation</strong> — a small student trained to imitate a large teacher&#x27;s output distribution. <strong>Quantization</strong> — fewer bits per parameter; params × bits ÷ 8 = file size. <strong>KV cache</strong> — stored keys/values that make decode cheap; splits latency into prefill and decode. <strong>TTFT</strong> — time to first token (prefill). <strong>Context caching</strong> — renting a pinned prompt prefix for ~10% of the price. <strong>Precision / recall / F1</strong> — which kind of error you&#x27;re making, not just how many. <strong>Position bias</strong> — an LLM judge preferring whichever answer came first; fix by swapping and re-running. <strong>Recall@k / MRR</strong> — did the right chunk arrive, and did it arrive near the top. <strong>Faithfulness</strong> — did the answer actually come from the retrieved chunk. <strong>Bi-encoder / cross-encoder</strong> — fast separate embedding vs slow joint scoring; the basis of reranking. <strong>BM25 / hybrid search</strong> — keyword ranking merged with semantic ranking. <strong>Constrained decoding</strong> — masking schema-illegal tokens to −∞ so malformed output is unreachable. <strong>Trajectory eval</strong> — grading an agent&#x27;s path (tool choice, step count, wasted calls), not only its answer. <strong>p50 / p99</strong> — median and tail latency; report both, never the mean. <strong>Idempotency</strong> — making a retry safe for anything with a side effect.</p>
 
   <hr>
-  <p><em>If you can teach Part 7.3 to someone else — what's stable vs what changes — you've understood the point of the whole course. And if you can teach any section of Part 8 to someone else, you've understood why it's stable.</em></p>
+  <p><em>If you can teach Part 7.3 to someone else — what's stable vs what changes — you've understood the point of the whole course. And if you can teach any section of Part 8 to someone else, you've understood why it's stable. Part 9 is the object all of it lives inside.</em></p>
 
   <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="index.html">course home</a> · free to use, fork, localize and teach</footer>
 </div>

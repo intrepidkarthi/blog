@@ -533,6 +533,46 @@ Content-Type: application/json
   <ol><li><strong>Spine run (10 min):</strong> the 3-minute no-slides story, recorded, listened back. Twice.</li><li><strong>Worked-example drill (25 min):</strong> reproduce on paper, from memory: the softmax table, one gradient step, the BPE merges, the 40-turn arithmetic, the HTTP round trip. These five are your whiteboard arsenal — they're what makes you "deep" in the room.</li><li><strong>Full dry run (55 min):</strong> deck + every demo, out loud, timed, target ≤ 50 min for slides 1–27. Overruns are almost always the stepper and tangents. Cut tangents, not demos.</li><li><strong>Q&amp;A drill (15 min):</strong> read section 4 questions aloud, answer from memory, check against the text. Do the nnviz "where's the attention?" answer twice — it's the one that must be word-perfect.</li><li><strong>Logistics sweep (night before):</strong> deck opens offline ✓ · your key runs the actual notebook top-to-bottom ✓ · real short link replaces <code>tinyurl.com/tce-genai</code> in the deck and materials live behind it ✓ · 5 spare keys on paper ✓ · handouts printed/linked ✓ · hotspot charged ✓ · one demo tested on the real projector ✓ · water, and a hard stop for sleep — Day 1 is six hours of you.</li></ol>
 
 
+
+  <hr>
+
+  <h2 id="p1-the-page-students-may-arrive-having-read">The page students may arrive having already read</h2>
+
+  <p><code>how-llms-work.html</code> — <strong>"Where does the answer live?"</strong> — is the first call to action on the course home page, above the link to this session. Assume some of the room has been through it. It takes about ten minutes.</p>
+
+  <p><strong>What it is.</strong> A ten-step hunt for one fact. It types <em>"Elon Musk wants to colonize ___"</em>, gets <em>Mars</em>, and then goes looking for where that fact is physically kept in the file. The answer it lands on: a direction that gets added to a running total whenever one neuron out of 49,152 decides the question it is asking has been answered yes.</p>
+
+  <p><strong>What it covers, that this session does not.</strong> These are deliberately non-overlapping — the page is <em>architecture</em> (what a model contains), Session 1 is <em>behaviour</em> (what it does). None of the following appear anywhere in your deck:</p>
+
+  <table>
+    <tr><th>The page teaches</th><th>Your nearest slide</th></tr>
+    <tr><td>the file sorted into four kinds of table — <strong>the dictionary, the lookup, the memory, the vote</strong></td><td>"What's inside a model? Just knobs." (you say knobs; it names the drawers)</td></tr>
+    <tr><td>the <strong>residual stream</strong> — each token's vector rides a track, every block <em>adds</em>, nothing is replaced</td><td>not covered; your stepper shows the loop, not the track</td></tr>
+    <tr><td><strong>superposition</strong> — why 12,288 numbers hold millions of ideas</td><td>not covered</td></tr>
+    <tr><td>attention as <strong>Q / K / V</strong> — "what I want / what I have / what I'd add"</td><td>"Attention: every word looks at every other word" (you show the arrows, not the three tables)</td></tr>
+    <tr><td>the <strong>MLP as key-value memory</strong> — where facts are actually stored</td><td>not covered</td></tr>
+    <tr><td>the <strong>parameter budget</strong> — two-thirds of the file is memory, not attention</td><td>not covered</td></tr>
+  </table>
+
+  <p><strong>How to use it.</strong> Three options, in order of how much class time you have:</p>
+  <ol>
+    <li><strong>Send it ahead</strong> as the one optional pre-read. It costs you nothing and buys you a room that already believes "it is a file, not a database" before you open your mouth.</li>
+    <li><strong>Open with it, 3 minutes, on the projector.</strong> Run steps 1–2 only, land "so where is that fact?", then say <em>"we are going to answer a different question today — not where the fact lives, but why the machine gets it right and then confidently gets the next one wrong."</em> That is a clean hand-off into your Session 1 spine.</li>
+    <li><strong>Point at it on the way out</strong>, alongside the playground, for students who want to go further. It is also the natural companion to <a href="../LEARNING-GUIDE.html#part-9">Learning Guide <strong>Part 9</strong></a>, which is the same walk in prose.</li>
+  </ol>
+
+  <p><strong>Questions it will send you, with answers.</strong></p>
+
+  <p><em>"You said a model is knobs. The page says it's four tables. Which is it?"</em> — Both, at different zoom. Every table is made of knobs; the tables are how the knobs are grouped by job. Good moment to say that "parameters" is a count, "architecture" is an arrangement, and only the second one tells you anything.</p>
+
+  <p><em>"If the fact is in the MLP, why do we need attention at all?"</em> — Because the memory can only answer a question about whatever the arrow currently means. Attention is what makes the arrow mean "Elon Musk, and going somewhere" in the first place. Decide, then recall. Pull it back to your own material: this is the same split as retrieval and generation in Session 4.</p>
+
+  <p><em>"Two-thirds of the model is just stored facts?"</em> — Roughly, at GPT-3's shape. It is the honest reason "how many parameters" was never a measure of cleverness — mostly it measures how many facts fit. Careful not to overclaim: mixture-of-experts models leave most of that dormant per token (<a href="../LEARNING-GUIDE.html#s8-5">Learning Guide §8.5</a>).</p>
+
+  <p><em>"Does that mean it can't reason, only look things up?"</em> — No, and do not let this one run. Say: the stored directions are the ingredients; the ninety-six rounds of combining them are where anything resembling reasoning happens. Then park it — it is a genuinely open research question and not a hill to die on in front of a class.</p>
+
+  <p><strong>One thing to be careful about.</strong> The page uses "arrow" where you say "coordinates", and "the lookup / the memory" where you say "attention / the feed-forward part". If a student uses the page's vocabulary, take it — do not correct it into yours. Both are honest; switching names mid-session is how you lose people.</p>
+
   <hr>
 
   <h2 id="p1-the-depth-layer">The depth layer — 6 <code>&lt;|deeper|&gt;</code> panels in this deck</h2>

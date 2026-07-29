@@ -499,6 +499,42 @@ All figures as of **July 2026** — the day before, re-check the free-tier numbe
 
 ---
 
+## The page students may arrive having already read
+
+`how-llms-work.html` &mdash; **"Where does the answer live?"** &mdash; is the first call to action on the course home page, above the link to this session. Assume some of the room has been through it. It takes about ten minutes.
+
+**What it is.** A ten-step hunt for one fact. It types *"Elon Musk wants to colonize ___"*, gets *Mars*, and then goes looking for where that fact is physically kept in the file. The answer it lands on: a direction that gets added to a running total whenever one neuron out of 49,152 decides the question it is asking has been answered yes.
+
+**What it covers, that this session does not.** These are deliberately non-overlapping &mdash; the page is *architecture* (what a model contains), Session 1 is *behaviour* (what it does). None of the following appear anywhere in your deck:
+
+| The page teaches | Your nearest slide |
+|---|---|
+| the file sorted into four kinds of table &mdash; **the dictionary, the lookup, the memory, the vote** | "What's inside a model? Just knobs." (you say knobs; it names the drawers) |
+| the **residual stream** &mdash; each token's vector rides a track, every block *adds*, nothing is replaced | not covered; your stepper shows the loop, not the track |
+| **superposition** &mdash; why 12,288 numbers hold millions of ideas | not covered |
+| attention as **Q / K / V** &mdash; "what I want / what I have / what I'd add" | "Attention: every word looks at every other word" (you show the arrows, not the three tables) |
+| the **MLP as key-value memory** &mdash; where facts are actually stored | not covered |
+| the **parameter budget** &mdash; two-thirds of the file is memory, not attention | not covered |
+
+**How to use it.** Three options, in order of how much class time you have:
+1. **Send it ahead** as the one optional pre-read. It costs you nothing and buys you a room that already believes "it is a file, not a database" before you open your mouth.
+2. **Open with it, 3 minutes, on the projector.** Run steps 1&ndash;2 only, land "so where is that fact?", then say *"we are going to answer a different question today &mdash; not where the fact lives, but why the machine gets it right and then confidently gets the next one wrong."* That is a clean hand-off into your Session 1 spine.
+3. **Point at it on the way out**, alongside the playground, for students who want to go further. It is also the natural companion to Learning Guide **Part 9**, which is the same walk in prose.
+
+**Questions it will send you, with answers.**
+
+*"You said a model is knobs. The page says it's four tables. Which is it?"* &mdash; Both, at different zoom. Every table is made of knobs; the tables are how the knobs are grouped by job. Good moment to say that "parameters" is a count, "architecture" is an arrangement, and only the second one tells you anything.
+
+*"If the fact is in the MLP, why do we need attention at all?"* &mdash; Because the memory can only answer a question about whatever the arrow currently means. Attention is what makes the arrow mean "Elon Musk, and going somewhere" in the first place. Decide, then recall. Pull it back to your own material: this is the same split as retrieval and generation in Session 4.
+
+*"Two-thirds of the model is just stored facts?"* &mdash; Roughly, at GPT-3's shape. It is the honest reason "how many parameters" was never a measure of cleverness &mdash; mostly it measures how many facts fit. Careful not to overclaim: mixture-of-experts models leave most of that dormant per token (Learning Guide &sect;8.5).
+
+*"Does that mean it can't reason, only look things up?"* &mdash; No, and do not let this one run. Say: the stored directions are the ingredients; the ninety-six rounds of combining them are where anything resembling reasoning happens. Then park it &mdash; it is a genuinely open research question and not a hill to die on in front of a class.
+
+**One thing to be careful about.** The page uses "arrow" where you say "coordinates", and "the lookup / the memory" where you say "attention / the feed-forward part". If a student uses the page's vocabulary, take it &mdash; do not correct it into yours. Both are honest; switching names mid-session is how you lose people.
+
+---
+
 ## The depth layer — 6 `<|deeper|>` panels in this deck
 
 Collapsed by default, so they cost the clock nothing. Press **D** on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as `[D] deeper:`.

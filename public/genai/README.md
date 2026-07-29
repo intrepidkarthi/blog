@@ -11,9 +11,14 @@ Open **`index.html`** in a browser — it's the course home page linking every s
 
 ```
 index.html                  ← course home page (links every deck + guide)
+how-llms-work.html          ← "Where does the answer live?" — 10-min interactive walk through the
+                              architecture (four tables, residual stream, Q/K/V, superposition).
+                              Deliberately does NOT overlap Session 1; prose version = LEARNING-GUIDE Part 9
+llm-playground.html         ← run the pieces yourself, live in the browser
 course-plan.md              ← master plan: structure, capstone, bootcamp format, currency & future-proofing
 LEARNING-GUIDE.md           ← every concept in one document — read this to LEARN or refresh the whole course
-                              (Parts 1–7 = the main line; Part 8 = the depth layer, mechanism-level)
+                              (Parts 1–7 = the main line; Part 8 = the depth layer, mechanism-level;
+                               Part 9 = the whole machine end to end)
 TEACH-THIS-YOURSELF.md      ← run the course at any scale (12 hours / one session / a 45-min talk)
 LOCALIZATION.md             ← swap-kit for teaching it outside Madurai (what to localize, what is load-bearing)
 ZERO-SETUP.md               ← the any-laptop, zero-cost guarantee + free-tier budget math

@@ -3,7 +3,7 @@
 
 Read this to *learn* or *refresh* everything the course teaches — whether you're the instructor prepping, or a student who wants the whole picture in one document. It's written in plain language, mental-models first. Each idea comes with **what it is → why it matters → how it fails.** If you understand this guide, you understand modern applied GenAI.
 
-**Parts 1–7 are the main line and stay math-free.** [Part 8](#part-8--under-the-hood-the-depth-layer) is the *depth layer*: the mechanism underneath each idea, for readers who want to know why rather than just what. It mirrors the `<|deeper|>` panels in the slide decks — press **D** on any slide to open them — and it assumes nothing beyond first-year linear algebra and probability. Skip it on a first read; come back when a claim in Parts 1–7 starts feeling like something you were asked to take on faith.
+**Parts 1–7 are the main line and stay math-free.** [Part 8](#part-8--under-the-hood-the-depth-layer) is the *depth layer*: the mechanism underneath each idea, for readers who want to know why rather than just what. It mirrors the `<|deeper|>` panels in the slide decks — press **D** on any slide to open them — and it assumes nothing beyond first-year linear algebra and probability. Skip it on a first read; come back when a claim in Parts 1–7 starts feeling like something you were asked to take on faith. [Part 9](#part-9--the-whole-machine-end-to-end) is a single walk through the machine front to back &mdash; the prose companion to the *[Where does the answer live?](how-llms-work.html)* page, and the place to start if you like seeing the whole object before its parts.
 
 **The single mental model to hold onto:** a large language model does exactly one thing — *given some text, it predicts the next chunk of text, then repeats.* Everything else in this guide is either (a) how that prediction works, (b) how to steer it, or (c) how to build reliable products on top of something that is fluent but not always right.
 
@@ -579,11 +579,117 @@ The habit that closes the loop: your Part 2 eval set, run automatically before e
 
 ---
 
+## Part 9 · The whole machine, end to end
+
+Part 8 goes one level under each idea in Parts 1–7. This part does something different: it is a single walk through the machine, front to back, so the pieces connect into one object instead of eight good explanations.
+
+It is the prose companion to **[Where does the answer live?](how-llms-work.html)** — the interactive page linked from the course home. If you have twenty minutes, read that first and use this to fix it in memory. Everything here is architecture: what is *in* a model. Parts 1–6 are what it *does*.
+
+The whole part chases one question. Type **"Elon Musk wants to colonize ___"** into any model and it answers *Mars*. Nothing was looked up — there is no database inside, no row that reads `Musk → Mars`, and the file does not change while you type. So where is that fact?
+
+### 9.1 A model is a file, sorted into four kinds of table
+
+Everything a model has ever produced came out of a file of numbers — about 175 billion of them at GPT-3's size. They are not a jumble. They sort into four kinds of table, each with one job:
+
+| Plain name | Job | Size | Written |
+|---|---|---|---|
+| **the dictionary** | turns a word into numbers | 617 million | `W_E` |
+| **the lookup** | "which other words matter right here?" | 58 billion, 96 copies | `W_Q W_K W_V W_O` |
+| **the memory** | "what do I know about this thing?" | 116 billion, 96 copies | `W_up W_down` |
+| **the vote** | turns numbers back into a word | 617 million | `W_U` |
+
+Those `W` names are labels people gave the tables; nothing is hiding in them. Every number was fixed during training and never changes again while you chat. Our fact is not in the dictionary and not in the vote — hold that thought.
+
+### 9.2 The dictionary: a word becomes a direction
+
+The dictionary hands each word a long list of numbers — 12,288 of them. A list that long is an arrow pointing somewhere in a very large space.
+
+The useful structure in that space is not *where* words sit but **which way you travel** to change them. One direction means "more feminine", another "make it plural", another "past tense". Nobody designed these; they fell out of training. It is why `king − man + woman ≈ queen` works — the space showing you its filing system.
+
+To ask *"how much of this idea does that arrow carry?"*, multiply the two lists element by element and add it all up. One number; big means aligned. That single operation — the **dot product** — is most of what the rest of the machine does.
+
+### 9.3 Superposition: how everything fits in 12,288 numbers
+
+Obvious objection: if every idea needed its own perpendicular direction, the model could hold 12,288 ideas, and it plainly knows millions.
+
+The escape is a genuinely strange fact about large spaces. Directions do not have to be *perfectly* perpendicular to stay tellable apart — only **nearly** perpendicular. And in a big space, near-perpendicular is not something you arrange; it is what two directions already are. For two random unit vectors in *d* dimensions the angle between them concentrates hard on 90°, with a spread of roughly `57.3/√d` degrees:
+
+| dimensions | angle between two random directions |
+|---|---|
+| 2 | any angle at all |
+| 3 | 90° ± 33° |
+| 100 | 90° ± 6° |
+| 12,288 | **90° ± 0.5°** |
+
+So you never have to arrange anything — you keep adding ideas and they keep staying distinguishable. This is **superposition**, and it has a consequence that matters for interpretability: a single neuron is usually participating in several unrelated ideas at once, which is exactly why reading one off is so hard.
+
+### 9.4 The residual stream: a track, and everything adds to it
+
+Here is the idea that makes the rest cohere, and it is rarely said out loud. Every word in your prompt gets its arrow, and each arrow travels the whole length of the model on its own track — the **residual stream**.
+
+The tables along the way never *replace* the arrow. Each one reads it, computes a small correction, and **adds** that correction in. Ninety-six times.
+
+So the arrow above the blank starts out meaning almost nothing and arrives meaning *"a particular planet"*. Nothing overwrote it; it was nudged, ninety-six times. Two kinds of table do that nudging, and they do different jobs.
+
+### 9.5 The lookup (attention): three matrices, three questions
+
+Before it can recall anything, the blank has to work out what it is completing. "wants to colonize" could follow a person, a company, a century. It has to notice the subject is **Elon Musk** and the verb is about **going somewhere**.
+
+So every word's arrow is multiplied by three different tables, producing three new arrows with three different jobs:
+
+- **what I want** — what am I looking for? *(the query, Q)*
+- **what I have** — what do I offer? *(the key, K)*
+- **what I'd add** — what do I contribute if picked? *(the value, V)*
+
+Every "what I want" is dot-producted against every "what I have" — that is the "looking". A high score means listen. The scores become weights, the "what I'd add" arrows get blended in those proportions, and the result is **added to the residual stream**. That is one head; GPT-3 runs 96 per layer in parallel, each hunting for something different.
+
+Attention has now established the topic. It still does not know Mars.
+
+### 9.6 The memory (the MLP): where the fact actually lives
+
+After each attention block sits a plain pair of tables — the **MLP** — and this is the end of the hunt.
+
+Its structure is almost comically literal. The first table is a wall of questions, one per neuron: *"is this Elon Musk, and is it about space?"* Each row scores the arrow, and the nonlinearity throws away every score that came out negative, so a neuron either fires or stays quiet. GPT-3 has 49,152 of these questions per layer.
+
+The second table is the answer sheet. For every neuron that fired, it adds that neuron's stored direction back into the stream — *"…then add Mars."*
+
+That is where the fact lives. Not as text, not as a row in a table, but as **a direction that gets added whenever one particular question is answered yes** — with millions of other facts sharing the same space by superposition (§9.3). This structure is often called a **key-value memory**: the first table holds the keys, the second holds the values.
+
+### 9.7 The parameter budget: two-thirds is a filing cabinet
+
+If facts live in the memory tables, there had better be a great many of them. There are — and every explanation of transformers you have read is busy talking about the other part:
+
+| Component | Parameters | Share |
+|---|---|---|
+| **the memory** (MLP) | ~116 billion | **66%** |
+| **the lookup** (attention) | ~58 billion | 33% |
+| dictionary + vote | ~1.2 billion | ~1% |
+
+Two things follow. **The lookup decides what is relevant; the memory holds what is known.** And "how many parameters" was never a measure of cleverness — it is mostly a measure of **how many facts fit**.
+
+Modern mixture-of-experts models complicate the picture (§8.5) by leaving most of those memory parameters dormant on any given token, which is how a trillion-parameter model can be cheap to run. The split between *decide* and *know* survives it.
+
+### 9.8 The vote: back to a word
+
+After ninety-six rounds of adding, the arrow above the blank has accumulated everything the model worked out. Getting a word out takes one last operation: dot it against every row of the vote table — one row per token in the vocabulary, 50,257 of them. Fifty thousand dot products, fifty thousand scores.
+
+Those scores are the **logits**. Softmax turns them into probabilities, temperature stretches or squashes them first (§8.1), and one token is drawn. Then the entire journey runs again for the next token, with the answer-so-far appended to the input.
+
+### 9.9 Why this is worth knowing
+
+Mars was a direction. Not a row in a table, not a sentence stored somewhere — a direction in a space of 12,288 numbers, added to a running total the moment one neuron out of 49,152 decided that yes, this is Elon Musk and this is about space.
+
+Everything a model knows is kept that way, which is the single most useful thing to take from this part: **nothing in there marks the difference between a fact and a very well-worn pattern.** A confident wrong answer and a confident right answer are produced by identical machinery, travelling the identical track. That is not a bug to be patched out; it is what the architecture *is*, and it is the reason the rest of this course is about measurement (Part 2), grounding (Part 4), and keeping a human on the blast radius (Part 6).
+
+---
+
 ## Glossary (fast reference)
 **Token** — the chunk a model reads (~¾ word). **Embedding** — text turned into meaning-coordinates. **Attention** — words weighing each other to resolve meaning; the Transformer's engine. **Parameter** — one learned knob; a model is a file of billions. **Inference** — using the frozen model (no learning, no memory). **Temperature** — the randomness dial on sampling. **Context window** — the model's working memory, measured in tokens. **Hallucination** — confident, fluent, wrong (plausible ≠ true). **Prompt engineering** — structuring the input (role/task/context/format/examples/constraints). **Few-shot** — steering by examples. **Chain-of-thought** — asking for visible reasoning. **Eval** — measuring quality with a test set + scorer + score. **RAG** — retrieve relevant chunks, augment the prompt, generate a grounded cited answer. **Chunking** — how you split documents for retrieval. **Cosine similarity** — how retrieval measures closeness. **Vector database** — a store that returns nearest-meaning neighbors. **Tool use / function calling** — the model requests, your code executes. **Agent** — an LLM in a loop choosing tools/steps toward a goal. **Workflow** — you fix the steps; the model fills them in. **Fine-tuning** — further training to teach behavior/style (not facts). **Prompt injection** — untrusted text becoming instructions. **Defense in depth** — layered mitigations because no single one is complete. **Streaming** — sending tokens as they generate for responsive UX. **Open weights** — a model whose parameters you can download and run yourself.
+
+**Architecture terms (Part 9).** **The dictionary / the lookup / the memory / the vote** — plain names for the four kinds of table in a model file (embedding, attention, MLP, unembedding). **Residual stream** — the track each token's vector rides through the whole network; every block *adds* to it, nothing is replaced. **Query / key / value (Q, K, V)** — "what I want", "what I have", "what I'd add"; attention matches the first against the second and blends the third. **MLP / feed-forward** — the two tables after each attention block; two-thirds of all parameters, and where facts are stored. **Key-value memory** — the MLP read as a wall of questions (keys) plus an answer sheet (values). **Superposition** — packing far more ideas than dimensions by using directions that are only *nearly* perpendicular. **Unembedding** — the final table that turns the vector back into one score per word.
 
 **Depth-layer terms (Part 8).** **Logit** — the raw score a model emits per vocabulary token, before softmax. **Softmax** — turns logits into probabilities summing to 1; temperature divides the logits inside it. **Top-k / top-p** — trim the candidate set before sampling. **Loss (cross-entropy)** — −log of the probability placed on the true next token; the number training minimises. **Perplexity** — exp(loss); "how many options is it effectively choosing between?" **Positional encoding / RoPE** — how order gets into an order-blind attention mechanism. **n²** — attention's cost curve in context length. **Scaling laws / Chinchilla** — capability follows compute predictably; scale parameters and data together. **MoE** — many expert sub-networks, few active per token. **Distillation** — a small student trained to imitate a large teacher's output distribution. **Quantization** — fewer bits per parameter; params × bits ÷ 8 = file size. **KV cache** — stored keys/values that make decode cheap; splits latency into prefill and decode. **TTFT** — time to first token (prefill). **Context caching** — renting a pinned prompt prefix for ~10% of the price. **Precision / recall / F1** — which kind of error you're making, not just how many. **Position bias** — an LLM judge preferring whichever answer came first; fix by swapping and re-running. **Recall@k / MRR** — did the right chunk arrive, and did it arrive near the top. **Faithfulness** — did the answer actually come from the retrieved chunk. **Bi-encoder / cross-encoder** — fast separate embedding vs slow joint scoring; the basis of reranking. **BM25 / hybrid search** — keyword ranking merged with semantic ranking. **Constrained decoding** — masking schema-illegal tokens to −∞ so malformed output is unreachable. **Trajectory eval** — grading an agent's path (tool choice, step count, wasted calls), not only its answer. **p50 / p99** — median and tail latency; report both, never the mean. **Idempotency** — making a retry safe for anything with a side effect.
 
 ---
 
-*If you can teach Part 7.3 to someone else — what's stable vs what changes — you've understood the point of the whole course. And if you can teach any section of Part 8 to someone else, you've understood why it's stable.*
+*If you can teach Part 7.3 to someone else — what's stable vs what changes — you've understood the point of the whole course. And if you can teach any section of Part 8 to someone else, you've understood why it's stable. Part 9 is the object all of it lives inside.*
