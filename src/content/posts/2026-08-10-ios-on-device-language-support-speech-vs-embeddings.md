@@ -6,7 +6,7 @@ excerpt: "Apple's Speech framework handles 34 languages. DailyVox ships its inte
 tags: [dailyvox, on-device, ios, nlp, localization, apple-intelligence, privacy]
 ---
 
-Apple's Speech framework transcribes 34 languages. DailyVox now ships its interface in five of them. The gap between those numbers is a platform limit, and working out why cost me the language I grew up speaking.
+Apple's Speech framework transcribes 34 languages. [DailyVox](https://apps.apple.com/app/id6760454642) now ships its interface in five of them. The gap between those numbers is a platform limit, and working out why cost me the language I grew up speaking.
 
 The roadmap had carried a language list for months: Tamil, Kannada, Hindi, Spanish, Japanese, German. I wrote that list from intent. It was ordered by who I wanted to reach, starting with home. Last week I finally measured what each Apple framework actually supports, per framework, rather than trusting the marketing number for the stack as a whole.
 

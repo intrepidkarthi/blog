@@ -14,7 +14,7 @@ The test took about an hour to build and run. It settled a question that two wee
 
 ## what I was building
 
-DailyVox v1.10 carried a candidate called "your own voice." The Twin reads its replies aloud, and instead of a system voice it would use yours, cloned from a 30-second slice of journal audio you had already recorded.
+[DailyVox](https://getdailyvox.com) v1.10 carried a candidate called "your own voice." The Twin reads its replies aloud, and instead of a system voice it would use yours, cloned from a 30-second slice of journal audio you had already recorded.
 
 The product shape is the whole appeal. Apple's Personal Voice reproduces a real accent, and it costs a thirty-minute enrollment session that the app cannot perform on the user's behalf. v1.9 dropped it for exactly that reason and shipped a system-voice picker instead. Cloning from audio the user already gave you asks for nothing. No enrollment screen, no reading of scripted sentences, no new permission.
 
