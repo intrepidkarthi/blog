@@ -48,58 +48,68 @@
 <div class="wrap">
   <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
   <div class="kicker">Session 2 cheatsheet</div>
-  <h1>Talking to AI, and Catching Its Lies</h1>
-  <p class="lead">Generative AI: Foundations and Applications · TCE</p>
-
-  <h2>The prompt template (steal this)</h2>
-  <pre><code># ROLE        You are a &lt;specific persona with a stake in quality&gt;.
+  <h1>Session 2 Cheatsheet — Talking to AI, and Catching Its Lies</h1>
+<h2 id="the-prompt-template-steal-this">The prompt template (steal this)</h2>
+<pre><code># ROLE        You are a &lt;specific persona with a stake in quality&gt;.
 # TASK        &lt;one job, precisely: verb + object + length&gt;
 # CONTEXT     &lt;the facts it needs — it remembers nothing&gt;
 # FORMAT      Reply ONLY with &lt;JSON schema / bullet cap / word cap&gt;.
 # EXAMPLES    &lt;2–5 input→output pairs; they pin format + edge cases&gt;
-# CONSTRAINTS If a fact isn't stated above, don't invent it.
-              If unsure, say "I am not sure."</code></pre>
-  <p>Task is mandatory; the rest are dials. One prompt = one job (chain calls for multi-step work).</p>
-
-  <h2>The three power moves</h2>
-  <ol>
-    <li><strong>Few-shot:</strong> show 2–5 examples instead of describing the format. The model imitates patterns — in-context only, no learning.</li>
-    <li><strong>Step-by-step:</strong> "Solve step by step, then give the final answer." Visible, auditable working — errors surface.</li>
-    <li><strong>Grounding:</strong> "Answer only from the facts above." The single line that suppresses invented awards, policies, citations.</li>
-  </ol>
-
-  <h2>Hallucination in one line</h2>
-  <blockquote style="background:var(--accentpale)">Trained for <em>plausible</em>, not <em>true</em> — so lies arrive fluent, confident, and welded to real facts. Tone tells you nothing. <strong>Only checking detects it.</strong> (Real stakes: a US lawyer was sanctioned over 6 invented citations; Air Canada was held liable for a policy its chatbot made up.)</blockquote>
-
-  <h2>The eval harness (the artifact that makes you an engineer)</h2>
-  <pre><code>def norm(s): return re.sub(r"[^a-z0-9 ]", "", s.lower())
+# CONSTRAINTS If a fact isn&#39;t stated above, don&#39;t invent it.
+              If unsure, say &quot;I am not sure.&quot;</code></pre>
+<p>Task is mandatory; the rest are dials. One prompt = one job (chain calls for multi-step work).</p>
+<h2 id="the-three-power-moves">The three power moves</h2>
+<ol type="1">
+<li><strong>Few-shot:</strong> show 2–5 examples instead of describing the format. The model imitates patterns — in-context only, no learning.</li>
+<li><strong>Step-by-step:</strong> “Solve step by step, then give the final answer.” Visible, auditable working — errors surface.</li>
+<li><strong>Grounding:</strong> “Answer only from the facts above.” The single line that suppresses invented awards, policies, citations.</li>
+</ol>
+<h2 id="hallucination-in-one-line">Hallucination in one line</h2>
+<p>Trained for <em>plausible</em>, not <em>true</em> — so lies arrive fluent, confident, and welded to real facts. Tone tells you nothing. <strong>Only checking detects it.</strong> (Real stakes: a US lawyer was sanctioned over 6 invented citations; Air Canada was held liable for a policy its chatbot made up.)</p>
+<h2 id="the-eval-harness-the-artifact-that-makes-you-an-engineer">The eval harness (the artifact that makes you an engineer)</h2>
+<pre class="python"><code>def norm(s): return re.sub(r&quot;[^a-z0-9 ]&quot;, &quot;&quot;, s.lower())
 
 def run_eval(template, tests):
     hits = 0
     for t in tests:
-        ans = ask(template.format(q=t["q"]), temperature=0.0)
-        hits += norm(t["expected"]) in norm(ans)
+        ans = ask(template.format(q=t[&quot;q&quot;]), temperature=0.0)
+        hits += norm(t[&quot;expected&quot;]) in norm(ans)
     return hits / len(tests)</code></pre>
-  <p>Rules: <code>expected</code> = the key fact only · temperature 0 · run 3×, report average + spread · <strong>read every ✗</strong> (model wrong? scorer too strict? question ambiguous?) · change one thing per iteration · a test the model always passes teaches nothing.</p>
+<p>Rules: <code>expected</code> = the key fact only · temperature 0 · run 3×, report average + spread · <strong>read every ✗</strong> (model wrong? scorer too strict? question ambiguous?) · change one thing per iteration · a test the model always passes teaches nothing.</p>
+<h2 id="scorer-trade-offs">Scorer trade-offs</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Scorer</th>
+<th>Good</th>
+<th>Trap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Exact match</td>
+<td>unambiguous</td>
+<td>fails correct answers over punctuation</td>
+</tr>
+<tr class="even">
+<td>Normalized contains</td>
+<td>robust, simple</td>
+<td>generic expected strings false-positive</td>
+</tr>
+<tr class="odd">
+<td>LLM-as-judge</td>
+<td>handles paraphrase</td>
+<td>verbosity/position/self bias — audit it</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-loop-memorize">The loop (memorize)</h2>
+<p><strong>Write → eval → read failures → fix ONE thing → re-run.</strong> “It worked when I tried it” is not evidence — the demo is the best case, the eval is the expected case.</p>
+<p><strong>Carry forward:</strong> this harness grades your capstone (S6). Final-year project: an eval harness plus a score curve is a Results chapter — a project with numbers beats a project with a demo. Next session: photos on your phone.</p>
+<p><strong>Go deeper (press D on the deck):</strong> precision / recall / F1 and when accuracy lies · auditing an LLM judge (position and verbosity bias — swap the order and re-run) · how many test questions is enough (±1/√n) and paired comparison. Prose versions: Learning Guide <strong>Part 8</strong>. Papers: see Appendix D of the book — start with <em>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</em> (Wei et al., 2022) and <em>Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</em> (Zheng et al., 2023 — the position-bias result behind today’s judge panel); read abstract, figures, results, limitations, in that order.</p>
 
-  <h2>Scorer trade-offs</h2>
-  <table>
-    <thead>
-      <tr><th>Scorer</th><th>Good</th><th>Trap</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Exact match</td><td>unambiguous</td><td>fails correct answers over punctuation</td></tr>
-      <tr><td>Normalized contains</td><td>robust, simple</td><td>generic expected strings false-positive</td></tr>
-      <tr><td>LLM-as-judge</td><td>handles paraphrase</td><td>verbosity/position/self bias — audit it</td></tr>
-    </tbody>
-  </table>
 
-  <h2>The loop (memorize)</h2>
-  <p><strong>Write → eval → read failures → fix ONE thing → re-run.</strong> "It worked when I tried it" is not evidence — the demo is the best case, the eval is the expected case.</p>
 
-  <p><strong>Carry forward:</strong> this harness grades your capstone (S6). Next session: photos on your phone.</p>
-
-  <p><strong>Go deeper (press D on the deck):</strong> precision / recall / F1 and when accuracy lies · auditing an LLM judge (position and verbosity bias &mdash; swap the order and re-run) · how many test questions is enough (&plusmn;1/&radic;n) and paired comparison. Prose versions: Learning Guide <strong>Part 8</strong>.</p>
 
   <footer class="foot">
     <div style="margin-bottom:8px"><a href="session-1-cheatsheet.html">← Session 1</a> · deck: <a href="../presentations/session-2-talking-to-ai-and-catching-its-lies.html">session-2-talking-to-ai-and-catching-its-lies.html</a> · <a href="session-3-cheatsheet.html">Session 3 →</a></div>

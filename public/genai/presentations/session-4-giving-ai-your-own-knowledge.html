@@ -32,6 +32,32 @@
     --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
   }
+  html[data-theme="dark"]{
+    --paper:#0E1218; --ink:#EDF1F7; --body:#C3CBD8; --muted:#8E9AAC; --faint:#647085;
+    --line:#20262F; --linedark:#36404E; --panel:#151B24;
+    --green:#2FCF9B; --greenpale:#0F2B22; --red:#F2684F; --redpale:#331813;
+    --amber:#E8A33D; --amberpale:#33260F;
+    --h1:#6C8BFF; --d1:#9DB4FF; --t1:#182240;
+    --h2:#B07BF5; --d2:#C9A4F7; --t2:#24183C;
+    --h3:#F078B4; --d3:#F79EC4; --t3:#381728;
+    --h4:#F5A33C; --d4:#F7C886; --t4:#37270F;
+    --h5:#2ECF96; --d5:#7FDCBE; --t5:#0E2E22;
+    --h6:#F0644A; --d6:#F7A294; --t6:#381811;
+    --hue:var(--h4); --deep:var(--d4); --tint:var(--t4);
+    --bg:var(--paper);
+    --accent:var(--deep); --accent2:var(--hue); --accentpale:var(--tint);
+    --stagebg:#06080C; --stageink:#FFFFFF;
+  }
+  html[data-theme="dark"] .slide{background:radial-gradient(var(--line) 1.05px, transparent 1.05px) 0 0/26px 26px, var(--paper)}
+  html[data-theme="dark"] .slide.take{background:#0A0D13}
+  html[data-theme="dark"] .codebox{background:#06080C}
+  html[data-theme="dark"] .bigno{color:var(--tint);opacity:.85}
+  #theme-btn{appearance:none;border:1.5px solid var(--linedark);background:var(--paper);color:var(--muted);
+    font-family:var(--mono);font-size:10.5px;font-weight:800;border-radius:999px;padding:4px 10px;cursor:pointer;transition:.15s;letter-spacing:.05em;pointer-events:auto}
+  #theme-btn:hover{border-color:var(--ink);color:var(--ink)}
+  #hud .sesdots{display:inline-flex;gap:5px;margin:0 10px}
+  #hud .sesdots i{width:7px;height:7px;border-radius:3px;background:var(--line);transition:.25s}
+  #hud .sesdots i.on{background:var(--hue);transform:scale(1.25)}
   *{box-sizing:border-box;margin:0;padding:0}
   .slide,.deck{z-index:auto}
   html,body{height:100%}
@@ -245,6 +271,7 @@
   .chunkrow{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;font-size:.85rem;
     padding:8px 10px;border-bottom:1px solid var(--line)}
   .chunkrow .txt{color:var(--body)} .chunkrow.dim .txt{color:var(--faint)}
+  .chunkrow .why{grid-column:1/3;font-family:var(--mono);font-size:.72rem;color:var(--green);margin-top:2px}
   .simbar{height:16px;background:var(--panel);border:1px solid var(--linedark);border-radius:4px;overflow:hidden}
   .simbar i{display:block;height:100%;background:var(--hue);width:0;transition:width .6s ease}
   .chunkrow.top .simbar i{background:var(--green)}
@@ -343,7 +370,11 @@
 <div id="progress"></div>
 <div id="hud">
   <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b> &nbsp;·&nbsp; Session 4 · Day 2 · TCE Madurai</span>
-  <span id="counter">1 / 1</span>
+  <span style="display:flex;align-items:center;gap:10px">
+    <span class="sesdots" id="sesdots" aria-hidden="true"><i></i><i></i><i></i><i class="on"></i><i></i><i></i></span>
+    <span id="counter">1 / 1</span>
+    <button id="theme-btn" type="button" aria-label="Toggle light and dark theme">dark</button>
+  </span>
 </div>
 <div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>D</kbd> deeper</div>
 
@@ -382,7 +413,7 @@
     <div class="btnrow mt"><button class="btn primary" id="nk-run">Ask </button></div>
     <div class="payload pre mt" style="min-height:120px;position:relative;overflow:hidden"><span class="mono" id="nk-out">…</span><div class="stamp" id="nk-stamp" aria-hidden="true">Never saw your syllabus</div></div>
   </div>
-  <p class="lead rv mt">It <b>cannot</b> know — your syllabus isn't in its training data. Watch what it does instead of admitting that: a <b>plausible OS syllabus</b>, invented on the spot. Some models even apologise first — then produce a <i>typical</i> syllabus anyway. The hedge is not knowledge. Session 2's disease, aimed directly at your college life — today we cure it.</p>
+  <p class="lead rv mt">It does not have your exact syllabus in its verified context. Watch what it does instead of admitting that: a <b>plausible OS syllabus</b>, invented on the spot. Some models even apologise first — then produce a <i>typical</i> syllabus anyway. The hedge is not knowledge. Session 2's disease, aimed directly at your college life — today we reduce it with retrieval and evaluation.</p>
 </section>
 
 <!-- 4 WHY NOT PASTE -->
@@ -398,12 +429,12 @@
       <div class="costbig" id="cp-out"></div>
       <div id="cp-inr" style="font-family:var(--mono);font-size:1rem;color:var(--accent);margin-top:6px;font-variant-numeric:tabular-nums;min-height:22px"></div>
       <div class="cw-alert" id="cp-verdict" style="min-height:22px"></div>
-      <div style="font-size:.68rem;color:var(--faint);margin-top:8px">pricing: Gemini 3.5 Flash input @ $1.50 per 1M tokens · ₹95.5 per USD (July 2026) — see LOCALIZATION.md to re-base for your currency</div>
+      <div style="font-size:.68rem;color:var(--faint);margin-top:8px">pricing: Gemini 3.5 Flash (previous-gen Flash) list price, input @ $1.50 per 1M tokens · ₹95.5 per USD (Sep 2026) — see LOCALIZATION.md to re-base for your currency · your lab today runs on the free tier — this is what it would cost in production</div>
     </div>
     <div class="rv"><div class="card"><h3>Three taxes on pasting</h3>
       <p><b>1. The window</b> — remember, everything must fit (Session 1). A textbook doesn't.</p>
       <p class="mt"><b>2. The meter</b> — you pay per token, <b>per question</b>. Every "what's a deadlock?" re-sends all 400 pages.</p>
-      <p class="mt"><b>3. The middle</b> — even long-window models attend unevenly; whatever's buried mid-window is likeliest to be missed. More haystack, worse needle-finding.</p></div></div>
+      <p class="mt"><b>3. The middle</b> — even long-window models attend unevenly; whatever's buried mid-window is likeliest to be missed — the "lost in the middle" effect (Liu et al., 2023). More haystack, worse needle-finding.</p></div></div>
   </div>
 </section>
 
@@ -420,7 +451,7 @@
   <div class="kicker rv"><span class="no">05</span> <span class="tk">live_demo · why_ctrl-f_isn't_enough</span></div>
   <h2 class="rv">Keyword search <span class="u">misses meaning</span></h2>
   <div class="demo rv">
-    <div class="dtitle">Query: "marks required to clear the subject" · Notes say: "…minimum of 50% aggregate across internals and end-semester…"</div>
+    <div class="dtitle">Query: "marks required to clear the subject" · Notes say: "…minimum of 50% aggregate across internals and end-semester…" · scores precomputed — you compute real ones in the lab</div>
     <div class="btnrow">
       <button class="btn" id="kw-key">Ctrl-F keyword search</button>
       <button class="btn primary" id="kw-sem">Semantic search</button>
@@ -438,7 +469,7 @@
     <div class="card rv"><h3><span class="em"></span>Same trick, bigger units</h3>
       <p>Session 1: words → coordinates (idli next to dosa). Today: <b>entire chunks of text → coordinates</b>. "Minimum 50% aggregate to pass" and "marks required to clear" land <b>near each other</b> in meaning-space — zero shared words needed.</p></div>
     <div class="card rv"><h3><span class="em"></span>Search = nearest neighbours</h3>
-      <p>Embed all your chunks once (cheap). Embed the question. Find the chunks whose vectors sit closest — <b>cosine similarity</b>, one line of numpy. That's semantic search. That's the R in RAG.</p></div>
+      <p>Embed all your chunks once (cheap). Embed the question. Find the chunks whose vectors sit closest — <b>cosine similarity</b>, which just asks how aligned two arrows are (1 = same direction, 0 = unrelated) — one line of numpy. That's semantic search. That's the R in RAG.</p></div>
   </div>
   <div class="codebox rv mt"><span class="c"># the entire search engine. no, really.</span>
 scores = chunk_vectors @ question_vector      <span class="c"># cosine similarity (normalized)</span>
@@ -465,7 +496,7 @@ top3   = [chunks[i] <span class="k">for</span> i <span class="k">in</span> score
   <div class="kicker rv"><span class="no">07</span> <span class="tk">live_demo · search_by_meaning</span></div>
   <h2 class="rv">The search playground</h2>
   <div class="demo rv">
-    <div class="dtitle">6 chunks from an OS notes file, plotted in meaning-space — pick a query</div>
+    <div class="dtitle">6 chunks from an OS notes file, plotted in meaning-space — pick a query · scores precomputed — you compute real ones in the lab</div>
     <div class="btnrow">
       <button class="btn" data-spq="0">"marks needed to pass?"</button>
       <button class="btn" data-spq="1">"why is my PC slow with many apps?"</button>
@@ -520,12 +551,12 @@ top3   = [chunks[i] <span class="k">for</span> i <span class="k">in</span> score
     <div class="card rv hi"><h3><span class="em"></span>What YOU need today</h3><p>A numpy array. Truly. Below ~100k chunks, one <b>argsort</b> is instant. Don't add a database until you have a database-sized problem.</p></div>
   </div>
   <div class="ladder rv mt" aria-label="scale ladder">
-    <span>today's lab ≈ <b>6</b> chunks</span><i>→</i>
+    <span>the playground ≈ <b>6</b> · today's lab ≤ <b>60</b></span><i>→</i>
     <span>your full notes ≈ <b>300</b></span><i>→</i>
-    <span>every TCE course ≈ <b>50k</b> — still just numpy</span><i>→</i>
-    <span class="last">English Wikipedia ≈ <b>30M</b> — NOW buy the database</span>
+    <span>every TCE course ≈ <b>50k</b> — benchmark first</span><i>→</i>
+    <span class="last">tens of millions — consider an index/database</span>
   </div>
-  <p class="note rv mt">Resume line, unlocked: "built semantic search over a vector store" — that sentence is the numpy array you'll write in the next 20 minutes.</p>
+  <p class="note rv mt">A vector database is an implementation choice, not the idea itself. Start with NumPy, measure retrieval and latency, then add FAISS, pgvector, or a managed service when scale, filtering, persistence, or multi-user access requires it.</p>
 </section>
 
 <!-- 11 RAG STEPPER -->
@@ -545,9 +576,9 @@ top3   = [chunks[i] <span class="k">for</span> i <span class="k">in</span> score
   <div class="deep rv">
     <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">the stage production adds between retrieve and augment</span></button>
     <div class="deepbody">
-      <p>Your pipeline retrieves the top 3 and sends them. Every serious RAG system in 2026 does something slightly different, and it's the single highest-leverage upgrade you can make after chunking: <b>retrieve wide, then re-rank narrow.</b></p>
+      <p>Your pipeline retrieves the top 3 and sends them — the pattern itself is published work: RAG (Lewis et al., 2020). Every serious RAG system in 2026 does something slightly different, and it's the single highest-leverage upgrade you can make after chunking: <b>retrieve wide, then re-rank narrow.</b></p>
       <span class="fx">retrieve top <b>20</b> (fast, approximate)  →  <b>rerank</b> to the best <b>4</b> (slow, accurate)  →  augment  →  generate</span>
-      <p>Why two stages instead of one good one? Because your embedding search is a <b>bi-encoder</b>: it embedded the question and every chunk <i>separately</i>, so the two never met — that's exactly what makes it fast enough to search a million chunks, since all the document work happened at index time. A <b>cross-encoder</b> reranker instead reads the question and one chunk <i>together</i> and scores their actual relevance. Far more accurate, far too slow to run over a whole corpus — perfect for re-ordering 20 candidates.</p>
+      <p>Why two stages instead of one good one? Because your embedding search is a <b>bi-encoder</b> — the dense passage retrieval design (Karpukhin et al., 2020): it embedded the question and every chunk <i>separately</i>, so the two never met — that's exactly what makes it fast enough to search a million chunks, since all the document work happened at index time. A <b>cross-encoder</b> reranker instead reads the question and one chunk <i>together</i> and scores their actual relevance. Far more accurate, far too slow to run over a whole corpus — perfect for re-ordering 20 candidates.</p>
       <p>The measurable win is usually large, because your first stage is better at <i>recall</i> than at <i>ranking</i>: the right chunk is frequently sitting at position 9 when you only took 3. Reranking doesn't find anything new — it stops you from throwing away what you already found.</p>
       <div class="deepgrid">
         <div class="dcell"><h4><span class="em"></span>Hybrid search</h4><p>Run keyword (BM25) and semantic search side by side and merge the two ranked lists. Keyword catches exact identifiers embeddings blur — course codes, error numbers, surnames, "Section 4(b)". Semantic catches the paraphrases keyword misses. Neither is redundant.</p></div>
@@ -616,7 +647,7 @@ QUESTION: {question}</div>
     <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">debugging this properly: two scores, never one</span></button>
     <div class="deepbody">
       <p>Notice that the four failures above split cleanly into two groups. The first two are <b>retrieval</b> failures — the right text never arrived. The last two are <b>generation</b> failures — the right text arrived and the model mishandled it. One overall "is the answer good?" score cannot tell them apart, which is why teams stare at a mediocre number for a week and tune the wrong end of the pipeline.</p>
-      <p>So score the two halves separately. For each question in your test set, record which chunk <i>should</i> win.</p>
+      <p>So score the two halves separately — the same retrieval metrics the BEIR benchmark uses to compare search systems. For each question in your test set, record which chunk <i>should</i> win.</p>
       <div class="deepgrid">
         <div class="dcell"><h4><span class="em"></span>Recall@k — did it arrive?</h4><p>In what fraction of questions is the correct chunk somewhere in the top k? This is your ceiling: if recall@5 is 60%, no prompt on earth gets you past 60% correct answers. Fix it with chunking, hybrid search, or query rewriting.</p></div>
         <div class="dcell"><h4><span class="em"></span>MRR — did it arrive near the top?</h4><p>Average of 1/(rank of the first correct chunk). Rank 1 scores 1.0, rank 5 scores 0.2. High recall with low MRR is the exact signature that says <b>add a reranker</b> — you're finding it and then burying it.</p></div>
@@ -640,7 +671,7 @@ QUESTION: {question}</div>
     <tr><td>Fine-tuning</td><td>Style, format, domain <i>behaviour</i> at scale</td><td><b>Teaching facts</b> — expensive, freezes instantly, no citations. Common ₹-crore mistake.</td></tr>
   </table>
   </div>
-  <p class="lead rv mt">Interview one-liner: <b>"Fine-tuning teaches behaviour; RAG provides knowledge."</b> Full decision ladder after lunch.</p>
+  <p class="lead rv mt">Interview one-liner: <b>"Fine-tuning teaches behaviour; RAG provides knowledge."</b> Before choosing, compare data freshness, citations, cost, latency, and evaluation evidence. Full decision ladder after lunch.</p>
 </section>
 
 <!-- 15 EVERYWHERE -->
@@ -651,8 +682,8 @@ QUESTION: {question}</div>
     <div class="card rv"><h3>Support chatbots</h3><p>"Chat with our help docs." Retrieval over a manual + the grounded template.</p></div>
     <div class="card rv"><h3>NotebookLM-style tools</h3><p>"Chat with your sources" — RAG with a polished UI.</p></div>
     <div class="card rv"><h3>AI search engines</h3><p>Search results → context → cited answer. RAG at web scale.</p></div>
-    <div class="card rv"><h3>Legal/medical assistants</h3><p>Retrieval over case law / literature — citations are mandatory there.</p></div>
-    <div class="card rv"><h3>"Chat with our wiki"</h3><p>Every enterprise AI rollout starts here. Somewhere in Bengaluru, someone's entire salary is today's lab.</p></div>
+    <div class="card rv"><h3>TN scheme assistant</h3><p>Government scheme PDFs in Tamil + grounded answers with citations. A final-year project sitting in plain sight.</p></div>
+    <div class="card rv"><h3>Regulations bot</h3><p>Your university's regulations + FAQs — answers only from the document, "I don't know" otherwise.</p></div>
     <div class="card rv hi"><h3>Yours, in 50 minutes</h3><p>Chat with your own notes — same architecture, your data.</p></div>
   </div>
 </section>
@@ -660,8 +691,8 @@ QUESTION: {question}</div>
 <!-- HOT TAKE -->
 <section class="slide take">
   <div class="kicker rv"><span class="no">HT</span> <span class="tk">hot_take · argue_with_me</span></div>
-  <h1 class="rv" style="font-size:clamp(2.2rem,5vw,3.9rem)">Your final-year project is<br><span class="tu">one grounded prompt away from being a startup.</span></h1>
-  <p class="lead rv mt" style="max-width:56ch">Most funded "AI products" are exactly what you build today: retrieval plus a grounded prompt around someone else's model. That is not an insult to them — it is an invitation to you. The moat is the data and the evals, and you have Madurai data nobody in San Francisco has.</p>
+  <h1 class="rv" style="font-size:clamp(2.2rem,5vw,3.9rem)">Your final-year project needs<br><span class="tu">a user, a baseline, and a number.</span></h1>
+  <p class="lead rv mt" style="max-width:56ch">RAG is a useful starting architecture, not a startup by itself. The project becomes credible when a real user has a bounded problem, your system beats a baseline, and you can show where it fails. Madurai data can be your advantage — if you are allowed to use it and can evaluate it honestly.</p>
   <p class="note rv">Disagree? Good. Bring it to the break — strongest counter-argument gets named on the closing slide.</p>
 </section>
 
@@ -721,7 +752,7 @@ QUESTION: {question}</div>
       <div class="step"><div><div class="t">Break it honestly</div><div class="d">Ask something NOT in your docs — does it say "I don't know"? Ask a cut-in-half question. ✓ checkpoint 3: one honest failure + your fix</div></div></div>
     </div>
     <div class="rv">
-      <div class="card"><h3>Stretch</h3><p>Mini-eval: 5 questions with expected answers → score your RAG (harness from S2!) · k=1 vs k=3 vs k=5 · second document · show similarity scores in answers.</p></div>
+      <div class="card"><h3>Stretch</h3><p>Mini-eval: 10 questions with expected answers → score your RAG (harness from S2! — Session 6 needs 10) · k=1 vs k=3 vs k=5 · second document · show similarity scores in answers.</p></div>
       <div class="card hi mt"><h3>Capstone alert</h3><p>This app is your <b>capstone foundation</b>. This afternoon adds tools (S5) and hardening + demo (S6). Build it on documents you actually care about.</p></div>
     </div>
   </div>
@@ -742,6 +773,33 @@ QUESTION: {question}</div>
 </main>
 
 <script>
+/* ============ theme toggle (light/dark, saved per browser) ============ */
+(function(){
+  const btn=document.getElementById('theme-btn');
+  function apply(t){
+    document.documentElement.setAttribute('data-theme',t);
+    if(btn)btn.textContent=(t==='dark')?'light':'dark';
+    document.dispatchEvent(new CustomEvent('themechange'));
+  }
+  let saved=null;
+  try{saved=localStorage.getItem('tce-genai-theme');}catch(e){}
+  apply(saved==='dark'?'dark':'light');
+  if(btn)btn.addEventListener('click',()=>{
+    const next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    try{localStorage.setItem('tce-genai-theme',next);}catch(e){}
+    apply(next);
+  });
+})();
+
+/* ============ session dots: where are we in the six-session arc ============ */
+(function(){
+  const dots=[].slice.call(document.querySelectorAll('#sesdots i'));
+  if(!dots.length)return;
+  const ME=3;                         // this deck is session 4 (0-based) — the HUD dot never moves within a deck
+  const counts=[29,21,17,20,23,21];   // slides per session, for the record
+  dots.forEach((d,k)=>d.classList.toggle('on',k===ME));
+})();
+
 /* ============ slide engine ============ */
 (function(){
   const deck=document.getElementById('deck');
@@ -797,6 +855,7 @@ QUESTION: {question}</div>
     if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));tx=null;},{passive:true});
   const h=parseInt((location.hash||'').slice(1),10);
   go(isNaN(h)?0:h-1,false);
+  addEventListener('hashchange',()=>{const n=parseInt((location.hash||'').slice(1),10);if(!isNaN(n))go(n-1,false);});
 })();
 
 
@@ -872,7 +931,7 @@ mkQuiz('rq',[
   const sl=document.getElementById('cp-slider'),pg=document.getElementById('cp-pages'),
         out=document.getElementById('cp-out'),v=document.getElementById('cp-verdict'),
         inr=document.getElementById('cp-inr');
-  const USD_PER_MTOK=1.50, INR_PER_USD=95.5, Q_PER_MONTH=30*30; /* 30 questions/day · Gemini 3.5 Flash input, July 2026 */
+  const USD_PER_MTOK=1.50, INR_PER_USD=95.5, Q_PER_MONTH=30*30; /* 30 questions/day · Gemini 3.5 Flash (previous-gen Flash) list price, Sep 2026 */
   let shown={q:0,mo:0},raf=null;
   function paintINR(q,mo){
     /* both currencies: the rupee makes it visceral in the room, the dollar travels */
@@ -922,10 +981,10 @@ mkQuiz('rq',[
     'Mid-semester exam covers units 1\u20133; end-semester covers all five.'
   ];
   const queries=[
-    {scores:[0.10,0.78,0.08,0.05,0.07,0.41],top:[1],q:[72,14],ql:'marks to pass?',note:'\u201cmarks\u201d never appears in the winning chunk \u2014 pure meaning-match.'},
-    {scores:[0.38,0.06,0.62,0.12,0.57,0.09],top:[2,4],q:[38,86],ql:'PC slow?',note:'TWO relevant chunks (scheduling + thrashing) \u2014 real answers often span chunks. Retrieve top-k, not top-1.'},
-    {scores:[0.12,0.04,0.18,0.84,0.10,0.05],top:[3],q:[13,58],ql:'deadlock conditions?',note:'Direct hit \u2014 when vocabulary aligns, semantic search looks like keyword search with a PhD.'},
-    {scores:[0.12,0.21,0.08,0.05,0.09,0.31],top:[],q:[80,84],ql:'attendance condonation?',note:'Every bar under 0.35 \u2014 nothing relevant exists in these notes, and the scores SAY SO. Semantic search isn\u2019t magic. Hold this thought: it\u2019s failure mode #1 on the RAG-breaks slide.'}
+    {scores:[0.10,0.78,0.08,0.05,0.07,0.41],top:[1],q:[72,14],ql:'marks to pass?',note:'\u201cmarks\u201d never appears in the winning chunk \u2014 pure meaning-match.',why:['\u201cpass\u201d and \u201cmarks\u201d share a neighbourhood in meaning-space']},
+    {scores:[0.38,0.06,0.62,0.12,0.57,0.09],top:[2,4],q:[38,86],ql:'PC slow?',note:'TWO relevant chunks (scheduling + thrashing) \u2014 real answers often span chunks. Retrieve top-k, not top-1.',why:['\u201cslow\u201d maps onto scheduling overhead','\u201cslow\u201d also maps onto thrashing']},
+    {scores:[0.12,0.04,0.18,0.84,0.10,0.05],top:[3],q:[13,58],ql:'deadlock conditions?',note:'Direct hit \u2014 when vocabulary aligns, semantic search looks like keyword search with a PhD.',why:['the question and the chunk share their key terms']},
+    {scores:[0.12,0.21,0.08,0.05,0.09,0.31],top:[],q:[80,84],ql:'attendance condonation?',note:'Every bar under 0.35 \u2014 nothing relevant exists in these notes, and the scores SAY SO. Semantic search isn\u2019t magic. Hold this thought: it\u2019s failure mode #1 on the RAG-breaks slide.',why:[]}
   ];
   const pos=[[24,30],[64,22],[32,58],[18,78],[46,72],[78,38]];
   const labels=['process','pass marks','round robin','deadlock','paging / thrashing','exam units'];
@@ -950,6 +1009,16 @@ mkQuiz('rq',[
       r.querySelector('i').style.width=(q.scores[k]*100)+'%';
     });
     note.textContent=q.note;
+    /* why-it-matched line under each winning chunk */
+    rows.forEach((r,k)=>{
+      const why=r.querySelector('.why');
+      if(why)why.remove();
+      if(q.top.indexOf(k)>-1&&q.why&&q.why[q.top.indexOf(k)]){
+        const w=document.createElement('div');w.className='why';
+        w.textContent='\u2190 '+q.why[q.top.indexOf(k)];
+        r.appendChild(w);
+      }
+    });
     /* redraw map: query dot + lines to its top-k neighbours */
     while(svg.firstChild)svg.removeChild(svg.firstChild);
     if(qdot){qdot.remove();qdot=null;}
@@ -1033,7 +1102,7 @@ mkQuiz('rq',[
 
 /* ===== presenter mode ===== */
 (function(){
-  var DATA = [{"m": 1, "n": "Day-2 welcome. ‘The model read the internet — but not YOUR notes. Today we fix that. This is the most employable session.’", "c": false, "title": "Giving AI your knowledge"}, {"m": 2, "n": "<b>Recap quiz.</b> Q4 (no memory) is the setup: ‘THAT gap is what we fix this morning.’", "c": false, "title": "Did it survive the night?"}, {"m": 3, "n": "<b>Villain slide. Ask, let the syllabus type out — the stamp lands at the end.</b> ‘It cannot know. Notice it didn’t say that.’ If a student’s phone hedges politely: it still invents a ‘typical’ syllabus — the hedge is not knowledge. Call back to the stamp all morning.", "c": false, "title": "Watch it not know — loudly"}, {"m": 2.5, "n": "<b>Cost slider to 380 (= the Galvin textbook) — read the ₹/month aloud.</b> Three taxes: window, meter, middle.", "c": false, "title": "\"Just paste all my notes!\" — let's price that"}, {"m": 1.5, "n": "The insight: send the right 3 paragraphs, not everything. Open-book exam = good index. RAG.", "c": false, "title": "Don't send everything. Send the right 3 paragraphs"}, {"m": 2.5, "n": "<b>Keyword vs semantic.</b> Zero shared words — pause. ‘You know a machine that maps meaning to coordinates…’ (they shout embeddings).", "c": false, "title": "Keyword search misses meaning"}, {"m": 2.5, "n": "Session 1’s map, now for paragraphs. Search = cosine top-k, one numpy line. <b>[D] deeper:</b> pooling, why normalization makes the matrix multiply <i>be</i> cosine, query-vs-document task types, dimension truncation. The &ldquo;why is it one line&rdquo; answer.", "c": false, "title": "Embeddings, now for whole paragraphs"}, {"m": 3.5, "n": "<b>Playground. Run all 4 queries — watch the query dot drop on the map.</b> Q2 = teaching gold: TWO chunks relevant → why top-k not top-1. End on the trap query: every bar under 0.35 — the tool admits ignorance (foreshadows the RAG-breaks slide).", "c": false, "title": "The search playground"}, {"m": 3, "n": "<b>Chunking, all 3 knives.</b> ‘More RAG failures come from chunking than model choice.’ Say it twice. <b>[D] deeper:</b> structure-aware splitting, small-to-search/big-to-read, metadata + filter-before-rank, context prefixing. The four upgrades after the boring default.", "c": false, "title": "Chunking: how you cut the book"}, {"m": 2, "n": "Vector DB in plain words. ‘What YOU need today = a numpy array.’ Don’t add infra until infra-sized problem.", "c": true, "title": "Vector databases, in plain words"}, {"m": 4, "n": "<b>CENTERPIECE. RAG stepper, step slowly.</b> Stage 5 (Augment) = the money screen: ‘the whole industry is THIS prompt.’ Stage 6: click the [1] — the citation flashes its source chunk. Grounded, cited, checkable, live. <b>[D] deeper:</b> retrieve-20-then-rerank-4, bi-encoder vs cross-encoder, hybrid BM25 + semantic, query rewriting. The single biggest post-chunking upgrade &mdash; and a lab stretch.", "c": false, "title": "RAG, end to end"}, {"m": 2.5, "n": "Grounded template — three load-bearing lines. Then the A/B toggle: delete the escape hatch, watch the invention come back. Callback to villain: ‘the escape hatch is what 9am was missing.’", "c": false, "title": "The grounded prompt template"}, {"m": 3, "n": "<b>Failure flips.</b> Debug order: retrieval→chunks→prompt→model. Stale index gives confident, cited, wrong answers. <b>[D] deeper:</b> recall@k / MRR / faithfulness &mdash; two scores, never one, and the diagnosis order they give you. The most employable slide in the deck.", "c": false, "title": "Where RAG breaks in the wild"}, {"m": 2, "n": "RAG vs fine-tune. Make them repeat: <b>‘Fine-tuning teaches behaviour; RAG provides knowledge.’</b>", "c": true, "title": "RAG vs paste-it-all vs fine-tuning"}, {"m": 1.5, "n": "‘You’ve been using RAG all along’ — support bots, NotebookLM, AI search. ‘Someone gets paid to build today’s lab.’", "c": true, "title": "You've been using RAG all along"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "Your final-year project is one grounded prompt…"}, {"m": 2, "n": "Two pipelines: ingest once, query forever. ~60 lines. Every stage they’ve touched this weekend.", "c": false, "title": "Lab architecture: two pipelines"}, {"m": 2.5, "n": "<b>Recall flips.</b> Class says each before clicking.", "c": false, "title": "Six ideas you own now"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB — the big build.</b> #1 sink = garbage PDF extraction (swap doc / use S3 vision). Search junk = chunking. Push the capstone framing. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 4: chat with YOUR notes"}, {"m": 3, "n": "<b>Show & tell + break.</b> Two honest failures + fixes. ‘Knows what you know. After lunch it gets hands.’ Remind: SAVE the notebook. <b>Links are on screen</b> — point at them.", "c": false, "title": "Your AI now knows what you know."}];
+  var DATA = [{"m": 1, "n": "Day-2 welcome. ‘The model read the internet — but not YOUR notes. Today we fix that. This is the most employable session.’", "c": false, "title": "Giving AI your knowledge"}, {"m": 2, "n": "<b>Recap quiz.</b> Q4 (no memory) is the setup: ‘THAT gap is what we fix this morning.’", "c": false, "title": "Did it survive the night?"}, {"m": 3, "n": "<b>Villain slide. Ask, let the syllabus type out — the stamp lands at the end.</b> ‘It cannot know. Notice it didn’t say that.’ If a student’s phone hedges politely: it still invents a ‘typical’ syllabus — the hedge is not knowledge. Call back to the stamp all morning.", "c": false, "title": "Watch it not know — loudly"}, {"m": 2.5, "n": "<b>Cost slider to 380 (= the Galvin textbook) — read the ₹/month aloud.</b> Three taxes: window, meter, middle.", "c": false, "title": "\"Just paste all my notes!\" — let's price that"}, {"m": 1.5, "n": "The insight: send the right 3 paragraphs, not everything. Open-book exam = good index. RAG.", "c": false, "title": "Don't send everything. Send the right 3 paragraphs."}, {"m": 2.5, "n": "<b>Keyword vs semantic.</b> Zero shared words — pause. ‘You know a machine that maps meaning to coordinates…’ (they shout embeddings).", "c": false, "title": "Keyword search misses meaning"}, {"m": 2.5, "n": "Session 1’s map, now for paragraphs. Search = cosine top-k, one numpy line. <b>[D] deeper:</b> pooling, why normalization makes the matrix multiply <i>be</i> cosine, query-vs-document task types, dimension truncation. The &ldquo;why is it one line&rdquo; answer.", "c": false, "title": "Embeddings, now for whole paragraphs"}, {"m": 3.5, "n": "<b>Playground. Run all 4 queries — watch the query dot drop on the map.</b> Q2 = teaching gold: TWO chunks relevant → why top-k not top-1. End on the trap query: every bar under 0.35 — the tool admits ignorance (foreshadows the RAG-breaks slide).", "c": false, "title": "The search playground"}, {"m": 3, "n": "<b>Chunking, all 3 knives.</b> ‘More RAG failures come from chunking than model choice.’ Say it twice. <b>[D] deeper:</b> structure-aware splitting, small-to-search/big-to-read, metadata + filter-before-rank, context prefixing. The four upgrades after the boring default.", "c": false, "title": "Chunking: how you cut the book"}, {"m": 2, "n": "Vector DB in plain words. ‘What YOU need today = a numpy array.’ Don’t add infra until infra-sized problem.", "c": true, "title": "Vector databases, in plain words"}, {"m": 4, "n": "<b>CENTERPIECE. RAG stepper, step slowly.</b> Stage 5 (Augment) = the money screen: ‘the whole industry is THIS prompt.’ Stage 6: click the [1] — the citation flashes its source chunk. Grounded, cited, checkable, live. <b>[D] deeper:</b> retrieve-20-then-rerank-4, bi-encoder vs cross-encoder, hybrid BM25 + semantic, query rewriting. The single biggest post-chunking upgrade &mdash; and a lab stretch.", "c": false, "title": "RAG, end to end"}, {"m": 2.5, "n": "Grounded template — three load-bearing lines. Then the A/B toggle: delete the escape hatch, watch the invention come back. Callback to villain: ‘the escape hatch is what 9am was missing.’", "c": false, "title": "The grounded prompt template"}, {"m": 3, "n": "<b>Failure flips.</b> Debug order: retrieval→chunks→prompt→model. Stale index gives confident, cited, wrong answers. <b>[D] deeper:</b> recall@k / MRR / faithfulness &mdash; two scores, never one, and the diagnosis order they give you. The most employable slide in the deck.", "c": false, "title": "Where RAG breaks in the wild"}, {"m": 2, "n": "RAG vs fine-tune. Make them repeat: <b>‘Fine-tuning teaches behaviour; RAG provides knowledge.’</b>", "c": true, "title": "RAG vs paste-it-all vs fine-tuning"}, {"m": 1.5, "n": "‘You’ve been using RAG all along’ — support bots, NotebookLM, AI search. ‘Someone gets paid to build today’s lab.’ The scheme-assistant and regulations-bot cards are capstone seeds — tell them to steal one.", "c": true, "title": "You've been using RAG all along"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break. What makes it a project, not a demo: your own corpus + a 10-question eval set + one documented failure and fix.", "c": true, "title": "Your final-year project needs a user, a baseline, and a number."}, {"m": 2, "n": "Two pipelines: ingest once, query forever. ~60 lines. Every stage they’ve touched this weekend.", "c": false, "title": "Lab architecture: two pipelines"}, {"m": 2.5, "n": "<b>Recall flips.</b> Class says each before clicking.", "c": false, "title": "Six ideas you own now"}, {"m": 50, "n": "<b>2 min brief, then 50 MIN LAB — the big build.</b> #1 sink = garbage PDF extraction (swap doc / use S3 vision). Search junk = chunking. Push the capstone framing. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 4: chat with YOUR notes"}, {"m": 3, "n": "<b>Show & tell + break.</b> Two honest failures + fixes. ‘Knows what you know. After lunch it gets hands.’ Remind: SAVE the notebook. <b>Links are on screen</b> — point at them.", "c": false, "title": "Your AI now knows what you know."}];
   var deck=document.getElementById('deck');
   var total=DATA.reduce(function(a,d){return a+d.m;},0);
   var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});

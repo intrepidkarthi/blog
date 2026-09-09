@@ -1,0 +1,265 @@
+# Session 1 — Slide-by-Slide Cheat Sheet
+
+### Session 1 · How Machines Learned to Talk · 29 slides · 1:56 total
+
+Day 1 opens here. Everything later in the course stands on the loop taught in this session.
+
+One card per slide, generated from `presentations/session-1-how-machines-learned-to-talk.html` itself, so nothing here can drift from what is on screen. **#** is the deck position — it matches the `29 / 29` counter in the footer and the `#29` deep link. **Badge** is the number printed in the slide’s top-left corner; the two differ because title and lab slides are not badged. Press **S** in the deck for the same notes with a live timer.
+
+**`trim`** marks a slide the deck itself flags **compressible** — press S and you will see `▸ compressible` on it. These are the first things to shorten when you are behind, not beats you must land. **`D`** marks a slide carrying a `<|deeper|>` panel: press **D** to open it, and only open it if the room asks.
+
+---
+
+## At a glance
+
+| At | # | Badge | Slide | Budget | |
+|---|---|---|---|---|---|
+| 0:00 | 1 | — | How machines learned to talk | 1 min |  |
+| 0:01 | 2 | 01 | I sat in these seats — TCE CSE, class of 2009. | 1 min | `trim` |
+| 0:02 | 3 | 02 | 12 hours. 6 things you'll build. | 1.5 min |  |
+| 0:04 | 4 | 03 | Two kinds of AI: judges vs creators | 3 min | `trim` |
+| 0:06 | 5 | 04 | AI, ML, GenAI, LLM — who lives inside whom | 2.5 min |  |
+| 0:09 | 6 | 05 | ChatGPT is autocomplete at scale. That one idea goes surprisingly far. | 1.5 min |  |
+| 0:10 | 7 | 06 | Play the model: guess the next word | 3.5 min |  |
+| 0:14 | 8 | 07 | Those odds aren’t magic — you just count words. | 2.5 min | `trim` |
+| 0:16 | 9 | 08 | Watch the network think | 3 min |  |
+| 0:20 | 10 | 09 | Why the same question gives different answers | 3 min | `D` |
+| 0:22 | 11 | 10 | Wait — is it just searching a giant database? | 2.5 min |  |
+| 0:25 | 12 | 11 | What's inside a model? Just knobs. | 3 min | `D` |
+| 0:28 | 13 | 12 | Training vs using: the cookbook rule | 2.5 min |  |
+| 0:30 | 14 | 13 | Models don't read words. They read tokens. | 2.5 min |  |
+| 0:33 | 15 | 14 | You saw this machine on the pre-class page — here it is in one loop | 3 min | `D` |
+| 0:36 | 16 | — | If autocomplete can pass your exam, your exam was never testing understanding. | 1.5 min | `trim` |
+| 0:38 | 17 | 15 | The loop is old. The scale is new. | 2 min | `trim` `D` |
+| 0:40 | 18 | 16 | A freshly trained model won’t answer you. It just keeps writing. | 2.5 min |  |
+| 0:42 | 19 | 17 | Finishing school, in three steps | 2 min |  |
+| 0:44 | 20 | 18 | Reasoning models: think longer, not just train bigger | 2 min | `trim` |
+| 0:46 | 21 | 19 | Why ChatGPT ≠ Gemini ≠ Claude | 1.5 min | `trim` `D` |
+| 0:48 | 22 | 20 | Famous failures — you explain them | 2.5 min |  |
+| 0:50 | 23 | 21 | The context window: its entire working memory | 2 min | `D` |
+| 0:52 | 24 | 22 | Eight words you own now | 2 min |  |
+| 0:54 | 25 | 23 | What actually happens when you call an API | 2.5 min |  |
+| 0:56 | 26 | 24 | Your lab kit, and the rhythm | 2 min |  |
+| 0:58 | 27 | 25 | Lab 1: your first AI API call | 50 min |  |
+| 1:48 | 28 | 26 | Three things before the next session | 5 min | `trim` |
+| 1:54 | 29 | 27 | You've learned the trick. Next: you learn to drive it. | 2 min | `trim` |
+| 1:56 | | | *end* | | |
+
+---
+
+## The cards
+
+### 1 · How machines learned to talk
+
+`#1` · `<|session_01/06|>` · **1 min** · at **0:00**
+
+- **Run it** — **Open with energy.** “By the end of today, everyone here writes code that talks to a frontier AI model — for free.”
+
+### 2 · I sat in these seats — TCE CSE, class of 2009.
+
+`#2` · badge **01** · `<|your_instructor|>` · **1 min** · at **0:01** · `trim`
+
+- **Run it** — **Under 45 seconds.** One line of credibility, one line of humility. The failed-things line gets the laugh — let it land, then move on. The work sells you better than the bio.
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+### 3 · 12 hours. 6 things you'll build.
+
+`#3` · badge **02** · `<|the_deal|>` · **1.5 min** · at **0:02**
+
+- **Run it** — Walk the 6 artifacts fast. Plant the capstone seed: “Session 6 you demo — start thinking what you’d build.”
+
+### 4 · Two kinds of AI: judges vs creators
+
+`#4` · badge **03** · `<|warm_up_game|>` · **3 min** · at **0:04** · `trim`
+
+- **On screen** — *Classify the AI — shout it, then click*; buttons: **Judgesdiscriminative — labels what exists** · **Createsgenerative — makes something new**
+- **Run it** — **GAME.** Class shouts judges/creates before each click. Gotcha = keyboard autocomplete (generative). ~25s/item.
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+### 5 · AI, ML, GenAI, LLM — who lives inside whom
+
+`#5` · badge **04** · `<|untangle_the_words|>` · **2.5 min** · at **0:06**
+
+- **On screen** — *Click any ring*
+- **Land it** — Land **app ≠ model**: ChatGPT is WhatsApp, GPT is the network.
+- **Run it** — Click rings outside-in AI→LLM.
+
+### 6 · ChatGPT is autocomplete at scale. That one idea goes surprisingly far.
+
+`#6` · badge **05** · `<|the_one_idea|>` · **1.5 min** · at **0:09**
+
+- **Run it** — THE slide. Say slowly: one job — predict the next token, repeat. Pre-empt “but it reasons!” → hold for scale.
+
+### 7 · Play the model: guess the next word
+
+`#7` · badge **06** · `<|live_demo|>` · **3.5 min** · at **0:10**
+
+- **On screen** — *Next-token prediction*; buttons: **Reveal probabilities** · **Next example →**
+- **Run it** — **GAME.** Class shouts the next word BEFORE reveal. Ex2 (idli+__) room disagrees = spread distribution. Finale: Thiagarajar College of ___ → 97% — the room is sitting inside a distribution. Bridge: who picks? dice.
+
+### 8 · Those odds aren’t magic — you just count words.
+
+`#8` · badge **07** · `<|live_demo|>` · **2.5 min** · at **0:14** · `trim`
+
+- **On screen** — *Train a next-word model by tallying*; buttons: **Build the table →** · **Sample next word** · **Take the top** · **↻ Restart**
+- **Land it** — The SAME three steps as Claude — only step 2 and training differ.
+- **Run it** — **THE demystifier.** Click **Build the table** — narrate: training is just tallying which word follows which. Then Sample from <|start|>: room shouts a word, you roll. Hit **Take the top** to contrast greedy vs sampling. It stops when it samples <|end|> — that is the EOS token. Compress by skipping the greedy toggle.
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+### 9 · Watch the network think
+
+`#9` · badge **08** · **3 min** · at **0:16**
+
+- **On screen** — *One forward pass = one next-token guess*; buttons: **Watch it think** · **Step** · **⟲ Reset**
+- **Land it** — It never plans a sentence.
+- **Run it** — **THE money slide.** Play it once in silence — let the room watch. Then Reset and Step through, narrating: tokens→numbers, layers mix, distribution, dice, APPEND. It only ever picks one next token — 650 times for a 500-word answer.
+
+### 10 · Why the same question gives different answers
+
+`#10` · badge **09** · `<|live_demo|>` · **3 min** · at **0:20** · `D`
+
+- **On screen** — *Temperature — the randomness knob*; *50 rolls, this temperature*; buttons: **Sample a token** · **Roll 10×** · **Roll 50× — see the shape**
+- **Run it** — **SLIDER.** T→0.05, Roll 10× (Chennai ×10). T→2, Roll 10× until pizza shows in the tally. Rule: facts low, creative high. Answers “why different answers?” **[D] deeper:** logits → softmax → temperature *divides the logits*, so T=0 is argmax; plus top-k / top-p. Open it if anyone asks “but where does the probability come from?”
+- **Depth `D`** — where the dice actually come from
+
+### 11 · Wait — is it just searching a giant database?
+
+`#11` · badge **10** · `<|the_question_you're_thinking|>` · **2.5 min** · at **0:22**
+
+- **On screen** — *“A pirate poem about jigarthanda”*; buttons: **Search every database on Earth** · **Ask the model**
+- **Run it** — **Kills #1 myth.** Search → 0 results; Ask model → pirate jigarthanda poem. “Nothing stored. It computed that.”
+
+### 12 · What's inside a model? Just knobs.
+
+`#12` · badge **11** · `<|live_demo|>` · **3 min** · at **0:25** · `D`
+
+- **On screen** — *Fit the line: hours studied → exam marks*
+- **Run it** — **WIDGET.** Invite a student to drag both sliders to ‘trained’. Narrate: w,b are PARAMETERS; a model = a file of knob values. **[D] deeper:** cross-entropy loss + perplexity — the one number a lab watches for months. Good answer to “how do they know it’s working?”
+- **Depth `D`** — how anyone knows the training is working
+
+### 13 · Training vs using: the cookbook rule
+
+`#13` · badge **12** · `<|two_different_moments|>` · **2.5 min** · at **0:28**
+
+- **On screen** — *True or false? — shout first*; buttons: **True** · **False**
+- **Run it** — Cookbook analogy: write once, cooking doesn’t change the book. Q3 (free-tier trains future) = the privacy warning.
+
+### 14 · Models don't read words. They read tokens.
+
+`#14` · badge **13** · `<|live_demo|>` · **2.5 min** · at **0:30**
+
+- **On screen** — *Tokenizer — type anything*; buttons: **English** · **தமிழ்** · **हिन्दी** · **العربية** · **Code** · **Long word**
+- **Run it** — **Type a student name, then தமிழ்.** The ratio jump is the moment — and the ₹ meter turns it into money: same meaning, bigger bill. Honest: illustrative tokenizer; lab shows real counts.
+
+### 15 · You saw this machine on the pre-class page — here it is in one loop
+
+`#15` · badge **14** · `<|assemble_the_machine|>` · **3 min** · at **0:33** · `D`
+
+- **On screen** — *One loop per token — drive it yourself*; buttons: **Step →** · **Auto-run loop** · **Reset**
+- **Run it** — **STEPPER — the hardest 3 min.** Ask “who did the pre-class page?” — then Step slowly, narrating each stage: tokens → coordinates → attention → scores → dice → APPEND. Auto-run ends on the stat flash; let it land. ‘500-word answer ≈ 650 loops.’ Embeddings and attention are NOT taught on their own slides any more — they live on the page and come back in Session 4. **[D] deeper:** the two-paragraph version (idli/dosa, king−man+woman, what “it” points to, the T in GPT, positional encoding, n²). Open it only if someone asks “wait, what is attention?”
+- **Depth `D`** — embeddings and attention, in two paragraphs
+
+### 16 · If autocomplete can pass your exam, your exam was never testing understanding.
+
+`#16` · `<|hot_take|>` · **1.5 min** · at **0:36** · `trim`
+
+- **On screen** — full-bleed hot take
+- **Run it** — **Pick the fight deliberately.** Read it once, slowly, then be quiet for 3 seconds. Say it looking at the faculty row — and smile. Invite disagreement — take one counter-argument now, park the rest for the break.
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+### 17 · The loop is old. The scale is new.
+
+`#17` · badge **15** · `<|why_now?|>` · **2 min** · at **0:38** · `trim` · `D`
+
+- **On screen** — *Grow the model — drag*
+- **Run it** — Drag 10M→1T. Pause at 10B: ‘translation appeared — nobody programmed it.’ Emergence; researchers argue how sudden it is. **[D] deeper:** scaling laws + the Chinchilla correction (params and data together), and the data wall. Pairs with slide 20 on test-time compute.
+- **Depth `D`** — scale is not one slider — it is three
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+### 18 · A freshly trained model won’t answer you. It just keeps writing.
+
+`#18` · badge **16** · `<|plot_twist|>` · **2.5 min** · at **0:40**
+
+- **On screen** — *Same prompt, two models*; buttons: **Raw base model** · **After finishing school** · **Another prompt**
+- **Run it** — Click Raw base on 2+2 (laugh), then After finishing school. Point: raw pretraining ≠ assistant.
+
+### 19 · Finishing school, in three steps
+
+`#19` · badge **17** · `<|from_parrot_to_assistant|>` · **2 min** · at **0:42**
+
+- **Land it** — ‘ChatGPT’s 2022 win was better finishing school, not a smarter brain.
+- **Run it** — Three steps, one line each. ’.
+
+### 20 · Reasoning models: think longer, not just train bigger
+
+`#20` · badge **18** · `<|the_third_dial|>` · **2 min** · at **0:44** · `trim`
+
+- **Land it** — Land the cost rule: never pay thinking prices for capital-city questions.
+- **Run it** — **Dial metaphor.** 1 scale, 2 finishing school, 3 thinking time. Pre-empts 'is o-series different magic?' — no, more tokens.
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+### 21 · Why ChatGPT ≠ Gemini ≠ Claude
+
+`#21` · badge **19** · `<|same_trick|>` · **1.5 min** · at **0:46** · `trim` · `D`
+
+- **Run it** — Biryani line. Two points only: closed vs open weights, and ‘names change, mechanics don’t.’ Don’t read table. **[D] deeper:** MoE, distillation, quantization — why Flash-class models exist and why parameter count stopped predicting cost. Sets up the S6 routing decision.
+- **Depth `D`** — why every lab ships a cheap fast one and an expensive slow one
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+### 22 · Famous failures — you explain them
+
+`#22` · badge **20** · `<|you_now_know_why|>` · **2.5 min** · at **0:48**
+
+- **Run it** — **REVEAL CARDS.** Class explains WHY before each click: strawberry→tokens, math→predict, news→cutoff, citation→plausible.
+
+### 23 · The context window: its entire working memory
+
+`#23` · badge **21** · `<|one_last_concept|>` · **2 min** · at **0:50** · `D`
+
+- **On screen** — *Stuff the window — a typical 128k window*; buttons: **+ 1 hour of chat** · **+ your class notes** · **+ entire textbook** · **1M window** · **Reset**
+- **Run it** — Fill window with chat+notes (green), then textbook → red overflow. Then 1M: textbook fits — ‘the wall moves; the physics doesn’t.’ Twist: **no memory — app re-sends everything.** Motivates RAG. **[D] deeper:** the KV cache: prefill vs decode, TTFT vs tokens/sec, and why context caching is ~90% off. This is the mechanism behind three later cost claims — worth opening if time allows.
+- **Depth `D`** — then why isn't re-sending everything unbearably slow?
+
+### 24 · Eight words you own now
+
+`#24` · badge **22** · `<|lock_it_in|>` · **2 min** · at **0:52**
+
+- **Run it** — **ACTIVE RECALL.** Class says each definition aloud, THEN click. Now includes Parameter + Inference.
+
+### 25 · What actually happens when you call an API
+
+`#25` · badge **23** · `<|before_you_open_laptops|>` · **2.5 min** · at **0:54**
+
+- **On screen** — *One request, round trip — press send*; buttons: **Send request**
+- **Run it** — **Press Send.** Dot travels code→key→GPUs→response. ‘The model does NOT run on your laptop.’ De-mystifies the lab.
+
+### 26 · Your lab kit, and the rhythm
+
+`#26` · badge **24** · `<|how_labs_work|>` · **2 min** · at **0:56**
+
+- **On screen** — *Today's handout at a glance*
+- **Run it** — Shown ONCE, applies to all 6 labs. Point at A→E strip. Point at **intrepidkarthi.com/genai** — everyone bookmarks it now, phones out. Pairs rule: **both have a key · one drives per part · swap at each checkpoint**. Read the Lab 3 line aloud: put a receipt + a handwriting page in Drive now. ‘Checkpoints are for you, not marks.’
+
+### 27 · Lab 1: your first AI API call
+
+`#27` · badge **25** · `<|50_minutes|>` · **50 min** · at **0:58**
+
+- **Run it** — **2 min brief, then 50 MIN LAB.** 5 steps on board + aistudio.google.com. Pairs: both have a key, one drives per part, swap at checkpoints; 5-min rule. Circulate; checkpoint sweep at +40. **Links are on screen** — point at them.
+
+### 28 · Three things before the next session
+
+`#28` · badge **26** · `<|no_homework|>` · **5 min** · at **1:48** · `trim`
+
+- **Run it** — **After lab · 5 min incl. show & tell.** Show & tell first (~3): 2–3 pairs’ model differences from Part D. Then the three cards: the 10-question test set is written in the last 10 min of lab (Part E) — confirm every pair has it, it feeds Session 2; the lie-detector teaser; the next-session hand-off.
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+### 29 · You've learned the trick. Next: you learn to drive it.
+
+`#29` · badge **27** · `<|short_break|>` · **2 min** · at **1:54** · `trim`
+
+- **Run it** — **Close (2 min).** ‘Learned the trick; next you drive it.’ Name the strongest hot-take counter-argument from the room, with credit. Remind: bring your own documents (PDF/notes) for Day 2, and the two photos for Lab 3. **Links are on screen** — point at them.
+- **Behind?** — the deck flags this one compressible. Shorten or drop it before you rush anything else.
+
+---
+
+*Generated from the deck by `instructor-notes/gen-slide-guide.py`. Do not hand-edit: re-run it after any deck change, then run `instructor-notes/check-slide-refs.py`.*

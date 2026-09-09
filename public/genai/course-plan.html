@@ -51,118 +51,164 @@
   <h1>Generative AI: Foundations and Applications</h1>
   <p class="lead">One-credit course · 3rd &amp; 4th year BE CSE · Thiagarajar College of Engineering, Madurai</p>
 
-  <p><strong>Instructor:</strong> Karthikeyan Natarajan Gnanapalam (TCE CSE '09) · <strong>Total: 12 hours · 6 sessions × 2 hours</strong></p>
+<p><strong>Instructor:</strong> Karthikeyan Natarajan Gnanapalam (TCE CSE ’09) · <strong>Total: 12 hours · 6 sessions × 2 hours</strong></p>
+<p><strong>Delivery format: weekend bootcamp.</strong> Two consecutive days (Saturday and Sunday — 19–20 September 2026 at TCE), with three protected two-hour instructional blocks per day. The published timetable must include breaks and lunch <strong>outside</strong> those six instructional hours; do not run the blocks back-to-back without recovery time. <strong>Day 1:</strong> S1 → S2 → S3. <strong>Day 2:</strong> S4 → S5 → S6. Students complete account and access checks before Day 1; the labs handle the remaining preparation. The only overnight task is to gather 2–3 non-sensitive documents (notes or PDFs) for Day 2’s RAG build. The capstone is a deliberately small in-session sprint in S6, not a take-home production project. See <a href="TIMING.html"><code>TIMING</code></a> for the delivery contract and the fallback plan.</p>
+<hr />
+<h2 id="design-principles">Design principles</h2>
+<ol type="1">
+<li><strong>Every session ships something.</strong> Students leave each session with working code in their own Colab.</li>
+<li><strong>Intuition before jargon.</strong> Analogies first, terms second. The main line stays math-free — but it is not capped there (see <em>The depth layer</em> below).</li>
+<li><strong>Honest engineering.</strong> Cover failure modes (hallucination, injection, cost) as first-class content, not footnotes.</li>
+<li><strong>Zero local install.</strong> Google Colab plus the live API path, with an offline path built into every notebook: <code>MOCK = False</code> in Cell 1; set it <code>True</code> and every cell runs on canned responses prefixed <code>[MOCK]</code> (Lab 4 uses a hashed bag-of-words embedding so search still works). Works on a browser-capable college machine, subject to account, network, and provider availability.</li>
+</ol>
+<h2 id="the-depth-layer">The depth layer</h2>
+<p>The audience is 3rd- and 4th-year CSE students who have already done linear algebra and probability. Pitching everything at analogy level wastes that, but adding mechanism to the main line would blow a 12-hour budget that is already tight. So depth is a <strong>second layer, not a longer first one</strong>.</p>
+<p>Every deck carries collapsible <code>&lt;|deeper|&gt;</code> panels — <strong>21 of them across the six sessions</strong> — sitting under the slide they belong to. Collapsed by default, so they cost the running clock nothing; press <strong>D</strong> (or click the panel label) to open every panel on the current slide. Each one is flagged in the presenter notes as <code>[D] deeper:</code> with a one-line summary, so the instructor can decide in the moment.</p>
+<p>They exist for three situations: a sharp student asks the question the slide provokes (“but where do the probabilities come from?”), the room is running ahead of the clock, or a student revisits the deck after the session. <a href="LEARNING-GUIDE.html"><code>LEARNING-GUIDE</code></a> <strong>Part 8</strong> is the same material in prose, section-by-section cross-referenced to the panel it matches.</p>
+<p>What’s in them: logits/softmax/top-k/top-p · cross-entropy loss and perplexity · positional encoding (RoPE) and attention’s n² cost · scaling laws and the Chinchilla correction · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT · precision/recall/F1 and LLM-judge position bias · eval sample size (±1/√n) · ViT patches and vision’s token bill · what a diffusion model actually predicts · constrained decoding · embedding pooling, normalization and task types · chunking upgrades and filter-before-rank · reranking, bi- vs cross-encoders, hybrid search · recall@k / MRR / faithfulness · the tool-use wire format · agent loop guards and trajectory eval · quantization arithmetic for local models · why prompt injection has no escape character, and the three-legged exfiltration model · the input/output price asymmetry and cost-per-user · p50/p99 latency and what to log.</p>
+<p>None of it is examinable and none of it is required. It is there so the ceiling of the course is set by the student, not by the slide.</p>
+<h2 id="session-structure-every-session">Session structure (every session)</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Segment</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hook + recap of last session</td>
+<td>8 min</td>
+</tr>
+<tr class="even">
+<td>Talk with live interactive demos (HTML deck)</td>
+<td>48 min</td>
+</tr>
+<tr class="odd">
+<td>Lab (hands-on, pair-friendly)</td>
+<td>50 min</td>
+</tr>
+<tr class="even">
+<td>Show &amp; tell + wrap + next-session teaser</td>
+<td>14 min</td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td><strong>120 min</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Session 1 is the exception on paper: after the September 2026 cut (the tokenizer/embeddings/attention mechanism slides collapsed into one, because <code>how-llms-work.html</code> now carries them), its deck budgets 58.5 min of hook + talk, 50 min of lab and 7 min of wrap, leaving ~4.5 min of reserve for the API-key sink. Session 6 is the other exception — see below.</p>
+<hr />
+<h2 id="session-1--how-machines-learned-to-talk">Session 1 — How Machines Learned to Talk</h2>
+<p><em>Covers original topics: 1 (What is Generative AI?)</em></p>
+<p><strong>Talk — core:</strong> discriminative vs generative AI, the terminology map (AI ⊃ ML ⊃ GenAI ⊃ LLM; app ≠ model), next-token prediction, parameters, training vs inference, tokens, embeddings, attention, model failure modes, and what an API call actually is. <strong>Optional/depth:</strong> pretraining → instruction tuning → RLHF, reasoning-model economics, detailed model comparisons, and the no-memory implementation detail. Protect the core mental model and the API lab if the room is behind.</p>
+<p><strong>Interactive deck demos:</strong> next-token prediction game, live tokenizer visualizer, 2D embedding map, attention hover demo, temperature slider.</p>
+<p><strong>Lab 1:</strong> Get Gemini API key from AI Studio. First API call in Colab. Run 5 structured prompts. Same prompt across 3 models (Gemini API + 2 free web UIs) — document the differences.</p>
+<p><strong>Student leaves with:</strong> a working API key, first script, and the “it’s all next-token prediction” mental model.</p>
+<hr />
+<h2 id="session-2--talking-to-ai-and-catching-its-lies">Session 2 — Talking to AI, and Catching Its Lies</h2>
+<p><em>Covers original topics: 2 (Prompt Engineering) + 3 (Evaluation)</em></p>
+<p><strong>Talk:</strong> Anatomy of a good prompt: role, task, context, format, examples. Zero-shot vs few-shot. Step-by-step reasoning. Temperature and why the same prompt gives different answers. Common mistakes. Then the honest turn: models make things up — so how do engineers <em>know</em> a prompt is better? Test sets, scoring, side-by-side comparison. “It looked good in the demo” is not evaluation.</p>
+<p><strong>Lab 2:</strong> Two-part lab. (a) Take a deliberately bad prompt, improve it in 5 documented iterations. (b) Build a 10-question checker: expected answers vs model answers, auto-scored. Compare your prompt v1 vs v5 with numbers, not vibes.</p>
+<p><strong>Student leaves with:</strong> a prompt playbook + a working eval harness (their first “AI engineering” artifact).</p>
+<hr />
+<h2 id="session-3--ai-beyond-text">Session 3 — AI Beyond Text</h2>
+<p><em>Covers original topic: 4 (Images, Voice, Video)</em></p>
+<p><strong>Talk — core:</strong> multimodal input, image/document understanding, structured extraction, speech-to-text, and the limits of vision models. <strong>Optional/depth:</strong> diffusion internals, image generation, text-to-speech, and the mid-2026 video landscape. These topics are useful context but should not displace the document-extraction lab.</p>
+<p><strong>Lab 3:</strong> Multimodal Colab: upload a photo → ask questions about it. Extract structured data from a photographed document/receipt. Stretch: voice-note transcription → summary pipeline.</p>
+<p><strong>Student leaves with:</strong> a vision-powered app and the realization that “AI that sees” is one function call.</p>
+<hr />
+<h2 id="session-4--giving-ai-your-own-knowledge">Session 4 — Giving AI Your Own Knowledge</h2>
+<p><em>Covers original topics: 5 (Embeddings &amp; Search) + 6 (RAG)</em></p>
+<p><strong>Talk:</strong> The model doesn’t know your college, your notes, your company. Context window as the model’s “working memory.” Embeddings recap → semantic search: turning documents into vectors, finding similar chunks. Vector databases in plain terms. Then RAG: retrieve → stuff into prompt → answer with sources. Why this powers ~80% of real AI products. Where RAG fails (bad chunks, wrong retrieval, stale data).</p>
+<p><strong>Lab 4:</strong> Build “chat with my notes” end-to-end: chunk your own PDFs/notes → embed → search → feed top chunks to Gemini → answer with citations. All in one notebook.</p>
+<p><strong>Student leaves with:</strong> a working RAG app over their own study material — the single most employable skill in this course.</p>
+<hr />
+<h2 id="session-5--making-ai-do-things">Session 5 — Making AI Do Things</h2>
+<p><em>Covers original topics: 7 (Tools &amp; Workflows) + 8 (Choosing the Right Approach)</em></p>
+<p><strong>Talk:</strong> Text-only AI is a brain in a jar. Tool use: the model decides <em>which</em> function to call, your code executes it. Calculator, search, database, email. Workflows vs agents — the honest lesson: most problems need a fixed pipeline, not an autonomous agent. Then the decision framework: better prompt → few-shot → RAG → tools → fine-tuning, in that order of escalation. Open vs closed models; running models locally with Ollama (live demo).</p>
+<p><strong>Lab 5:</strong> Build an assistant with 2–3 tools (calculator, web search, file reader) using Gemini function calling. Then: 3 scenario cards — pick the right approach for each, justify in writing.</p>
+<p><strong>Student leaves with:</strong> a tool-using assistant + a decision framework they can defend in an interview.</p>
+<hr />
+<h2 id="session-6--breaking-ai-securing-it-and-shipping-it">Session 6 — Breaking AI, Securing It, and Shipping It</h2>
+<p><em>Covers original topics: 9 (Security &amp; Safety) + 10 (Shipping a Real Product) + Capstone demos</em></p>
+<p><strong>Talk:</strong> Live attacks they’ll never forget: prompt injection, jailbreaking, data leakage, hallucinated citations. Defense: input validation, output checking, guardrails, human-in-the-loop. Then production reality: cost per call, latency, rate limits, logging, retries, streaming UX. What changes between a notebook and a product.</p>
+<p><strong>Lab 6, red-team round (~30 min):</strong> students attack each other’s Session 4 RAG apps with injection payloads, then patch the holes.</p>
+<p><strong>Capstone sprint + demos (~50 min):</strong> in pairs, extend the app you already built today (S4 RAG app or S5 assistant) with <strong>one more course technique</strong> — e.g., add tool use to your RAG app, add an eval set to your assistant, or bolt vision onto either. Then 2–3 minute demos: what it does, one failure you found, one fix you made. (S6 deviates from the standard session timing: the talk is compressed to ~40 min before the capstone block, which then runs as ~30 min of red-teaming plus ~35 min of demos and a short close.)</p>
+<p><strong>Student leaves with:</strong> a security mindset, a working prototype, and a credible starting point for a portfolio or final-year project.</p>
+<hr />
+<h2 id="capstone-bootcamp-format-an-in-session-sprint-not-a-take-home">Capstone (bootcamp format: an in-session sprint, not a take-home)</h2>
+<p>Seeded end of Day 1 (“start thinking about what you’d build”), data gathered overnight (students bring their own documents), foundation built in S4/S5 labs, extended + hardened + demoed in S6. Requirement: your Day-2 app combining <strong>at least two course techniques</strong>, with (1) a 10-example eval set with scores, (2) one documented failure mode + mitigation. Solo or pairs.</p>
+<p><strong>Grading suggestion (100):</strong> Working demo 40 · Eval set with honest numbers 25 · Failure analysis 15 · Technique fit (right tool for the job) 10 · Presentation clarity 10.</p>
+<p><strong>Optional stretch:</strong> students who want a bigger portfolio piece can keep building after the weekend and submit a video demo within a week — grade the in-session version, bonus for the polished one.</p>
+<h2 id="college-project-bridge">College project bridge</h2>
+<p>The weekend is a foundation and prototype sprint, not a complete final-year project. After the course, students should choose one bounded track from <a href="COLLEGE-PROJECT-TRACKS.html"><code>COLLEGE-PROJECT-TRACKS</code></a>: study-notes RAG, codebase RAG, multimodal document QA, an evaluation/observability dashboard, a department knowledge service, or a subject tutor. Each track requires a user, permitted data source, baseline, labelled evaluation set, failure report, cost/latency note, and safe demo. The browser version is <code>COLLEGE-PROJECT-TRACKS.html</code>.</p>
+<p><strong>Recommended extensions rather than extra weekend lectures:</strong></p>
+<ul>
+<li>Use the external AI Engineering from Scratch curriculum selectively for classical ML evaluation, self-attention, tokenizer construction, context engineering, tool protocols, and observability.</li>
+<li>Add these as pre-reading or post-course tracks, not as additional required material in the 12-hour schedule.</li>
+<li>Students should build a small version first, compare it with the production library/API, then ship a measured artifact.</li>
+</ul>
+<hr />
+<h2 id="materials-per-session">Materials per session</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Interactive HTML deck</td>
+<td><code>presentations/session-N-*.html</code></td>
+</tr>
+<tr class="even">
+<td>Instructor prep pack (study before)</td>
+<td><code>instructor-notes/session-N-prep.md</code></td>
+</tr>
+<tr class="odd">
+<td>Instructor run sheet (delivery day)</td>
+<td><code>instructor-notes/session-N-notes.md</code></td>
+</tr>
+<tr class="even">
+<td>Student lab handout</td>
+<td><code>labs/session-N/lab-handout.md</code></td>
+</tr>
+<tr class="odd">
+<td>Ready-to-run Colab notebook</td>
+<td><code>labs/session-N/session_N_lab.ipynb</code></td>
+</tr>
+<tr class="even">
+<td>1-page cheatsheet</td>
+<td><code>cheatsheets/session-N-cheatsheet.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="tech-decisions-verified-8-september-2026">Tech decisions (verified 8 September 2026)</h2>
+<ul>
+<li><strong>SDK:</strong> <code>google-genai</code> (<code>from google import genai</code>) — the current unified SDK; old <code>google-generativeai</code> is deprecated.</li>
+<li><strong>Default model:</strong> <code>gemini-flash-lite-latest</code> — the alias for the free tier’s current Flash Lite (Gemini 3.5 Flash Lite as of September 2026; no newer Lite exists — resolve it live the week before and record the result in <code>fact-check.md</code>). The alias is deliberate: dated ids age out — <code>gemini-2.5-flash</code> returned “no longer available to new users” on fresh keys in July–August 2026 (observed on fresh keys; not in Google’s docs, no shutdown date published) while older accounts still had it, and the alias serves both, so a mixed room just works. Lite is deliberate too: the <code>gemini-flash-latest</code> alias is hot-swapped on every release and currently resolves to a thinking Flash model (3.7 Flash GA 13 Aug 2026, 3.8 Flash GA 2 Sep 2026 — check with <code>client.models.get</code>). One measured session on it billed 28,089 invisible reasoning tokens against 2,770 visible ones, 91% of the output charged. On Gemini 3.x the numeric <code>thinking_budget</code> is rejected (400 INVALID_ARGUMENT); <code>thinking_level="minimal"</code> exists on 3.5/3.6 Flash but not on 3.7/3.8 Flash, so on a free-tier key that alias burns the output quota roughly an order of magnitude faster and answers arrive slower. Flash-Lite defaults to minimal thinking and was verified for vision, function calling, streaming, <code>response_schema</code> and <code>max_output_tokens</code>, which covers every lab. <code>temperature</code>, <code>top_p</code> and <code>top_k</code> are deprecated on Gemini 3.x since 21 Jul 2026 (still accepted as of August — re-verify the Lab 1 temperature demo on the pre-class run). An alias can move under you like that inside a month, which is exactly why the course pins the lite alias and re-verifies it on a real key before teaching. Typical free-tier limits: ~10 requests/min, a few hundred/day per key — ample when each student has their own key; Google no longer publishes fixed per-model numbers, so confirm your project’s live limits in AI Studio. Since September 2026 the API rejects the older “Standard” keys: new AI Studio keys are auth keys automatically, but regenerate instructor/demo keys created before the change, and a student with an existing Google Cloud account must import a project in AI Studio before “Get API key” works. Notebooks use a single <code>MODEL</code> variable; pin a dated id only if you need frozen behavior. Check current list: <a href="https://ai.google.dev/gemini-api/docs/models">https://ai.google.dev/gemini-api/docs/models</a></li>
+<li><strong>Embeddings (S4):</strong> <code>gemini-embedding-2</code> via the same SDK (GA 22 Apr 2026; $0.20 per 1M text tokens). The lab passes <code>output_dimensionality=768</code> (the default is 3072) and wraps each chunk in <code>types.Content</code> — a bare list of strings is aggregated into one embedding. <code>gemini-embedding-001</code> is not shut down (still available for text; earliest shutdown 14 May 2028), it is simply superseded.</li>
+<li><strong>Local models (S5):</strong> Ollama demo on instructor laptop (pre-pull a small model; don’t rely on college bandwidth).</li>
+</ul>
+<h2 id="currency-alignment--future-proofing">Currency, alignment &amp; future-proofing</h2>
+<p>This course’s spine — LLM fundamentals → prompting → evaluation → RAG → tools/agents → production &amp; security — matches how GenAI is taught across 2026’s leading curricula (IBM’s RAG &amp; Agentic AI certificate, the major LLM-engineering courses, the frontier labs’ own material) and what employers expect: chunking strategies, embedding selection, vector DBs, citations, failure-mode analysis, golden-dataset evals, regression testing, function calling, workflow orchestration, and cost/latency/observability.</p>
+<p><strong>Deliberate pedagogy: build raw, then name the frameworks.</strong> Where most bootcamps teach LangChain/LlamaIndex/CrewAI first, this course builds RAG as a numpy array and tools as plain Python functions — so students understand the machinery before an abstraction hides it. Frameworks, LoRA/QLoRA, and LLMOps tooling are named as honest “next steps” (see <a href="LEARNING-GUIDE.html"><code>LEARNING-GUIDE</code></a> §7.2), not taught, keeping the 12 hours focused on durable fundamentals.</p>
+<p><strong>Where this goes deeper than a typical 2026 syllabus.</strong> Most short GenAI courses stop at “temperature controls creativity” and “RAG retrieves relevant chunks.” The depth layer takes the same 12 hours down to mechanism — the softmax that temperature divides, the KV cache behind every latency and caching claim, the n² curve that makes long context expensive, the bi-encoder/cross-encoder split that justifies reranking, and the structural reason prompt injection has no fix. Reranking, hybrid search, retrieval metrics (recall@k, MRR, faithfulness), agent trajectory evaluation, and quantization arithmetic are typically absent from introductory syllabi entirely; here they are one keypress from the slide that motivates them.</p>
+<p><strong>Future-proofing:</strong> model names, prices, free-tier limits, and fashionable frameworks change every few months; tokens, embeddings, attention, evaluation, retrieval, tool use, and security failure modes do not. The course is built on that stable layer, with one <code>MODEL</code> variable per notebook for the single thing that changes. <a href="LEARNING-GUIDE.html"><code>LEARNING-GUIDE</code></a> §7.3 makes this explicit for students — it’s the most valuable idea in the course.</p>
+<h2 id="risk--fallback-plan">Risk / fallback plan</h2>
+<ul>
+<li><strong>College Wi-Fi dies:</strong> decks are fully offline (single HTML files, no CDN). Keep one mobile hotspot; labs degrade to instructor-driven demo + students run at home.</li>
+<li><strong>AI Studio blocked / sign-up friction:</strong> set <code>MOCK = True</code> in Cell 1 of the notebook — every cell then runs on canned <code>[MOCK]</code> responses (Lab 4’s search still works on a hashed bag-of-words embedding) — or run a controlled demonstration; do not distribute shared keys or ask students to create extra accounts.</li>
+<li><strong>Rate limits (429):</strong> every notebook’s <code>ask()</code> retries with backoff, but retries are bounded; when a quota is exhausted, flip the pair to <code>MOCK = True</code> instead of repeatedly rerunning.</li>
+<li><strong>Slow machines:</strong> everything runs in Colab’s cloud — local specs don’t matter. See <a href="ZERO-SETUP.html"><code>ZERO-SETUP</code></a> for the full any-laptop/zero-cost guarantee.</li>
+</ul>
 
-  <p><strong>Delivery format: weekend bootcamp.</strong> Two consecutive days (Fri+Sat or Sat+Sun), three sessions per day, back-to-back with 10–15 min breaks and a lunch gap. <strong>Day 1:</strong> S1 → S2 → S3. <strong>Day 2:</strong> S4 → S5 → S6. What this format changes: no homework between sessions — all prep happens inside the labs (e.g., the 10-question test set is written in Lab 1's final 10 minutes, ready for Lab 2). The single overnight gap has exactly one job: students gather 2–3 of their own documents (notes, PDFs) for Day 2's RAG build. The capstone becomes a scoped in-session sprint in S6, not a take-home.</p>
-
-  <h2>Design principles</h2>
-  <ol>
-    <li><strong>Every session ships something.</strong> Students leave each session with working code in their own Colab.</li>
-    <li><strong>Intuition before jargon.</strong> Analogies first, terms second. The main line stays math-free — but it is not capped there (see <em>The depth layer</em> below).</li>
-    <li><strong>Honest engineering.</strong> Cover failure modes (hallucination, injection, cost) as first-class content, not footnotes.</li>
-    <li><strong>Zero-install.</strong> Google Colab + Gemini free tier. Works on any college machine with a browser.</li>
-  </ol>
 
 
-  <h2>The depth layer</h2>
-  <p>The audience is 3rd- and 4th-year CSE students who have already done linear algebra and probability. Pitching everything at analogy level wastes that, but adding mechanism to the main line would blow a 12-hour budget that is already tight. So depth is a <strong>second layer, not a longer first one</strong>.</p>
-  <p>Every deck carries collapsible <code>&lt;|deeper|&gt;</code> panels — <strong>21 of them across the six sessions</strong> — sitting under the slide they belong to. Collapsed by default, so they cost the running clock nothing; press <strong>D</strong> (or click the panel label) to open every panel on the current slide. Each one is flagged in the presenter notes as <code>[D] deeper:</code> with a one-line summary, so the instructor can decide in the moment.</p>
-  <p>They exist for three situations: a sharp student asks the question the slide provokes (&quot;but where do the probabilities come from?&quot;), the room is running ahead of the clock, or a student revisits the deck after the session. <a href="LEARNING-GUIDE.html#part-8">the Learning Guide, <strong>Part 8</strong></a> is the same material in prose, section-by-section cross-referenced to the panel it matches.</p>
-  <p>What&#x27;s in them: logits/softmax/top-k/top-p · cross-entropy loss and perplexity · positional encoding (RoPE) and attention&#x27;s n² cost · scaling laws and the Chinchilla correction · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT · precision/recall/F1 and LLM-judge position bias · eval sample size (±1/√n) · ViT patches and vision&#x27;s token bill · what a diffusion model actually predicts · constrained decoding · embedding pooling, normalization and task types · chunking upgrades and filter-before-rank · reranking, bi- vs cross-encoders, hybrid search · recall@k / MRR / faithfulness · the tool-use wire format · agent loop guards and trajectory eval · quantization arithmetic for local models · why prompt injection has no escape character, and the three-legged exfiltration model · the input/output price asymmetry and cost-per-user · p50/p99 latency and what to log.</p>
-  <p>None of it is examinable and none of it is required. It is there so the ceiling of the course is set by the student, not by the slide.</p>
 
-  <h2>Session structure (every session)</h2>
-  <table>
-    <thead>
-      <tr><th>Segment</th><th>Time</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Hook + recap of last session</td><td>8 min</td></tr>
-      <tr><td>Talk with live interactive demos (HTML deck)</td><td>48 min</td></tr>
-      <tr><td>Lab (hands-on, pair-friendly)</td><td>50 min</td></tr>
-      <tr><td>Show &amp; tell + wrap + next-session teaser</td><td>12 min</td></tr>
-    </tbody>
-  </table>
-
-  <h2>Session 1 — How Machines Learned to Talk</h2>
-  <p><em>Covers original topics: 1 (What is Generative AI?)</em></p>
-  <p><strong>Talk:</strong> Discriminative vs generative AI, and the terminology map (AI ⊃ ML ⊃ GenAI ⊃ LLM; app ≠ model). The one idea behind everything: predict the next token. The basics most courses skip: it's NOT a database (nothing stored, nothing looked up), what a parameter is (students hand-train a 2-knob model), training vs inference ("does it learn from my chats?"), and the no-memory truth (apps re-send the whole conversation). Tokens (Tamil vs English cost). Embeddings as coordinates. Attention as "which words look at which." Pretraining → instruction tuning → RLHF. The mid-2026 landscape. What LLMs are bad at, and why. What an API call actually is (before the lab).</p>
-  <p><strong>Interactive deck demos:</strong> next-token prediction game, live tokenizer visualizer, 2D embedding map, attention hover demo, temperature slider.</p>
-  <p><strong>Lab 1:</strong> Get Gemini API key from AI Studio. First API call in Colab. Run 5 structured prompts. Same prompt across 3 models (Gemini API + 2 free web UIs) — document the differences.</p>
-  <p><strong>Student leaves with:</strong> a working API key, first script, and the "it's all next-token prediction" mental model.</p>
-
-  <h2>Session 2 — Talking to AI, and Catching Its Lies</h2>
-  <p><em>Covers original topics: 2 (Prompt Engineering) + 3 (Evaluation)</em></p>
-  <p><strong>Talk:</strong> Anatomy of a good prompt: role, task, context, format, examples. Zero-shot vs few-shot. Step-by-step reasoning. Temperature and why the same prompt gives different answers. Common mistakes. Then the honest turn: models make things up — so how do engineers <em>know</em> a prompt is better? Test sets, scoring, side-by-side comparison. "It looked good in the demo" is not evaluation.</p>
-  <p><strong>Lab 2:</strong> Two-part lab. (a) Take a deliberately bad prompt, improve it in 5 documented iterations. (b) Build a 10-question checker: expected answers vs model answers, auto-scored. Compare your prompt v1 vs v5 with numbers, not vibes.</p>
-  <p><strong>Student leaves with:</strong> a prompt playbook + a working eval harness (their first "AI engineering" artifact).</p>
-
-  <h2>Session 3 — AI Beyond Text</h2>
-  <p><em>Covers original topic: 4 (Images, Voice, Video)</em></p>
-  <p><strong>Talk:</strong> How image generation works — the noise-to-picture intuition (diffusion). Vision models: AI that reads photos, documents, handwriting. Speech-to-text and text-to-speech. Video generation state of play (mid-2026). What multimodal means in one API call.</p>
-  <p><strong>Lab 3:</strong> Multimodal Colab: upload a photo → ask questions about it. Extract structured data from a photographed document/receipt. Stretch: voice-note transcription → summary pipeline.</p>
-  <p><strong>Student leaves with:</strong> a vision-powered app and the realization that "AI that sees" is one function call.</p>
-
-  <h2>Session 4 — Giving AI Your Own Knowledge</h2>
-  <p><em>Covers original topics: 5 (Embeddings &amp; Search) + 6 (RAG)</em></p>
-  <p><strong>Talk:</strong> The model doesn't know your college, your notes, your company. Context window as the model's "working memory." Embeddings recap → semantic search: turning documents into vectors, finding similar chunks. Vector databases in plain terms. Then RAG: retrieve → stuff into prompt → answer with sources. Why this powers ~80% of real AI products. Where RAG fails (bad chunks, wrong retrieval, stale data).</p>
-  <p><strong>Lab 4:</strong> Build "chat with my notes" end-to-end: chunk your own PDFs/notes → embed → search → feed top chunks to Gemini → answer with citations. All in one notebook.</p>
-  <p><strong>Student leaves with:</strong> a working RAG app over their own study material — the single most employable skill in this course.</p>
-
-  <h2>Session 5 — Making AI Do Things</h2>
-  <p><em>Covers original topics: 7 (Tools &amp; Workflows) + 8 (Choosing the Right Approach)</em></p>
-  <p><strong>Talk:</strong> Text-only AI is a brain in a jar. Tool use: the model decides <em>which</em> function to call, your code executes it. Calculator, search, database, email. Workflows vs agents — the honest lesson: most problems need a fixed pipeline, not an autonomous agent. Then the decision framework: better prompt → few-shot → RAG → tools → fine-tuning, in that order of escalation. Open vs closed models; running models locally with Ollama (live demo).</p>
-  <p><strong>Lab 5:</strong> Build an assistant with 2–3 tools (calculator, web search, file reader) using Gemini function calling. Then: 3 scenario cards — pick the right approach for each, justify in writing.</p>
-  <p><strong>Student leaves with:</strong> a tool-using assistant + a decision framework they can defend in an interview.</p>
-
-  <h2>Session 6 — Breaking AI, Securing It, and Shipping It</h2>
-  <p><em>Covers original topics: 9 (Security &amp; Safety) + 10 (Shipping a Real Product) + Capstone demos</em></p>
-  <p><strong>Talk:</strong> Live attacks they'll never forget: prompt injection, jailbreaking, data leakage, hallucinated citations. Defense: input validation, output checking, guardrails, human-in-the-loop. Then production reality: cost per call, latency, rate limits, logging, retries, streaming UX. What changes between a notebook and a product.</p>
-  <p><strong>Lab 6, red-team round (~30 min):</strong> students attack each other's Session 4 RAG apps with injection payloads, then patch the holes.</p>
-  <p><strong>Capstone sprint + demos (~50 min):</strong> in pairs, extend the app you already built today (S4 RAG app or S5 assistant) with <strong>one more course technique</strong> — e.g., add tool use to your RAG app, add an eval set to your assistant, or bolt vision onto either. Then 2–3 minute demos: what it does, one failure you found, one fix you made. (S6 deviates from the standard session timing: talk is compressed to ~30 min to make room.)</p>
-  <p><strong>Student leaves with:</strong> a security mindset, a shipped demo, and a portfolio project.</p>
-
-  <h2>Capstone (bootcamp format: an in-session sprint, not a take-home)</h2>
-  <p>Seeded end of Day 1 ("start thinking about what you'd build"), data gathered overnight (students bring their own documents), foundation built in S4/S5 labs, extended + hardened + demoed in S6. Requirement: your Day-2 app combining <strong>at least two course techniques</strong>, with (1) a 10-example eval set with scores, (2) one documented failure mode + mitigation. Solo or pairs.</p>
-  <p><strong>Grading suggestion (100):</strong> Working demo 40 · Eval set with honest numbers 25 · Failure analysis 15 · Technique fit (right tool for the job) 10 · Presentation clarity 10.</p>
-  <p><strong>Optional stretch:</strong> students who want a bigger portfolio piece can keep building after the weekend and submit a video demo within a week — grade the in-session version, bonus for the polished one.</p>
-
-  <h2>Materials per session</h2>
-  <table>
-    <thead>
-      <tr><th>Item</th><th>File</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Interactive HTML deck</td><td><code>presentations/session-N-*.html</code></td></tr>
-      <tr><td>Instructor prep pack (study before)</td><td><code>instructor-notes/session-N-prep.md</code></td></tr>
-      <tr><td>Instructor run sheet (delivery day)</td><td><code>instructor-notes/session-N-notes.md</code></td></tr>
-      <tr><td>Student lab handout</td><td><code>labs/session-N/lab-handout.md</code></td></tr>
-      <tr><td>Ready-to-run Colab notebook</td><td><code>labs/session-N/session_N_lab.ipynb</code></td></tr>
-      <tr><td>1-page cheatsheet</td><td><code>cheatsheets/session-N-cheatsheet.md</code></td></tr>
-    </tbody>
-  </table>
-
-  <h2>Tech decisions (July 2026)</h2>
-  <ul>
-    <li><strong>SDK:</strong> <code>google-genai</code> (<code>from google import genai</code>) — the current unified SDK; old <code>google-generativeai</code> is deprecated.</li>
-    <li><strong>Default model:</strong> <code>gemini-flash-latest</code> — the alias for the free tier's current Flash (Gemini 3.5 Flash as of July 2026). The alias is deliberate: dated ids age out — <code>gemini-2.5-flash</code> is no longer available to <em>new</em> accounts while older accounts still have it, and the alias serves both, so a mixed room just works. Typical free-tier limits: ~10 requests/min, a few hundred/day per key — ample when each student has their own key; Google no longer publishes fixed per-model numbers, so confirm your project's live limits in AI Studio. Notebooks use a single <code>MODEL</code> variable; pin a dated id only if you need frozen behavior. Check current list: <a href="https://ai.google.dev/gemini-api/docs/models">https://ai.google.dev/gemini-api/docs/models</a></li>
-    <li><strong>Embeddings (S4):</strong> Gemini embedding model via same SDK — currently <code>gemini-embedding-2</code> (the older <code>gemini-embedding-001</code> is retired; the notebooks' embedding-model variable makes this a one-line change too).</li>
-    <li><strong>Local models (S5):</strong> Ollama demo on instructor laptop (pre-pull a small model; don't rely on college bandwidth).</li>
-  </ul>
-
-  <h2>Currency, alignment &amp; future-proofing</h2>
-  <p>This course's spine — LLM fundamentals → prompting → evaluation → RAG → tools/agents → production &amp; security — matches how GenAI is taught across 2026's leading curricula (IBM's RAG &amp; Agentic AI certificate, the major LLM-engineering courses, the frontier labs' own material) and what employers expect: chunking strategies, embedding selection, vector DBs, citations, failure-mode analysis, golden-dataset evals, regression testing, function calling, workflow orchestration, and cost/latency/observability.</p>
-  <p><strong>Deliberate pedagogy: build raw, then name the frameworks.</strong> Where most bootcamps teach LangChain/LlamaIndex/CrewAI first, this course builds RAG as a numpy array and tools as plain Python functions — so students understand the machinery before an abstraction hides it. Frameworks, LoRA/QLoRA, and LLMOps tooling are named as honest &quot;next steps&quot; (see <a href="LEARNING-GUIDE.html#s7-2">the Learning Guide, §7.2</a>), not taught, keeping the 12 hours focused on durable fundamentals.</p>
-  <p><strong>Where this goes deeper than a typical 2026 syllabus.</strong> Most short GenAI courses stop at &quot;temperature controls creativity&quot; and &quot;RAG retrieves relevant chunks.&quot; The depth layer takes the same 12 hours down to mechanism — the softmax that temperature divides, the KV cache behind every latency and caching claim, the n² curve that makes long context expensive, the bi-encoder/cross-encoder split that justifies reranking, and the structural reason prompt injection has no fix. Reranking, hybrid search, retrieval metrics (recall@k, MRR, faithfulness), agent trajectory evaluation, and quantization arithmetic are typically absent from introductory syllabi entirely; here they are one keypress from the slide that motivates them.</p>
-  <p><strong>Future-proofing:</strong> model names, prices, free-tier limits, and fashionable frameworks change every few months; tokens, embeddings, attention, evaluation, retrieval, tool use, and security failure modes do not. The course is built on that stable layer, with one <code>MODEL</code> variable per notebook for the single thing that changes. <a href="LEARNING-GUIDE.html#s7-3">The Learning Guide, §7.3</a> makes this explicit for students — it's the most valuable idea in the course.</p>
-
-  <h2>Risk / fallback plan</h2>
-  <ul>
-    <li><strong>College Wi-Fi dies:</strong> decks are fully offline (single HTML files, no CDN). Keep one mobile hotspot; labs degrade to instructor-driven demo + students run at home.</li>
-    <li><strong>AI Studio blocked / sign-up friction:</strong> carry 5 spare API keys on paper for stuck students; keys are free.</li>
-    <li><strong>Rate limits (429):</strong> notebooks include retry-with-backoff cell; students each use their own key.</li>
-    <li><strong>Slow machines:</strong> everything runs in Colab's cloud — local specs don't matter. See <a href="ZERO-SETUP.html"><code>ZERO-SETUP.html</code></a> for the full any-laptop/zero-cost guarantee.</li>
-  </ul>
 
   <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="index.html">course home</a> · free to use, fork, localize and teach</footer>
 </div>

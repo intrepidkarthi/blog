@@ -1,0 +1,716 @@
+# Instructor Mastery Guide
+
+### Generative AI: Foundations and Applications · TCE Madurai · 19–20 September 2026
+
+**What this is.** The layer above the six prep packs. The prep packs tell you what to say on each slide and what the sharp student will ask about it. This document is for the ten days before, and its job is different: make the material *yours*, at mechanism level, so that any question — from a first-year who wandered in, from the best student in the room, from a faculty member who thinks this is statistics with a marketing budget — gets a correct, confident, honest answer without you reaching for notes.
+
+Everything here agrees with the decks and with the verified September-2026 API facts in `pre-delivery-review-2026-09-08.md` (item 13). Where it goes beyond the decks it goes to textbook level, and where the honest answer is "contested" or "unknown" it says so. Slides are referred to by title, never by number — the S1 deck was cut from 31 to 29 slides this week and numbers drift.
+
+---
+
+## Part 0 — How to use this guide, and the ten-day plan
+
+### The reading order
+
+Read Part 1 first, twice — it is the one page that answers most questions. Then Part 2 one session per sitting, each followed by that session's prep pack and a full drive of its deck. Part 3 (the question bank) is for the last four days: read it in the evenings, cover the answers, say yours aloud, compare. Parts 4 and 5 are for the two days before and the mornings of. Part 6 is the reading list — ten to fifteen papers and pages, one to two per evening, abstracts and figures only unless something grabs you.
+
+Do not try to memorise the question bank. Try to make every answer *derivable* from Part 1. If you can reduce a question to the causal chain, you can answer it; if you cannot, that is the section of Part 2 to re-read.
+
+### The ten-day schedule (Wed 9 – Fri 18 Sep)
+
+Assumes about ninety minutes an evening on weekdays and two longer blocks on the weekend. The live checks are placed where they buy the most: early enough to fix what they find, late enough to still be true on the day.
+
+| Day | Read / rehearse | Live checks |
+|---|---|---|
+| **Wed 9** | Part 1 (twice). Part 2 §S1. | **Regenerate every instructor/demo key** in AI Studio (Standard keys are rejected from September; new keys are auth keys). Run `validate-live.py` on the fresh key. Resolve both aliases: `client.models.get("gemini-flash-lite-latest")` and `client.models.get("gemini-flash-latest")` — write the resolved names into `fact-check.md`. Confirm the Lab 4 embed fix (one `Content` per chunk, `output_dimensionality=768`, count assertion) is in the notebook and the validator. |
+| **Thu 10** | S1 prep pack. Drive the S1 deck end to end in presenter mode (`S`); time it. Open every depth panel once. | Run Lab 1 on the fresh key. **Test the temperature stretch cell**: `temperature`, `top_p`, `top_k` are deprecated on Gemini 3.x (changelog 21 Jul 2026) and were still accepted on 3 Aug; confirm 0.0 gives near-identical runs and 1.5 visibly varies. If the parameter is now ignored or rejected, rewrite the teaching note (Part 4 has the line). Run the Tamil `count_tokens` cell and note the real ratio. |
+| **Fri 11** | Part 2 §S2. S2 prep pack. Drive the S2 deck; play all three spot-the-lie rounds without reading the answers. | Run Lab 2 end to end. Write your own ten-question test set (you need one as the worked example). Run the eval twice and confirm the score moves. |
+| **Sat 12** | Part 2 §S3 and §S4. S3 and S4 prep packs. Drive both decks. | Run Lab 3 with your own receipt and handwriting photo; confirm `response_schema` parses on the lite alias. Run Lab 4 on the fresh key **with your own documents**, then with `labs/session-4/sample-os-notes.txt`; confirm `chunk_vecs.shape[0] == len(chunks)` and that the Drive-mount/reload path works. Run the three playground queries from the deck against the sample document and check the trap query scores low. |
+| **Sun 13** | Part 2 §S5 and §S6. S5 and S6 prep packs. Drive both decks. Part 5 (delivery craft) once. | **Pre-pull `gemma4:e4b`** on the laptop you will present from (`ollama pull gemma4:e4b`; keep `gemma3:4b` as the fallback). Turn Wi-Fi off and run it. Run Lab 5 end to end, including the manual loop and the guarded loop; confirm the `function_response` format still round-trips. Run Lab 6; confirm the indirect payload in the Cell 5 demo still lands on the lite alias and that the direct attacks mostly bounce. |
+| **Mon 14** | Part 3, sections "no ML background" and "strong students". Say answers aloud before reading them. | Dry-run all six notebooks **with `MOCK=True`** (Cell 1 of each) so you know exactly what the offline path looks like before you ever need it in the room. |
+| **Tue 15** | Part 3, "faculty / sceptics" and "about the tools". Part 6: read the two Gemini docs pages (thinking, embeddings) properly, not skimmed. | Re-run `validate-live.py`. Check `pricing` and `models` pages once; update `fact-check.md` if a number moved. |
+| **Wed 16** | Part 3, "careers" and "curveballs". Part 4 (failure playbook) — read it as a checklist and imagine each one happening. | Publish the materials link, open it from a phone on mobile data and from a laptop on the college's network if you can get on it. Confirm the Session 1 lab-kit slide's link opens the course home (note: `certificate.html` is deliberately not deployed — the rubric students see is the Course Plan's capstone section). |
+| **Thu 17** | Full rehearsal of S1 and S2 aloud, standing, timed. S3 talk segment only. | Resolve both aliases again with `client.models.get` (the flash alias hot-swaps per release — 3.8 Flash went GA on 2 Sep). **Screenshot your AI Studio rate-limit page** for each project you will use; that screenshot is the honest answer to "what are the limits?". |
+| **Fri 18** | Full rehearsal of S4, S5, S6 aloud, timed. Re-read Part 1 and the "night before" checklist. Sleep. | Fresh-key dry run of Lab 1 Cell 1–3 and Lab 4 Cell 1–5 only (five minutes). Charge everything. Load the decks, the six notebooks and the sample document onto the presenting laptop and a USB stick. |
+
+### Delivery-day checklist (both mornings)
+
+Laptop on mains, not battery. Both decks for the day opened in separate tabs, each tested with `S`, `D`, `O`, `F` and the theme toggle on the projector. Presenter mode: the pace badge reads on-time at slide 1. Hotspot phone charged and tethered once as a test. AI Studio open in a tab, signed in with the instructor account, rate-limit page ready. A fresh Colab runtime with Lab N Cell 1 already executed (SDK installed) so your own demo does not spend the busiest five minutes installing. Whiteboard marker that works. Your own ten-question test set, two photos (receipt, handwriting) and the sample OS notes on the laptop. Stopwatch for the S6 demos. The five API-key steps written on the board before students open laptops (Day 1 only).
+
+### The night before Day 2
+
+Ask yourself which pairs left Day 1 without a working key, and plan to seat them beside a working pair. Confirm your own Lab 4 artefacts (`chunk_vecs.npy`, `chunks.json`) are in Drive and that the reload cell in Lab 5 and Lab 6 finds them. Run `ollama run gemma4:e4b` once more with Wi-Fi off. Re-read the S6 timing: the slide titled "Six sessions, one throughline" carries the whole last hour — roughly 30 minutes red-team and harden, roughly 35 minutes demos, then the close — and its presenter budget is 76 minutes, so the pace badge stays honest through the block — trust it. Count the pairs: at three minutes each, more than twelve pairs means announcing 60–90-second lightning demos *before* Part A, not after. Decide your hard stop for demos and write it on the board.
+
+---
+
+## Part 1 — The mental model that answers 80% of questions
+
+Hold one causal chain in your head. Every slide in six sessions is either a link in it or a technique for shaping its input or measuring its output.
+
+**text → tokens → embeddings → [attention + MLP] × L layers → logits → softmax(z/T) → sampled token → append → repeat**
+
+Read it as a machine with one moving part. *Text* is turned into *tokens* by a fixed, learned vocabulary (BPE-style sub-word pieces). Each token is looked up in a learned table to get an *embedding*, a vector of a few thousand numbers, with position information added because attention itself cannot see order. That vector rides its own track (the residual stream) through *L* identical blocks; in each block, *attention* lets every token's vector borrow from every earlier token's vector according to learned relevance weights, and the *MLP* adds what the model "knows" about whatever the vector now represents. After the last block, the vector at the final position is scored against every row of the output table, giving one raw number per vocabulary token — the *logits*. *Softmax*, with the logits divided by temperature *T* first, turns those into a probability distribution. One token is *sampled* from it, appended to the input, and the whole thing runs again. A 500-word answer is roughly 650 trips through the machine.
+
+**Training** is the only place the numbers inside change. The objective is cross-entropy on next-token prediction: for each position in a huge corpus, compute the distribution, take −log of the probability assigned to the token that actually came next, average, and nudge every parameter by gradient descent to make that number smaller. *Pretraining* does this on trillions of tokens of raw text and produces a base model that only continues. *SFT* (supervised fine-tuning, "instruction tuning") does the same loss on curated question→answer pairs so the continuation looks like an assistant's reply. *RLHF* or *DPO* then tunes toward human preference rankings — a reward model plus policy optimisation in RLHF; a direct classification-style loss on preferred-vs-rejected pairs in DPO. All three are the same machine with different data and a slightly different loss; none adds a new component.
+
+**Inference** runs the frozen file. Nothing in the file changes while anyone chats. There is no lookup, no index, no memory between calls. The **context window** — system prompt, conversation so far, documents pasted, tool results, and the answer being written — is the only working memory the model has, and it is measured in tokens because that is what the machine reads.
+
+That last sentence is the hinge. **Sessions 2 to 6 are all techniques for either shaping what goes into the window or measuring what comes out.** Prompting (S2) shapes the input directly. Structured output (S3) constrains the output at the decoder. RAG (S4) chooses which of *your* text goes into the window. Tools (S5) let the model write a request whose result your code puts back into the window. Evals (S2, everywhere) measure the output against a test set. Guardrails and defence in depth (S6) filter the input and validate the output, and — because filtering text cannot be complete — cap what the output is allowed to *do*.
+
+### Eight reduction moves
+
+When a question arrives, map it onto the chain before answering. These are the moves.
+
+1. **"Where in the chain does that happen?"** Counting letters fails at *tokens*. Arithmetic fails at *sampling from a distribution* (there is no carry operation). Word order lives in *positional encoding*. Word meaning lives in *embeddings* plus *MLP*. Facts live in the *MLP weights*, smeared across millions of parameters. Style, refusals and manners come from *SFT/RLHF*. If you can name the link, you can name the failure and the fix.
+
+2. **"Is this about training or inference?"** Half of all confusion is here. "Does it learn from me?" — inference, no. "Why doesn't it know last week's news?" — training ended before then. "Can I fix a wrong fact?" — not at inference (that is RAG's job), and not by editing the file (retraining or fine-tuning). Free-tier text may be used to train *future* models offline; that is a different thing from the model learning mid-chat.
+
+3. **"Is this about the distribution or about one sample?"** Different answers to the same prompt, temperature, top-p, "it was right yesterday", "run the eval three times" — all sampling. The model produces a distribution; everything downstream is dice. Temperature 0 is argmax and is nearly, not perfectly, deterministic.
+
+4. **"What is in the window?"** Memory, RAG, long context, "lost in the middle", tool results, injected documents, cost — all questions about the contents and size of the window. If it is not in the window it does not exist for this call. If it is in the window, the model cannot tell who wrote it.
+
+5. **"Is that a claim about behaviour or about mechanism?"** "It reasons", "it understands", "it is creative" are behaviour claims; the deck makes mechanism claims. Answer at the level asked, then offer the other. Behaviour claims are settled by evals; mechanism claims by the chain.
+
+6. **"What is the loss, and does it measure what you care about?"** Pretraining minimises cross-entropy on next-token prediction. That loss says nothing about truth, safety or usefulness. Every "why does it hallucinate / why is it sycophantic / why is it confident" question is answered by: the objective rewarded plausible continuation, not correctness. Engineers therefore measure evals, not loss.
+
+7. **"Where is the boundary, and is it mechanical or learned?"** SQL has a parser boundary between code and data; a transformer has none — the instruction/data distinction is a *trained preference*. Every security question reduces to this: text filtering raises attacker cost, only a mechanical boundary (what the tool is *allowed* to do, who must click) caps damage.
+
+8. **"What compounds?"** Reliability across steps (pⁿ), context growth across turns, cost across users, n² across context length. Any "why does it get worse as it gets bigger/longer/more autonomous" question is one of these four multiplications.
+
+If a question does not reduce to any of these, it is probably a question about products, policy or philosophy — answer it honestly as such, and say which parts are contested.
+
+---
+
+## Part 2 — Concept mastery, per session
+
+Each session: the concepts the deck claims, one level deeper than the deck and the prep pack; what the deck simplifies and how to un-simplify it; the canonical misconceptions; and what the lab evidences — including what a *failing* lab teaches.
+
+---
+
+### Session 1 — How Machines Learned to Talk
+
+#### Concepts, one level deeper
+
+**Discriminative vs generative.** A discriminative model learns P(label | input) — a boundary in feature space. A generative model learns a distribution over the data itself; a language model specifically learns P(next token | all previous tokens), which by the chain rule is a full distribution over sequences: P(x₁…xₙ) = ∏ P(xᵢ | x₁…xᵢ₋₁). That factorisation is why "autocomplete" and "generative model of all text" are the same claim. Same neural-network mathematics, different training target. If a student asks whether classifiers are obsolete: no — fraud, ranking, face unlock, spam. And note that a generative model can be *used* discriminatively (ask it to output a label), which is what few-shot classification in S2 does.
+
+**Next-token prediction and the bigram toy.** The deck's tally table ("Those odds aren't magic — you just count words") is a genuine Markov chain of order 1: P(next | current) estimated by counts. Its failure is not that it is small but that it conditions on one token, so it cannot carry a subject across a clause. Raising the order to n makes the table size vocabulary^n and makes almost every context unseen — the sparsity wall. An LLM replaces the table with a *function* over the whole context that generalises to sequences never seen. Historical anchor for the faculty: Markov 1906, Shannon's n-gram experiments 1948, neural language models Bengio et al. 2003, transformers Vaswani et al. 2017.
+
+**Logits, softmax, temperature.** The last layer emits one unbounded real number per vocabulary entry. Softmax with temperature: p(i) = exp(zᵢ/T) / Σⱼ exp(zⱼ/T). Because T divides *inside* the exponent, it rescales the *gaps* between logits: T < 1 stretches gaps, so the exponential amplifies the leader (sharper); T > 1 compresses gaps (flatter); T → 0 is argmax; T → ∞ is uniform. Worked example the room can check: logits (2, 1, 0). At T=1: exp = (7.39, 2.72, 1.00), sum 11.11 → (0.665, 0.245, 0.090). At T=0.5: logits become (4, 2, 0) → exp (54.6, 7.39, 1) → (0.867, 0.117, 0.016). At T=2: (1, 0.5, 0) → (2.72, 1.65, 1) → (0.506, 0.307, 0.186). Top-k keeps the k largest before renormalising; top-p keeps the smallest prefix of the sorted distribution whose mass ≥ p. The deck's temperature widget computes exactly softmax(log p / T), which is the same thing with log-probabilities as logits.
+
+**Why T=0 is not perfectly deterministic.** GPU reductions are not associative in floating point; batch composition changes summation order; near-ties flip. Also MoE routing can be batch-dependent. Say "close to reproducible, never guaranteed" and move on.
+
+**Parameters, training, loss.** A parameter is one learned real number. y = wx + b has two; frontier models have 10¹¹–10¹². Training: loss = −log p(actual next token), averaged over the batch; backpropagation gives ∂loss/∂parameter for every parameter; gradient descent (Adam in practice) steps each one a little downhill. The three numbers on the depth panel ("How anyone knows the training is working") are exact: −ln 0.9 = 0.105, −ln 0.1 = 2.303, −ln 0.001 = 6.908. **Perplexity** = exp(mean loss), interpretable as the effective branching factor — "how many equally likely options is it choosing among". A uniform guess over a 50k vocabulary has perplexity 50,000; good models on clean English sit in the low single digits. Cross-entropy is the right loss because minimising it is equivalent to maximising the likelihood of the training data under the model — and equivalently to minimising KL divergence from the empirical data distribution.
+
+**Training vs inference; no memory.** Training changes parameters; inference does not. Chat "memory" is the application re-sending history. Free-tier data *may* be used to train future versions offline — that is a data-use policy, not the model updating. The Gemini API's free tier is documented as using prompts to improve products; paid tiers are not. This is the privacy warning and it is real.
+
+**Tokens.** Modern tokenisers are learned sub-word vocabularies (BPE and variants; Gemma's published vocabulary is 256k entries, Gemini's is not disclosed but is of that order). Merges are learned from frequency in the training corpus, which is English-heavy, so Latin-script English gets long merges and most other scripts get fragmented toward bytes. Consequences: cost per meaning, speed (more loops per sentence), and effective context (fewer sentences fit). The on-slide tokenizer is a rule-based toy; the lab's `count_tokens` is real, and on Gemini the Tamil-to-English ratio is narrower than the toy suggests — measure it Thursday and quote your own number. Sub-words beat whole words because a whole-word vocabulary explodes and has no way to represent an unseen word; sub-words trade sequence length for coverage.
+
+**Embeddings.** A learned table, one row per token, d_model wide (thousands of dimensions). Direction carries meaning; the geometry supports analogy arithmetic (king − man + woman ≈ queen) because training pushes tokens used in similar contexts toward similar vectors (the distributional hypothesis). The deck now covers this in the depth panel on "You saw this machine on the pre-class page"; S4 re-teaches it with the real embedding API. Distinguish *token* embeddings (rows of the input table, inside the LLM) from *text* embeddings (one vector per passage from a separate embedding model, pooled) — students conflate them.
+
+**Attention.** For each token, three learned projections: query Q = xW_Q, key K = xW_K, value V = xW_V. Scores = QKᵀ/√d_k, causal mask sets future positions to −∞, softmax per row, output = weights · V. The output is *added* to the residual stream. Why the √d_k: for random d-dimensional vectors the dot product has variance proportional to d, so without scaling the logits would grow with d and softmax would saturate, killing gradients. Multi-head: h independent (Q,K,V) sets on d_model/h-wide slices, concatenated, projected. Why n²: n queries × n keys. Why it is order-blind: a set of vectors with no position information gives identical attention weights for any permutation, hence positional encoding — sinusoidal in 2017, RoPE (rotary) today, which rotates Q and K by a position-dependent angle so their dot product depends on relative distance. The "T in GPT" is Transformer; the paper is Vaswani et al. 2017.
+
+**Scale, scaling laws, Chinchilla, emergence.** Kaplan et al. 2020 found loss falls as a power law in parameters, data and compute separately. Hoffmann et al. 2022 (Chinchilla) fit L(N, D) = E + A/N^α + B/D^β and showed compute-optimal training scales N and D together — about 20 tokens per parameter at the budgets studied — so a 70B model on 1.4T tokens beat a 280B model on 300B tokens. Modern practice over-trains relative to Chinchilla (far more than 20 tokens/parameter) because inference cost, not training cost, dominates the lifetime bill. "Emergence" (abilities appearing at scale) is real as a phenomenon and contested as a *discontinuity*: Schaeffer et al. 2023 showed several sharp jumps become smooth curves under continuous metrics. Say exactly that.
+
+**Base → SFT → RLHF/DPO.** Base models continue text. SFT trains on demonstrations with the same next-token loss. RLHF (Ouyang et al. 2022, InstructGPT): collect human rankings of outputs, train a reward model to predict preference, optimise the policy with PPO against that reward with a KL penalty toward the SFT model. DPO (Rafailov et al. 2023) skips the reward model: it derives a closed-form loss on (preferred, rejected) pairs that is equivalent under the same KL-regularised objective, so preference tuning becomes ordinary supervised training. Refusals, tone and "I'm sorry, I can't" come from this stage, not from pretraining.
+
+**Reasoning models / test-time compute.** Same loop; trained (largely by reinforcement learning on verifiable tasks) to emit a long hidden chain of tokens before the visible answer. The scratchpad is real tokens billed at output rates — this is why the flash alias moving to a thinking model in August burned an order of magnitude more output quota (28,089 hidden vs 2,770 visible tokens in the measured session). The correct framing: a third dial (scale, finishing school, thinking time), each buying capability at a different cost.
+
+**Model families; MoE, distillation, quantization.** MoE: many expert MLPs per layer plus a router that activates a few per token; total parameters large, active parameters small, so parameter count stopped predicting cost. Distillation: train a small student to match a large teacher's *full output distribution* (soft targets carry more information than hard labels). Quantization: store weights in fewer bits; params × bits ÷ 8 = bytes. Closed weights vs open weights is a licensing/distribution fact, not an architectural one.
+
+**Famous failures.** All four are the chain seen from different angles: letters (tokens), arithmetic (sampling, no algorithm), news (training cutoff), citations (the objective rewards plausible). Say "one mechanism, four symptoms."
+
+**Context window and the KV cache.** The window is the input length the model was trained and served for. The app re-sends everything, but the server does not recompute everything: keys and values for already-processed tokens are cached. Prefill (parallel, sets time-to-first-token) vs decode (sequential, sets tokens/second). Cache memory per token ≈ 2 × L × d_kv × bytes; with grouped-query attention d_kv is much smaller than d_model, which is one of the tricks that made 1M windows serveable. Context caching as a product is renting a stored prefix; it only helps if the stable part of the prompt comes first.
+
+**The API call.** HTTPS POST with the key in a header; gateway checks identity and quota (429 = over quota, 5xx/503 = capacity); the model runs on the provider's accelerators; tokens stream back. Latency is the loop running.
+
+#### What the deck simplifies, and how to un-simplify it if asked
+
+The tokenizer widget is rule-based; the real one is learned BPE and the ratio varies by model. The attention percentages are illustrative of one head, one layer; real models run dozens of heads over dozens of layers and no single picture is "the" attention. The 21-neuron network animation shows the choreography, not the architecture — a real block is attention plus MLP plus normalisation, repeated. The "fit the line" widget is two parameters and one loss; real training is the same idea with 10¹¹ parameters and a stochastic gradient over minibatches, but the loop is honestly the same. The scale slider implies one axis; there are three (parameters, data, compute) and the depth panel says so. "Finishing school in three steps" hides that modern pipelines interleave many rounds of SFT and preference tuning and add RL on verifiable tasks for reasoning. The context-window widget shows a fixed 128k/1M wall; real serving has a hard limit plus a soft quality decline before it ("lost in the middle").
+
+#### Misconceptions and the one-sentence correction
+
+*It searches the internet.* Nothing is looked up; the weights are frozen and the answer is computed (point at "Wait — is it just searching a giant database?"). *It learns from my chat.* The parameters never change during inference; the app re-sends the history (point at "Training vs using: the cookbook rule"). *Bigger is always better.* Three dials, and inference cost is the constraint that decides products (point at "The loop is old. The scale is new." and its panel). *Temperature is creativity.* It is one division inside softmax; the model is not more imaginative at T=2, only less selective. *Hallucination is a bug they will fix.* It is the same machinery that produces correct answers; the objective rewards plausibility.
+
+#### What the lab evidences, and what a failing lab teaches
+
+Lab 1's Checkpoint 1 evidences the API-call chain: the model is not on the laptop, the key is identity, the response is computed. Part C's five prompts evidence that one machine does explain/summarise/translate/extract/roleplay — one loop, many tasks. Part D evidences "same trick, different kitchens": identical prompt, different finishing school, different length and tone; the alias comparison also evidences thinking cost (slower, more verbose from the flash alias). Part E is not evidence of anything yet; it is the test set S2 needs. The stretch cells evidence temperature (variance), tokenizer inequity (`count_tokens`), and the bigram model (the toy from the deck, runnable).
+
+A **429** during Part B teaches the gateway link in the chain better than any slide — narrate it as "you just hit the quota check". A student whose temperature-1.5 runs look identical teaches that the parameter is deprecated on 3.x and that sampling behaviour is provider-controlled; say so and point at the review. A Tamil token count that is only ~2× English teaches "measure, don't assume" — Gemini's tokenizer is comparatively multilingual. A student who cannot create a key because they have a Google Cloud account teaches that AI Studio no longer auto-creates a project for existing GCP users; they must import one. None of these is a broken lab; each is a link of the chain made visible.
+
+---
+
+### Session 2 — Talking to AI, and Catching Its Lies
+
+#### Concepts, one level deeper
+
+**Prompt anatomy as distribution shaping.** Role, task, context, format, examples, constraints each condition the next-token distribution. Mechanistically a prompt is just earlier tokens that every later position attends to; a role line shifts which regions of the training distribution the continuation resembles, a format line raises the probability of the requested tokens, a constraint line lowers the probability of invented continuations. Over-stuffing dilutes attention because softmax weights sum to one — every irrelevant token competes for the same unit of attention mass — and costs tokens per call.
+
+**In-context learning (few-shot).** Brown et al. 2020 named it: behaviour changes with zero weight updates because the examples are in the window. Why it works is still studied — one line of evidence treats attention as implementing something like gradient descent on the in-context examples; another shows the model is pattern-matching to the demonstrated format. For the room: examples pin format, label set and edge cases far more precisely than description, and two to five is the practical sweet spot because each example costs tokens and the marginal gain flattens.
+
+**Chain-of-thought.** Wei et al. 2022. Intermediate tokens are computation the model can condition on; a single forward pass has fixed depth, so multi-step arithmetic that does not fit in one pass can fit across many. It is not "thinking harder"; it is more serial compute and an auditable trace. The ₹472 example: 500 × 0.8 = 400; 400 × 1.18 = 472. Direct answering tends to produce a plausible-looking number because no position in the network performs the carry.
+
+**Format requests vs enforcement.** "Reply ONLY with JSON" raises the probability of JSON; it does not make non-JSON unreachable. S3's `response_schema` masks illegal tokens at the decoder, which does. Keep the distinction crisp because the S3 payoff depends on it.
+
+**Hallucination as calibration failure.** The model's expressed confidence (tone) and its actual accuracy are different quantities, and the training objective never aligned them. Pretraining rewards the most plausible continuation; SFT/RLHF reward answers humans preferred, and humans prefer confident, complete answers — so unwarranted confidence is actively selected for. The two cases are real and checkable: *Mata v. Avianca* (S.D.N.Y., 2023, six fabricated citations, $5,000 sanction) and *Moffatt v. Air Canada* (2024 BCCRT 149, airline liable for its chatbot's invented bereavement-fare policy).
+
+**Test set, scorer, score.** Three separable components. Change any one and the number changes, which is why a score is meaningless without the whole configuration: "7/10 with normalised-contains on my ten cricket questions at T=0, averaged over three runs". Run at T=0 to remove sampling variance; run three times to measure what remains; average and report spread.
+
+**Scorer design and its failure modes.** Exact match: precision high, recall terrible on free text. Normalised contains (lowercase, strip punctuation, substring): forgiving, but a short or generic expected string false-positives ("1992" appears in many answers), and it will pass an answer that contains the fact *and* a contradiction. LLM-as-judge: handles paraphrase, introduces bias — Zheng et al. 2023 (MT-Bench) measured position bias (prefers the first candidate), verbosity bias (prefers longer), and self-enhancement bias (prefers its own family's outputs). Mitigation: swap order and require agreement; hand-grade 20–30 items and measure agreement with the judge; below ~80% you are measuring the judge.
+
+**Precision, recall, F1.** Precision = TP/(TP+FP); recall = TP/(TP+FN); F1 = 2PR/(P+R), the harmonic mean, which punishes imbalance. Accuracy misleads under class imbalance (the 5%-escalation bot scoring 95% by escalating nothing). Which to optimise is a consequence question: screens buy recall, auto-actions buy precision.
+
+**Eval sample size — the ±1/√n rule.** A pass/fail score over n items is a binomial proportion with standard error √(p(1−p)/n) ≤ 0.5/√n. Two standard errors (≈95% band) at p = 0.5 is therefore exactly ±1/√n: n=10 → ±0.32, n=100 → ±0.10, n=1,000 → ±0.03. The deck's table (±30, ±10, ±3 points) is that arithmetic rounded. Paired comparison helps because on the items both prompts get right or both get wrong the difference is zero and carries no information; only the discordant items count, and the noise on the difference is set by their number, not by n. The model's run-to-run variance (T=0, three runs) and the test-set variance (which ten questions) are different quantities with different fixes.
+
+**Eval-driven development.** Prompt → eval → read failures → fix one thing → re-run, until the score plateaus, then grow the test set. Changing one thing at a time is ordinary experimental control. The eval set becomes the regression test in S6.
+
+#### What the deck simplifies, and how to un-simplify it
+
+The quality meter on the makeover is a teaching device, not a measurement; say so. The arena shows five questions and the widget scores B 4–2 while its depth panel says "4–3" — if a student notices, the honest answer is that the panel's argument is about *any* one-question gap on n=5 and the number on screen is the one that counts (the review flagged it for correction). The eval demo is scripted so the score moves 7→8 reliably; real runs move less predictably. The spot-the-lie game presents lies as clean fabrications; real hallucinations are usually *partly* right — a real award, wrong year — which is harder to catch and is exactly why the lab wants deep-cut questions. "Three runs, average" is a minimum; a real regression suite runs more and tracks the distribution.
+
+#### Misconceptions and the one-sentence correction
+
+*A better prompt fixes hallucination.* It reduces frequency; it cannot change an objective that rewards plausibility (point at "Hallucination is not a bug"). *A high score means it works.* It means it works on that test set with that scorer at that temperature. *Confident tone signals correctness.* The tone meter is identical on every round including the lies (point at "One of these is a confident lie"). *The scorer is neutral infrastructure.* Exact-match rejects "AR Rahman" for "A. R. Rahman" (point at "Same answer, three verdicts"). *Ten questions settle A vs B.* ±30 points; it is a smoke test (point at the arena's depth panel).
+
+#### What the lab evidences, and what a failing lab teaches
+
+Part A evidences that each upgrade narrows the distribution — the documented row per iteration is the artefact. Part B evidences the three components and, through Checkpoint 2's per-failure diagnosis (model / scorer / question), that the number is a joint property of all three. Part C evidences paired comparison and that the winner must be reported with n.
+
+A 10/10 baseline teaches that the test set is too easy to teach anything — swap in harder questions. A student who "fixes" a failing test by loosening `expected` until it passes is committing the exact crime the session exists to prevent; catch it at the sweep and name it. A score that moves between runs at T=0 teaches the non-determinism footnote. A judge that grades an obviously wrong answer as correct teaches judge bias more vividly than the panel does. An expected answer that turns out to be wrong ("Roja was 1993" — it was 1992) teaches that an eval lies with total confidence when its labels are wrong, which is why you read failures.
+
+---
+
+### Session 3 — AI Beyond Text
+
+#### Concepts, one level deeper
+
+**Patches are tokens (ViT).** Dosovitskiy et al. 2020: split the image into fixed patches (16×16 pixels classically), flatten each to a vector of 16·16·3 = 768 numbers, multiply by one learned matrix into d_model, add a positional embedding, feed to a standard transformer encoder. The whole contribution was that no convolutional inductive bias was needed at scale. In a multimodal LLM the image encoder's output vectors are projected into the LLM's embedding space and interleaved with text tokens, so "what is in this photo" is next-token prediction with picture-tokens earlier in the context. Consequences: token count scales with resolution (double each side, 4× patches); providers tile large images and charge per tile — on the order of a few hundred tokens per tile, with the exact tile size and count on the pricing/vision docs page (quote the page, not a number from memory); anything smaller than a patch is averaged into its neighbours, so small text fails suddenly; and attention pools rather than enumerates, so counting is estimation.
+
+**Audio.** Waveform → short frames (the deck says ~20 ms) → spectral features → encoder → tokens, then the same stack. Speech-to-text is near-human on clean read speech and degrades on accents, code-switching (Tamil-English), noise, and rare proper nouns — the failures are silent, which is why "lectures → notes" is a useful workflow, not a solved problem (the deck says exactly this; the S3 cheatsheet's "solved" was flagged for correction).
+
+**Diffusion.** Forward process: add Gaussian noise to a clean image over T steps by a fixed schedule — nothing learned. Training (Ho et al. 2020, DDPM): sample an image, a step t and noise ε; the network takes the noised image and t and is trained to predict ε with a simple mean-squared error. Sampling: start from pure noise, repeatedly subtract a fraction of the predicted noise (plus a little fresh noise in stochastic samplers), 20–50 steps in modern schedulers. Why coarse-before-fine: low-frequency structure survives more noise than high-frequency detail, so it is recoverable earlier in the reverse process. Text conditioning: the prompt is embedded by a text encoder and injected via cross-attention; classifier-free guidance runs the network with and without the prompt and extrapolates away from the unconditional prediction (the "guidance scale"). Latent diffusion (Rombach et al. 2022): a VAE compresses the image about 8× per side, denoising happens in the latent grid — 8× per side is 64× fewer positions, and four latent channels against three RGB channels gives 64 × 3/4 = 48× fewer numbers per step, which is the deck's "≈48×"; say "about fifty times less work" and do not fight over the constant. Autoregressive image generation (tokens over a learned image codebook) is a competing family; both coexist.
+
+**Voice cloning and the family password.** A few seconds of audio suffices for a speaker-embedding-conditioned TTS model to reproduce timbre and prosody. Detection is an arms race; the defence that does not depend on detecting the fake is an out-of-band shared secret. This is a genuine, current fraud pattern in India; deliver it straight.
+
+**One API call.** `contents=[img, question]` — the SDK serialises the image as inline bytes or a file reference; the model receives interleaved image and text tokens. Everything from S1–S2 transfers because the machine is the same.
+
+**Constrained decoding.** `response_mime_type="application/json"` + `response_schema` compiles the schema to a grammar (a finite-state machine over tokens, or a pushdown automaton for nesting); at each decode step tokens that cannot extend a valid prefix are masked to −∞ before softmax. Malformed shape is unreachable; wrong *values* are not. Two cautions the depth panel gives: shape ≠ truth (a number field guarantees a number, not the right number), and over-constraint can hurt quality because a terse schema removes room to reason — put a `reasoning` field before the answer fields since the model fills them in order and can only condition on what it has already written. And an explicit null/unknown outcome must exist in the schema, or the model is forced to invent.
+
+**Vision failure modes.** Counting (pooling, not enumeration — same disease as arithmetic), spatial precision (position is encoded weakly after pooling), blurred text (the prior completes what pixels do not determine — hallucination in pixels; the grounding line "if unreadable, say so" reduces it), identity (refused by design; KYC face-match is a separate regulated system).
+
+#### What the deck simplifies
+
+The patchify demo shows a small grid; real encoders use finer patches and often multi-resolution tiling. The diffusion canvas is a linear pixel blend — the coarse-to-fine ordering is real, the pixels are not; say which part is honest before anyone asks. "3 s of audio" is a round number for a capability that exists at that order of magnitude; do not defend the exact figure. The video landscape line (Sora 2, Veo 3.1, Kling 3.0, $0.10–0.75/s) is mid-2026 reporting and belongs in the volatile table; say "order of magnitude, as reported".
+
+#### Misconceptions and the one-sentence correction
+
+*Vision is a different kind of AI.* Patches become tokens and enter the same attention loop (point at "Same loop. New kinds of tokens."). *Diffusion draws like a person.* It subtracts predicted noise, repeatedly; shapes resolve before details (point at "Diffusion: a picture emerges from static"). *If it can see it, it can count it.* One forward pass estimates; there is no tally (point at "Where vision quietly fails"). *Asking for JSON gives valid JSON.* A prompt requests; a schema constrains (point at "All of it is one API call" and its panel). *Capability is permission.* It can read a CAPTCHA; that does not mean your product may (point at "Will it read it? Place your bets").
+
+#### What the lab evidences, and what a failing lab teaches
+
+Part A's ladder (describe → read → count → infer → surprise) evidences the failure gradient in one photo: description good, reading good, counting shaky, inference confident. Part B evidences that the test of extraction is `json.loads` succeeding, not the output looking right. The `response_schema` cell evidences constrained shape — and Checkpoint 3 asks the student to check the *values* against the image, which is the shape-≠-truth lesson. Part C evidences that handwriting and Tamil are where quality is uneven. Part D is designed to fail: the confident invention is the checkpoint.
+
+A blurred total that the model "reads" is the lesson, not a bug — that is Part D's checkpoint. A miscounted crowd is the ViT panel made concrete. A `json.loads` crash on the prompt-only cell followed by success on the schema cell is the best possible outcome. A schema cell that returns a null total on an unreadable receipt evidences correct design. A Tamil handwriting transcription at 40% is a data point for the "Indian languages" question in Part 3 — collect it.
+
+---
+
+### Session 4 — Giving AI Your Own Knowledge
+
+#### Concepts, one level deeper
+
+**The villain: it cannot know, and it will not say so.** No mechanism in the chain represents "this is outside my training data"; the MLP adds whatever direction the question's vector triggers. Hedging is a trained behaviour (RLHF), not knowledge of ignorance — a model that apologises first and then invents a syllabus has hedged and hallucinated in the same reply.
+
+**The three taxes on pasting.** Window (hard limit), meter (input tokens billed every call), middle (Liu et al. 2023, "Lost in the Middle": accuracy on a fact placed mid-context drops relative to the same fact at the start or end, across models and lengths). Arithmetic for the slider: a 380-page textbook at roughly 500 words a page is ~190k words ≈ 250k tokens; at Gemini 3.5 Flash's $1.50 per million input tokens that is about $0.38 ≈ ₹36 *per question*, before the answer. On 3.5 Flash-Lite ($0.30/1M) it is ~₹7 per question — still absurd at 30 questions a day per student.
+
+**Semantic search.** Embed each chunk once with an embedding model (a transformer whose token vectors are pooled — mean-pooled or a designated summary token — into one vector per passage, then trained contrastively so that paraphrases land close and unrelated text lands far). Embed the query with the *same* model. Score = cosine similarity = (a·b)/(|a||b|). Normalise every vector to unit length once and cosine becomes the dot product, so `chunk_vecs @ q` scores every chunk in one matrix multiply, and `argsort` gives top-k. Forget normalisation and you rank partly by vector length, which correlates with passage length, not relevance. Query/document asymmetry: good APIs accept a task type so that questions and declaratives are embedded into a shared region. Dimensions are a dial: many current models are trained with Matryoshka-style objectives so the first 768 of 3072 dimensions carry most of the signal — this is why `output_dimensionality=768` is safe and why the lab uses it. Never mix vectors from two embedding models; store the model name beside the index.
+
+**gemini-embedding-2 specifics (September 2026, verified).** Default output dimensionality is **3072**; the lab passes `output_dimensionality=768` to match the deck's stepper. Passing a bare list of strings as `contents` returns **one aggregated embedding for the whole list**; to get one vector per chunk each input must be wrapped as its own `Content` object. The SDK (google-genai 2.22) has an explicit branch that folds a string list into one `Content`, so the old code returned `(3, 3072)` for 60 chunks and `search()` silently returned the same three chunks for every query. The fix asserts `len(res.embeddings) == len(texts)`. `gemini-embedding-001` is *not* shut down — earliest shutdown 14 May 2028; 14 July 2025 was its release date; embedding-2 (GA 22 Apr 2026) supersedes it. Price: $0.20 per million input tokens.
+
+**Chunking.** Too small: the fragment loses referents ("…and the end-semester exam" of what?). Too large: one vector must summarise several topics and sits near none (pooling's cost); the right sentence is diluted and the prompt fills with irrelevant text. Paragraph plus overlap on natural boundaries is the default that wins. Upgrades in order of payoff: structure-aware recursive splitting; small-to-search/big-to-read (index small, return the parent section); metadata stored at index time (source, section, page, date) so you can filter *before* ranking; a one-line context header prepended to each chunk before embedding. The free test: print ten random chunks and read them cold.
+
+**Vector databases.** An approximate-nearest-neighbour index (HNSW graphs, IVF partitions, product quantisation) trades a little recall for sub-linear search over millions of vectors, plus persistence, filtering and multi-user access. Below ~100k vectors, brute-force numpy is exact and fast enough; adding infrastructure earlier adds latency and failure modes with no accuracy gain.
+
+**RAG end to end (Lewis et al. 2020 coined the name; the DPR bi-encoder is Karpukhin et al. 2020).** Retrieve → augment → generate. The grounded template's three load-bearing lines: ONLY the context (suppresses parametric memory), cite the chunk (makes errors checkable), and the escape hatch (a legal way to refuse — without it the model fills silence with fiction). Reranking: the bi-encoder embeds question and chunk separately (fast, good recall, mediocre ranking); a cross-encoder reads them together (accurate, slow) and is affordable only on the top 20. Hybrid search merges BM25 (exact identifiers, course codes, surnames) with semantic (paraphrase). Query rewriting fixes the vocabulary gap at the source.
+
+**Where RAG breaks; two scores.** Retrieval failures (vocabulary gap, answer split across chunks) versus generation failures (stale index cited confidently; model ignores context). Recall@k = fraction of questions whose gold chunk is in the top k — the ceiling on answer accuracy. MRR = mean of 1/rank of the first correct chunk (rank 1 → 1.0, rank 5 → 0.2); high recall with low MRR is the reranker signature. Faithfulness = given the right chunk, did the answer come from it? Debug order: retrieval → chunks → prompt → model. Put unanswerable questions in the test set and check the refusal fires.
+
+**RAG vs long context vs fine-tuning.** Fine-tuning moves parameters toward a behaviour; it is poor at injecting facts (facts are smeared across the MLP and new ones interfere with old), freezes at training time, and gives no citations. RAG updates by re-embedding one file and cites. Long context wins for small, static corpora queried rarely; RAG survives on cost, latency, freshness and citations; real systems combine both.
+
+#### What the deck simplifies
+
+The playground's similarity scores are authored ranges; the lab computes real ones. "Cosine similarity, 1 = same, 0 = unrelated" hides that real embedding models rarely produce values near 0 — unrelated text often scores 0.2–0.4, so absolute thresholds must be calibrated per model (the trap query "every bar under 0.35" is a property of the widget; your own threshold comes from your own data). "One numpy line" hides normalisation, task type and pooling, which the depth panel restores. The RAG stepper shows top-3 straight into the prompt; production inserts rerank and often a query-rewrite step. "Fine-tuning teaches behaviour; RAG provides knowledge" is a slogan; the precise version is that parameter updates are a poor, slow, uncitable channel for facts, not an impossible one.
+
+#### Misconceptions and the one-sentence correction
+
+*Fine-tuning is how you add knowledge.* It changes behaviour; facts go in the window via retrieval (point at "RAG vs paste-it-all vs fine-tuning"). *1M context makes RAG obsolete.* Window, meter, middle — and citations and freshness — still favour retrieval for anything large or changing (point at "Just paste all my notes — let's price that"). *A citation means the answer is right.* A stale index cites its old chunk confidently (point at "Where RAG breaks in the wild"). *Chunking is a detail.* It causes more failures than model choice (point at "Chunking: how you cut the book"). *You need a vector database.* A numpy array is one with fewer moving parts (point at "Vector databases, in plain words").
+
+#### What the lab evidences, and what a failing lab teaches
+
+Part A evidences the ingest pipeline and — with the fixed `embed()` — that the store has one row per chunk. Part B evidences that retrieval is inspectable: the top chunks are printed with scores. Part C evidences grounding and citation. Part D is designed to fail twice: the out-of-corpus question must trigger the escape hatch; the split-across-chunks question must produce a half-truth, which is the overlap/neighbour lesson.
+
+A store shaped `(3, 768)` for 60 chunks is the aggregated-embedding bug and teaches that a wrong API contract can fail silently — the assertion exists precisely so it fails loudly. Garbage extraction from a scanned PDF teaches that RAG starts with text, and that S3's vision extraction is the tool for images of text; swap the document at minute five. Search returning junk teaches chunking before prompting. A model that answers a question not in the documents teaches that the ONLY line is a preference, not a wall — strengthen it, lower temperature, put context before the question, and note that this is exactly why S6 exists. A pair with no documents teaches nothing until they use the sample file; have it ready.
+
+---
+
+### Session 5 — Making AI Do Things
+
+#### Concepts, one level deeper
+
+**The trick.** The model emits a structured `functionCall` part (name plus JSON arguments) instead of prose; the turn ends; your code decides whether to run it, runs it, appends a `functionResponse` part; the model continues. Tool use is a trained behaviour — models are fine-tuned on examples of emitting these calls — which is why fluency and tool competence are separate skills. Strictly true for tools *you* define; provider-hosted tools (code execution, search grounding) run on the provider's side and are a different trust boundary — concede this before a sharp student finds it.
+
+**The wire format.** Your Python function becomes a JSON schema: name, description (the docstring), parameters with types and descriptions, required list. That JSON is the model's entire knowledge of the tool; it cannot read the body. Hence "the docstring is the prompt" and a wrong tool choice is a writing bug. The SDK's automatic function calling builds the declaration from type hints and docstring, runs the loop for you, and hides the four roles (user → model functionCall → user functionResponse → model text); Lab 5 Part C switches it off to show them. Models can return several calls in one turn when the calls are independent; run them in parallel. Every tool result is re-sent on every later turn, so return the smallest useful result.
+
+**MCP.** The Model Context Protocol (Anthropic, November 2024, since adopted broadly) standardises the declaration format and the transport so one server exposing tools and resources can be used by any client model — N+M integrations instead of N×M. Mechanically nothing changes: the model still writes requests, a host still executes. Name it, do not demo it.
+
+**The agent loop and its leash.** `while model wants a tool and steps < MAX_STEPS: assert name in ALLOWED; validate args; execute; append result`. Without the cap the termination condition is a probabilistic system holding your key. The on-slide sketch already carries the guard (the "loop with no exit condition" wording in older notes is stale). Context grows monotonically with every call and result, so long runs get more expensive and less obedient (lost-in-the-middle again); production summarises old steps or writes intermediate state to files.
+
+**Reliability compounds: pⁿ.** If each step succeeds independently with probability p, n steps succeed with probability pⁿ. 0.95¹⁰ = 0.599; 0.95²⁰ = 0.358; 0.99²⁰ = 0.818; 0.99¹⁰⁰ = 0.366. Two 90%-reliable agents in series: 0.81 before any work is done. The independence assumption is generous — in practice errors correlate and the tail is worse. Fixes in order: fewer steps (workflow), validation between steps (which converts a silent failure into a caught one and resets the chain), human approval on side effects, retries on cheap idempotent steps. The Monte-Carlo widget draws n Bernoulli trials per agent and shows the death step; that is a fair simulation of the model.
+
+**Workflow vs agent.** Anthropic's "Building effective agents" (December 2024) makes the same distinction: workflows are systems where the LLM and tools are orchestrated through predefined code paths; agents are systems where the LLM directs its own process. The decision rule: do you know the steps in advance? Multi-agent chains multiply pⁿ; parallel fan-out with a judge does not, because independent attempts do not compound — and the judge is a single validation step.
+
+**The escalation ladder.** Prompt → few-shot → RAG → tools → fine-tuning, climbed only when the eval proves the cheaper rung failed; rung zero is "you did not need a model". Fine-tuning last because it is the most expensive, least reversible, and worst at facts.
+
+**Local models: the arithmetic.** File size = parameters × bits ÷ 8: 4B × 16/8 = 8 GB (bf16), × 8/8 = 4 GB (Q8), × 4/8 = 2 GB (Q4). Add 1–2 GB headroom for the KV cache, which grows with context. Tokens per second on a laptop is bounded by memory bandwidth, not compute: each generated token reads every active parameter once, so 2 GB of weights over ~50 GB/s gives ~25 tokens/s ceiling. Quantization degrades the hard tail first (multi-step reasoning, exact formats, rare languages). A 70B model at Q4 is ~35 GB — a hardware conversation. Gemma 4 E4B is a ~4B-active open-weight model (Apache 2.0, March 2026 per the deck — volatile-table it); `gemma3:4b` still runs if the pull fails.
+
+#### What the deck simplifies
+
+The agent log is scripted for reliability; a real run varies its order and sometimes over-calls. "Nobody scripted the order" is true and also the risk — say both. The tool stepper's "validate: args parse as maths, not DROP TABLE" is a real defence (the notebook's AST allow-list) and also a demo; production adds limits, timeouts, authorisation, logging. The pⁿ slider assumes independence, which flatters real agents. The Ollama "race" is a simulation if the live demo fails — label it. The S5 cheatsheet's `eval()`-behind-a-character-filter snippet is *not* what the notebook does (the notebook uses an AST walker) — if a student copies the cheatsheet version, `9**9**9` gets through; point them at the notebook.
+
+#### Misconceptions and the one-sentence correction
+
+*The model executes code.* It writes a request; your code executes (point at "The model never executes anything. It writes requests."). *Agents are the default architecture.* Do you know the steps? Then a workflow — most business AI (point at "Workflow or agent? One question decides"). *More agents means more capability.* 0.9 × 0.9 = 0.81 before any work (point at "Multi-agent: more agents, more compounding"). *Tool output is trustworthy.* It is text entering the window from something you did not write — the S6 bridge (point at "Five ways tool use goes sideways"). *Local models are toys.* A distilled 4B on one narrow task with an eval often beats a general giant on that task; production is hybrid (point at "Local vs API: an engineering trade, not a religion").
+
+#### What the lab evidences, and what a failing lab teaches
+
+Part A evidences delegation: with the tool the GST answer is exact (₹422.46; total ₹2,769.46); without it the digits wobble. Part B evidences chaining without scripting. Part C evidences the wire format — the raw `function_call` printed is the whole trick made visible. Part D evidences the decision framework on paper. Stretch 3 evidences trajectory eval (tool-choice accuracy including the no-tool case); Stretch 4 evidences the leash.
+
+A model that calls `calculator` for "who wrote the Thirukkural?" teaches over-tooling — sharpen the docstring and add "answer directly when no tool is needed". Arguments like `"eighteen percent of 2347"` crashing the AST parser teach validate-inside-the-tool and readable errors (the model self-corrects on a good error string). A loop that hits `MAX_STEPS` teaches why the cap exists. An Ollama demo that fails on college Wi-Fi teaches nothing useful — pre-pull it; if it still sulks, run the labelled simulation and say so.
+
+---
+
+### Session 6 — Breaking, Securing, Shipping
+
+#### Concepts, one level deeper
+
+**Every capability is a surface.** RAG reads → documents attack. Tools act → hijacks act. Vision reads → images carry text instructions (an image with "ignore previous instructions" printed in it is a real payload class).
+
+**Prompt injection, precisely.** System prompt, user message, retrieved chunks and tool results arrive as one token sequence. The distinction "instructions vs data" is a learned preference from SFT/RLHF (and, on newer models, explicit instruction-hierarchy training), not a mechanical boundary. A sufficiently persuasive sequence outvotes the preference. Direct injection: the user types the attack. Indirect injection (Greshake et al. 2023): the attacker never talks to the bot; they plant text where the pipeline will fetch it — a web page, a shared PDF, white-on-white text, a wiki edit, a tool result. OWASP Top 10 for LLM Applications lists prompt injection as LLM01 in both the 2023/24 and 2025 editions. There is no escape character because there is no parser: SQL quoting, HTML entity encoding and shell argument arrays all work because a mechanical parser separates code from data, and a transformer has no such stage.
+
+**Why direct attacks bounce and indirect ones land.** Current models are trained hard against a *user* asking them to misbehave (the Lab 6 Cell 3 attacks mostly bounce — that is the finding, not a broken exercise). They are much weaker when the instruction arrives inside content the *developer* told them to trust ("Answer using ONLY this context"), because grounding instructions and injected instructions are the same kind of token. Lab 6 Cell 5 measured the model replying exactly "PWNED" from a poisoned chunk on the same key that refused the direct attacks. Teach that contrast explicitly; it is the most important security fact in the course.
+
+**Jailbreaks and leaks.** A jailbreak wraps a refused request in roleplay/hypothetical framing so the refusal preference does not fire — an arms race against safety training. A prompt leak extracts the system prompt; assume the prompt is public and never put a secret in it.
+
+**Defence in depth.** Delimit and label untrusted text; instruction hierarchy in the system prompt; output validation (format, no secrets, allow-listed values); least privilege plus a human gate on anything that writes, spends or sends. The first three raise attacker cost; only the fourth caps damage. The lethal trifecta (Simon Willison, 2025): catastrophic exfiltration needs access to private data, exposure to untrusted content, and a channel out — remove any one leg and the attack class dies regardless of prompt cleverness. This is a design property you can verify; "our filter catches it" is not. Practical order: narrowest tool set; human click on side effects; a tool's output never expands permissions; run with the asking user's privileges, not the app's; treat every tool result as hostile.
+
+**Match trust to blast radius.** Read-only actions can run unsupervised; side effects get a gate. Autonomy is a dial. This is S5's leash made official.
+
+**Notebook → product: cost.** September-2026 prices per million tokens: Gemini 3.5 Flash $1.50 in / $9.00 out (the deck's slider constants, now the previous-generation Flash); Gemini 3.5 Flash-Lite (the lab model) $0.30 / $2.50; Gemini 3.8 Flash $0.75 / $3.75 introductory to 31 Dec; gemini-embedding-2 $0.20 per million input tokens. At ₹95 per dollar (the deck uses 95.5): Flash-Lite input ₹28.5 per million tokens, output ₹237.5 per million. A typical RAG query — 2,000 input tokens (system prompt + three chunks + question) and 300 output tokens — costs on Flash-Lite 2,000×0.30 + 300×2.50 = $0.0006 + $0.00075 = $0.00135 ≈ ₹0.13; on 3.5 Flash 2,000×1.50 + 300×9.00 = $0.003 + $0.0027 = $0.0057 ≈ ₹0.54. At ten queries a day per user for 30 days: Flash-Lite ≈ ₹39/user/month, 3.5 Flash ≈ ₹162/user/month. Embedding a 60-chunk corpus of ~200 tokens each is 12,000 tokens ≈ $0.0024 ≈ ₹0.23, once. Output costs 6× input on 3.5 Flash and ~8× on Flash-Lite because output is decode (sequential, one pass per token) and input is prefill (parallel, once) — so capping output length is usually the highest-leverage line. Context caching sells a stored prefix at roughly a tenth of input price, which is why the slider shows ~90% input savings and why the stable part of the prompt must come first. Batch endpoints are around half price for non-urgent work. Thinking models bill hidden scratchpad tokens at output rates. Cost per user per month = queries × (in × in-rate + out × out-rate); run it at 100 and 100,000 users.
+
+**Speed, reliability, observability.** Latency is two numbers: TTFT (prefill, set by prompt length) and tokens/s (decode, set by output length). Streaming exposes only the first. Report p50 and p99, never the mean — with LLMs the tail is structural because output length varies. Retry with exponential backoff *and jitter* on 429/5xx, capped; timeouts with a deliberate fallback; idempotency keys on anything with a side effect (a retried "send" sends twice). Log request id, prompt version, model id, token counts, TTFT and total latency, cost, and thumbs; the S2 eval set runs before every prompt change and its score goes in the log. Model id matters because an alias can move under you — the flash alias did in August.
+
+**Responsible AI and jurisdiction.** Bias (your eval failure rows are a bias audit in miniature), provenance (watermarks, content credentials), privacy (whose data is in the window), accountability (Air Canada). EU AI Act: risk-tiered, applies where the output is used, obligations phasing in through 2027. US: sectoral plus NIST AI RMF (Govern, Map, Measure, Manage). India: the DPDP Act is data-protection law — consent and purpose limitation land on your prompts, index and logs. Gulf: data residency shapes architecture — the S5 local-model argument in law. Not legal advice; dates move; the architectural consequences (residency, retention, PII redaction before the prompt) do not.
+
+**The capstone rubric.** Working demo 40 · honest eval numbers 25 · failure analysis 15 · technique fit 10 · presentation 10. The certificate page and the S6 slide agree. Security and cost are not separate lines; they are graded through the failure analysis (a found hole and its fix is a failure mode with a mitigation), technique fit (a human gate on a side-effect tool is "the right tool for the job"), and the ship checklist that Part D audits.
+
+#### What the deck simplifies
+
+The attack and defence widgets are scripted for classroom reliability; real behaviour is probabilistic and model-version-dependent — have a second payload ready. "0–2 layers falls, 3–4 holds" is a teaching threshold, not a measured curve. The cost slider uses 3.5 Flash's prices and ₹95.5; relabel it aloud as "previous-generation Flash, September 2026" and give the Flash-Lite number from this guide as the lab's actual rate. "Works in Colab is the easy 20%" is a proportion of effort, not a measurement. The jurisdiction slide compresses four legal regimes into four cards; say once that none of it is legal advice.
+
+#### Misconceptions and the one-sentence correction
+
+*Injection is a bug to patch.* No parser boundary exists; you layer defences and cap damage (point at "Defense in depth" and its panel). *A classifier or regex will stop it.* Text filtering raises cost; the attacker adapts; only the tool boundary caps damage. *If the direct attacks bounce, my app is safe.* Direct attacks test the model's refusal of *users*; your app also feeds it text it did not write (point at "Indirect injection: the document attacks your RAG"). *Cost is one number.* Output is 6–8× input; caching changes input; thinking changes output. *Compliance is a legal problem for later.* Residency, retention and redaction are architecture decisions made on day one (point at "Your users decide whose law you're under").
+
+#### What the lab evidences, and what a failing lab teaches
+
+Part A evidences that direct attacks mostly bounce on a current model and that this proves the model resists users, not that the app is safe. Part B evidences that layers change *which class* still lands, not a clean before/after. Part C — the classmate swap — evidences indirect injection against a real app; Cell 5 evidences it against a poisoned chunk. Part D evidences the ship checklist as a roadmap.
+
+A room where *every* direct attack bounces teaches exactly what the notebook comment says: vendors patched direct jailbreaks hard; write it down as a finding and move to Cell 5. An indirect payload that *also* bounces teaches that safety training has improved on that model version — try the second payload (roleplay framing inside the document, or an instruction phrased as a helpful note to the assistant), and if that bounces too, say plainly that the class of attack is mitigated on this model today and not closed, which is the honest position. A `TypeError` from a blocked response (`candidates_token_count` is `None`, `r.text` is `None`) teaches that the API itself has a safety layer that returns nothing — the fixed `ask()` handles it. A pair whose capstone does not run teaches that the checkpoint is the hole plus the fix; red-team the naive bot instead.
+
+---
+
+## Part 3 — The question bank
+
+Answers are two to six sentences, mechanism first. **[contested]** marks answers where the honest reply is that the field disagrees; **[unknown]** marks answers where nobody knows. "Point at" names the slide or widget that carries the answer on screen.
+
+### 3.1 From students with no ML background
+
+**1. Is ChatGPT just a very big autocomplete?** The core loop is the same operation as autocomplete — score every possible next token, pick one, repeat — so yes as an architectural claim. What is not the same is the machinery that produces the scores: a learned function over the whole context with hundreds of billions of parameters instead of a lookup of the last word. "Just" is doing no work in that sentence; the capability ceiling is set by the function, not the loop. Point at "ChatGPT is autocomplete at scale."
+
+**2. Where does it get the answer from if it isn't searching?** It computes it. The training process compressed patterns from trillions of tokens into the parameters, and at inference the prompt flows through those parameters to produce a distribution over next tokens. Nothing is looked up; that is why it can write a pirate poem about jigarthanda that no one has written, and why it can be confidently wrong. Point at "Wait — is it just searching a giant database?"
+
+**3. Does it remember our conversation?** No. The model has no state between calls. The app re-sends the entire conversation into the context window each turn, which is why long chats get slower and eventually "forget" the start. Point at "The context window: its entire working memory."
+
+**4. Does it learn from what I type?** Not while you use it — the parameters are frozen. On the Gemini API free tier your prompts *may* be used to improve future models offline, which is a separate thing and is the reason not to paste private data. Paid tiers do not use your data that way. Point at the quiz on "Training vs using: the cookbook rule."
+
+**5. Why did my friend get a different answer to the same question?** The model produces a probability distribution over the next token and samples from it. Two runs draw different dice. Temperature controls how peaked the distribution is; at temperature 0 you get the most likely token every time and near-identical answers. Point at the temperature widget.
+
+**6. What is a token?** A learned chunk of text — roughly three-quarters of an English word, and a few characters of Tamil because the vocabulary was fitted to English-heavy data. The model reads, counts and bills in tokens. Point at "Models don't read words. They read tokens."
+
+**7. What is a parameter?** One learned number. y = wx + b has two, w and b; a frontier model has hundreds of billions to a trillion. A model file is those numbers and nothing else — no sentences, no facts written down anywhere. Point at "What's inside a model? Just knobs."
+
+**8. Why can't it count the r's in strawberry?** Because it never sees letters. The tokenizer hands it `str·aw·berry` or similar as integer ids, and nothing in the input distinguishes the r's. Newer models pass because labs drilled them on that specific question; the mechanism is unchanged. Point at "Famous failures."
+
+**9. Why is it bad at multiplication when it can write essays?** There is no carry operation anywhere in the network. It predicts digits that look plausible given the digits before, which works for numbers it has seen and fails for 847 × 923. The fix is a calculator tool — Session 5.
+
+**10. Does it know what happened yesterday?** No; training ended months before release. Anything after the cutoff has to be put into the window — search or your documents — which is what RAG and tools do.
+
+**11. Why does it sometimes make things up?** The training objective rewards the most plausible continuation, never truth. A fluent, confident, wrong sentence scores as well as a fluent, confident, right one, and the model has no internal check that distinguishes them. That is why Session 2 measures instead of trusting. Point at "One of these is a confident lie."
+
+**12. What is "temperature" really?** A single division. The model's raw scores are divided by T before they are turned into probabilities, so T < 1 exaggerates the leader and T > 1 flattens the field. It is not a creativity setting; the model is not more imaginative at T = 2, only less selective. Point at the temperature widget's depth panel.
+
+**13. What does "training" cost?** Hundreds of crores of rupees in compute for a frontier model, months on thousands of accelerators, once. Inference — using it — costs fractions of a rupee per call, forever. The two moments are different in every way. Point at "Training vs using."
+
+**14. Why do I need an API key?** It is your identity and your quota. The gateway checks it before the model runs; a 429 means you exceeded the quota, not that anything is broken. Treat it like a password. Point at "What actually happens when you call an API."
+
+**15. Is the AI on my laptop?** No. Your laptop sends an HTTPS request; a data centre runs the model; tokens come back. That is why a ₹15,000 laptop and a workstation get the same answer. The one exception is Session 5's Ollama demo, where a small model really does run on the instructor's machine.
+
+**16. What is an embedding, in one sentence?** A list of numbers that places a piece of text in a space where nearby points mean similar things — "GPS for meaning." Session 4 turns it into search.
+
+**17. How does it know that "marks to clear the subject" means "50% aggregate to pass"?** The embedding model was trained so that paraphrases land close together in vector space. The two sentences share no words but share a direction. Point at "Keyword search misses meaning."
+
+**18. What does RAG stand for and what does it do?** Retrieval-Augmented Generation: find the right few paragraphs from your documents, staple them into the prompt, and have the model answer only from them with citations. It is the pattern behind most "chat with your documents" products. Point at "RAG, end to end."
+
+**19. If the model can call a calculator, does it run code on my computer?** No. It writes a request — "call calculator with 2347 × 0.18" — and *your* code decides whether to run it. Control stays with you. Point at "The model never executes anything."
+
+**20. Can I run this offline at home?** Yes, with an open-weight model through Ollama — `ollama run gemma4:e4b` — on an 8 GB laptop. It is slower and less capable than the API and it is yours. Point at "Ollama: a model in your pocket."
+
+**21. What is the difference between ChatGPT and GPT?** ChatGPT is the app; GPT is the model inside it. Like WhatsApp and the phone network. In the lab you skip the app and talk to the model directly. Point at "AI, ML, GenAI, LLM."
+
+**22. Why do I have to write ten questions with one-word answers?** Because Session 2 needs a test set with answers a program can check. One-word answers make the scorer simple and honest; sentences make every score an argument.
+
+### 3.2 From strong students
+
+**23. Where exactly does temperature enter the maths?** p(i) = exp(zᵢ/T) / Σⱼ exp(zⱼ/T). Dividing the logits inside the exponential rescales the gaps between them; the exponential then amplifies or dampens the leader. T → 0 recovers argmax; T → ∞ recovers uniform. Top-k and top-p truncate the candidate set before renormalising.
+
+**24. Why is temperature 0 not deterministic?** Floating-point addition on accelerators is not associative; batching changes summation order; near-tied logits flip. Mixture-of-experts routing can also depend on batch composition. Close to reproducible, never guaranteed — which is why evals run three times even at T = 0.
+
+**25. What is the loss, exactly, and why cross-entropy?** −log p(actual next token), averaged. Minimising it maximises the likelihood of the training corpus under the model, equivalently minimises KL divergence from the empirical distribution. Confidently wrong is punished far harder than unsure: −ln 0.001 = 6.9 versus −ln 0.1 = 2.3. Perplexity is exp(loss), the effective branching factor. Point at the depth panel on "What's inside a model?"
+
+**26. Why divide by √d_k in attention?** Dot products of d-dimensional vectors with unit-variance components have variance proportional to d. Without scaling, logits grow with d, softmax saturates toward one-hot, and gradients vanish. Dividing by √d keeps the logits O(1) regardless of head width.
+
+**27. Attention is permutation-invariant — so how does it know word order?** It does not; position is added to each embedding before attention runs. Sinusoidal encodings in the 2017 paper; RoPE today, which rotates queries and keys by a position-dependent angle so their dot product encodes relative distance. Point at the depth panel on "You saw this machine on the pre-class page."
+
+**28. Why n² and what do people do about it?** n queries against n keys. 1k tokens → 10⁶ pairs; 1M tokens → 10¹² pairs. Mitigations: sliding-window attention, grouped-query attention (shared K/V across heads, which also shrinks the KV cache), sparse patterns, and — at the application level — retrieval so you never send the textbook.
+
+**29. What is the KV cache and why does it matter for cost?** Keys and values for already-processed tokens do not change, so they are computed once and cached. Prefill (all input tokens, parallel) sets time-to-first-token; decode (one token at a time against the cache) sets tokens per second. Output is sequential and unbatchable, which is why every provider prices output 6–8× input. Context caching rents a stored prefix. Point at the depth panel on "The context window."
+
+**30. How big is the KV cache?** Per token, roughly 2 × layers × d_kv × bytes per value (2 for K and V). With multi-head attention d_kv = d_model; with grouped-query attention it is a small fraction, which is one of the reasons million-token windows became serveable. For a long conversation this is gigabytes per user, which is what you are paying for.
+
+**31. Where in the network do facts live?** Mostly in the MLP blocks, which are about two-thirds of the parameters and behave like key-value memories: the first matrix asks "is this vector about X?", the nonlinearity keeps the yeses, the second matrix adds the stored direction. Facts are smeared across many neurons by superposition, which is why you cannot edit one out. Point at Learning Guide Part 9.
+
+**32. What is superposition?** Packing more features than dimensions by using directions that are only nearly orthogonal. In 12,288 dimensions two random unit vectors are at 90° ± 0.5°, so millions of near-orthogonal directions coexist. Consequence: single neurons are polysemantic, which is why interpretability is hard.
+
+**33. What is the Chinchilla result and does it still hold?** Hoffmann et al. 2022: for a fixed compute budget, scale parameters and training tokens together — about 20 tokens per parameter at the budgets studied — and a smaller, better-fed model beats a larger, under-trained one. The shape holds; the constant has been revised, and modern models deliberately over-train well past 20 tokens/parameter because inference cost dominates the lifetime bill. Point at the depth panel on "The loop is old. The scale is new."
+
+**34. Is emergence real? [contested]** The phenomenon — abilities present at scale and absent below — is well documented. Whether it is *discontinuous* is contested: Schaeffer et al. 2023 showed several sharp jumps become smooth under continuous metrics. Say "capability follows compute smoothly; some thresholded metrics make it look sudden."
+
+**35. How does RLHF actually work, and what is DPO?** RLHF: humans rank model outputs; a reward model is trained to predict the ranking; the policy is optimised (PPO) to maximise reward minus a KL penalty toward the SFT model. DPO derives a closed-form loss on (preferred, rejected) pairs that optimises the same KL-regularised objective without a separate reward model or RL loop, so preference tuning becomes supervised training. Both shape tone, refusals and helpfulness; neither adds knowledge.
+
+**36. How do reasoning models differ architecturally?** They do not. They are trained — largely by reinforcement learning on tasks with checkable answers — to emit a long hidden chain of tokens before the visible answer. The chain is billed as output. Same loop, a new habit, and the cost rule follows directly. Point at "Reasoning models: think longer, not just train bigger."
+
+**37. What is MoE and why did parameter count stop predicting cost?** Each layer has many expert MLPs and a router that activates a few per token. Total parameters can be a trillion while active parameters per token are a few percent, so serving cost tracks active parameters. Point at the depth panel on "Why ChatGPT ≠ Gemini ≠ Claude."
+
+**38. How does distillation work?** A small student is trained to match the large teacher's full output distribution (soft targets) rather than just the correct label. The soft targets carry the teacher's uncertainty structure, which is more information per example. Nearly every Flash/Haiku/mini is a distilled sibling.
+
+**39. Why does few-shot work with no weight update? [contested]** The examples are in the context and every later token attends to them. Mechanistically, the field has evidence both that attention layers can implement something like gradient descent on the in-context examples and that much of the effect is format and label-space matching. For the room: it works, it is bounded by the window, and it disappears when the examples leave the context.
+
+**40. Why does chain-of-thought help?** A forward pass has fixed depth, so a computation that needs more sequential steps than the network has layers cannot fit in one pass. Emitting intermediate tokens spreads the computation across passes, and each token is a scratch value the next pass can read. It is more serial compute, not more intelligence.
+
+**41. Is a normalised-contains scorer sound?** No scorer is sound on free text. Contains is high-recall and low-precision: a generic expected string false-positives, and an answer containing the fact plus a contradiction passes. Exact match is the reverse. A judge is flexible and biased. Pick the cheapest scorer that does not lie about *your* task and read the failures.
+
+**42. Where does ±1/√n come from?** A pass/fail score is a binomial proportion with standard error √(p(1−p)/n) ≤ 0.5/√n. Two standard errors at p = 0.5 is 1/√n. n=10 → ±0.32, n=100 → ±0.10, n=1,000 → ±0.03. Paired comparison shrinks the noise because concordant items contribute zero to the difference.
+
+**43. What are the known biases of an LLM judge?** Position (prefers the first candidate in a pairwise comparison), verbosity (prefers longer), self-enhancement (prefers its own family's style); Zheng et al. 2023 measured all three on MT-Bench. Fixes: swap order and require agreement, hand-grade 20–30 items and measure agreement, and never let the model under test be the judge.
+
+**44. How does constrained decoding actually enforce a schema?** The schema is compiled to a grammar; a state machine tracks the position in it; at each step tokens that cannot extend a valid prefix have their logits set to −∞ before softmax. Malformed shape has probability exactly zero. It says nothing about values. Point at the depth panel on "All of it is one API call."
+
+**45. Why is cosine similarity a dot product after normalisation?** cos(a,b) = a·b / (|a||b|). If |a| = |b| = 1 the denominator is 1. Normalise once at index time and query time, and `chunk_vecs @ q` scores every chunk in one matrix multiply. Point at the depth panel on "Embeddings, now for whole paragraphs."
+
+**46. Why can you truncate a 3072-dimensional embedding to 768?** Models like gemini-embedding-2 are trained with a Matryoshka-style objective that concentrates signal in the leading dimensions, so a prefix is a usable lower-resolution embedding. You lose a little recall and gain 4× on storage and search time. Never truncate one that was not trained for it.
+
+**47. Bi-encoder versus cross-encoder?** A bi-encoder embeds question and passage separately, so all passage work happens at index time — fast for a million chunks, mediocre at fine ranking. A cross-encoder reads question and passage together and scores true relevance — accurate, too slow for a corpus, ideal for re-ordering 20 candidates. That asymmetry is the whole case for retrieve-wide-then-rerank. Point at the depth panel on "RAG, end to end."
+
+**48. What are recall@k and MRR, and why two numbers?** Recall@k: fraction of test questions whose gold chunk appears in the top k — the ceiling on answer accuracy. MRR: mean of 1/rank of the first correct chunk. High recall, low MRR means you find it and bury it — add a reranker. Faithfulness is the third number and belongs to generation. Point at the depth panel on "Where RAG breaks in the wild."
+
+**49. Why does BM25 still matter if embeddings are better?** Embeddings blur exact identifiers — course codes, error numbers, surnames, "Section 4(b)" — that a keyword index matches exactly. Hybrid search merges both rankings. Neither is redundant.
+
+**50. What does the function-calling wire format look like?** Your function becomes a JSON schema (name, description, parameters with types and descriptions, required list). The model emits a `functionCall` part with the name and arguments; the turn ends; you append a `functionResponse` part; the model continues. Four roles, all in context. Point at the depth panel on "Function declarations: the description IS the prompt."
+
+**51. Can the model call several tools in one turn?** Yes, when the calls are independent it can emit several `functionCall` parts in one response and expects all results back. Running them in parallel is free latency.
+
+**52. What is pⁿ hiding?** Independence. Real step failures correlate (a bad early retrieval poisons every later step), so the true chain reliability is usually *worse* than pⁿ. Validation between steps breaks the chain by converting silent failures into caught ones.
+
+**53. Why is memory bandwidth the bottleneck for local inference?** Generating one token reads every active parameter once. A 2 GB Q4 model on a laptop with ~50 GB/s memory bandwidth cannot exceed ~25 tokens/s no matter the CPU. Quantization halves the bytes and therefore roughly doubles the speed. Point at the depth panel on "Ollama: a model in your pocket."
+
+**54. What does quantization break first?** The hard tail — long multi-step reasoning, exact output formats, rarer languages. Chat and summarisation survive Q4 well. Test with your eval set, not with a casual chat.
+
+**55. Why is there no escape character for prompt injection?** Every other injection defence relies on a parser with a mechanical code/data boundary — SQL quoting, HTML entities, shell argument arrays. A transformer receives one flat token sequence, and "these tokens are instructions" is a trained preference that a persuasive sequence can outvote. Instruction-hierarchy training is the current attempt and it is an open problem. Point at the depth panel on "Defense in depth."
+
+**56. What is the lethal trifecta?** Willison's framing: exfiltration needs private data access, exposure to untrusted content, and a channel out, all at once. Remove any leg and that attack class dies regardless of prompt cleverness. A RAG bot over private notes that ingests untrusted PDFs is safe *until* you add an "email this" tool.
+
+**57. Why do direct attacks bounce but the poisoned document lands?** Safety training targets a *user* asking the model to misbehave, and it is now good at refusing that. The poisoned chunk arrives inside content the developer told the model to trust ("answer ONLY from this context"), so the injected instruction and the grounding instruction are the same kind of token. Lab 6 Cell 5 measured exactly this.
+
+**58. Why is output priced 6× input?** Input is prefill: all tokens in parallel, once. Output is decode: one sequential pass per token, holding the KV cache in memory, unbatchable per request. The asymmetry is physics, and it is why capping output length is the highest-leverage cost line.
+
+**59. p50 vs p99 — why not the mean?** Output length varies, so LLM latency has a structural long tail. The median is the designed experience; the 99th percentile is the complaint. A mean of 2.4 s hides a 30 s p99.
+
+**60. What is idempotency and why does it matter here?** A retried operation that has the same effect as running it once. Reads are naturally idempotent; "send email" is not, so a retry after a timeout sends two. Anything with a side effect needs an idempotency key or a pre-check before it is safe to retry.
+
+### 3.3 From faculty and sceptics
+
+**61. Isn't this just statistics?** The objective is statistical — maximum likelihood on next-token prediction — and saying so is accurate, not a dismissal. What is not "just" is the function class: a deep network with attention that learns compositional structure and generalises to sequences never seen. The honest framing for a CSE faculty room: it is statistics with a function approximator large enough that the behaviour needs empirical study, which is why evaluation is a first-class topic in this course. **[contested]** on how much of the capability is memorisation versus generalisation.
+
+**62. Why teach a proprietary API instead of the theory?** The course teaches the theory — tokens, attention, loss, sampling, embeddings, retrieval — and uses one API as the lab bench because a free key lets forty students run real models in fifty minutes on any laptop. Every notebook has one `MODEL` variable; the mechanics transfer to any provider or to a local model, which Session 5 demonstrates live. The pre-class page trains a real GPT from scratch on Thirukkural in the browser for anyone who wants the raw version.
+
+**63. Will this be obsolete in a year?** The model names, prices and free-tier limits will be — the course keeps those in a volatile table and re-verifies them before every run. Tokens, embeddings, attention, sampling, training-vs-inference, evaluation, retrieval, tool use and the injection failure mode are consequences of how the technology works, not product decisions, and have been stable since 2017–2020. Point at Learning Guide §7.3.
+
+**64. What about Indian languages?** Tokenisers fitted on English-heavy corpora fragment Tamil into more tokens per sentence — more cost, more latency, less effective context — and training data is thinner, so quality is uneven; the Lab 1 stretch measures the token ratio with `count_tokens` and Gemini's is narrower than the toy on screen suggests. Handwriting and speech in Tamil are where Lab 3 finds failures. Multilingual tokenizers and Indic-specific models are improving this; it is a live research area and a good final-year project (the Tamil scheme assistant track). **[contested]** on how fast the gap closes.
+
+**65. Does it understand? [contested]** Not a question this course can settle, and it says so. What can be said: it has no persistent state, no goals, no world model that anyone has located, and it produces confident right and confident wrong answers through identical machinery. Redirect to something testable: whether it produces correct answers on *your* test set is measurable; whether that constitutes understanding is philosophy of mind.
+
+**66. Can this be used for setting or grading our exams?** Setting: yes, with a human editing every item and an eval on the output — it is good at generating variants and bad at guaranteeing correctness. Grading: only with a rubric, a scorer you have audited on 20–30 hand-graded scripts, and a human on the blast radius (marks are a side effect that bites). The S2 judge-bias panel is the exact reason: an unaudited AI grader prefers longer answers and whichever came first.
+
+**67. Is prompt engineering a real skill?** As a job title, no — it is being absorbed. As a skill, yes in the unglamorous sense: specifying a task precisely, anticipating a failure mode with a constraint, and measuring the difference. The measuring is the real skill; the course calls it eval-driven development and it outlives any prompt.
+
+**68. Why not teach LangChain?** Because the course builds RAG as a numpy array and tools as plain Python functions so students understand what a framework hides before it hides it. Once you have written the 60 lines, LangChain is a convenience you can debug; if you have only ever used the framework, its failures are opaque. It is named as an honest next step, not a gap.
+
+**69. Is RAG dead now that context windows are a million tokens? [contested]** For a small static corpus queried rarely, pasting is fine and the course says so. For anything large, changing, or needing citations, three taxes remain: input cost scales with tokens every call, latency scales with prefill, and models attend worst to the middle. Real systems increasingly do both — retrieve, then hand a large context to the model. Point at "Just paste all my notes — let's price that."
+
+**70. Are agents hype? [contested]** The loop is real and the demos are real; the failure arithmetic is also real — 0.95¹⁰ ≈ 0.60. Most business AI that ships is a workflow with fixed steps and a model inside each. "Agent" earns its name when the path is genuinely unpredictable and the leash is in place. Point at "Why long agent chains collapse."
+
+**71. Who is liable when it hallucinates?** In the one adjudicated consumer case, the company: *Moffatt v. Air Canada*, 2024, the tribunal held the airline to its chatbot's invented policy. In *Mata v. Avianca*, the lawyers who filed the fabricated citations were sanctioned. "The AI decided" has not worked as a defence. Not legal advice; the architectural consequence is a human on anything that bites.
+
+**72. How do we assess students fairly if they use AI?** Assess artefacts AI cannot produce for them: a test set they wrote from a subject they know cold, a documented failure and its fix, a number with an n, a demo that survives one unrehearsed input. The capstone rubric is built that way. The course's own rule is "AI assistants are allowed; your eval set judges their code too."
+
+**73. What is the evidence this pedagogy works?** Honest answer: the course has a designed evaluation — checkpoints, a graded capstone with a rubric — and no controlled study. The claim it makes is narrower: every student leaves with six working artefacts and can explain each to a neighbour, which the checkpoint sweep tests directly. **[unknown]** whether it improves placement outcomes; the placement roadmap says so explicitly.
+
+**74. Aren't you overstating the risks (injection, deepfakes)?** OWASP has ranked prompt injection first in two consecutive editions; voice-clone fraud is a current pattern in India; the poisoned-document attack lands live in Lab 6 on a current model. The course also says what *does* work — a family password, a human gate, the trifecta — so the risk beats end in an action, not in anxiety.
+
+**75. How does this map to our syllabus outcomes?** `ASSESSMENT.md` maps six course outcomes to a 52-question bank across Bloom levels and includes a model paper on the 2/6/15-mark pattern; `course-plan.md` maps each session to the original ten topics. The "Responsible AI: the four questions" slide is written for this audience.
+
+**76. Is the free tier really free, and is it appropriate to require students to sign up?** No card is required on the designed path; the trade is that free-tier prompts may be used for training, which the course tells students on Day 1 and designs around (own notes, no private data). Availability and quotas are not guaranteed, and the course has a fallback: instructor-driven demonstration and, if built, a mock path. Nobody is asked to create extra accounts or share keys.
+
+**77. What about energy and water use? [contested on magnitudes]** Training a frontier model consumes energy on the order of a small town for months; inference per query is small individually and large in aggregate. Published per-query figures vary by an order of magnitude and depend on model size, batching and hardware; quote a range or none. The engineering levers the course teaches — smaller models for routine work, caching, capped output — reduce it directly.
+
+**78. Is the "autocomplete can pass your exam" hot take an attack on our exams?** It is a claim about assessment design: if a next-token predictor scores well, the paper measured recall and pattern more than transfer. The counter-argument the room usually gives — that recall is a prerequisite for transfer and exams are the cheap way to check it — is a good one, and the close names the strongest counter-argument aloud with credit. Point at "If autocomplete can pass your exam…"
+
+### 3.4 About the tools — Gemini, Colab, keys, quotas, privacy (September 2026 facts)
+
+**79. What is the difference between an auth key and a standard key?** From September 2026 the Gemini API rejects requests from "Standard" keys; new keys created in AI Studio are auth keys automatically. Students creating keys fresh are fine. Instructor keys created before the change must be regenerated — that is the first item on the ten-day plan.
+
+**80. A student has a Google Cloud account and "Get API key" does nothing.** AI Studio no longer creates a default project for accounts that already have Google Cloud; the student must import an existing project first. Walk them to the project selector; if they have no usable project, pair them with a working machine and both type.
+
+**81. Which model does the lab use and why?** `gemini-flash-lite-latest`, an alias currently serving Gemini 3.5 Flash-Lite (no newer Lite exists; resolve it live with `client.models.get` the week before). Lite is chosen because it runs with *minimal* thinking by default, so the free output quota lasts the lab; because it is verified for vision, function calling, streaming, `response_schema` and `max_output_tokens`; and because an alias serves both new accounts (where `gemini-2.5-flash` returns 404) and old ones.
+
+**82. Why not `gemini-flash-latest`?** That alias is hot-swapped to each new Flash release — 3.7 Flash on 13 Aug, 3.8 Flash on 2 Sep — and those are thinking models. A measured session billed 28,089 hidden reasoning tokens against 2,770 visible, 91% of output, and on the free tier that drains output quota roughly an order of magnitude faster. Keep it as the S1 slow-and-verbose comparison and as a fallback, not as the default.
+
+**83. Can thinking be turned off?** Not with `thinking_budget` — numeric budgets are rejected on Gemini 3.x. `thinking_level="minimal"` exists on 3.5 and 3.6 Flash but not on 3.7/3.8. Flash-Lite's default is minimal thinking, which the docs describe as not guaranteeing thinking is off; you may pin `thinking_config=types.ThinkingConfig(thinking_level="minimal")` on the lite alias to be explicit.
+
+**84. Why do the official docs look different from the notebook?** The docs now default to the Interactions API (`client.interactions.create(...)`, GA June 2026). `generate_content` is fully supported and is what every notebook uses. Same model, different client surface; nothing in the labs needs to change.
+
+**85. The temperature cell shows no difference between 0 and 1.5.** `temperature`, `top_p` and `top_k` were deprecated on Gemini 3.x in the 21 July 2026 changelog and were still accepted on 3 August. If on the day the parameter is ignored, say: the provider has taken the sampling dials away from you, which is exactly the "names change, mechanics don't" lesson — the softmax is still there, you just no longer hold the knob. Run the eval three times instead to show variance.
+
+**86. Why does my embedding store have three rows for sixty chunks?** You passed a bare list of strings; gemini-embedding-2 returns one *aggregated* embedding for the whole list. Wrap each text as its own `types.Content(parts=[types.Part.from_text(text=t)])` to get one vector per chunk, and keep the assertion `len(res.embeddings) == len(texts)`.
+
+**87. Why 768 dimensions when the default is 3072?** `output_dimensionality=768` matches the deck's stepper, cuts storage and search time by 4×, and loses little because the model's leading dimensions carry most of the signal. Whatever you pick, use the same value for chunks and queries and store it beside the index.
+
+**88. Is gemini-embedding-001 shut down?** No. It remains available with an earliest shutdown of 14 May 2028; 14 July 2025 was its *release* date. It is superseded by gemini-embedding-2 (GA 22 April 2026), which the lab uses.
+
+**89. What are the free-tier rate limits?** Google no longer publishes per-model numbers; the docs defer to your project's live limits in AI Studio. The materials say "~10 requests/min, a few hundred a day, varies" as a hedge. The honest answer in the room is the screenshot of the rate-limit page you took the day before.
+
+**90. What does a 429 mean and what do I do?** Quota exceeded at the gateway; nothing is broken. The notebooks' `ask()` retries with 20/40/60-second backoff. If a whole room hits it at once, stagger: half run while half write test questions.
+
+**91. What does a 503 mean?** Capacity on the provider's side ("high demand"). Wait and retry; if persistent, the flash alias is the fallback at the cost of thinking tokens.
+
+**92. Is my data used for training?** On the free tier of the Gemini API, prompts and responses may be used to improve Google's products; on paid tiers they are not. Hence: own notes, no ID numbers, no confidential documents, and a `getpass` prompt for the key so it never sits in a cell.
+
+**93. Where should the API key live?** In `getpass` during the lab; in Colab secrets or an environment variable for anything saved; in Streamlit secrets or an env var when deployed; never in a notebook you push. A key in a public repository is scraped within minutes.
+
+**94. Colab disconnected at lunch and my embeddings are gone.** Colab's runtime disk is ephemeral. Lab 4 mounts Drive and saves `chunk_vecs.npy` and `chunks.json` there; Lab 5 and Lab 6 have a reload cell. If a pair skipped the mount, re-embedding 60 chunks is about 12,000 tokens and three batched calls — cheap, but rate-limited if the whole room does it at once.
+
+**95. My PDF extracted nothing.** It is a scanned image; `pypdf` reads text layers, not pixels. Swap to a text PDF or the sample document at minute five, or run the pages through Session 3's vision extraction first. The lesson is retrieval, not parsing.
+
+**96. Prices for the cost slide?** Per million tokens, September 2026: Gemini 3.5 Flash $1.50 in / $9.00 out (the slider's constants, now previous-generation); 3.5 Flash-Lite $0.30 / $2.50; 3.8 Flash $0.75 / $3.75 introductory to 31 December; gemini-embedding-2 $0.20 input. About ₹95 per dollar. A typical Lab-4 RAG query costs about ₹0.13 on Lite.
+
+**97. Does `response_schema` guarantee valid JSON?** It guarantees the *shape* by masking illegal tokens at the decoder; `json.loads` will not throw on the text. It does not guarantee the request succeeds (a blocked response returns no text), the values are right, or the model is honest about unreadable input — give the schema a null outcome and parse defensively.
+
+**98. Why does the S1 handout compare against the flash alias instead of ChatGPT?** Because the college network or a missing account may block the web UIs, and the alias comparison teaches the same lesson without a login — plus the thinking-cost lesson for free: the same prompt comes back slower and longer.
+
+**99. Can students run Ollama in the lab?** No — it is an instructor demonstration; student labs use the API. At home, 8 GB RAM runs a 3–4B model; without a machine, the same model runs in a free Colab runtime.
+
+**100. Is automatic function calling still supported on the lite alias?** Verified 3 August; re-verify in the ten-day plan. Lab 5 Part C disables it deliberately to show the raw `function_call`, and the guarded loop builds the `function_response` by hand with `types.Part.from_function_response`.
+
+### 3.5 About careers and placements
+
+**101. Will this get me a job?** Twelve hours does not make an AI engineer; it makes someone with six working artefacts who can explain how a model works without hand-waving. Most campus offers are general software roles; this makes you the memorable candidate in that pile. DSA preparation is not replaced. Point at `PLACEMENT-ROADMAP.md`.
+
+**102. What should go on my resume from this?** A deployed URL, a measured number, and the specific problem: "retrieval over 400 pages of regulations, 84% on a 100-question test set against 61% ungrounded, ~₹40/month." Not a list of fields. Never claim fine-tuning unless you did it; it collapses under one question about training-data format.
+
+**103. What is a forward deployed engineer?** The role whose working week is exactly the capstone shape: embed with a customer, build on a platform's models, prove value with numbers. Realistic for a fresher at AI startups with two deployed customer-style projects and strong communication. The roadmap has a section on it.
+
+**104. Which project should I do after this?** One user, one document type, one measurable claim. `COLLEGE-PROJECT-TRACKS.md` gives Level 1 (6–10 h: study-notes RAG, receipt extractor, prompt-eval dashboard), Level 2 (12–20 h: regulations assistant with injection testing, codebase RAG, Tamil scheme assistant) and Level 3 (semester: observability dashboard, RAG+tools with approval gates, department knowledge service), each with minimum evidence.
+
+**105. What interview questions should I be able to answer?** The roadmap lists them. Fundamentals: what a token is, what happens between prompt and first word, why output is dearer than input. Building: RAG end to end and where it breaks; right chunk retrieved but wrong answer — diagnose. Judgement: how do you know it works, cost per user and how to halve it, agent or workflow and why, what would stop you shipping.
+
+**106. Should I learn LangChain next?** After you have built the raw version, yes as a convenience — you will recognise every piece. Frameworks, rerankers, hybrid search, LoRA/QLoRA and tracing tools are the honest next steps in Learning Guide §7.2.
+
+**107. How do I turn the capstone into a final-year project?** Add a baseline you beat, a 100-question eval set a person wrote, one documented attack and mitigation as the security chapter, and the cost arithmetic. The sentence a panel wants: here is the metric, here is the baseline, here is where it fails.
+
+**108. Is "prompt engineer" a job to aim at?** Treat it as unlikely; it is being absorbed into other roles. Evaluation, retrieval and shipping are the durable skills.
+
+**109. Do I need a master's for AI roles?** For research, usually. For application engineering and forward-deployed roles, a deployed project with numbers matters more. Data science roles sit in between and want classical ML depth, which the roadmap's weeks 1–2 address.
+
+**110. Is a fintech/KYC background relevant to what you taught?** Directly: document extraction with schemas (S3), regulators asking where prompts go (S5's local-model argument), human gates on anything that moves money (S6). Those are the same three slides that carry the instructor's own war stories.
+
+### 3.6 Curveballs
+
+**111. Is it conscious? [unknown]** There is no agreed test and no mechanism in the chain that anyone has identified as consciousness. What is known: no persistent state, no goals of its own, identical machinery for right and wrong answers. Say that, decline to speculate, and redirect to something measurable.
+
+**112. When is AGI coming? [unknown]** Forecasts from serious people range from a few years to never, and the term has no agreed definition. What the course can say: capability has followed compute predictably, the data wall is real, and test-time compute is the current axis. Anyone giving a date is guessing.
+
+**113. Will AI take our jobs?** It changes what juniors are hired for. The person who can specify, test and debug an AI system is more employable, not less — which is the design of the course. Honest uncertainty about the aggregate; concrete advice about the individual.
+
+**114. How much energy does one query use? [contested]** Published per-query estimates span an order of magnitude; it depends on model size, batching and hardware, and providers rarely disclose. Order of magnitude: a small model answer is comparable to a few seconds of a laptop; a long reasoning answer is much more. Smaller models, caching and capped output are the levers you control.
+
+**115. Who owns the copyright on what it generates? [contested]** Jurisdiction-dependent and unsettled; several regimes decline to grant copyright to purely machine-generated work, and training-data cases are live in multiple countries. Not legal advice. The engineering consequence: keep provenance, disclose AI-generated content, and do not build a product whose value depends on owning generated text.
+
+**116. Can someone clone my mother's voice? [yes]** A few seconds of audio suffices with freely available tools; detection is an arms race. The defence that works is out of band: a family password. Tell your parents this weekend. Point at "Your mother's voice is no longer proof of your mother."
+
+**117. Can I use this to cheat in exams?** You can use it to generate answers; you cannot use it to know whether they are right, which the spot-the-lie game just showed. The skill the course teaches — measuring — is the one an exam is trying to test. And if a next-token predictor passes the paper, that is a question for the paper, which is the hot take.
+
+**118. How good is it in Tamil? [contested]** Uneven. Translation and simple QA are reasonable; formal register, handwriting, speech with code-switching and rare proper nouns fail more, and every sentence costs more tokens. The Lab 1 Tamil stretch, the Lab 3 handwriting part and `count_tokens` give you data points from this room; quote them rather than a general claim.
+
+**119. Could it be lying to us on purpose?** It has no goals, so "on purpose" does not apply; it produces the most plausible continuation under its training. Models trained with RLHF do exhibit sycophancy — agreeing with the user — because agreement was preferred by raters. That is a measurable bias, not intent.
+
+**120. Why does it apologise so much?** Preference tuning: raters preferred polite, hedged answers, so the model learned the register. Hedging is a trained behaviour and is not evidence that the model knows what it does not know.
+
+**121. Are open-weight models from China safe to use?** Weights are numbers; they cannot phone home. The concerns are licence terms, training-data provenance, and behaviour differences, which your eval set measures. Run it locally with Ollama and the data never leaves the machine.
+
+**122. Could the model be secretly running code when it "calls a tool"?** Not for tools you define — the call is a JSON request you execute or refuse. Provider-hosted tools (code execution, search) run on the provider's side; that is a different trust boundary and the course names it.
+
+**123. Isn't a 10-question eval laughably small?** Yes — ±30 points. It is a smoke test and a way to learn the discipline; real systems use hundreds. The course says the honest number on the arena's depth panel.
+
+**124. What if a student pastes something private into the free tier?** Stop, note the time, and treat it as a lesson rather than a disaster: the data may be retained for product improvement, cannot be recalled by the student, and this is exactly why the labs use own notes. Report it to the student and, if it is college data, to whoever owns it. Part 4 has the room line.
+
+**125. Is the pre-class Thirukkural model a real GPT?** Yes: a character-level GPT with about 164k parameters trained on the 1,330 kurals (and on sonnets for comparison), with real weights running in the browser, a recorded loss curve and samples at each step. It produces nonsense at that size, which is the point — coherence grows smoothly with data and parameters, and facts appear when the training text contains them.
+
+**126. What is the single most important thing to remember?** The chain in Part 1 and one consequence: the model does not know when it is wrong, so you measure. Everything else is technique.
+
+---
+
+## Part 4 — Failure playbook for the room
+
+Each entry: symptom · 20-second diagnosis · recovery · the teaching line that turns it into content.
+
+**1. 429s across the room.** Symptom: several pairs see "Rate limited — waiting 20s" at once. Diagnosis: the gateway's per-project quota, not a bug; check whether it is per-minute (clears in a minute) or per-day (does not). Recovery: stagger — half the room runs while half writes test questions; on a daily cap, move the pair to the instructor demo or the mock path. Line: *"You just met the quota check on the API slide. Production has this too; it is why every notebook has a retry with backoff."*
+
+**2. 404 on the model alias.** Symptom: `NOT_FOUND` for `gemini-flash-lite-latest`. Diagnosis: the alias moved or was retired, or the account is on a project without access — run `client.models.list()` in your own runtime and see what resolves. Recovery: change the one `MODEL` line to a working id you saw in the list (3.5 Flash-Lite's dated id, or the flash alias as a last resort with a warning about thinking tokens); announce the string once, write it on the board. Line: *"One variable per notebook, and this is why. Names change monthly; the mechanics do not."*
+
+**3. Key creation blocked.** Symptom: "Get API key" loops or shows nothing. Diagnosis: college-managed account (Workspace admin has disabled AI Studio), a phone-verification loop, or an existing Google Cloud account that needs a project imported. Recovery: personal account for the first two; import a project for the third; after five minutes, pair them with a working machine — both still type. Do not share keys or create extra accounts. Line: *"Identity and quota live in the key; that is also why you cannot borrow one."*
+
+**4. Colab disconnect at lunch loses Lab 4's store.** Symptom: `chunk_vecs` undefined in Lab 5. Diagnosis: runtime recycled; no Drive mount. Recovery: run the reload cell if Drive was mounted; otherwise re-run Lab 4 Cells 1–4 (three batched embed calls, ~12k tokens) and mount Drive this time. Line: *"Runtime disk is ephemeral; a vector store is state. Persistence is the first thing 'notebook to product' changes."*
+
+**5. Scanned PDF extracts nothing.** Symptom: Cell 2 raises "Too little readable text". Diagnosis: image-only PDF; `pypdf` reads text layers. Recovery: swap to a text PDF or `sample-os-notes.txt` at minute five; a fast pair can run pages through S3's vision extraction first. Line: *"RAG starts with text. Extraction is its own pipeline, and Session 3 is where you built it."*
+
+**6. The injection attack does not land.** Symptom: every attack in Lab 6 Cell 3 bounces; Cell 5 also bounces. Diagnosis: model version has stronger refusal or instruction-hierarchy training. Recovery: Cell 3 bouncing is the expected finding — say so and move to Cell 5; if Cell 5 bounces, use the second payload (an instruction framed as a helpful note to the assistant, or roleplay inside the document), and if that bounces, state that the class is mitigated on this model today, not closed. Line: *"A defence that works today is not a proof. OWASP still ranks this first, and the trifecta is how you cap damage when the next payload lands."*
+
+**7. A demo returns nonsense or refuses.** Symptom: the live call gives an off-topic, empty or blocked reply. Diagnosis: read `usage_metadata` and the finish reason — a safety block returns no text; a thinking model may have spent its output budget; a wrong `MODEL` may be serving. Recovery: re-run once at T=0; if blocked, show the finish reason and move on with the canned example the slide already carries. Line: *"Same machinery, different sample. This is why the eval runs three times and why the deck's demos are canned — the real one is your lab."*
+
+**8. A student pastes private data into the free tier.** Symptom: you see an ID number, a password or a confidential document in a prompt. Diagnosis: policy, not a technical failure. Recovery: stop the cell, tell the student plainly that free-tier data may be retained for product improvement and cannot be recalled, have them change the password if it was one, and note it for the data owner if it was college data. Line: *"This is the front-page rule from hour one. Nothing you put in a prompt is yours again."*
+
+**9. Projector washes out the deck; dark-theme toggle.** Symptom: the diffusion slider's silhouette-then-detail ordering is invisible; the dot-grid bands; the HUD is unreadable. Diagnosis: projector gamma and contrast. Recovery: the `dark` toggle in the HUD flips every deck (and the index) to the shared `tce-genai-theme`; test both themes on the projector before students arrive and pick the one where the diffusion slider reads. Line: none needed — fix it before 9 a.m.
+
+**10. A faculty member challenges a number.** Symptom: "that price is wrong / that figure is outdated / where is that from?" Diagnosis: they are probably right about drift; the volatile table exists because of it. Recovery: agree immediately, name the date the figure was verified (`fact-check.md`), give the current number if you have it (Part 2 §S6 has the September prices), and promise the corrected slide. Never defend an illustrative widget as measured. Line: *"Everything on screen is a faithful cartoon — simplified to be visible, never simplified to be wrong — and the numbers that move are in a table we re-check before every run."*
+
+**11. Temperature cell shows no variance.** Symptom: three runs at 1.5 are identical. Diagnosis: the parameter is deprecated on 3.x and is now ignored. Recovery: switch the demonstration to run-the-eval-three-times and show the score move. Line: *"The provider took the sampling knob away. The softmax is still there; you just no longer hold the dial — which is the whole 'names change, mechanics don't' lesson in one cell."*
+
+**12. Embedding store has three rows.** Symptom: `vector store: (3, 3072)` for 60 chunks; every search returns the same chunks. Diagnosis: bare string list aggregated into one embedding; the fix (one `Content` per text, `output_dimensionality=768`, count assertion) is missing from that pair's copy. Recovery: paste the fixed `embed()`. Line: *"An API that changes its contract fails silently. The assertion is there so it fails loudly — that is what a test is."*
+
+**13. Ollama demo fails on college Wi-Fi.** Symptom: `ollama run` starts downloading. Diagnosis: the model was not pulled on this machine. Recovery: `gemma3:4b` if that was pulled earlier; otherwise the on-slide "Simulate the race" with the words "this is a simulation" said aloud. Line: *"The lesson is the file size arithmetic, not the download — parameters × bits ÷ 8, and the pull is the one thing you do online."*
+
+**14. The room is behind at the lab-brief slide.** Symptom: the pace badge reads behind by more than five minutes when you reach the lab slide. Diagnosis: talk overran. Recovery: do not shorten the lab; cut stretch goals and, in S1, Part D — never Part E. Line: *"Checkpoints are what the next session assumes; stretch goals are what fast pairs do."*
+
+**15. Too many pairs for three-minute demos.** Symptom: headcount at S6 gives more than twelve pairs. Diagnosis: 3 min × pairs exceeds the ~35-minute slot. Recovery: announce 60–90-second lightning demos before Part A; keep the stopwatch visible; the failure story is the graded part, so ask for the failure first. Line: *"Lead with the problem, show the failure, name the fix. That is the demo."*
+
+**16. The whole network dies.** Symptom: nothing resolves. Diagnosis: college uplink. Recovery: decks are single offline files — teach the slides, run the local model if pulled, convert the lab to a paper walkthrough (write the prompts, predict the outputs, run it at home), and say that this is what incident response looks like. Line: *"The model is on another continent. Your laptop was only ever posting letters."*
+
+---
+
+## Part 5 — Delivery craft specific to these decks
+
+### Presenter mode
+
+Press `S` for the presenter panel: session timer, this slide's budget, cumulative target, a pace badge (on-time / behind / ahead), the speaker note, and the next-slide preview. `D` opens every `<|deeper|>` panel on the current slide (and closes them); `O` is the overview grid; `F` is fullscreen; a number then Enter jumps to a slide. The S2 lab slide also has `L` to start/pause the 50:00 countdown and `R` to reset it (amber at 10:00 left, red at 2:00). The pace badge compares elapsed time to the cumulative budget; it is only as good as the DATA budgets, so know the two places it lies: S1's slide numbering changed this week (regenerate the slide guide before trusting the table) and S6's "Six sessions, one throughline" carries the whole last hour.
+
+### Compressible slides, in the order to cut them
+
+The deck flags `▸ compressible` slides; the prep packs give a considered order. Merged:
+
+| Session | Cut first → last | Never compress |
+|---|---|---|
+| S1 | Famous failures (four cards → two) · AI/ML/GenAI/LLM rings (90 s) · Why ChatGPT ≠ Gemini ≠ Claude (60 s, do not read the table) · the hot take · the instructor bio | Those odds aren't magic · Watch the network think · the pipeline stepper · lab Part E |
+| S2 | Four prompt crimes (two cards) · Few-shot (Tanglish example alone) · Six ideas recall · Demand a format · the hot take · "It worked when I tried it" | One of these is a confident lie · Watch an eval run (run it twice) · Same answer, three verdicts · the arena's Q5 |
+| S3 | Madurai seeds (one, not three) · Place your bets (three items) · Five ideas recall · Image generation fine print · the hot take | Diffusion slider · All of it is one API call · the Day 1 close and overnight task |
+| S4 | You've been using RAG all along (one card) · Six ideas recall · Keyword search misses meaning (one example) · Vector databases · RAG vs paste-it-all vs fine-tuning · the hot take | Search playground query 2 and the trap query · RAG stepper stage 5 · the grounded template's A/B toggle |
+| S5 | Which tool should it call (three items) · Six ideas recall · Defend your vote (two items) · MCP · Multi-agent · the hot take · API vs owned · Local vs API | The model never executes anything (read twice) · Why long agent chains collapse · Workflow or agent? One question decides |
+| S6 | Jailbreaks & leaks (one door) · Capstone brief (90 s) · Everything in 90 seconds (four items) · UX patterns · Responsible AI · Whose law · Where to go from here · the hot take | Indirect injection · Defense in depth toggle · the demos |
+
+### The six hot takes and the strongest counter to each
+
+Each is read once, slowly, followed by three seconds of silence and exactly one counter-argument; the strongest one is named at the close with credit. Know the best counter so you can steel-man the room if nobody offers it.
+
+*If autocomplete can pass your exam, your exam was never testing understanding.* Counter: recall is a prerequisite for transfer and a written exam is the cheapest scalable check of it; the fact that a model passes says the model has recall, not that recall was the wrong thing to test. Your reply: fair — the claim is about what the paper *discriminates*, and a paper that cannot discriminate a student from a next-token predictor is no longer discriminating the thing it was designed for.
+
+*Hallucination is an expected failure mode. That does not make it acceptable.* Counter: humans confabulate too, and we do not call a person "unacceptable" for occasional error; the bar should be comparative, not absolute. Your reply: agreed on the bar — which is why the session measures rather than moralises; the difference is that a human's confidence carries information and the model's does not.
+
+*Your mother's voice is no longer proof of your mother.* Counter: provenance and detection technology will restore trust faster than social habits change; passwords do not scale to institutions. Your reply: detection is an arms race and provenance requires adoption on both ends; a shared secret works today and costs nothing, and institutions already use exactly this (OTP is an out-of-band secret).
+
+*Your final-year project needs a user, a baseline, and a number.* Counter: research-oriented projects legitimately explore without a user or a baseline; insisting on a number kills exploratory work. Your reply: exploration is fine — but a claim needs a measurement, and "we explored" is not a claim; the project tracks have a Level 4 research track with its own evidence bar.
+
+*Most production "AI agents" are a while-loop in a trench coat.* Counter: the loop is trivial; the hard parts — tool design, state management, evaluation, guardrails — are real engineering that the slogan dismisses. Your reply: exactly, and the slogan is aimed at the pricing and the mystique, not at the engineering; the guarded loop on the next slide is that engineering.
+
+*There is no perfectly secure AI agent. Build one whose blast radius you can survive.* Counter: no system is perfectly secure, so the claim is vacuous; conventional security engineering has the same posture. Your reply: yes, and that is the point — the difference is that conventional systems have a parser boundary you can reason about and a transformer does not, so the *only* defences that hold are the conventional ones on the tool side.
+
+### The capstone rubric and how to score it
+
+Working demo 40 · honest eval numbers 25 · failure analysis 15 · technique fit 10 · presentation 10 (S6 slide, `certificate.html`, `course-plan.md` all agree). The demo line asks for a live run on the free tier surviving one unrehearsed input — the certificate makes that mandatory, the "How to demo" slide calls the wild-card optional; reconcile aloud: pre-run your best example, then take one input from the room.
+
+Scoring guidance. Demo (40): runs live and answers a room input, 32–40; runs live on the pre-run example only, 22–30; runs from screenshots or a recording of an earlier run, 10–18; does not run, 0–8. Eval (25): ten examples, real scores including the unflattering ones, with n stated, 20–25; five examples or scores without failures shown, 10–16; "we tested it a lot", 0–5. Failure analysis (15): a failure traced to a stage (retrieval / prompt / model / tool) with the mitigation applied and re-measured, 12–15; failure named but not traced, 6–9; none, 0. Technique fit (10): two or more techniques chosen because they fit — a human gate on a side-effect tool, a schema on extraction, retrieval on a changing corpus — 8–10; techniques bolted on to impress, 3–5. Presentation (10): three minutes, problem first, failure shown proudly, 8–10.
+
+**The pair whose app does not run but whose failure analysis is excellent.** Score the demo line honestly and low — 0–8 — and score the other four lines on their merits, which can reach 60. Say aloud why: the rubric weights the working demo because shipping is the skill, and a rigorous failure analysis of a broken app is still worth more than a polished demo with no numbers. A 55 with a traced failure beats a 50 with a fragile "perfect" run, and the room should hear that comparison made explicitly. If the app failed *during* the demo on the unrehearsed input, that is a live failure analysis — score it under failure analysis, not as a demo penalty, provided the pair diagnoses it on the spot.
+
+### Demo-time arithmetic
+
+Three minutes per pair plus thirty seconds of changeover. Ten pairs is 35 minutes — the slot. Twelve pairs is 42. Above twelve, announce lightning demos (60–90 seconds: problem, failure, fix) *before* Part A starts so pairs prepare for that format; above twenty, split into two rooms or select demos by volunteers plus a random draw. Write the hard stop on the board and hold it.
+
+### Running the red-team swap
+
+At the start of Part C, pairs physically swap laptops with the pair beside them — not across the room, to save time. Each attacks the other's capstone for ten minutes: a direct injection in a question, an indirect one by adding a poisoned line to a document and re-ingesting, and a tool that fires when it should not. The attacker writes one sentence describing the hole; then laptops swap back and each pair patches its own. Nobody sees their own blind spot; that is why the swap is mandatory, and it is what the certificate's "red-teamed by a classmate" line refers to. A pair with no working app red-teams the naive bot from Cell 2 and hardens that; the checkpoint is the hole plus the fix, not the app.
+
+---
+
+## Part 6 — Reading list for the ten days
+
+One or two an evening; abstract, figures, results table, limitations, in that order, and stop when you have what you came for.
+
+1. **Vaswani et al. 2017, "Attention Is All You Need."** The architecture. Read §3 for the Q/K/V equations and the √d_k justification; skip the translation results.
+2. **Hoffmann et al. 2022, the Chinchilla paper.** Compute-optimal scaling; the 20-tokens-per-parameter figure and why "bigger" stopped being the plan. Figure 1 and Table 3 are enough.
+3. **Kaplan et al. 2020, "Scaling Laws for Neural Language Models."** The power-law curves the Chinchilla paper corrected; read for the shape of the argument.
+4. **Ouyang et al. 2022, InstructGPT.** SFT → reward model → PPO with a KL penalty; the "finishing school" slide is a summary of Figure 2.
+5. **Rafailov et al. 2023, "Direct Preference Optimization."** Why the reward model can be eliminated; read the derivation of the loss (§4) once so you can say "same objective, closed form."
+6. **Liu et al. 2023, "Lost in the Middle."** The U-shaped accuracy curve over position in context; the empirical basis for the third tax on pasting and for context growth in agents.
+7. **Lewis et al. 2020, "Retrieval-Augmented Generation."** The name and the original architecture; note that the course's RAG is the frozen-retriever, prompt-stuffing variant the industry converged on, not the jointly trained original.
+8. **Karpukhin et al. 2020, "Dense Passage Retrieval."** The bi-encoder; the reason reranking exists.
+9. **Yao et al. 2022, "ReAct."** Reason-then-act interleaving; the ancestor of every agent loop, and a clear picture of why trajectories need evaluating.
+10. **Schick et al. 2023, "Toolformer,"** plus the Gemini function-calling docs page. Tool use as a trained behaviour; the docs page for the current wire format and the `function_response` shape you will demo.
+11. **Greshake et al. 2023, "Not what you've signed up for."** Indirect prompt injection formalised; the taxonomy behind the poisoned-document slide.
+12. **Simon Willison, "The lethal trifecta" (2025).** Short blog post; the three-legged model the S6 depth panel uses. Read his prompt-injection series index if you have an hour.
+13. **OWASP Top 10 for LLM Applications, 2025 edition.** Confirm LLM01 is still prompt injection; skim the other nine so you can name them if asked.
+14. **Zheng et al. 2023, "Judging LLM-as-a-judge with MT-Bench and Chatbot Arena."** Position, verbosity and self-enhancement bias measured; §3 is the part you will quote.
+15. **Anthropic, "Building effective agents" (December 2024).** The workflow-vs-agent distinction in the industry's own words; the five workflow patterns are a useful vocabulary for Lab 5 Part D.
+16. **Gemini docs: the "thinking" page and the "embeddings" page.** Read both properly. The thinking page is where `thinking_level` vs `thinking_budget` and per-model support live; the embeddings page is where the aggregated-embedding behaviour, `output_dimensionality` and task types live. These two pages are the September-2026 truth for the labs and they move; read them again on Thursday 17.
+
+Optional, if an evening is free: Dosovitskiy et al. 2020 (ViT) for the patch-as-token claim; Ho et al. 2020 (DDPM) §3 for the noise-prediction objective; Schaeffer et al. 2023 ("Are emergent abilities a mirage?") for the honest version of emergence; Brown et al. 2020 (GPT-3) §3 for in-context learning as originally reported.
+
+---
+
+*If you can tell the Part 1 chain in three minutes with no slides, derive every Part 2 formula on a whiteboard, and answer any ten questions from Part 3 cold, you are ready. The prep packs carry the slides; this carries you.*

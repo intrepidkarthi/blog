@@ -48,241 +48,161 @@
 <body>
 <div class="wrap">
   <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
-  <div class="kicker">Session 2 · instructor deep prep</div>
   <h1>Session 2 — Instructor Prep Pack</h1>
-  <p class="lead">the deep version · Generative AI: Foundations and Applications · TCE</p>
+  <p class="lead">Talking to AI, and Catching Its Lies · 21 slides · 2 hours</p>
 
-<p>Work through this over a weekend (~3 hours). The run sheet (<code>session-2-notes.md</code>) is delivery-day only. Deck: <code>../presentations/session-2-talking-to-ai-and-catching-its-lies.html</code> — 21 slides, 9 interactives, all offline/canned (the lab is where students touch the real API). Lab stack: Google AI Studio free tier, <code>gemini-flash-latest</code> (the alias for the free tier's current Flash — today Gemini 3.5 Flash; typical free-tier limits ~10 RPM / 250K TPM / a few hundred req/day (varies) — check the live limits page).</p>
-<hr>
-<h2 id="a-narrative-spine-the-session-as-one-argument">A. Narrative spine — the session as one argument</h2>
-<p>Seven beats. If you can say these out loud in under 3 minutes without looking, you own the session; if you stumble on a beat, re-read that deep-dive below.</p>
-<ol><li><strong>You can call the model (S1), but your asks are wishes.</strong> "write about tce" produces 400 generic words because the model completes the <em>most plausible</em> document that starts that way — and vague prompts have vague plausible continuations.</li>
-<li><strong>Structure turns wishes into instructions.</strong> Six switches: role, task, context, format, examples, constraints. Task is mandatory; the rest are dials. Each switch narrows the space of plausible continuations.</li>
-<li><strong>The two power tools are few-shot and step-by-step.</strong> Examples beat descriptions because the model is a pattern-completion engine; visible steps beat direct answers because errors surface in tokens you can audit.</li>
-<li><strong>But a polished prompt still lies — fluently, confidently, indistinguishably.</strong> A US lawyer got sanctioned over six invented citations; Air Canada was held liable for a policy its chatbot made up. Not bad prompts. <em>Unmeasured</em> ones.</li>
-<li><strong>The engineering answer is to measure:</strong> test set (questions with known answers) + scorer (code, not squinting) + score (one number ends the argument).</li>
-<li><strong>The scorer is part of the system and can itself be the liar.</strong> Exact match fails correct answers; contains passes some wrong ones; an AI judge has biases. Metric design is a design decision.</li>
-<li><strong>The loop is the job:</strong> write → eval (T=0, ×3, average) → read failures → fix ONE thing → re-run → when the score plateaus, grow the test set. Failures are the syllabus.</li></ol>
-<p><strong>Readiness test:</strong> deliver beats 1–7 out loud, 3 minutes, no notes, ending with "a prompt without an eval is a superstition." Then answer, cold: "why does temperature 0 still flutter?" and "why can't they train hallucination out?" If both answers come instantly, you're ready.</p>
-<hr>
-<h2 id="b-concept-deep-dives-slide-by-slide">B. Concept deep-dives, slide by slide</h2>
-<h3 id="slide-1-title-talking-to-ai-and-catching-its-lies">Slide 1 · Title — "Talking to AI, and catching its lies"</h3>
-<p><strong>Claim:</strong> two artifacts today — a prompt playbook and an eval harness. <strong>Framing to open with:</strong> "Last session you learned what the machine is. Today you learn to <em>operate</em> it — and, more importantly, to stop trusting your own eyes about whether it's working." The pill on the slide — "your 10 questions become a weapon" — is the session's continuity hook: their Lab 1 Part E expert questions become today's test set. If some students lost that file, the lab handout has them rewrite it in 5 minutes; don't burn slide time on it.</p>
-<h3 id="slide-2-recap-quiz-still-true-after-the-break">Slide 2 · Recap quiz — "Still true after the break?"</h3>
-<p>Four true/false items, each a load-bearing S1 idea this session depends on. Know the one-line re-teach for each wrong answer:</p>
+<p><strong>What this file is.</strong> The level under every slide. Read it end to end once (about 30 minutes), re-skim the slide table the night before. <code>session-2-notes.md</code> is the delivery-day run sheet.</p>
+<p><strong>Slide numbers are the deck’s own</strong> — generated from <code>presentations/session-2-talking-to-ai-and-catching-its-lies.html</code>. Press <strong>S</strong> for presenter mode.</p>
+<p><strong>This is the session that changes the course.</strong> Session 1 taught them what the machine is. This one teaches the discipline that separates using AI from engineering it, and the artifact they build here — an eval harness — is reused in Sessions 4, 5 and 6 and is the single most employable thing in twelve hours.</p>
+<hr />
+<h2 id="1--the-spine--the-session-as-one-argument">1 · The spine — the session as one argument</h2>
+<ol type="1">
+<li><strong>Your asks are wishes, not instructions</strong> (4–9) — a prompt has anatomy, and each part is a dial.</li>
+<li><strong>A polished prompt still lies beautifully</strong> (10–12) — the turn; polish is not correctness.</li>
+<li><strong>So you measure</strong> (13–14) — test set + scorer + score = one honest number.</li>
+<li><strong>The scorer can be the liar too</strong> (15) — the second turn, and the one that earns the room’s respect.</li>
+<li><strong>One number is not a verdict</strong> (16–17) — five questions cannot settle A versus B.</li>
+<li><strong>The loop is the job</strong> (18) — prompt → eval → read failures → fix one thing → re-run.</li>
+</ol>
+<p><strong>Readiness test.</strong> Say beats 2 → 3 → 4 out loud in ninety seconds. That is the argument. If a student can only take one thing from twelve hours, it is this.</p>
+<hr />
+<h2 id="2--slide-by-slide">2 · Slide by slide</h2>
+<h3 id="slides-13--opening-recap-quiz-the-two-artifacts--45-min">Slides 1–3 · Opening, recap quiz, the two artifacts · 4.5 min</h3>
+<p><strong>On screen.</strong> Title; a recap quiz on Session 1; the two artifacts — prompt playbook and eval harness.</p>
+<p><strong>The move.</strong> Open with: <em>“You can now call the model. But your asks are wishes, not instructions. Today we make them instructions — and catch the lies.”</em> Run the recap fast for energy; a wrong answer gets a one-line re-teach, never a lecture. Then: <em>“This one artifact is the difference between using AI and engineering it.”</em></p>
+<p><strong>Landmine.</strong> Do not re-teach Session 1 here. The quiz is a temperature check, not a revision lecture; if three answers are wrong, note it and fix it inside the relevant slide later.</p>
+<h3 id="slide-4--the-prompt-makeover-five-upgrades--4-min">Slide 4 · The prompt makeover: five upgrades · 4 min</h3>
+<p><strong>On screen.</strong> A prompt evolving v0 → v5 with a quality meter climbing from about 10% to 85%.</p>
+<p><strong>The move.</strong> The centrepiece of the first hour. Before each <strong>Improve</strong> click, ask the room <em>“what’s still wrong with it?”</em> Let them find the flaw before the slide shows it. The v5 constraint is the punchline — the constraint is what stops the model inventing an award.</p>
+<p><strong>One level under.</strong> The five upgrades are role, task specificity, context, format and constraint. Each one narrows the distribution the model samples from. The meter is a teaching device, not a measurement — say so if asked.</p>
+<p><strong>Hardest question.</strong> <em>“Isn’t this just writing clearly?”</em> — Largely yes, and that is the point: the skill is unglamorous. The part that is <em>not</em> just clear writing is the constraint, which anticipates a failure mode you have seen before.</p>
+<p><strong>Landmine.</strong> Do not defend the quality meter as a real score. It is illustrative; the real number arrives on slide 13.</p>
+<h3 id="slide-5--anatomy-of-a-prompt-six-switches--25-min">Slide 5 · Anatomy of a prompt: six switches · 2.5 min</h3>
+<p><strong>On screen.</strong> Toggleable prompt parts with a live token count.</p>
+<p><strong>The move.</strong> Toggle parts on and off and watch the token count climb. Task is mandatory; everything else is a dial. Name the trap: over-stuffing dilutes attention.</p>
+<p><strong>One level under.</strong> More context is not monotonically better. Attention is a weighted blend over everything present, so irrelevant context competes with relevant context for weight — and you pay for it per token.</p>
+<p><strong>Hardest question.</strong> <em>“So should I always give lots of context?”</em> — No. Give what is needed to disambiguate the task. Session 4 is the disciplined version of this question.</p>
+<h3 id="slides-68--few-shot-step-by-step-demand-a-format--7-min--trim-at-8">Slides 6–8 · Few-shot; step-by-step; demand a format · 7 min · <code>trim</code> at 8</h3>
+<p><strong>On screen.</strong> Zero-shot versus few-shot on a Tanglish review; a ₹472 arithmetic problem direct versus stepped; a format-enforcing prompt where the word ONLY does the work.</p>
+<p><strong>The move.</strong> On slide 7, make the room compute ₹472 on paper first — give them thirty seconds — <em>then</em> reveal both outputs. Direct is confidently wrong; stepped is auditable. On slide 8, point at the word <strong>ONLY</strong> and say: <em>“apps don’t read prose — your 2 a.m. parser dies without it.”</em></p>
+<p><strong>One level under.</strong> Few-shot works because the examples pin both format and edge cases; two to five is the usual sweet spot. Step-by-step works because intermediate tokens are computation the model can condition on — it is not “thinking harder”, it is having more room to work. Format instructions reduce variance but do not guarantee validity, which is why Session 3 introduces <code>response_schema</code>.</p>
+<p><strong>Hardest question.</strong> <em>“If step-by-step is better, why not always?”</em> — Tokens cost money and latency. For a lookup, it is waste.</p>
+<p><strong>Landmine.</strong> Do not promise that asking for JSON gives you valid JSON. It usually does; Session 3 shows the version that actually enforces it.</p>
+<h3 id="slide-9--the-four-classic-prompt-crimes--3-min">Slide 9 · The four classic prompt crimes · 3 min</h3>
+<p><strong>On screen.</strong> Crime cards; the class guesses each fix before the reveal.</p>
+<p><strong>The move.</strong> Let them guess. The kitchen-sink crime previews Session 5 workflows — name that forward link.</p>
+<h3 id="slides-1012--the-turn-it-lies-beautifully--8-min--trim-at-12">Slides 10–12 · The turn: it lies beautifully · 8 min · <code>trim</code> at 12</h3>
+<p><strong>On screen.</strong> Two real cases; a three-round spot-the-lie game with a tone meter; then the hot take.</p>
+<p><strong>The move.</strong> Read the lawyer case and the Air Canada case <strong>straight</strong>, no editorialising. The room will go quiet — let it. <em>“These were not bad prompts. They were unmeasured ones.”</em> Then the game: three rounds, the room votes A/B/C before each reveal. The lies are <strong>C</strong> (the award is invented), <strong>B</strong> (India lost that match) and <strong>A</strong> (the Nobel was for the photoelectric effect, not relativity). The tone meter shows identical confidence bars every round: <strong>tone tells you nothing</strong>. Then slide 12, the hot take — read it once, slowly, be quiet for three seconds, take exactly one counter-argument and park the rest for the break.</p>
+<p><strong>One level under.</strong> <em>Mata v. Avianca</em> (2023) — lawyers sanctioned for six fabricated citations, roughly $5,000. <em>Moffatt v. Air Canada</em> (Feb 2024) — the airline held liable for its chatbot’s invented refund policy, BC Civil Resolution Tribunal. Both are real and both are checkable; the “unlike the lawyer, I checked mine” receipts line on the slide is doing deliberate work.</p>
+<p><strong>Hardest question.</strong> <em>“Doesn’t RAG fix this?”</em> — It reduces it and gives you a citation to check. It does not remove the mechanism. Promise Session 4 and keep the promise.</p>
+<p><strong>Landmine.</strong> Do not let the room conclude the technology is untrustworthy and therefore useless. The conclusion you want is: untrusted <em>and therefore measured</em>. That distinction is the whole session.</p>
+<h3 id="slides-1314--you-measure-watch-an-eval-run--55-min">Slides 13–14 · You measure; watch an eval run · 5.5 min</h3>
+<p><strong>On screen.</strong> Test set + scorer + score; dots filling to “7/10 — argument over”; then a live eval, run twice.</p>
+<p><strong>The move.</strong> Land the line: <strong>“A prompt without an eval is a superstition.”</strong> Then run the eval and <em>immediately</em> run it again — the score moves 7 → 8. Ask which is true. Answer: neither. Set temperature to 0, run three times, average. Then read the failures aloud.</p>
+<p><strong>One level under.</strong> Three components, and students conflate them: the <strong>test set</strong> (inputs plus expected outputs), the <strong>scorer</strong> (the function that decides pass or fail) and the <strong>score</strong> (one number). Changing any one changes the number, which is why you report the whole configuration, not just the percentage.</p>
+<p><strong>Hardest question.</strong> <em>“How many questions do I need?”</em> — More than five, and slide 16’s depth panel gives the rule. Ten is the teaching floor; a real system wants a few hundred.</p>
+<p><strong>Landmine.</strong> Do not skip the run-twice move. Watching the number move by itself is what makes the variance lesson land.</p>
+<h3 id="slide-15--same-answer-three-verdicts--3-min--d">Slide 15 · Same answer, three verdicts · 3 min · <code>[D]</code></h3>
+<p><strong>On screen.</strong> One correct answer judged by three scorers; exact-match fails it.</p>
+<p><strong>The move.</strong> This is the aha. Exact-match rejects a <em>correct</em> answer. <em>“Your scorer can be the liar too.”</em> Contains-match is what today’s lab uses.</p>
+<p><strong>Depth panel <code>[D]</code>.</strong> <em>One number is usually the wrong number</em> — precision, recall and F1, plus the AI judge’s position and verbosity bias, and the fix (swap the order and re-run).</p>
+<p><strong>One level under.</strong> Exact match has high precision and terrible recall on free text. Contains is permissive and can pass an answer that also contains a contradiction. An LLM judge is flexible and introduces its own biases. There is no free scorer.</p>
+<p><strong>Hardest question.</strong> <em>“So which scorer should I use?”</em> — The cheapest one that does not lie about your task. For short factual answers, contains. For anything structured, parse it. For prose, a judge with the position-bias fix.</p>
+<h3 id="slides-1617--the-arena-it-worked-when-i-tried-it--5-min--trim-at-17">Slides 16–17 · The arena; “it worked when I tried it” · 5 min · <code>trim</code> at 17</h3>
+<p><strong>On screen.</strong> Prompt A versus Prompt B, B wins 4–2 but Q5 beats both; then the hot take about evidence.</p>
+<p><strong>The move.</strong> Run the fight. Then point at Q5 — the question both prompts failed — and say the loop never ends, it converges, and then you grow the test set. On 17: demo is the best case, eval is the expected case.</p>
+<p><strong>Depth panel <code>[D]</code> (slide 16).</strong> <em>B won 4–2. Did B actually win?</em> — the widget renders A 2/5, B 4/5, and a two-question gap on five questions is still inside the noise; the ±1/√n rule, paired comparison, and separating model from prompt from scorer. Open this whenever a student treats a small win as settled.</p>
+<p><strong>One level under.</strong> With five questions the finest distinction you can resolve is coarse; a 4–2 split is well inside noise. Paired comparison — same questions, both prompts, same scorer — is what makes small n usable at all.</p>
+<p><strong>Landmine.</strong> Do not let “B won” stand unchallenged, even for a minute. The whole point of the slide is that it did not.</p>
+<h3 id="slides-1819--the-loop-six-ideas--5-min">Slides 18–19 · The loop; six ideas · 5 min</h3>
+<p><strong>On screen.</strong> The eval-driven development cycle, running on its own; then recall flips.</p>
+<p><strong>The move.</strong> Let the pipeline animate without narrating over it. <strong>“Failures are the syllabus.”</strong> Then active recall — the class says each of the six ideas before you click: anatomy, few-shot, step-by-step, hallucination, test set, the loop.</p>
+<h3 id="slide-20--lab-2-the-lie-detector--52-min">Slide 20 · Lab 2: the lie detector · 52 min</h3>
+<p><strong>On screen.</strong> The lab brief.</p>
+<p><strong>The move.</strong> Two-minute brief, then fifty minutes. Press <strong>L</strong> for the countdown — it paces the room. Three things to enforce while circulating: expected strings must be <strong>short</strong>, every ✗ must be diagnosed rather than deleted, and the documentation is the deliverable — say it at the brief: <strong>three iterations documented well beats five documented badly.</strong> They A/B on the ten questions they wrote in Session 1.</p>
+<p><strong>Lab shape</strong> (<code>labs/session-2/lab-handout.md</code>): A prompt makeover (15) · B your first eval (15) · C the arena (15).</p>
+<p><strong>Landmine.</strong> Students will “fix” a failing test by loosening the expected string until it passes. Name this at the brief, before it happens — that is the single most common failure of the hour, and it is exactly the behaviour the session exists to prevent.</p>
+<h3 id="slide-21--you-can-now-prove-whether-ai-is-right--3-min">Slide 21 · You can now prove whether AI is right · 3 min</h3>
+<p><strong>The move.</strong> Show and tell: best improvement, best caught lie, and name the strongest counter-argument the room made to slide 12. Ask of any failure: <em>model, scorer, or question?</em> Then the teaser — next session AI gets eyes, and they should bring photos.</p>
+<hr />
+<h2 id="3--the-depth-layer-in-this-deck">3 · The depth layer in this deck</h2>
 <table>
-<thead><tr><th>Item</th><th>Answer</th><th>One-line re-teach (why S2 needs it)</th></tr></thead>
+<thead>
+<tr class="header">
+<th>Slide</th>
+<th>Panel</th>
+<th>Open it when</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>Model looks up answers in a database</td><td>False</td><td>Nothing stored/retrieved — parameters compute each token fresh. This is <em>why</em> it can fabricate: there is no record to miss.</td></tr>
-<tr><td>Same prompt, different answers across runs</td><td>True</td><td>Sampling + temperature. This is why the eval runs at T=0 ×3.</td></tr>
-<tr><td>It keeps learning from your chats</td><td>False</td><td>Frozen at inference. This is why few-shot "learning" lives only in the context window.</td></tr>
-<tr><td>Tamil costs more tokens than English</td><td>True</td><td>English-heavy tokenizer training. Matters when their prompts include Tanglish examples.</td></tr>
-</tbody></table>
-<p><strong>Landmine:</strong> don't re-lecture S1. Wrong answer → one line → next question. Budget 2 minutes total.</p>
-<h3 id="slide-3-the-deal-two-artifacts-in-two-hours">Slide 3 · The deal — two artifacts in two hours</h3>
-<p><strong>Claim:</strong> prompt playbook + eval harness; the harness "is the difference between using AI and engineering it." <strong>Deeper:</strong> the honest version of that sentence: every serious AI team ships on the same loop (prompt → measure → fix → repeat), and the eval set is usually the most valuable IP they have — more durable than the prompts, often more durable than the model choice. Prompts get rewritten when models change; a good test set survives every migration. Say that: it lands with professors. <strong>Pushback:</strong> "Two hours to learn evaluation? Companies have whole teams for this." — Correct, and those teams run this exact loop at 1000× the scale. The 10-question version is a flight simulator, not the airline.</p>
-<h3 id="slide-4-the-makeover-v0-v5-centerpiece-1">Slide 4 · The makeover — v0 → v5 (centerpiece #1)</h3>
-<p><strong>Claim:</strong> the same goal, asked six ways, climbs from 10% to 85% useful. <strong>What each upgrade actually fixes</strong> — know this table cold; before every "Improve" click, ask the room "what's still wrong?":</p>
+<tr class="odd">
+<td>15</td>
+<td>One number is the wrong number — precision, recall, F1, judge bias</td>
+<td>someone asks which scorer to use, or proposes an LLM judge</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>Did B actually win? — the ±1/√n rule, paired comparison</td>
+<td>someone treats a small eval win as settled</td>
+</tr>
+</tbody>
+</table>
+<p>Two panels only; this deck spends its depth in the main line.</p>
+<hr />
+<h2 id="4--qa-bank">4 · Q&amp;A bank</h2>
+<p><strong>“Can’t I just use a better model instead of better prompts?”</strong> — Sometimes. You cannot know without an eval, which is the point. And the eval outlives the model choice.</p>
+<p><strong>“Isn’t an LLM judging an LLM circular?”</strong> — Partly, and it has measurable biases (position, verbosity). It is still useful when the alternative is no measurement. Fix what you can: swap the order and re-run.</p>
+<p><strong>“How is this different from unit testing?”</strong> — Same instinct, different assertion. Outputs are non-deterministic, so you assert on a distribution of behaviour rather than an exact value, and you accept a threshold rather than a pass/fail.</p>
+<p><strong>“Ten questions seems tiny.”</strong> — It is. It is enough to catch gross regressions and to teach the discipline. Say the honest number: real systems use hundreds, and the depth panel explains why.</p>
+<p><strong>“What if my expected answer is wrong?”</strong> — Then your eval lies with total confidence, which is why you read failures instead of trusting the score.</p>
+<hr />
+<h2 id="5--misconceptions">5 · Misconceptions</h2>
 <table>
-<thead><tr><th>v</th><th>Adds</th><th>What it fixes, mechanically</th><th>Meter</th></tr></thead>
+<thead>
+<tr class="header">
+<th>They believe</th>
+<th>Say this</th>
+</tr>
+</thead>
 <tbody>
-<tr><td>v0</td><td>— ("write about tce")</td><td>Nothing pinned: model completes the average essay about generic colleges.</td><td>10%</td></tr>
-<tr><td>v1</td><td>TASK (3 sentences, named subject)</td><td>Length and subject pinned; output stops sprawling but is factless — the model has no TCE specifics to draw on reliably.</td><td>25%</td></tr>
-<tr><td>v2</td><td>ROLE + AUDIENCE (website homepage, parents + prospective students)</td><td>Register/tone: conditioning on "college website homepage" shifts the distribution toward marketing-copy patterns from training. Facts still thin.</td><td>35%</td></tr>
-<tr><td>v3</td><td>CONTEXT (founded 1957, Karumuttu Thiagarajan Chettiar, autonomous, Anna University affiliation)</td><td>The knowledge gap: the model can't retrieve, so you supply. Output now grounded in <em>your</em> facts, not its fuzzy recall. Biggest single jump.</td><td>60%</td></tr>
-<tr><td>v4</td><td>FORMAT + NEGATIVE ("one bold opening line, two short sentences; avoid 'esteemed institution'")</td><td>Shape and de-clichéing. Negative instructions work but are weaker than positive ones — say what you want first.</td><td>75%</td></tr>
-<tr><td>v5</td><td>CONSTRAINT ("if a fact is not in the list above, do not state it")</td><td>The guardrail. Output looks identical to v4 — the punchline is that the <em>system</em> changed: it can no longer invent rankings and awards. "Remember this line for slide 11."</td><td>85%</td></tr>
-</tbody></table>
-<p><strong>Mechanism, one level down:</strong> each addition narrows the conditional distribution. v0 conditions on 4 tokens; v5 conditions on ~120 tokens that exclude most bad continuations before generation starts. Prompting is <em>distribution sculpting</em>, not persuasion. <strong>Landmine:</strong> the % meter is authored, not measured — it's a narrative device. If a sharp student asks "measured how?", the honest answer is the session's own thesis: "Exactly — you can't know without an eval. That's slide 13. Hold that thought." (This is a gift, not a gotcha.) <strong>Pushback:</strong> "Won't GPT-6 make all this unnecessary?" — Better models need less <em>coaxing</em> but the same <em>specification</em>. v3's facts and v5's guardrail aren't tricks, they're requirements no model can guess. Tricks expire; specs don't.</p>
-<h3 id="slide-5-anatomy-six-switches">Slide 5 · Anatomy — six switches</h3>
-<p><strong>Claim:</strong> Task mandatory; role/context/format/examples/constraints are dials; over-stuffing costs tokens and dilutes attention. <strong>Each switch, with a before/after micro-example and the mechanism:</strong></p>
-<table>
-<thead><tr><th>Switch</th><th>Before → After</th><th>Why it works</th></tr></thead>
-<tbody>
-<tr><td><strong>Role</strong></td><td>"Explain recursion" → "You are a patient TA for first-years. Explain recursion."</td><td>Conditions the register: training text by patient TAs uses simpler vocabulary and more analogies. Role selects a <em>style prior</em>, it doesn't grant knowledge.</td></tr>
-<tr><td><strong>Task</strong></td><td>"write about tce" → "Write a 3-sentence introduction to TCE Madurai for the website homepage."</td><td>Verb + object + length pins the target. The only mandatory part.</td></tr>
-<tr><td><strong>Context</strong></td><td>"Summarize my project" → "Summarize the project below for a recruiter: [pasted text]"</td><td>It remembers nothing and retrieves nothing (S1). Every needed fact must be in <em>this</em> window.</td></tr>
-<tr><td><strong>Format</strong></td><td>"List the risks" → "Reply ONLY with JSON: {"risks":[{"name","severity"}]}"</td><td>Output tokens are constrained by the demanded pattern; parseable by code.</td></tr>
-<tr><td><strong>Examples</strong></td><td>a paragraph describing Tanglish sentiment labels → 3 labelled examples</td><td>In-context learning (slide 6) — patterns out-argue descriptions.</td></tr>
-<tr><td><strong>Constraints</strong></td><td>"Write about TCE's achievements" → "…If a fact is not stated above, do not state it. If unsure, say 'I am not sure.'"</td><td>Two mechanisms: shrinks the licensed continuation space, and <em>gives the probability mass somewhere honest to go</em> — "I am not sure" becomes an available high-probability continuation instead of a forced guess.</td></tr>
-</tbody></table>
-<p><strong>Worked cost arithmetic (board-friendly):</strong> the deck's builder estimates tokens as chars÷4. Task-only prompt ≈ 53 chars ≈ <strong>13 tokens</strong>; all six switches ≈ 420 chars ≈ <strong>105 tokens</strong>. The extra ~92 input tokens are nearly free for a student — but at production scale: 100,000 calls/day × 92 tokens = 9.2M tokens/day; at Gemini 3.5 Flash input pricing ($1.50 per 1M tokens, ₹95.5/$) that's <strong>$13.80 ≈ ₹1,318/day ≈ ₹39,500/month</strong> just for the fixed prompt preamble. Context caching cuts repeated-prefix cost by ~90% (teaching number) — S6 territory, but plant the seed: "structure isn't free; that's why the switches are dials, not defaults." <strong>Pushback:</strong> "Why does over-stuffing 'dilute attention'?" — Attention normalizes over all tokens in the window: every irrelevant token takes a share of the weighting, and instructions buried mid-window get followed worst ("lost in the middle" applies to instructions, not just retrieval). Practical rule: front-load the task, end with the ask. <strong>Landmine:</strong> don't present the six parts as a mandatory ritual. The deck's own note says it: turn on what the job needs. A six-part prompt for "translate this word" is cargo cult.</p>
-<h3 id="slide-6-few-shot-show-dont-tell">Slide 6 · Few-shot — show, don't tell</h3>
-<p><strong>Claim:</strong> 2–5 examples pin format, labels, and edge cases better than a page of instructions. <strong>Mechanism, one honest level down:</strong> this is <strong>in-context learning (ICL)</strong> — behavior changes with <em>zero</em> weight updates. Nothing is trained; the examples create a pattern in the context, and pattern-continuation is what the model does. Deeper still (for professors): pretraining corpora are full of structured repeating documents — tables, FAQ lists, log files, code — so the model has learned general "continue the established pattern" circuitry (Anthropic's mechanistic work calls these <em>induction heads</em>: attention heads that find previous occurrences of the current token and copy what followed). One research framing treats ICL as implicit Bayesian task inference — the examples identify <em>which task</em> from pretraining this looks like. Be honest that the mechanistic story is still active research; the behavior is rock-solid, the explanation is partial. <strong>Worked example (reproduce on the board):</strong></p>
-<pre><code>&quot;Vera level padam!&quot;            → POSITIVE
-&quot;Time waste&quot;                   → NEGATIVE
-&quot;Ok ok, one time watchable&quot;    → NEUTRAL
-&quot;Padam semma boring da, second half thookam vandhuchu&quot; →</code></pre>
-<p>The completion "NEGATIVE" is now overwhelmingly the most probable next token — the three pairs established the pattern (Tanglish review → uppercase single label) <em>and</em> the label vocabulary. Zero-shot, the same model rambles a paragraph of sentiment analysis with no clean label — nothing pinned the output shape. <strong>Known quirks worth teaching:</strong> example <em>order</em> matters (recency bias — the last example pulls hardest), label <em>balance</em> matters (3 POSITIVE examples bias toward POSITIVE), and one mislabeled example teaches the wrong pattern instantly. 2–5 examples capture most of the gain; 20 mostly costs tokens. <strong>Pushback:</strong> "Is it learning from my examples?" — Not in the weights sense. Close the chat and it's gone (S1: frozen at inference). It's closer to setting up dominoes than teaching. <strong>"Then why does it work at all if nothing changes?"</strong> — Because the computation is a function of the <em>whole</em> context; you changed the input, and the input is the program. <strong>Landmine:</strong> never say "the model fine-tunes on your examples" or "it learns your style permanently." Also don't promise few-shot fixes factual errors — it fixes <em>format and task framing</em>, not knowledge.</p>
-<h3 id="slide-7-step-by-step-auditable-work">Slide 7 · Step-by-step — auditable work</h3>
-<p><strong>Claim:</strong> "solve step by step, then answer" beats direct answering on multi-step problems, and the working is checkable. <strong>Worked example (do this live — have the class compute on paper first, 30 seconds):</strong> ₹500 item, 20% discount, then 18% GST on the discounted price.</p>
-<pre><code>1. Discount:  500 × 0.80 = ₹400
-2. GST:       400 × 1.18 = ₹472
-Final: ₹472</code></pre>
-<p>The canned "direct" answer is ₹490 — plausible-looking (it's 500 − 20% + something) and wrong, with no visible way to see why. That contrast IS the slide. <strong>Mechanism:</strong> intermediate tokens are working memory. Each generated step becomes part of the context conditioning the next step — the model gets more forward passes' worth of compute per unit of problem. And the failure math compounds: a 10-step chain where each step is 95% reliable succeeds only 0.95¹⁰ ≈ <strong>0.599</strong> — 60% — of the time. Visible steps don't change that arithmetic, but they let you find <em>which</em> step broke instead of just seeing a wrong total. <strong>2026 status (connect to S1's reasoning-models slide):</strong> Wei et al. 2022 showed "think step by step" dramatically lifted multi-step accuracy in older models. Today's reasoning models (the GPT-5.6 line, Gemini 3.5, Claude Opus 4.8) internalized the technique — they generate internal reasoning traces by default, trained via RL; that's the "test-time compute" idea from Session 1. So the magic phrase is mostly obsolete on frontier models. What is <em>not</em> obsolete: demanding <strong>visible, auditable</strong> working whenever a human must check the logic — money, marks, medicine. The prompt line changed from a performance hack to an audit requirement. <strong>Landmine (professor-grade):</strong> the model's stated reasoning is not guaranteed to be its actual computation — chain-of-thought faithfulness is an open research problem (models sometimes produce a correct-looking chain and an answer decided otherwise). Frame CoT as "auditable working," never "its true thoughts."</p>
-<h3 id="slide-8-format-demand-structure">Slide 8 · Format — demand structure ▸</h3>
-<p><strong>Claim:</strong> apps don't read prose; the word ONLY is doing real work. <strong>Worked JSON round-trip (whiteboard-able):</strong></p>
-<pre><code>Prompt: Extract the student&#x27;s details from the text.
-        Reply ONLY with JSON: {&quot;name&quot;: str, &quot;degree&quot;: str, &quot;year&quot;: int}
-        Text: &quot;Hi, I&#x27;m Priya, third year BE CSE at TCE&quot;
-
-Model:  {&quot;name&quot;: &quot;Priya&quot;, &quot;degree&quot;: &quot;BE CSE&quot;, &quot;year&quot;: 3}
-
-Code:   data = json.loads(response)   →  data[&quot;year&quot;] + 1  →  4</code></pre>
-<p>Without ONLY, the typical response is <code>Sure! Here's the data you asked for: {...} Let me know if you need anything else!</code> — and <code>json.loads</code> raises <code>JSONDecodeError</code> at 2 a.m. Other classic wrapper: markdown code fences around the JSON. Prompt-level fixes: "ONLY", "no prose, no code fences"; the engineering-grade fix is <strong>structured outputs</strong> (<code>response_schema</code>), where the API constrains generation to a schema — that's Session 3's new beat, so name-drop it: "there's a proper API-level fix; Thursday." <strong>Pushback:</strong> "Why does one word matter so much?" — The polite wrapper is the highest-probability continuation because RLHF'd assistants are trained toward helpful conversational tone. ONLY explicitly de-licenses it.</p>
-<h3 id="slide-9-the-four-prompt-crimes">Slide 9 · The four prompt crimes</h3>
-<p>Flip cards; make the class shout the fix before each click. The fixes, with the one-level-deeper reason:</p>
-<ol><li><strong>Kitchen sink</strong> ("summarize AND translate AND quiz AND…") → one prompt, one job; chain calls. Deeper: multi-task prompts split attention across objectives and make failures undiagnosable — you can't A/B a prompt that does five things. Explicitly previews S5 workflows.</li>
-<li><strong>Vague adjectives</strong> ("make it professional") → define it or show it. "Professional" has no single referent in training data; a rubric ("no slang, ≤3 sentences, active voice") or 2 examples does.</li>
-<li><strong>Assuming memory</strong> ("like I told you yesterday") → it remembers nothing (S1); everything needed goes in THIS window, every time.</li>
-<li><strong>No format spec</strong> → structure up front; your parser will thank you (slide 8's point, restated as a crime).</li></ol>
-<h3 id="slide-10-the-turn-real-receipts">Slide 10 · The turn — real receipts</h3>
-<p><strong>Claim:</strong> polished prompts still lie; two courts have the receipts. Tell both stories accurately — assume a law-adjacent parent or a professor who read the coverage is in the room.</p>
-<p><strong>Mata v. Avianca (S.D.N.Y. 2023).</strong> Roberto Mata sued the airline Avianca over a knee injury from a metal serving cart. His lawyers filed an opposition brief citing <strong>six court decisions that do not exist</strong> — ChatGPT invented them, complete with plausible names ("Varghese v. China Southern Airlines"), docket numbers, and internal citations. Opposing counsel couldn't find the cases; Judge P. Kevin Castel ordered copies; the lawyer went <em>back to ChatGPT</em>, which produced fake full opinions and, when asked whether the cases were real, said yes. June 2023: <strong>$5,000 sanction</strong> on the lawyers and their firm. <strong>The nuance that survives cross-examination:</strong> the judge did not sanction them for using AI — he sanctioned the abandonment of professional verification duty and the doubling-down after being challenged. The tool lied; the humans failed to check. That's precisely this session's thesis. <strong>Moffatt v. Air Canada (2024 BCCRT 149).</strong> Jake Moffatt's grandmother died; Air Canada's website chatbot told him he could buy a full-fare ticket and claim the bereavement discount <strong>retroactively within 90 days</strong>. The airline's actual policy said no retroactive claims, and the chatbot's own answer linked to the page saying so. Air Canada refused the refund and argued before the British Columbia Civil Resolution Tribunal that the chatbot was "a separate legal entity responsible for its own actions." The tribunal called that submission remarkable, found <strong>negligent misrepresentation</strong>, and held the airline responsible for all information on its website — chatbot or static page — awarding Moffatt CA$812.02. February 2024, and still the canonical "your bot's words are your words" precedent two years later.</p>
-<p><strong>The line that lands:</strong> "These weren't bad prompts. They were unmeasured ones." Then, pointing at the citation line on the slide: "Unlike the lawyer, I checked mine." <strong>Landmine:</strong> don't inflate — the lawyer was fined $5,000, not disbarred; Air Canada paid ~CA$812, not millions. The stories are powerful <em>because</em> they're small and real: the cost of checking was near zero and nobody paid it.</p>
-<h3 id="slide-11-spot-the-lie-centerpiece-2">Slide 11 · Spot the lie (centerpiece #2)</h3>
-<p><strong>Claim:</strong> a fabrication is indistinguishable <em>by tone</em> from truths; only checking detects it. <strong>The three rounds — know the ground truth cold:</strong></p>
-<table>
-<thead><tr><th>Round</th><th>The lie</th><th>Why it's the lie</th></tr></thead>
-<tbody>
-<tr><td>1</td><td><strong>C</strong></td><td>TCE's 1957 founding is real; the "UGC National Institute of the Year 2019" award is invented. A and B (Meenakshi gopurams; "Athens of the East") are true.</td></tr>
-<tr><td>2</td><td><strong>B</strong></td><td>Sachin's 100th international hundred vs Bangladesh, 2012 — real. But India <strong>lost</strong> that match (Asia Cup). The lie hides in the tail of a true sentence.</td></tr>
-<tr><td>3</td><td><strong>A</strong></td><td>Einstein's 1921 Nobel is real — but for the <strong>photoelectric effect</strong>, not relativity. True year, true prize, false reason.</td></tr>
-</tbody></table>
-<p><strong>The pattern to name after round 1:</strong> hallucinations arrive <em>welded to true facts</em> — a true opening raises the plausibility of an elaborated tail, because generation conditions on its own prefix. Award-announcement <em>sentence patterns</em> are common in training data even when the specific award never happened: pattern frequency beats fact frequency. The tone-o-meter (identical 97% bars every round) is the visual: confidence is constant; truth varies. <strong>Run it as a vote:</strong> hands up for A/B/C before each reveal; 6-second reveal window, then it auto-advances. Budget 4.5 minutes. <strong>Landmine:</strong> the three statements are authored, not sampled from a model — modeled on exactly how real hallucinations attach to facts. If asked, own it and point to the lab's "hard mode" stretch where they make a real model do this on their own topic.</p>
-<h3 id="hot-take-slide-hallucination-is-not-a-bug">Hot-take slide · "Hallucination is not a bug"</h3>
-<p><strong>Claim:</strong> the model does exactly what it was trained to do — produce plausible text; truth was never in the loss function. <strong>The mechanism to whiteboard if challenged (this is the session's deepest 3 minutes):</strong> The model is a <em>plausibility machine</em>: it emits a probability distribution over next tokens and samples from it. There is no truth variable anywhere in that computation — hallucination is a calibration failure of a machine that was only ever asked for plausibility. Illustrative (say "numbers illustrative") board sketch — two prompts, two distributions:</p>
-<pre><code>&quot;TCE was founded in 19__&quot;        &quot;TCE won the National ______ Award&quot;
-  57  → 0.62                        Institute  → 0.31
-  58  → 0.11                        Excellence → 0.24
-  60  → 0.07                        Education  → 0.19
-  ...                               ...</code></pre>
-<p>Both distributions are confident-looking and fluent. The left one happens to land on a fact; the right one is fabrication-shaped from the first token — but <em>the machine's internal picture looks the same in both cases</em>. Peakedness ≠ truth. <strong>Why RLHF makes the tone problem WORSE (professor-grade, verified):</strong> base models are surprisingly well-calibrated at the token level — their probability tracks their accuracy (shown in the GPT-4 technical report's calibration curves). RLHF <em>degrades</em> that calibration: human raters systematically prefer confident, fluent answers and mark down hedging, so the tuning process optimizes tone toward confidence independent of correctness. The polish you like is the polish that hides the lies. Additionally (Kalai et al., OpenAI 2025, "Why Language Models Hallucinate"): most benchmarks grade binary right/wrong with no reward for "I don't know" — so training and evaluation both reward guessing over abstention, exactly like students gaming an exam with no negative marking. <strong>Answering "why can't they just train it out?":</strong> over-penalize guessing and the model becomes uselessly evasive ("I cannot answer that" to everything); the helpfulness/honesty trade-off is a live alignment problem. Rates drop with grounding (S4 RAG) and tools (S5) but never reach zero — the disease is in the objective. <strong>Delivery:</strong> read the take once, slowly, then stay silent 3 seconds. Take ONE counter-argument now, park the rest for the break; strongest counter gets named on the closing slide. ▸ compressible if behind: read it, skip the debate.</p>
-<h3 id="slide-13-the-bridge-you-measure">Slide 13 · The bridge — "You measure."</h3>
-<p><strong>Claim:</strong> test set + scorer + score = the engineering answer to "how do you know it's right?" <strong>Deeper:</strong> the philosophical shift worth saying out loud: this is the moment AI work stops being <em>vibes</em> and becomes <em>engineering</em> — the same shift unit tests brought to software. One number converts "is prompt B better?" from an argument into a query. The dot-strip animation auto-plays to "7/10 — argument over." <strong>Attribution landmine:</strong> the deck wisely calls "In God we trust; all others must bring data" <em>the engineer's oldest prayer</em> — it's routinely attributed to W. Edwards Deming but the attribution is unverified. Don't say "Deming said."</p>
-<h3 id="slide-14-watch-an-eval-run">Slide 14 · Watch an eval run</h3>
-<p><strong>Claim:</strong> 10 cricket questions, scored live; run it twice and the score moves. <strong>Click sequence:</strong> Run eval (7/10) → <em>immediately</em> Run again (8/10 — row 3, "MS Dhoni's Test average", flips by design). Then the line: "Which is the true score? Neither. Temperature 0, three runs, report the average and the spread." <strong>Why T=0 still flutters (know this cold — it's a guaranteed question):</strong> temperature 0 means always take the argmax token, but the <em>logits themselves</em> can vary run-to-run: floating-point addition is non-associative, so different batch sizes / kernel scheduling on the provider's servers change the reduction order; mixture-of-experts routing can also shift under batching. When two top tokens are within ~1e-6, the argmax flips, and one flipped token early cascades into a different sentence. So: T=0 kills the <em>intentional</em> dice, then you measure the flutter that remains. ×3 + average + spread is honest at this scale. <strong>Coaching beat on the slide:</strong> "Read the failures, not the score." 7/10 isn't the insight; <em>which three and why</em> is — wrong facts (model), format drift (prompt), too-strict matching (scorer). Each has a different fix, which is why the lab forces a diagnosis per ✗. <strong>Honesty note:</strong> the demo's 7→8 is scripted so the variance point lands reliably; a real T=0 pair would flip less often. If called out: "Scripted, yes — the deck is offline. You'll see real flutter in Stretch 1 of the lab in twenty minutes."</p>
-<h3 id="slide-15-scorers-same-answer-three-verdicts-deep-dive">Slide 15 · Scorers — same answer, three verdicts (deep-dive)</h3>
-<p><strong>Claim:</strong> the metric is a design decision; the scorer can be the liar. <strong>The deck's case:</strong> Q: "Who composed the music for Roja?" Expected: "A. R. Rahman". Model: "It was composed by AR Rahman in 1992."</p>
-<ul><li><strong>Exact match:</strong> <code>"It was composed by AR Rahman in 1992." == "A. R. Rahman"</code> → ✗. The answer is right; punctuation and extra words killed it. Verdict: scorer wrong.</li>
-<li><strong>Normalized contains</strong> (the lab's scorer): <code>norm(s) = lowercase, strip non-alphanumerics</code> → <code>"ar rahman"</code> appears in <code>"it was composed by ar rahman in 1992"</code> → ✓. Robust to case, dots, extra words.</li>
-<li><strong>LLM-as-judge:</strong> ask a second model "does this answer correctly identify A. R. Rahman? PASS or FAIL" → PASS. Handles paraphrase, costs tokens, has biases.</li></ul>
-<p><strong>The harder worked case — one answer, three verdicts (use on the board or in Q&amp;A):</strong> Q: "Which city is the capital of Tamil Nadu?" Expected: <code>chennai</code>. Model answers: <strong>"The capital is Chennai, the heart is Madurai."</strong></p>
-<table>
-<thead><tr><th>Scorer</th><th>Verdict</th><th>Why</th></tr></thead>
-<tbody>
-<tr><td>Exact match</td><td>✗</td><td>Full string ≠ "chennai". Punishes a correct answer.</td></tr>
-<tr><td>Normalized contains</td><td>✓</td><td>"chennai" is in the normalized answer.</td></tr>
-<tr><td>LLM judge</td><td><em>depends on the rubric</em></td><td>"Contains the expected fact, paraphrase OK?" → PASS. "Fully correct with no extraneous claims?" → may FAIL it for the Madurai flourish. The judge's verdict is a function of the judge's prompt — you've just moved the design problem up one level.</td></tr>
-</tbody></table>
-<p>Three scorers, three different verdicts on a <em>correct, charming</em> answer. That's the whole slide in one example — and it's a Madurai joke, so it lands. <strong>Where contains fails silently (teach the traps):</strong> negation blindness — expected <code>chennai</code>, answer "It is definitely <strong>not</strong> Chennai" → PASS (wrong answer scored right). Substring hazard — expected <code>31</code> (fastest ODI century, balls), answer "…in 1931…" → PASS on a coincidence. Fixes: keep expected strings specific-but-minimal, read every ✓ occasionally too, and for numbers prefer word-boundary checks. <strong>LLM-judge biases (verified, quantified in the MT-Bench/Chatbot-Arena judge paper):</strong> <em>verbosity bias</em> (longer answers rated better), <em>position bias</em> (in pairwise comparisons, the first-listed answer wins more), <em>self-preference</em> (a model prefers its own phrasing/family). Mitigations: pairwise with position swap, rubric-anchored single-answer grading, judge at T=0, and periodic human spot-audits. Never let the judge be the only signal. <strong>Pushback:</strong> "Isn't a model grading a model circular?" — Partially, and that's why it's the <em>stretch</em> goal, not the default. It buys paraphrase-tolerance at the price of a new unmeasured component. The discipline transfers: audit the judge with a small human-labeled set before trusting it.</p>
-<h3 id="slide-16-the-arena-prompt-a-vs-b">Slide 16 · The arena — Prompt A vs B</h3>
-<p><strong>Claim:</strong> same 5 questions, same model, only the prompt differs; settle it with numbers. <strong>The scripted read-out (know the exact numbers):</strong> A = "Answer this: {q}" scores <strong>2/5</strong>; B = role + "answer from known facts only, say I-don't-know otherwise" + format scores <strong>4/5</strong>; <strong>Q5 fails both</strong>. Two lessons in one animation: (1) the prompt moved the number — grounding + abstention licensing works; (2) the loop never ends — Q5 means grow the test set and go again. Say the closing note verbatim: "The loop never ends; it just converges." <strong>What to prep for from the real lab version (Part C):</strong> B sometimes <em>loses</em> on a student's set — the "say I am not sure" rule makes the model abstain on questions A happened to guess right. That's the best teachable moment of the day: an honest "I am not sure" is a product win but an eval loss under a contains scorer. Whose bug is that? The scorer's/test-design's — which is exactly slide 15's point arriving in their own data.</p>
-<h3 id="slide-17-it-worked-when-i-tried-it">Slide 17 · "It worked when I tried it" ▸</h3>
-<p><strong>Claim:</strong> a demo is the best case; the eval is the expected case. You tried 3 questions; users bring 3,000 — misspelled, in Tanglish, about edge cases you never imagined. <strong>Deeper:</strong> this is selection bias, named: you unconsciously demo the inputs you already know work. Every AI product that embarrassed its company in the news had a great demo first (Air Canada's chatbot presumably demoed fine). One sentence, next slide — it's a ▸ slide.</p>
-<h3 id="slide-18-eval-driven-development-the-loop">Slide 18 · Eval-driven development — the loop</h3>
-<p><strong>Claim:</strong> write → run (T=0 ×3 average) → read failures → fix ONE thing → re-run; when the score stops improving, grow the test set. <strong>Deeper — why one change at a time:</strong> with two simultaneous changes and a moved score you have confounded variables; you learned nothing reusable. Same discipline as bisecting a bug. And why "grow the test set": once you've tuned against the same 10 questions repeatedly you're overfitting to the test — Goodhart's law ("when a measure becomes a target, it ceases to be a good measure"). Held-out questions are the antidote; their eval becomes a <em>regression suite</em> they run before every prompt change — and it returns in S6 to grade the capstone. <strong>Landmine:</strong> don't let the pipeline animation (it auto-cycles) run silently — narrate one full lap, then move.</p>
-<h3 id="slides-1921-recap-flips-lab-brief-break">Slides 19–21 · Recap flips, lab brief, break</h3>
-<p><strong>Recap (19):</strong> six flip cards — anatomy, few-shot, step-by-step, hallucination, test set, the loop. Class says each aloud <em>before</em> you click. This is retrieval practice, not review — don't skip the saying-aloud part. <strong>Lab brief (20):</strong> 2 minutes max, then press L (50:00 countdown; amber at 10:00, red at 2:00; R resets). The three coaching lines: expected strings SHORT (key fact only — "rahman", not a sentence); diagnose every ✗ (model wrong / scorer too strict / question ambiguous); documentation is the deliverable ("I changed stuff and it got better" doesn't count). Checkpoints: 1 = five documented makeover rows; 2 = score + one-line diagnosis per failure; 3 = A vs B numbers + most interesting failure explained in one sentence. <strong>Rate-limit reality (new, plan for it):</strong> typical free-tier limit is ~10 RPM (check the live limits page). One eval pass = 10 calls ≈ 1+ minute; A/B (Part C) = 20 calls; the ×3 variance stretch = 60 calls ≈ 6+ minutes wall-clock. The notebook's <code>ask()</code> already backs off on 429s. Coach pairs to <em>start Part C by the 30-minute mark</em> and to read failures while runs are in flight — the waiting time IS the diagnosis time. <strong>Lab cost sanity-check (if a professor asks what this costs):</strong> ~120 calls at ~80 tokens in / ~60 out = 9,600 in + 7,200 out; at paid Gemini 3.5 Flash rates ($1.50/$9.00 per 1M, ₹95.5/$) that's $0.0144 + $0.0648 ≈ $0.079 ≈ <strong>₹7.6 per pair</strong> — and it's ₹0 on free tier. The entire class of 30 pairs would cost about ₹230. Evaluation is cheap; not evaluating is what's expensive (ask Avianca's lawyers). <strong>Break slide (21):</strong> show-and-tell — best prompt improvement read aloud, best caught lie, and name the strongest hot-take counter-argument from the break. Ask every presenter: "model, scorer, or question?" Teaser: S3, AI gets eyes and ears — have 1–2 photos on the phone (receipt, notes page, canteen menu board).</p>
-<hr>
-<h2 id="c-demo-playbooks">C. Demo playbooks</h2>
-<p>Everything in this deck is <strong>client-side and canned</strong> — no API calls, works offline. That's a feature (zero demo risk) and an honesty obligation (the lab is where reality lives). Universal fallback for any glitch: re-enter the slide (left arrow, right arrow) — every widget resets; worst case, reload and type the slide number + Enter.</p>
-<table>
-<thead><tr><th>Demo (slide)</th><th>What it actually computes</th><th>Click sequence that lands the point</th><th>The sentence at the reveal</th></tr></thead>
-<tbody>
-<tr><td>Recap quiz (2)</td><td>4 scripted T/F items; score counter</td><td>Read aloud → class shouts → click → one-line re-teach if wrong</td><td>"Everything today stands on these four."</td></tr>
-<tr><td>Makeover (4)</td><td>6 canned prompt/output pairs + authored % meter</td><td>Ask "what's still wrong?" BEFORE each Improve click; at v5, hit Restart and flash v0</td><td>"Same output as v4 — but now it <em>can't</em> invent awards. Hold that for slide 11."</td></tr>
-<tr><td>Builder (5)</td><td>Assembles selected parts; token count = chars÷4</td><td>Toggle everything on, read the count; toggle down to Task-only</td><td>"Every switch you flip costs context — they're dials, not defaults."</td></tr>
-<tr><td>Few-shot (6)</td><td>Two canned outputs (ramble vs NEGATIVE)</td><td>Zero-shot first, let the ramble disappoint, then Few-shot</td><td>"Three examples out-argued a paragraph of instructions."</td></tr>
-<tr><td>Step-by-step (7)</td><td>Canned ₹490-wrong vs ₹472-stepped</td><td>Class computes on paper 30s → Direct (wrong) → Steps</td><td>"Confident, plausible, wrong — and you couldn't see why. Now you can."</td></tr>
-<tr><td>JSON (8)</td><td>Canned prose vs clean JSON</td><td>No-format first ("now write a parser for THAT"), then JSON</td><td>"The word ONLY is doing real work."</td></tr>
-<tr><td>Crime flips (9)</td><td>4 flip cards</td><td>Class shouts each fix, then click</td><td>"Four crimes, four one-line fixes."</td></tr>
-<tr><td>Spot the lie (11)</td><td>3 authored rounds (lies: C, B, A); tone-o-meter shows identical 97% bars after each answer</td><td>Hands-up vote per round BEFORE clicking; point at the meter each reveal</td><td>"Identical bars, every round. Tone tells you nothing. Only checking does."</td></tr>
-<tr><td>Measure dots (13)</td><td>Auto-plays 10 ✓/✗ marks → "7/10"</td><td>None — it plays on slide entry; don't talk over the verdict</td><td>"Argument over. A prompt without an eval is a superstition."</td></tr>
-<tr><td>Eval run (14)</td><td>Scripted outcomes; Run=7/10, Run again=8/10 (row 3 flips)</td><td>Run → <em>immediately</em> Run again → point at the changed row</td><td>"Which is true? Neither. T=0, three runs, average and spread."</td></tr>
-<tr><td>Scorers (15)</td><td>3 canned verdicts on the Rahman answer</td><td>Exact (✗ — let the injustice register) → Contains → Judge</td><td>"The answer was right. The scorer was the liar."</td></tr>
-<tr><td>Arena (16)</td><td>Scripted: A 2/5, B 4/5, Q5 fails both</td><td>One click: Fight. Read columns left to right</td><td>"B wins 4–2 — and Q5 beat both. Grow the set, fix again."</td></tr>
-<tr><td>Loop stepper (18)</td><td>Auto-cycles stages every 1.7s</td><td>Narrate one lap; a click also advances it</td><td>"Failures aren't embarrassments. They're the syllabus."</td></tr>
-<tr><td>Lab timer (20)</td><td>Real 50:00 countdown (L start/pause, R reset)</td><td>Press L when the brief ends, not before</td><td>"Fifty minutes. Checkpoint 1 by :15."</td></tr>
-</tbody></table>
-<p><strong>If a student calls out a simulation</strong> (any demo): never bluff. "Canned, deliberately — this deck runs offline so nothing can break on stage. The claim it illustrates is real, and you'll reproduce it live on your own questions in the lab in twenty minutes." For spot-the-lie specifically, add: "and the lab's hard-mode stretch is you making a real model do exactly this."</p>
-<hr>
-<h2 id="d-qa-bank">D. Q&amp;A bank</h2>
-<p>Spoken-voice model answers. The first ten will genuinely occur; the last few are professor-grade.</p>
-<ol><li><strong>"Is prompt engineering still a real job in 2026?"</strong> — The job <em>title</em> is fading; the skill got absorbed into everyone's job, like Googling did. Crude tricks die with every model release, but structured context-giving — role, facts, format, constraints — is just specification writing, and specification writing has never gone out of style. You're learning to write specs, not spells.</li>
-<li><strong>"Why can't they just train hallucination out?"</strong> — Because truth was never the training objective — plausible continuation was. And there's a live trade-off: penalize guessing hard enough and the model turns uselessly evasive. There's even a 2025 OpenAI paper arguing our benchmarks make it worse: binary grading with no reward for "I don't know" teaches models to guess, like students in an exam with no negative marking. You reduce it with grounding and tools; you never hit zero.</li>
-<li><strong>"If reasoning models think step-by-step internally, is chain-of-thought prompting dead?"</strong> <em>(connects to S1)</em> — As a magic accuracy phrase, mostly yes — the models internalized it; that's the test-time-compute story from Session 1. But as an audit requirement it's very alive: when money, marks, or medicine are involved, you demand visible working not to make the model smarter but so a <em>human</em> can check the chain.</li>
-<li><strong>"Is the model learning from my few-shot examples?"</strong> <em>(connects to S1)</em> — No weights change — Session 1's frozen-at-inference rule holds. The behavior shift lives entirely inside this context window; close the chat and it's gone. It's dominoes, not education.</li>
-<li><strong>"10 questions — statistically valid?"</strong> — No, and I won't pretend otherwise. At 7/10 the standard error is about 14 percentage points — the 95% interval spans roughly 42% to 98%, so 7/10 versus 8/10 is pure noise. It's the right size anyway because the deliverable is the <em>loop</em>, and every failure is individually diagnosable regardless of n. Real teams run hundreds to thousands, stratified by category.</li>
-<li><strong>"Why does temperature 0 still give different answers?"</strong> — T=0 means always take the top token, but the scores behind that choice wobble: floating-point addition isn't associative, so different server batching changes the arithmetic order, and when two tokens are nearly tied the winner flips. One flipped token early, different sentence after. Hence three runs and an average.</li>
-<li><strong>"Can 'answer only from the facts above' be broken by a malicious user?"</strong> <em>(connects to S5)</em> — Yes. Instructions and user data share one context window, so crafted input can override your rules — that's prompt injection, number one on the OWASP Top 10 for LLM apps two editions running, with no complete fix known. Constraints are quality controls, not security controls. Defense-in-depth is a Session 5 topic.</li>
-<li><strong>"Why was Air Canada liable — isn't the chatbot a third-party tool?"</strong> — That was literally their defense: the chatbot is "a separate legal entity responsible for its own actions." The tribunal called it remarkable and said a company is responsible for all information on its website, chatbot or static page. The amount was small — about CA$800 — but the precedent is the point: your bot's words are your words.</li>
-<li><strong>"Doesn't RAG solve hallucination?"</strong> <em>(connects to S4)</em> — It's the single biggest reduction — you ground answers in retrieved documents instead of parametric memory. But the model can still misread, mis-combine, or ignore what was retrieved, and retrieval itself can fetch the wrong thing. Next session's problem. Reduce, never eliminate — which is why the eval harness survives every session of this course.</li>
-<li><strong>"Does saying 'please' improve answers?"</strong> — Marginal at best, and unstable across models; specificity beats manners every time. Actually a perfect first experiment for the harness you built today — measure it instead of believing either me or the folklore.</li>
-<li><strong>"Is the AI judge trustworthy — a model grading a model sounds circular."</strong> — Partially circular, yes. Known measured biases: prefers longer answers, prefers the first-listed answer in pairwise comparisons, prefers its own phrasing. Mitigations exist — swap positions, pin a rubric, spot-audit against human labels — but the rule is: the judge is a scorer you must <em>also</em> evaluate, never the only signal.</li>
-<li><strong>"Are the model's stated reasoning steps its real computation?"</strong> <em>(professor curveball)</em> — Not guaranteed — that's the chain-of-thought faithfulness problem, still open research. Models sometimes produce a plausible chain while the answer was determined by something else entirely. That's exactly why I teach step-by-step as 'auditable working' rather than 'reading its mind': the working is checkable even if it isn't a confession.</li>
-<li><strong>"Why not eval on a public benchmark instead of homemade questions?"</strong> <em>(professor curveball)</em> — Contamination: public benchmark answers are very likely in the training data, so you'd partly measure memorization. Their obscure personal-expertise questions probably aren't memorized — and if the model aces all ten, the correct response is suspicion: make the test harder until it bleeds. A test that can't fail teaches nothing.</li></ol>
-<hr>
-<h2 id="e-misconception-table">E. Misconception table</h2>
-<table>
-<thead><tr><th>Students walk in believing…</th><th>The correction</th></tr></thead>
-<tbody>
-<tr><td>Hallucination is a bug the vendors will patch</td><td>It's the training objective working as designed — plausibility, not truth; you engineer around it, never away.</td></tr>
-<tr><td>Confident tone signals a correct answer</td><td>Calibration failure: tone and truth are uncorrelated — and RLHF actively makes the tone <em>more</em> confident without making the content more true.</td></tr>
-<tr><td>The model remembers past chats and learns my examples</td><td>Frozen weights; everything lives and dies inside the current context window.</td></tr>
-<tr><td>Prompting = finding magic words</td><td>It's specification: task, facts, format, constraints. Spells expire with each model release; specs don't.</td></tr>
-<tr><td>"It worked when I tried it" = it works</td><td>Three hand-picked tries is a demo (best case); an eval is the expected case.</td></tr>
-<tr><td>A higher score always means a better prompt</td><td>The scorer can be the liar (exact-match failing correct answers; contains passing "not Chennai"), and tuning on the same 10 questions forever is Goodhart.</td></tr>
-<tr><td>Temperature 0 = fully deterministic</td><td>Mostly, not fully — batching and floating-point order still flip near-ties; hence ×3 and average.</td></tr>
-<tr><td>The model's step-by-step output is its actual reasoning</td><td>It's auditable working, not a confession — faithfulness is an open problem.</td></tr>
-</tbody></table>
-<hr>
-<h2 id="f-timing-pressure-map">F. Timing pressure map</h2>
-<p>Deck budget 102.5 min total = 47.5 talk + 52 lab-block (2 brief + 50 lab) + 3 close. The presenter panel (press S) tracks you against these numbers; "behind — compress" appears at +90s.</p>
-<table>
-<thead><tr><th>Zone</th><th>Historic bleed</th><th>Action</th></tr></thead>
-<tbody>
-<tr><td>Recap quiz (2)</td><td>Re-teaching S1 at length on a wrong answer</td><td>One line per miss, hard cap 2 min.</td></tr>
-<tr><td>Makeover (4)</td><td>Over-discussing each version; 4 min becomes 8</td><td>One "what's still wrong?" question per click, one hand per question. This is a centerpiece — protect it by starving slides 8/12/17 instead.</td></tr>
-<tr><td>Crimes (9)</td><td>Class debates each card</td><td>Shout-then-click; 45s per card max.</td></tr>
-<tr><td>Spot the lie (11)</td><td>Voting theater ×3 rounds; 4.5 min becomes 7</td><td>Vote by hands (fast), not discussion. The 6s auto-advance paces you — don't pause it with commentary between rounds.</td></tr>
-<tr><td>Hot take (12) ▸</td><td>Taking three counter-arguments on the spot</td><td>Take ONE, park the rest for the break. Compressed version: read it, 3s silence, move.</td></tr>
-<tr><td>Format (8) ▸</td><td>Explaining JSON parsing to non-web students</td><td>Compressed version: one click (no-format), one line ("now write a parser for that"), move.</td></tr>
-<tr><td>Demo trap (17) ▸</td><td>None — but don't skip the headline</td><td>15 seconds is enough: say the title, next slide.</td></tr>
-<tr><td>Lab (20)</td><td>Brief runs long; timer starts late</td><td>2-min brief max; press L before you finish talking if needed. Sweep checkpoints at lab-minute 30.</td></tr>
-</tbody></table>
-<p><strong>Never cut:</strong> makeover (4), spot-the-lie (11), eval run (14), scorers (15), arena (16), and the full 50-minute lab. These five slides + lab ARE the session; everything else is connective tissue. <strong>Lab-hour pressure:</strong> rate limits make Part C slow (20+ calls at ~10 RPM) — push pairs to start Part C by lab-minute 30 and diagnose failures <em>while</em> runs execute. Common coaching moments, in expected order: expected-strings too long (minute 20), test set aced 10/10 → "add questions until it bleeds" (minute 30), three changes between runs → one at a time (minute 40).</p>
-<hr>
-<h2 id="g-going-deeper-weekend-reading">G. Going deeper — weekend reading</h2>
-<ol><li><strong>Brown et al. 2020, "Language Models are Few-Shot Learners"</strong> — the GPT-3 paper that discovered in-context learning; Section 3 is where few-shot went from curiosity to paradigm. Read it to answer "who found this and how."</li>
-<li><strong>Wei et al. 2022, "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"</strong> — the CoT origin; skim the ablations to see exactly which task families benefit (multi-step arithmetic/symbolic) and which don't.</li>
-<li><strong>Olsson et al. 2022 (Anthropic), "In-context Learning and Induction Heads"</strong> — the mechanistic story behind slide 6: attention heads that find-and-continue patterns. The strongest available answer to a professor asking <em>why</em> ICL works.</li>
-<li><strong>Kalai et al. 2025 (OpenAI), "Why Language Models Hallucinate"</strong> — frames hallucination as statistically inevitable under current objectives and argues binary-graded benchmarks reward guessing over abstention. Directly arms the hot-take slide.</li>
-<li><strong>Zheng et al. 2023, "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena"</strong> — quantifies verbosity/position/self-preference biases and the mitigations; the source behind slide 15's judge caveats.</li>
-<li><strong>Liu et al. 2023, "Lost in the Middle: How Language Models Use Long Contexts"</strong> — why instruction placement matters and why over-stuffed prompts degrade; backs the "attention dilution" line on slide 5.</li>
-<li><strong>Hamel Husain, "Your AI Product Needs Evals" (blog, 2024)</strong> — the practitioner's doctrine for everything in slides 13–18; the closest thing to how real teams actually run the loop this session teaches.</li></ol>
+<tr class="odd">
+<td>A better prompt fixes hallucination</td>
+<td>It reduces frequency, not the mechanism (slides 10–12)</td>
+</tr>
+<tr class="even">
+<td>A high score means it works</td>
+<td>It means it works <em>on that test set, with that scorer</em> (13–16)</td>
+</tr>
+<tr class="odd">
+<td>Confident tone signals correctness</td>
+<td>The tone meter is identical on every round, including the lies (11)</td>
+</tr>
+<tr class="even">
+<td>The scorer is neutral infrastructure</td>
+<td>Exact-match fails correct answers (15)</td>
+</tr>
+<tr class="odd">
+<td>One run is a result</td>
+<td>Run it twice on stage and watch the number move (14)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6--timing-pressure-map">6 · Timing pressure map</h2>
+<p>Slide budgets total 102.5 minutes including the 52-minute lab, leaving about 18 minutes of reserve — slack that Session 1 does not have. Spend it on slides 10–16, which are the session, and on a longer show and tell.</p>
+<p>Cut in this order: slide 9 crime cards (four can be two) · slide 6 few-shot (the Tanglish example alone carries it) · slide 19 recall flips.</p>
+<p>Never compress: slide 11 (the game), 14 (run it twice), 15 (the scorer turn), or 16’s Q5 moment.</p>
+<p>The deck flags slides 8, 12 and 17 <strong>compressible</strong> (press <strong>S</strong> to see the marker). If you reach slide 12 later than 40 minutes in, cut from the list above.</p>
+<hr />
+<h2 id="7--day-before-checklist">7 · Day-before checklist</h2>
+<p>Run the makeover through all five clicks. Play all three rounds of the spot-the-lie game and check you can state <em>why</em> each is false without reading. Run the eval twice and confirm the score moves. Open both depth panels. Then open <code>labs/session-2/session_2_lab.ipynb</code>, run it end to end on a real key, and confirm the model id still resolves — see <code>fact-check.md</code>, volatile rows last live-verified 2026-08-03.</p>
+<p>Have your own ten-question test set ready as the worked example, in case a pair arrives without one.</p>
 
 
-  <hr>
 
-  <h2 id="the-depth-layer">The depth layer — 2 <code>&lt;|deeper|&gt;</code> panels in this deck</h2>
 
-  <p>Collapsed by default, so they cost the clock nothing. Press <strong>D</strong> on a slide to open every panel on it (or click the panel's mono label). Each is also flagged in the presenter notes as <code>[D] deeper:</code>.</p>
-
-  <p>Open one when a student asks the question the slide provokes, or when you are running ahead. Never open one because it is there — the main line is the promise; this is the ceiling.</p>
-
-  <table>
-    <tr><th>Deck slide</th><th>Slide</th><th>Panel</th></tr>
-    <tr><td><code>#15</code></td><td>Same answer, three verdicts</td><td>one number is usually the wrong number</td></tr>
-    <tr><td><code>#16</code></td><td>Prompt A vs Prompt B: the arena</td><td>B won 4–3. Did B actually win?</td></tr>
-  </table>
-
-  <p>Prose versions of all of these, with the same section order, are in <a href="../LEARNING-GUIDE.html#part-8">the Learning Guide, <strong>Part 8</strong></a>. If you read one thing before delivery day, read the Part 8 sections matching this deck — they are written so you can improvise a whiteboard answer, not just recite the panel.</p>
-
-  <footer class="foot">
-    <div style="margin-bottom:8px">deck: <a href="../presentations/session-2-talking-to-ai-and-catching-its-lies.html">session-2-talking-to-ai-and-catching-its-lies.html</a> · run sheet: <code>session-2-notes.md</code> · <a href="../cheatsheets/session-2-cheatsheet.html">student cheatsheet</a> · <a href="../labs/session-2/lab-handout.html">lab handout</a></div>
-    Generative AI: Foundations &amp; Applications · <a href="../index.html">course home</a> · instructor material
-  </footer>
+  <footer class="foot">Generative AI: Foundations &amp; Applications · instructor prep · <a href="../index.html">course home</a></footer>
 </div>
 </body>
 </html>

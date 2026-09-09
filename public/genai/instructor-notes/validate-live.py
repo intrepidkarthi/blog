@@ -7,9 +7,9 @@ Run this ONCE before lab day, with your key:
     pip install google-genai pillow
     python3 instructor-notes/validate-live.py
 
-Makes 6 tiny real calls with gemini-flash-latest (well under free-tier
-limits). Every check maps to a
-notebook: if all six pass, every API pattern the labs use works today.
+Makes ~9 tiny real calls with gemini-flash-lite-latest (well under free-tier
+limits). Every check maps to a notebook: if all pass, every API pattern the
+labs use works today. Checks marked WARN do not fail the run — read them.
 """
 import os, sys, json, time, io
 
@@ -20,7 +20,7 @@ def main():
     from google import genai
     from google.genai import types
     client = genai.Client(api_key=key)
-    MODEL = "gemini-flash-latest"  # the free tier's current Flash (July 2026 → Gemini 3.5 Flash); pin a dated id only if you need frozen behavior.
+    MODEL = "gemini-flash-lite-latest"  # the labs' default: minimal thinking by default (Aug 2026 → Gemini 3.5 Flash Lite); pin a dated id only if you need frozen behavior.
     EMBED = "gemini-embedding-2"
     results = []
 
@@ -39,6 +39,17 @@ def main():
                 results.append((name, False, f"{time.time()-t0:.1f}s", f"{type(e).__name__}: {e}"))
                 return
 
+    # 0 · Lab 1 Cell 2b — the key can list models, and both -latest aliases resolve (record the names in fact-check.md)
+    def resolve():
+        names = [m.name for m in client.models.list() if "gemini" in m.name]
+        assert names, "models.list() returned no gemini models — is this an auth key? (Standard keys are rejected since Sep 2026)"
+        out = []
+        for alias in (MODEL, "gemini-flash-latest"):
+            m = client.models.get(model=alias)
+            out.append(f"{alias} → {m.name} ({m.display_name})")
+        return f"{len(names)} gemini models visible; " + "; ".join(out)
+    check("models.list + resolve aliases (L1)", resolve)
+
     # 1 · Labs 1/2/6 — basic generation
     def gen():
         r = client.models.generate_content(model=MODEL, contents="Reply with exactly: OK")
@@ -53,13 +64,28 @@ def main():
         return f"tamil tokens={r.total_tokens}"
     check("count_tokens (L1)", cnt)
 
-    # 3 · Lab 4 — embeddings at 768 dims
+    # 2b · Lab 1 Stretch 1 — temperature is deprecated on Gemini 3.x (21 Jul 2026) but still accepted (Aug). WARN, not FAIL, if rejected.
+    def temp():
+        try:
+            r = client.models.generate_content(model=MODEL, contents="One word: a colour.",
+                  config=types.GenerateContentConfig(temperature=1.5))
+            return f"temperature=1.5 accepted, text={(r.text or '').strip()!r}"
+        except Exception as e:
+            print(f"WARN: temperature=1.5 was REJECTED ({type(e).__name__}: {str(e)[:120]}) — strip temperature= from the Lab 1 Stretch 1 cell and the S1 note")
+            return "WARN: temperature=1.5 rejected (see above) — labs still run, the temperature demo will not"
+    check("temperature=1.5 still accepted (L1)", temp)
+
+    # 3 · Lab 4 — embeddings: one vector PER wrapped Content, at 768 dims.
+    #     A bare list of strings gives ONE aggregated vector on gemini-embedding-2 (found 8 Sep 2026) — the labs wrap each text.
     def emb():
-        r = client.models.embed_content(model=EMBED, contents=["pass mark", "50% aggregate"],
+        texts = ["pass mark", "50% aggregate"]
+        r = client.models.embed_content(model=EMBED,
+              contents=[types.Content(parts=[types.Part.from_text(text=t)]) for t in texts],
               config=types.EmbedContentConfig(output_dimensionality=768))
+        assert len(r.embeddings) == len(texts), f"expected {len(texts)} vectors, got {len(r.embeddings)} — the Lab 4 embed() wrapping no longer works"
         v = r.embeddings[0].values
         assert len(v) == 768, f"got {len(v)} dims"
-        return f"dims={len(v)}, 2 vectors"
+        return f"{len(r.embeddings)} vectors × {len(v)} dims (one per wrapped Content)"
     check(f"embed_content {EMBED} (L4)", emb)
 
     # 4 · Lab 3 Part B2 — guaranteed JSON via response_schema
@@ -86,7 +112,7 @@ def main():
         follow = client.models.generate_content(model=MODEL, contents=[
             types.Content(role="user", parts=[types.Part(text="What is 23*19? Use the calculator.")]),
             r.candidates[0].content,
-            types.Content(role="tool", parts=[types.Part.from_function_response(name="calculator", response={"result": answer})]),
+            types.Content(role="user", parts=[types.Part.from_function_response(name="calculator", response={"result": answer})]),
         ], config=cfg)
         assert follow.text and "437" in follow.text
         return f"call={fc.args} -> final mentions 437"
@@ -110,16 +136,20 @@ def main():
         ok += passed
         print(f"{mark:4} | {dt:>5} | {name}\n     |       | {detail}")
     print("=" * 62)
-    if ok < 6 and any("503" in d or "UNAVAILABLE" in d for _, p_, _, d in results if not p_):
+    total = len(results)
+    if ok < total and any("503" in d or "UNAVAILABLE" in d for _, p_, _, d in results if not p_):
         try:
-            r = client.models.generate_content(model="gemini-flash-lite-latest", contents="Reply with exactly: OK")
-            print("NOTE: failures look like capacity 503s — gemini-flash-lite-latest is healthy right now")
-            print("      (answered %r). One-line fallback: MODEL = \"gemini-flash-lite-latest\"" % r.text.strip())
+            r = client.models.generate_content(model="gemini-flash-latest", contents="Reply with exactly: OK")
+            print("NOTE: failures look like capacity 503s — gemini-flash-latest is healthy right now")
+            print("      (answered %r). Emergency fallback: MODEL = \"gemini-flash-latest\"" % r.text.strip())
+            print("      That alias thinks before answering: slower replies, and roughly an order of")
+            print("      magnitude more billed output tokens. Switch back to lite once capacity returns.")
         except Exception:
             pass
-    print(f"{ok}/6 live checks passed — " +
-          ("labs are GO for delivery." if ok == 6 else "fix FAILs before lab day (see details above)."))
-    sys.exit(0 if ok == 6 else 1)
+    warns = sum(1 for _, p_, _, d in results if p_ and d.startswith("WARN"))
+    print(f"{ok}/{total} live checks passed" + (f" ({warns} WARN — read them)" if warns else "") + " — " +
+          ("labs are GO for delivery." if ok == total else "fix FAILs before lab day (see details above)."))
+    sys.exit(0 if ok == total else 1)
 
 if __name__ == "__main__":
     main()

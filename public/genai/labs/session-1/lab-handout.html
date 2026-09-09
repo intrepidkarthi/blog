@@ -48,78 +48,146 @@
 <div class="wrap">
   <nav class="crumbs"><a href="../../index.html">← Course home</a></nav>
   <div class="kicker">Lab 1 · 50 minutes</div>
-  <h1>Your First AI API Call</h1>
-  <p class="lead">Session 1 · Generative AI: Foundations and Applications · TCE — 50 minutes · pairs (both partners run everything) · Goal: your code talks to a frontier AI model.</p>
+  <h1>Lab 1 — Your First AI API Call</h1>
+  <p class="lead"><strong>Session 1 · Generative AI: Foundations and Applications · TCE</strong></p>
 
-  <blockquote><p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p></blockquote>
+<blockquote>
+<p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>. 50 minutes · pairs (both partners run everything) · Goal: your code talks to a frontier AI model</p>
+</blockquote>
+<blockquote>
+<p><strong>Pairs:</strong> both partners create a key. One drives per part; swap at each checkpoint.</p>
+</blockquote>
+<blockquote>
+<p><strong>AI coding assistants (Copilot, ChatGPT, Gemini) are allowed and encouraged in every lab.</strong> One rule: your eval set judges their code too.</p>
+</blockquote>
+<hr />
+<h2 id="part-a--confirm-access-and-get-your-api-key-10-min">Part A — Confirm access and get your API key (10 min)</h2>
+<p>If you completed the pre-class access check, continue with your own key. If not, ask the instructor to confirm live access before spending time debugging account setup.</p>
+<ol type="1">
+<li>Go to <strong><a href="https://aistudio.google.com">https://aistudio.google.com</a></strong> → sign in with a personal Google account.</li>
+<li>Click <strong>Get API key</strong> → <strong>Create API key</strong>. Copy it somewhere private.
+<ul>
+<li>Already have a Google Cloud account? AI Studio creates no default project for you: <strong>Dashboard → Projects → Import</strong> your existing project first, then <strong>Get API key</strong>.</li>
+<li>If the notebook’s Cell 2b (<code>models.list()</code>) fails, create a <strong>new</strong> key — Google rejects old “Standard” keys since Sep 2026.</li>
+</ul></li>
+<li>Rules: your key = your password. Never paste it in code cells, never WhatsApp it, never commit it to GitHub.</li>
+<li>While you are signed in: put <strong>two photos</strong> (a receipt, a page of your handwriting) in your Google Drive now — Lab 3 needs them.</li>
+</ol>
+<blockquote>
+<p>Stuck after 5 minutes (college account blocked, phone verification loop)? Stop and tell the instructor. Every notebook has an offline path — set <code>MOCK = True</code> in Cell 2 <strong>only when the instructor says so</strong> (canned answers, no API) — or follow the instructor-controlled demonstration; do not share keys or create extra accounts to bypass the problem.</p>
+</blockquote>
+<h2 id="part-b--first-call-10-min">Part B — First call (10 min)</h2>
+<ol type="1">
+<li>Open the Colab notebook: <strong>link on the board</strong> (<code>session_1_lab.ipynb</code>).</li>
+<li><strong>File → Save a copy in Drive</strong> (so your work persists).</li>
+<li>Run <strong>Cell 1</strong> (installs the SDK) and <strong>Cell 2</strong> (asks for your key via a hidden password box; also defines the <code>ask()</code> helper that retries on a <code>429</code> rate limit).</li>
+<li>Run <strong>Cell 2b</strong> — lists the models your key can see. If it errors, go back to Part A and make a new key.</li>
+<li>Run <strong>Cell 3</strong> — your first API call.</li>
+</ol>
+<p>✓ <strong>Checkpoint 1:</strong> the notebook prints a response written by Gemini. Read it out loud to your partner.</p>
+<h2 id="part-c--the-five-prompts-10-min">Part C — The five prompts (10 min)</h2>
+<p><strong>Cell 4</strong> runs all five prompts in one loop (one <code>ask()</code> call each). Read every output, then write one line per prompt in the notebook’s observation cell: <em>what was good, what was off?</em></p>
+<table>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Skill</th>
+<th>Prompt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Explain</td>
+<td>“Explain how UPI works to a 10-year-old, in 5 sentences.”</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Summarize</td>
+<td>“Summarize the plot of Ponniyin Selvan in exactly 3 bullet points.”</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Translate</td>
+<td>“Translate to formal Tamil: ‘The exam has been postponed to next Monday.’”</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Extract</td>
+<td>“Extract name, degree, year as JSON from: ‘Hi, I’m Priya, third year BE CSE at TCE.’”</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Roleplay</td>
+<td>“You are a strict interviewer at a product company. Ask me one DSA question, wait for my answer.”</td>
+</tr>
+</tbody>
+</table>
+<p>✓ <strong>Checkpoint 2:</strong> all 5 ran; you wrote 5 one-line observations.</p>
+<h2 id="part-d--one-prompt-three-models-10-min--this-is-the-part-to-cut-if-the-session-is-running-late">Part D — One prompt, three models (10 min — this is the part to cut if the session is running late)</h2>
+<p>Pick <strong>one</strong> prompt from Part C (or write your own). Run the same text on:</p>
+<ol type="1">
+<li><strong>Gemini</strong> (your notebook — <strong>Cell 5</strong>)</li>
+<li><strong>ChatGPT</strong> — <a href="https://chatgpt.com">https://chatgpt.com</a> (sign-in may be required)</li>
+<li><strong>Any third</strong>: Claude (<a href="https://claude.ai">https://claude.ai</a>), Copilot, Meta AI — your choice</li>
+</ol>
+<blockquote>
+<p>Blocked on the college network or no account? Use your phone, or compare your default <code>gemini-flash-lite-latest</code> against <code>gemini-flash-latest</code> via <code>ask(prompt, model=...)</code> — same lesson, no login. The flash alias now thinks before it answers, so time both: the same prompt should come back slower and more verbose from flash, and that gap is the lesson.</p>
+</blockquote>
+<p>Fill this table (also in the notebook):</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Gemini</th>
+<th>ChatGPT</th>
+<th>Third model</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Length / format</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Tone / personality</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Accuracy issues?</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Which would you ship to a user?</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>✓ <strong>Checkpoint 3 (show instructor):</strong> your printed Gemini response + the one difference that surprised you most.</p>
+<h2 id="part-e--build-your-test-set-last-10-min-everyone">Part E — Build your test set (last 10 min, everyone)</h2>
+<p><strong>Part E is the hand-off to Lab 2 — protect it.</strong> Sessions run back-to-back, so do this <strong>now</strong>, before the break, even if Part D was cut:</p>
+<p>Pick one subject you know <strong>cold</strong> — DSA, cricket stats, Tamil cinema, Ilaiyaraaja discography, your hometown, anything. In a text file, write <strong>10 questions, each with a one-word or one-number answer — a name, a year, a score. Not a sentence.</strong> Make them details only a fan would know — deep cuts, not headlines. Keep it open — this is your ammunition for Session 2’s lie-detector lab, where you’ll measure how often the AI gets <em>your</em> subject right.</p>
+<h2 id="stretch-goals-if-you-finish-early">Stretch goals (if you finish early)</h2>
+<ul>
+<li><strong>S1 · Temperature:</strong> in the notebook’s temperature cell, run the same prompt at <code>temperature=0.0</code> three times, then <code>temperature=1.5</code> three times. What changed? (<code>temperature</code> is deprecated on Gemini 3.x but still accepted — if the two runs look identical, that <em>is</em> the finding.)</li>
+<li><strong>S2 · Tamil stress test:</strong> ask the same factual question in English and Tamil. Same answer? Same quality?</li>
+<li><strong>S3 · Token counting:</strong> use the token-count cell to measure an English sentence vs its Tamil translation. Confirm what you saw in the lecture.</li>
+<li><strong>S4 · The 15-line language model:</strong> run the counting-based next-word model from the lecture — train it by tallying, then sample sentences. Same three steps as Gemini; step 2 is a table you can print instead of a learned function.</li>
+<li><strong>S5 · Break it:</strong> find a question Gemini answers wrongly with confidence. Your first hallucination catch — screenshot it for bragging rights in Session 2.</li>
+</ul>
+<h2 id="overnight-before-day-2--5-min-important">Overnight (before Day 2 — 5 min, important)</h2>
+<p>Day 2 starts with <strong>“chat with your own notes”</strong> (RAG). Put 2–3 documents you actually care about on your laptop or Drive: lecture notes, a textbook chapter PDF, your own study notes. Your Day 2 apps are only as interesting as the documents you bring.</p>
 
-  <blockquote><p><strong>AI coding assistants (Copilot, ChatGPT, Gemini) are allowed and encouraged in every lab.</strong> One rule: your eval set judges their code too.</p></blockquote>
 
-  <h2>Part A — Get your API key (10 min)</h2>
-  <ol>
-    <li>Go to <strong><a href="https://aistudio.google.com">https://aistudio.google.com</a></strong> → sign in with a personal Google account.</li>
-    <li>Click <strong>Get API key</strong> → <strong>Create API key</strong>. Copy it somewhere private.</li>
-    <li>Rules: your key = your password. Never paste it in code cells, never WhatsApp it, never commit it to GitHub.</li>
-  </ol>
-  <blockquote><p>Stuck after 5 minutes (college account blocked, phone verification loop)? Take a spare key from the instructor and create your own at home tonight.</p></blockquote>
 
-  <h2>Part B — First call (10 min)</h2>
-  <ol>
-    <li>Open the Colab notebook: <strong>link on the board</strong> (<code>session_1_lab.ipynb</code>).</li>
-    <li><strong>File → Save a copy in Drive</strong> (so your work persists).</li>
-    <li>Run <strong>Cell 1</strong> (installs the SDK) and <strong>Cell 2</strong> (asks for your key via a hidden password box).</li>
-    <li>Run <strong>Cell 3</strong> — your first API call.</li>
-  </ol>
-  <blockquote><p>✓ <strong>Checkpoint 1:</strong> the notebook prints a response written by Gemini. Read it out loud to your partner.</p></blockquote>
-
-  <h2>Part C — The five prompts (15 min)</h2>
-  <p>Run each prompt in <strong>Cell 4</strong> (one function call each). After each, write one line in the notebook's observation cell: <em>what was good, what was off?</em></p>
-  <table>
-    <thead><tr><th>#</th><th>Skill</th><th>Prompt</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>Explain</td><td>"Explain how UPI works to a 10-year-old, in 5 sentences."</td></tr>
-      <tr><td>2</td><td>Summarize</td><td>"Summarize the plot of Ponniyin Selvan in exactly 3 bullet points."</td></tr>
-      <tr><td>3</td><td>Translate</td><td>"Translate to formal Tamil: 'The exam has been postponed to next Monday.'"</td></tr>
-      <tr><td>4</td><td>Extract</td><td>"Extract name, degree, year as JSON from: 'Hi, I'm Priya, third year BE CSE at TCE.'"</td></tr>
-      <tr><td>5</td><td>Roleplay</td><td>"You are a strict interviewer at a product company. Ask me one DSA question, wait for my answer."</td></tr>
-    </tbody>
-  </table>
-  <blockquote><p>✓ <strong>Checkpoint 2:</strong> all 5 ran; you wrote 5 one-line observations.</p></blockquote>
-
-  <h2>Part D — One prompt, three models (15 min)</h2>
-  <p>Pick <strong>one</strong> prompt from Part C (or write your own). Run the same text on:</p>
-  <ol>
-    <li><strong>Gemini</strong> (your notebook — API)</li>
-    <li><strong>ChatGPT</strong> — <a href="https://chatgpt.com">https://chatgpt.com</a> (free, no login needed for basic use)</li>
-    <li><strong>Any third</strong>: Claude (<a href="https://claude.ai">https://claude.ai</a>), Copilot, Meta AI — your choice</li>
-  </ol>
-  <p>Fill this table (also in the notebook):</p>
-  <table>
-    <thead><tr><th></th><th>Gemini</th><th>ChatGPT</th><th>Third model</th></tr></thead>
-    <tbody>
-      <tr><td>Length / format</td><td></td><td></td><td></td></tr>
-      <tr><td>Tone / personality</td><td></td><td></td><td></td></tr>
-      <tr><td>Accuracy issues?</td><td></td><td></td><td></td></tr>
-      <tr><td>Which would you ship to a user?</td><td></td><td></td><td></td></tr>
-    </tbody>
-  </table>
-  <blockquote><p>✓ <strong>Checkpoint 3 (show instructor):</strong> your printed Gemini response + the one difference that surprised you most.</p></blockquote>
-
-  <h2>Part E — Build your test set (last 10 min, everyone)</h2>
-  <p>Sessions run back-to-back, so do this <strong>now</strong>, before the break:</p>
-  <p>Pick one subject you know <strong>cold</strong> — DSA, cricket stats, Tamil cinema, Ilaiyaraaja discography, your hometown, anything. In a text file, write <strong>10 questions with their correct answers</strong>. Keep it open — this is your ammunition for Session 2's lie-detector lab, where you'll measure how often the AI gets <em>your</em> subject right.</p>
-
-  <h2>Stretch goals (if you finish early)</h2>
-  <ul>
-    <li><strong>S1 · Temperature:</strong> in the notebook's temperature cell, run the same prompt at <code>temperature=0.0</code> three times, then <code>temperature=1.5</code> three times. What changed?</li>
-    <li><strong>S2 · Tamil stress test:</strong> ask the same factual question in English and Tamil. Same answer? Same quality?</li>
-    <li><strong>S3 · Token counting:</strong> use the token-count cell to measure an English sentence vs its Tamil translation. Confirm what you saw in the lecture.</li>
-    <li><strong>S4 · The 15-line language model:</strong> run the counting-based next-word model from the lecture — train it by tallying, then sample sentences. Same three steps as Gemini; step 2 is a table you can print instead of a learned function.</li>
-    <li><strong>S5 · Break it:</strong> find a question Gemini answers wrongly with confidence. Your first hallucination catch — screenshot it for bragging rights in Session 2.</li>
-  </ul>
-
-  <h2>Overnight (before Day 2 — 5 min, important)</h2>
-  <p>Day 2 starts with <strong>"chat with your own notes"</strong> (RAG). Put 2–3 documents you actually care about on your laptop or Drive: lecture notes, a textbook chapter PDF, your own study notes. Your Day 2 apps are only as interesting as the documents you bring.</p>
 
   <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="../../index.html">course home</a> · free to use, fork, localize and teach</footer>
 </div>

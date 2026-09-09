@@ -48,71 +48,100 @@
 <div class="wrap">
   <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
   <div class="kicker">Session 1 cheatsheet</div>
-  <h1>How Machines Learned to Talk</h1>
-  <p class="lead">Generative AI: Foundations and Applications · TCE</p>
+  <h1>Session 1 Cheatsheet — How Machines Learned to Talk</h1>
+  <p class="lead"><em>Generative AI: Foundations and Applications · TCE</em></p>
 
-  <h2>The one idea</h2>
-  <blockquote style="background:var(--accentpale)">An LLM does exactly one thing: <strong>given text, predict the next token.</strong> Append it, repeat. Every essay, poem and program is generated one token at a time.</blockquote>
-
-  <h2>Three truths most people get wrong</h2>
-  <ol>
-    <li><strong>It's not a database.</strong> Nothing is stored or looked up — a model is a file of billions of learned numbers (<strong>parameters</strong>) that <em>compute</em> every reply fresh. That's why it can invent things.</li>
-    <li><strong>It's frozen while you use it.</strong> <strong>Training</strong> (adjust the knobs on trillions of tokens, once, for months) vs <strong>inference</strong> (your prompt flows through the frozen knobs, every chat). It does NOT learn from your conversation — though free-tier chats may train <em>future</em> versions, so never paste private data.</li>
-    <li><strong>It has no memory.</strong> The app re-sends your entire conversation into the context window on every turn. "Chat memory" is a product feature beside the model, not the model remembering.</li>
-  </ol>
-
-  <h2>Where the words live</h2>
-  <p>AI ⊃ Machine Learning ⊃ Deep Learning ⊃ Generative AI ⊃ <strong>LLMs</strong> (GPT, Gemini, Claude, Llama). And: ChatGPT is the <em>app</em>; GPT is the <em>model</em> inside — like WhatsApp vs the phone network.</p>
-
-  <h2>Eight words you now own</h2>
-  <table>
-    <thead>
-      <tr><th>Term</th><th>Meaning</th><th>Remember it as</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Token</td><td>The chunk a model actually reads (~¾ English word). You pay per token; context is measured in tokens. Tamil ≈ 3–5× more tokens than English today.</td><td>Lego bricks of language</td></tr>
-      <tr><td>Embedding</td><td>Token → list of numbers = coordinates in meaning-space. Similar meaning = nearby points.</td><td>GPS for meaning</td></tr>
-      <tr><td>Attention</td><td>Every word weighs every other word to resolve meaning ("it" → trophy or suitcase?). The engine of the Transformer — the T in GPT.</td><td>Words looking at each other</td></tr>
-      <tr><td>Prediction</td><td>The model scores every possible next token. That's the whole job.</td><td>Autocomplete with a PhD</td></tr>
-      <tr><td>Sampling / Temperature</td><td>It rolls dice over those scores. Low T = same answer every time (facts, code). High T = creative and risky (stories, names).</td><td>The creativity knob</td></tr>
-      <tr><td>Tuning</td><td>Pretraining (read everything) → instruction tuning (learn to answer) → RLHF (learn taste).</td><td>Parrot → finishing school</td></tr>
-      <tr><td>Parameter</td><td>One learned knob (the w and b in y&nbsp;=&nbsp;wx&nbsp;+&nbsp;b, times a trillion). A model = a file of them.</td><td>Knobs, not knowledge cards</td></tr>
-      <tr><td>Inference</td><td>Running the frozen model. No learning, no memory — just computation per request.</td><td>Cooking from a finished cookbook</td></tr>
-    </tbody>
-  </table>
-
-  <h2>Why famous failures happen</h2>
-  <ul>
-    <li>"2 r's in strawberry" → it sees <strong>tokens, not letters</strong></li>
-    <li>Wrong big multiplication → it <strong>predicts digits</strong>, doesn't calculate (fix: tools, S5)</li>
-    <li>Doesn't know yesterday's news → <strong>knowledge cutoff</strong> (fix: RAG, S4)</li>
-    <li>Confident nonsense (<strong>hallucination</strong>) → trained for <em>plausible</em>, not <em>true</em> (fix: evaluation, S2)</li>
-  </ul>
-
-  <h2>Context window</h2>
-  <p>Everything — rules + history + documents + question + answer — must fit in one token-measured window (~128k–1M+). If your knowledge doesn't fit → Session 4 (RAG).</p>
-
-  <h2>The code that matters</h2>
-  <pre><code>%pip install -U google-genai            # once
+<h2 id="the-one-idea">The one idea</h2>
+<p>An LLM does exactly one thing: <strong>given text, predict the next token.</strong> Append it, repeat. Every essay, poem and program is generated one token at a time.</p>
+<h2 id="three-truths-most-people-get-wrong">Three truths most people get wrong</h2>
+<ol type="1">
+<li><strong>It’s not a database.</strong> Nothing is stored or looked up — a model is a file of billions of learned numbers (<strong>parameters</strong>) that <em>compute</em> every reply fresh. That’s why it can invent things.</li>
+<li><strong>It’s frozen while you use it.</strong> <strong>Training</strong> (adjust the knobs on trillions of tokens, once, for months) vs <strong>inference</strong> (your prompt flows through the frozen knobs, every chat). It does NOT learn from your conversation — though free-tier chats may train <em>future</em> versions, so never paste private data.</li>
+<li><strong>It has no memory.</strong> The app re-sends your entire conversation into the context window on every turn. “Chat memory” is a product feature beside the model, not the model remembering.</li>
+</ol>
+<h2 id="where-the-words-live">Where the words live</h2>
+<p>AI ⊃ Machine Learning ⊃ Deep Learning ⊃ Generative AI ⊃ <strong>LLMs</strong> (GPT, Gemini, Claude, Llama). And: ChatGPT is the <em>app</em>; GPT is the <em>model</em> inside — like WhatsApp vs the phone network.</p>
+<h2 id="eight-words-you-now-own">Eight words you now own</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning</th>
+<th>Remember it as</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Token</strong></td>
+<td>The chunk a model actually reads (~¾ English word). You pay per token; context is measured in tokens. Tamil ≈ 3–5× more tokens than English today.</td>
+<td>Lego bricks of language</td>
+</tr>
+<tr class="even">
+<td><strong>Embedding</strong></td>
+<td>Token → list of numbers = coordinates in meaning-space. Similar meaning = nearby points.</td>
+<td>GPS for meaning</td>
+</tr>
+<tr class="odd">
+<td><strong>Attention</strong></td>
+<td>Every word weighs every other word to resolve meaning (“it” → trophy or suitcase?). The engine of the Transformer — the T in GPT.</td>
+<td>Words looking at each other</td>
+</tr>
+<tr class="even">
+<td><strong>Prediction</strong></td>
+<td>The model scores every possible next token. That’s the whole job.</td>
+<td>Autocomplete with a PhD</td>
+</tr>
+<tr class="odd">
+<td><strong>Sampling / Temperature</strong></td>
+<td>It rolls dice over those scores. Low T = same answer every time (facts, code). High T = creative and risky (stories, names).</td>
+<td>The creativity knob</td>
+</tr>
+<tr class="even">
+<td><strong>Tuning</strong></td>
+<td>Pretraining (read everything) → instruction tuning (learn to answer) → RLHF (learn taste).</td>
+<td>Parrot → finishing school</td>
+</tr>
+<tr class="odd">
+<td><strong>Parameter</strong></td>
+<td>One learned knob (the w and b in y = wx + b, times a trillion). A model = a file of them.</td>
+<td>Knobs, not knowledge cards</td>
+</tr>
+<tr class="even">
+<td><strong>Inference</strong></td>
+<td>Running the frozen model. No learning, no memory — just computation per request.</td>
+<td>Cooking from a finished cookbook</td>
+</tr>
+</tbody>
+</table>
+<h2 id="why-famous-failures-happen">Why famous failures happen</h2>
+<ul>
+<li>“2 r’s in strawberry” → it sees <strong>tokens, not letters</strong></li>
+<li>Wrong big multiplication → it <strong>predicts digits</strong>, doesn’t calculate (fix: tools, S5)</li>
+<li>Doesn’t know yesterday’s news → <strong>knowledge cutoff</strong> (fix: RAG, S4)</li>
+<li>Confident nonsense (<strong>hallucination</strong>) → trained for <em>plausible</em>, not <em>true</em> (fix: evaluation, S2)</li>
+</ul>
+<h2 id="context-window">Context window</h2>
+<p>Everything — rules + history + documents + question + answer — must fit in one token-measured window (~128k–1M+). If your knowledge doesn’t fit → Session 4 (RAG).</p>
+<h2 id="the-code-that-matters">The code that matters</h2>
+<pre class="python"><code>%pip install -U google-genai            # once
 from google import genai
 
 client = genai.Client(api_key=KEY)      # key from aistudio.google.com — keep secret
 r = client.models.generate_content(
-    model="gemini-flash-latest",        # the free tier's current Flash (July 2026 → Gemini 3.5 Flash)
-    contents="Explain tokens like I'm 12")
+    model=&quot;gemini-flash-lite-latest&quot;,   # minimal thinking by default (Sep 2026 → Gemini 3.5 Flash Lite)
+    contents=&quot;Explain tokens like I&#39;m 12&quot;)
 print(r.text)</code></pre>
-  <p>Temperature: <code>config=types.GenerateContentConfig(temperature=0.0)</code> · Count tokens: <code>client.models.count_tokens(model=..., contents=...)</code> · Pin a dated model id only if you need frozen behavior</p>
+<p>Temperature: <code>config=types.GenerateContentConfig(temperature=0.0)</code> · Count tokens: <code>client.models.count_tokens(model=..., contents=...)</code> · Pin a dated model id only if you need frozen behavior</p>
+<h2 id="free-tier-facts">Free tier facts</h2>
+<p>~10 requests/min, a few hundred a day per key (limits vary — check AI Studio) · no credit card · 429 error = slow down, retry · never share/commit your key · don’t paste private data.</p>
+<h2 id="landscape-in-one-line">Landscape in one line</h2>
+<p>Closed APIs (GPT, Gemini, Claude) vs <strong>open weights</strong> you can download (Llama, DeepSeek, Qwen, Mistral) — we run one locally in Session 5. Names change monthly; <strong>the mechanics on this page don’t.</strong></p>
+<p><strong>Reasoning models</strong> (o-series, Gemini “thinking”): the third dial — <strong>think longer, not train bigger</strong>. Hidden scratchpad ≈ 10–50× tokens per answer; never for easy questions.</p>
+<p><strong>Carry into Session 2:</strong> your 10-question expert test set (written in Lab 1). <strong>Overnight before Day 2:</strong> put 2–3 real documents (notes/PDFs) on your laptop — Day 2 you build “chat with my notes” over them.</p>
+<p><strong>Go deeper (press D on the deck):</strong> logits → softmax and what temperature divides · cross-entropy loss and perplexity · positional encoding (RoPE) and attention’s n² cost · scaling laws and Chinchilla · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT. Prose versions: Learning Guide <strong>Part 8</strong>. Papers: see Appendix D of the book — start with Attention Is All You Need (2017) and the Chinchilla scaling paper (2022); read abstract, figures, results, limitations, in that order.</p>
 
-  <h2>Free tier facts</h2>
-  <p>~10 requests/min, a few hundred a day per key (limits vary — check AI Studio) · no credit card · 429 error = slow down, retry · never share/commit your key · don't paste private data.</p>
 
-  <h2>Landscape in one line</h2>
-  <p>Closed APIs (GPT, Gemini, Claude) vs <strong>open weights</strong> you can download (Llama, DeepSeek, Qwen, Mistral) — we run one locally in Session 5. Names change monthly; <strong>the mechanics on this page don't.</strong></p>
-  <p><strong>Reasoning models</strong> (o-series, Gemini "thinking"): the third dial — <strong>think longer, not train bigger</strong>. Hidden scratchpad ≈ 10–50× tokens per answer; never for easy questions.</p>
 
-  <p><strong>Carry into Session 2:</strong> your 10-question expert test set (written in Lab 1). <strong>Overnight before Day 2:</strong> put 2–3 real documents (notes/PDFs) on your laptop — Day 2 you build "chat with my notes" over them.</p>
-
-  <p><strong>Go deeper (press D on the deck):</strong> logits &rarr; softmax and what temperature divides · cross-entropy loss and perplexity · positional encoding (RoPE) and attention's n&sup2; cost · scaling laws and Chinchilla · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT. Prose versions: Learning Guide <strong>Part 8</strong>.</p>
 
   <footer class="foot">
     <div style="margin-bottom:8px">deck: <a href="../presentations/session-1-how-machines-learned-to-talk.html">session-1-how-machines-learned-to-talk.html</a> · <a href="session-2-cheatsheet.html">Session 2 →</a></div>

@@ -1,58 +1,103 @@
-# Session 3 — AI Beyond Text · Run Sheet
+# Session 3 — Run Sheet
 
-> Deep prep: work through `session-3-prep.md` first — this file is delivery-day only.
+### AI Beyond Text · 17 slides · 2:00 total
 
-> Prep with `session-3-prep.md`. **Deck:** `session-3-ai-beyond-text.html` (17 slides, 7 interactives). Last session of Day 1 — energy management matters more than content here.
+**Delivery-day document.** The concepts are in `session-3-prep.md`; this is the clock. 
+Post-lunch, and it closes Day 1. Watch energy, and protect the overnight task on the last slide.
 
-## Timing
+Generated from the deck, so the timings are the deck's own budgets. Press **S** in the deck for presenter mode — it shows the same numbers with a live timer.
 
-| Clock | Segment | Slides |
-|---|---|---|
-| 0:00–0:06 | Recap quiz + big idea | 1–3 |
-| 0:06–0:50 | Talk: vision (4–6) → generation (7–9) → voice/video (10) → one call (11) → failures (12) → seeds (13) | 4–13 |
-| 0:50–0:56 | Recap flips + lab brief | 14–15 |
-| 0:56–1:46 | **Lab 3** | — |
-| 1:46–2:00 | Show & tell + **Day 1 close** (do not rush this) | 16 |
+---
 
-Post-lunch slot: open with your Seoul story (45 s) before the recap quiz if the room is flat.
+## Timing map
+
+| At | # | Slide | Budget | |
+|---|---|---|---|---|
+| 0:00 | 1 | AI beyond text: eyes, ears and a paintbrush | 1.5 min |  |
+| 0:02 | 2 | Still true after the break? | 2.5 min |  |
+| 0:04 | 3 | Same loop. New kinds of tokens. | 2 min |  |
+| 0:06 | 4 | How a model reads a picture | 5 min | `D` |
+| 0:11 | 5 | It doesn't just see. It reads. | 3.5 min |  |
+| 0:14 | 6 | Will it read it? Place your bets | 5 min |  |
+| 0:20 | 7 | Reading pictures is prediction. Generating them reverses noise. | 2.5 min |  |
+| 0:22 | 8 | Diffusion: a picture emerges from static | 6 min | `D` |
+| 0:28 | 9 | Image generation: magic with fine print | 3.5 min | `trim` |
+| 0:32 | 10 | Speech: useful, but not uniformly solved | 4.5 min |  |
+| 0:36 | 11 | Your mother’s voice is no longer proof of your mother. | 1.5 min | `trim` |
+| 0:38 | 12 | All of it is one API call | 4 min | `D` |
+| 0:42 | 13 | Where vision quietly fails | 5 min |  |
+| 0:46 | 14 | Vision ideas that belong to Madurai | 3.5 min |  |
+| 0:50 | 15 | Five ideas you own now | 3 min |  |
+| 0:53 | 16 | Lab 3: interrogate your photos | 53 min |  |
+| 1:46 | 17 | Day 1: you understand the machine. Day 2: you arm it. | 14 min |  |
+| 2:00 | | *end* | | |
+
+**`trim`** = the deck flags this slide **compressible** (press **S** and you will see `▸ compressible` on it) — these are the first things to shorten when you are behind, not beats you must land. **`D`** = a `<|deeper|>` panel lives on this slide; press **D** to open it.
+
+---
 
 ## Slide beats
 
-**3 · Same loop, new tokens.** THE bridge. "New eyes wired into the same brain" — everything from yesterday transfers.
+One line per slide — what you actually do. Fuller reasoning is in the prep pack.
 
-**4 · Patchify (3 min).** Click through: grid → tokens → "same attention loop." The gopuram scene is intentionally the diffusion demo's scene too — call that out later for a callback laugh.
+**0:00 · 1 · AI beyond text: eyes, ears and a paintbrush** — Post-lunch — if flat, open with the Seoul story (45s) first. ‘Same machine, new kinds of tokens.’
 
-**6 · Will it read? (4 min).** Vote each. The CAPTCHA item plants Session 6's flag: **capability ≠ permission** — say those words.
+**0:02 · 2 · Still true after the break?** — Recap quiz. Q on hallucination-in-pixels sets up today.
 
-**8 · Diffusion (5 min, centerpiece).** Drag the slider manually first (let them see static → shape), THEN hit Generate and narrate the denoise steps. Honest line is on the slide: the canvas fakes the visuals, the direction is the true idea.
+**0:04 · 3 · Same loop. New kinds of tokens.** — THE bridge: ‘new eyes wired into the same brain.’ Everything from yesterday transfers.
 
-**10 · Voice.** The family-password beat is serious — deliver it straight. "Tell your parents this weekend" gets nods; mean it.
+**0:06 · 4 · How a model reads a picture** — Patchify. Click grid→tokens→‘same attention loop.’ Hover a pill ↔ its patch. Note: this gopuram scene returns in the diffusion demo (callback). [D] deeper: ViT patches as tokens — resolution costs tokens quadratically, small text falls off a cliff, counting is structurally hard. Explains the failures on slide 13 in advance.
 
-**11 · One call.** The payoff: 4 lines. "Everything from Sessions 1–2 — prompting, format, evals — applies unchanged."
+**0:11 · 5 · It doesn't just see. It reads.** — It doesn’t just see — it READS. The KYC card is your fintech credibility beat.
 
-**12 · Vision failures.** Counting = S1's multiplication disease, in pixels. Blurred-text invention = S2's hallucination, in pixels. The course is rhyming — point it out.
+**0:14 · 6 · Will it read it? Place your bets** — GAME. Vote each. CAPTCHA item is a trick question — it plants ‘capability ≠ permission’ — say those words (Session 6 flag).
 
-**13 · Project seeds.** Read 2–3 with enthusiasm; "steal any of these for your capstone."
+**0:20 · 7 · Reading pictures is prediction. Generating them reverses noise.** — ‘Reading is prediction; making is un-destruction.’ Set up diffusion. The 4o token-by-token aside is one breath — don’t derail.
 
-## Lab hour
+**0:22 · 8 · Diffusion: a picture emerges from static** — CENTERPIECE. Drag the slider slowly left→right — narrate ‘shapes arrive before details’: silhouette ~15, sun ~30, window ~45. THEN Generate. Honest: canvas fakes the pixels, the coarse-to-fine direction is true. [D] deeper: the network predicts the noise , not the image; steps / guidance / seed; latent diffusion. Open it when someone asks what the sliders in an image tool do.
 
-- Photo upload friction is the #1 time sink: demo the folder-icon upload ONCE on the projector before releasing them.
-- Push Part B until `json.loads` passes — students stop at "looks right." The parse crash IS the lesson.
-- Part D inventions: collect the best 2 for show & tell.
-- Colab + phone photos: HEIC files from iPhones may need `pillow-heif` — fallback: screenshot the photo, upload the PNG.
+**0:28 · 9 · Image generation: magic with fine print** — Honest limits: subtle details, style ethics, deepfakes. Land the camera line slowly. ‘Plausible not verified — now in pixels.’
 
-## Show & tell + Day 1 close (1:46–2:00)
+**0:32 · 10 · Speech: useful, but not uniformly solved** — Hit the three stats first — 3 s, ~₹0, ∞. Family-password beat is serious — deliver straight. ‘Tell your parents this weekend.’
 
-Two best inventions from Part D. Then close Day 1 deliberately (slide 16): recap the four artifacts they built today, then the ONE overnight task — 2–3 real documents for tomorrow. Repeat it twice. Send a WhatsApp/group reminder tonight if you have a class group. "Sleep. Tomorrow we build for real."
+**0:36 · 11 · Your mother’s voice is no longer proof of your mother.** — Pick the fight deliberately. Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.
 
-## Anticipated questions
+**0:38 · 12 · All of it is one API call** — The payoff: 4 lines. contents=[img, question]. Run it — the highlight finds the total, then the JSON lands. ‘Prompting, format, evals — all apply unchanged.’ New beat: response_schema = guaranteed JSON — lab does both ways. [D] deeper: constrained decoding — a schema masks illegal tokens to −∞ at the decoder, so json.loads cannot fail. Pairs with lab cell 4b.
 
-**"Is diffusion also next-token prediction?"** — No, different family: iterative denoising vs autoregressive tokens. Some newer image models ARE autoregressive (token-based); both families coexist. The slide teaches diffusion because it's the dominant intuition.
+**0:42 · 13 · Where vision quietly fails** — Failure flips. Counting = S1 multiplication disease in pixels — run the dot flash, the room estimates too. Blur-invention = S2 hallucination in pixels. The course rhymes.
 
-**"Can it recognize my face / find a person from a photo?"** — Chat models refuse identification by design. Purpose-built, regulated systems do face-match (KYC) — separate world, deliberately.
+**0:46 · 14 · Vision ideas that belong to Madurai** — Read 2–3 Madurai project seeds with enthusiasm. ‘Steal any for your capstone.’
 
-**"Can I generate images in today's lab?"** — API image generation on free tier is limited/changing; today is vision-in (reading). Generation gets a mention in the capstone if someone's keen — check current free-tier availability the night before.
+**0:50 · 15 · Five ideas you own now** — Recall flips. Class says each before clicking.
 
-**"Whose art did it learn from? Is that fair?"** — Honest answer: training data included human art at internet scale; courts and legislatures are actively fighting it out; watermarking/content-credentials are emerging. Both "it's theft" and "it's like humans learning from influence" have serious defenders. Don't pretend it's settled.
+**0:53 · 16 · Lab 3: interrogate your photos** — 3 min brief, then 50 MIN LAB. Demo the folder-upload ONCE first. Push Part B until json.loads passes. Collect 2 best inventions. Links are on screen — point at them.
 
-**"Tamil handwriting?"** — Noticeably weaker than English print but improving; their Part C data tells them exactly how much. That gap is a genuine project opportunity.
+**1:46 · 17 · Day 1: you understand the machine. Day 2: you arm it.** — Show & tell + DAY 1 CLOSE — don’t rush. Recap 4 artifacts built. Name the strongest hot-take counter-argument. ONE overnight task: 2–3 real documents. Say it twice. ‘Sleep. Tomorrow we build for real.’ Links are on screen — point at them.
+
+---
+
+## The lab hour
+
+Slide 16, 53 minutes. Two-minute brief, then hands off.
+
+Your four moves, the same every lab: **circulate** (never sit), **ask before answering** ("what did you expect?"), **checkpoint sweep** at +40 minutes, **collect two artifacts** for show and tell.
+
+The five-minute rule: stuck for five minutes, ask a neighbour before asking you. Say it at the brief.
+
+---
+
+## Close
+
+Do not rush the close. ONE overnight task: bring 2–3 real documents. Say it twice.
+
+---
+
+## Fallbacks
+
+- **API down or rate-limited** — switch to the fallback model named in `fact-check.md`; if the whole provider is down, the deck's widgets run offline and the lab becomes a paper walkthrough.
+
+- **No internet** — every deck is offline-capable. Open the deck, run the widgets, and compress the lab to Parts A–C; run the remaining parts as the opening of the next block.
+
+- **Projector washes out the dot-grid** — press **F** for fullscreen; if it is still bad, the decks are legible at 100% browser zoom on a laptop passed around.
+
+- **Running long** — the prep pack's timing pressure map lists what to cut, in order. Cut from the top of that list, never from a checkpoint.

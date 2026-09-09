@@ -580,6 +580,26 @@
       "source": "/genai/LOCALIZATION.html",
       "destination": "/genai/localization.html",
       "permanent": true
+    },
+    {
+      "source": "/genai/ASSESSMENT.html",
+      "destination": "/genai/assessment-pack.html",
+      "permanent": true
+    },
+    {
+      "source": "/genai/COLLEGE-PROJECT-TRACKS.html",
+      "destination": "/genai/college-project-tracks.html",
+      "permanent": true
+    },
+    {
+      "source": "/genai/PLACEMENT-ROADMAP.html",
+      "destination": "/genai/placement-roadmap.html",
+      "permanent": true
+    },
+    {
+      "source": "/genai/llm-playground.html",
+      "destination": "/genai/how-llms-work.html",
+      "permanent": true
     }
   ],
   "headers": [

@@ -1,6 +1,6 @@
 # Generative AI: Foundations and Applications
 
-Course materials for the one-credit Generative AI course at Thiagarajar College of Engineering, Madurai (3rd/4th year BE CSE). 12 hours · 6 sessions × 2 hours · **weekend bootcamp** (Day 1: S1–S3, Day 2: S4–S6) · fully hands-on with Google Colab + Gemini free tier.
+Course materials for the one-credit Generative AI course at Thiagarajar College of Engineering, Madurai (3rd/4th year BE CSE). 12 instructional hours · 6 sessions × 2 hours · **weekend bootcamp** (Day 1: S1–S3, Day 2: S4–S6) · hands-on with Google Colab and a Gemini API free tier, subject to current account and quota availability.
 
 Instructor: **Karthikeyan NG** (TCE CSE '09) · [@intrepidkarthi](https://twitter.com/intrepidkarthi)
 
@@ -11,37 +11,66 @@ Open **`index.html`** in a browser — it's the course home page linking every s
 
 ```
 index.html                  ← course home page (links every deck + guide)
-how-llms-work.html          ← "Where does the answer live?" — 10-min interactive walk through the
-                              architecture (four tables, residual stream, Q/K/V, superposition).
-                              Deliberately does NOT overlap Session 1; prose version = LEARNING-GUIDE Part 9
-llm-playground.html         ← run the pieces yourself, live in the browser
+Lab-Requirements-GenAI-Course.docx ← what the college lab needs (network allow-list, PCs, accounts) — sent to IT;
+                              not deployed (it carries a phone number)
+how-llms-work.html          ← "We taught a machine to write Thirukkural" — the complete pipeline on one
+                              worked example: a real char-level GPT (164k params) trained on the 1,330 kurals,
+                              embedded and running in the browser. 12 chapters: tokens → embeddings → attention →
+                              prediction → pretraining → SFT → RLHF → build your own. Prose version = LEARNING-GUIDE Part 9
 course-plan.md              ← master plan: structure, capstone, bootcamp format, currency & future-proofing
 LEARNING-GUIDE.md           ← every concept in one document — read this to LEARN or refresh the whole course
                               (Parts 1–7 = the main line; Part 8 = the depth layer, mechanism-level;
                                Part 9 = the whole machine end to end)
 TEACH-THIS-YOURSELF.md      ← run the course at any scale (12 hours / one session / a 45-min talk)
+ASSESSMENT.md               ← for the department: course outcomes, a 53-question bank, CO/Bloom mapping and
+                              one model paper for the 2 / 6 / 15-mark pattern. ASSESSMENT.pdf and
+                              ASSESSMENT.docx are the same pack as documents, for the COE
+PLACEMENT-ROADMAP.md        ← twelve honest weeks from this course to an interview
+certificate.html            ← capstone rubric: what a defensible project looks like
 LOCALIZATION.md             ← swap-kit for teaching it outside Madurai (what to localize, what is load-bearing)
-ZERO-SETUP.md               ← the any-laptop, zero-cost guarantee + free-tier budget math
+COLLEGE-PROJECT-TRACKS.md   ← scoped project ideas, evidence requirements, semester progression, and rubric
+ZERO-SETUP.md               ← access, setup, privacy, and live-API fallback guidance
 TIMING.md                   ← per-slide timing for all sessions (mirrors the in-deck presenter timer)
 presentations/              ← 6 interactive HTML decks (offline; F fullscreen, O overview, S presenter mode)
+  how-a-language-model-works.html ← the Thirukkural machine as an 18-slide talk (same widgets as how-llms-work.html)
 instructor-notes/
   session-N-prep.md         ← STUDY BEFORE: concept deep-dives, pushback Q&A, demo rehearsal, facts to verify
   session-N-notes.md        ← DELIVERY DAY: minute-by-minute run sheet, slide beats, timing
+  session-N-slide-guide.md  ← per-slide "what lands / what you run" guide, generated from the deck's presenter notes
+  INSTRUCTOR-MASTERY-GUIDE.md ← one document to master the whole course one level below the slides
   lab-facilitation-guide.md ← how to run every lab hour (failure playbook, timing template)
   fact-check.md             ← every substantive claim + source + status (re-verify volatile facts before teaching)
-  all-notes-source.html     ← the single source for instructor-notes-all-sessions.pdf (reprint with headless Chrome)
-  instructor-notes-all-sessions.pdf ← 119pp: 6 prep packs + 6 run sheets + facilitation guide
+  pre-delivery-review-2026-09-08.md ← the last full review before the 19–20 Sep 2026 delivery, and what it changed
+  build scripts             ← gen-slide-guide.py (slide guides from decks) · check-slide-refs.py · gen-timing.py (TIMING.md from decks)
+                              · build-twins.py (every .html twin from its .md) · build-all-notes.py (the printable pack + PDF)
+                              · validate-live.py (run on a fresh key the week before: models, aliases, embeddings, schema, tools)
+  all-notes-source.html     ← generated by build-all-notes.py (which also prints the PDF with headless Chrome)
+  instructor-notes-all-sessions.pdf ← 95pp: mastery guide + 6 prep packs + 6 run sheets + facilitation guide
 labs/session-N/
   lab-handout.md            ← student-facing lab sheet with checkpoints + stretch goals
-  session_N_lab.ipynb       ← ready-to-run Colab notebook
+  session_N_lab.ipynb       ← ready-to-run Colab notebook (MOCK = False in Cell 1; set True for the offline path)
+labs/session-4/sample-os-notes.txt ← instructor sample document for Lab 4 (fallback when a pair's own PDF is unusable)
+labs/build-your-own-poet.ipynb ← "build your own poet": train a small language model on any text file, no code to write
+model/                      ← gpt.py + train.py that trained every model in how-llms-work.html, and what is/isn't reproducible (model/README.md)
 cheatsheets/                ← 1-page per-session reference cards for students
 assets/img/                 ← instructor photos used in the Session 1 collage
 ```
 
 Every session ships six files: **deck · prep pack · run sheet · lab handout · notebook · cheatsheet.** Repo-wide guides cover learning, teaching, timing, cost, and fact-checking.
 
+## After editing anything
+
+```
+python3 instructor-notes/gen-slide-guide.py && python3 instructor-notes/check-slide-refs.py   # decks → slide guides
+python3 instructor-notes/gen-timing.py                                                   # decks → TIMING.md
+python3 instructor-notes/build-twins.py                                                  # every .md → its .html twin
+python3 instructor-notes/build-all-notes.py                                              # printable pack + PDF
+```
+
+The `.md` files and the decks are the sources; never hand-edit a generated `.html` twin, a slide guide, or TIMING.md.
+
 ## Presenter mode
-Open any deck and press **`S`** for a live panel: a session timer, each slide's time budget, a cumulative target, a pace badge (on-time / behind / ahead), speaker notes, and the next-slide preview. It's how you keep 12 hours on schedule and protect the labs.
+Open any deck and press **`S`** for a live panel: a session timer, each slide's time budget, a cumulative target, a pace badge (on-time / behind / ahead), speaker notes, and the next-slide preview. The timer protects the labs; use the delivery contract in `TIMING.md` rather than allowing an overlong talk to consume the hands-on block.
 
 ## Instructor prep order (per session)
 
@@ -58,9 +87,9 @@ Open any deck and press **`S`** for a live panel: a session timer, each slide's 
 ## Running the labs
 
 1. Students open the session's `.ipynb` in Google Colab (File → Upload notebook, or host on GitHub + Colab badge).
-2. Each student makes their own free Gemini API key at https://aistudio.google.com (no credit card).
-3. Notebooks take the key via `getpass` — never paste keys into code cells.
-4. **Before Day 1:** replace the placeholder `tinyurl.com/tce-genai` on Session 1's lab-kit slide with your real short link, and host the materials behind it.
+2. Both partners in a pair complete the access check in `ZERO-SETUP.md` before Day 1 and, where permitted, each creates their own Gemini API key at https://aistudio.google.com. No payment is required, but account access and quota are not guaranteed. Since September 2026 the Gemini API rejects the older "Standard" keys; keys created in AI Studio now are auth keys automatically, so students are fine, but regenerate any instructor/demo key made before the change. A student who already has a Google Cloud account will not get a default project — they must import an existing project in AI Studio before "Get API key" works.
+3. Notebooks take the key via `getpass` — never paste keys into code cells. If access is blocked, use the offline path: every notebook has `MOCK = False` in Cell 1; set it to `True` and every cell runs on canned responses (Lab 4 uses a hashed bag-of-words embedding so search still works). Mock responses are prefixed `[MOCK]` so nobody mistakes them for the model.
+4. **Before Day 1:** the materials link on Session 1's lab-kit slide is https://intrepidkarthi.com/genai — run `sync-to-blog.sh` after the last edit and test the link from a student device.
 
 ## Session index
 
@@ -75,6 +104,10 @@ Open any deck and press **`S`** for a live panel: a session timer, each slide's 
 
 The capstone threads across Day 2: the RAG app (S4) gains tools (S5), then gets attacked, hardened, and demoed (S6). Every app carries an eval set from S2.
 
-## Tech (verified July 2026)
+## After the weekend
 
-`google-genai` SDK · default `gemini-flash-latest` — the free tier's current Flash (Gemini 3.5 Flash as of July 2026); the alias matters because dated ids age out (`gemini-2.5-flash` is no longer available to new accounts) — one `MODEL` variable per notebook, so pinning a dated id is a one-line change · `gemini-embedding-2` for RAG (`gemini-embedding-001` shut down July 2026) · Ollama for the local-model demo in S5. Model names and free-tier limits change often — the prep packs list exactly what to re-verify before each session.
+`COLLEGE-PROJECT-TRACKS.md` turns the session artifacts into realistic project scopes for 3rd- and final-year CSE students: codebase RAG, multimodal document QA, evaluation dashboards, department knowledge services, and a tightly scoped subject tutor. It defines the baseline, evaluation, failure, security, cost, and documentation evidence expected from a college project. The browser version is `COLLEGE-PROJECT-TRACKS.html`.
+
+## Tech (verified 8 September 2026)
+
+`google-genai` SDK · default `gemini-flash-lite-latest` — the free tier's current Flash Lite (Gemini 3.5 Flash Lite as of September 2026; no newer Lite exists). The alias matters because dated ids age out (`gemini-2.5-flash` returned "no longer available to new users" on fresh keys in July–August 2026 — observed, not documented), and *lite* matters because the `gemini-flash-latest` alias is hot-swapped per release and currently resolves to a thinking Flash model (3.7 Flash GA 13 Aug 2026, 3.8 Flash GA 2 Sep 2026 — resolve it live with `client.models.get`): a measured session on it billed 28,089 invisible reasoning tokens against 2,770 visible ones, 91% of output. On Gemini 3.x the numeric `thinking_budget` is rejected (400 INVALID_ARGUMENT); `thinking_level="minimal"` exists on 3.5/3.6 Flash but not on 3.7/3.8 Flash, so a room on that alias burns its output quota roughly an order of magnitude faster and waits longer for every answer. Flash-Lite defaults to minimal thinking and was verified for everything the labs need: vision, function calling, streaming, `response_schema`, `max_output_tokens` — one `MODEL` variable per notebook, so pinning a dated id is a one-line change. Note that `temperature`, `top_p` and `top_k` are deprecated on Gemini 3.x since 21 Jul 2026 (still accepted as of August; re-verify the Lab 1 temperature demo on the pre-class run) · `gemini-embedding-2` for RAG (GA 22 Apr 2026, $0.20 per 1M text tokens; the lab passes `output_dimensionality=768` — the default is 3072 — and wraps each chunk in `types.Content`, because a bare list of strings is aggregated into one embedding). `gemini-embedding-001` is not shut down — it is still available for text, superseded by embedding-2, earliest shutdown 14 May 2028 · Ollama for the local-model demo in S5. Prices used in the course (Sep 2026): the lab model 3.5 Flash-Lite $0.30 in / $2.50 out per 1M tokens; the S6 cost slider's $1.50 / $9.00 is `gemini-3.5-flash`, now previous-gen Flash; current 3.8 Flash is $0.75 / $3.75 (introductory through 31 Dec 2026). Model names and free-tier limits change often — the prep packs list exactly what to re-verify before each session.

@@ -16,6 +16,9 @@ const RENAMES = {
   "ZERO-SETUP.html": "zero-setup.html",
   "TIMING.html": "timing-guide.html",
   "LOCALIZATION.html": "localization.html",
+  "ASSESSMENT.html": "assessment-pack.html",
+  "COLLEGE-PROJECT-TRACKS.html": "college-project-tracks.html",
+  "PLACEMENT-ROADMAP.html": "placement-roadmap.html",
 };
 
 // Titles lead with the phrase people actually search, then keep the hook the
@@ -31,11 +34,6 @@ const META = {
     title: "How LLMs Actually Work — one sentence through the machine",
     description:
       "How large language models work, step by step: one sentence followed through tokenization, embeddings, attention, the transformer stack, prediction and training. Animated, no maths background needed.",
-  },
-  "llm-playground.html": {
-    title: "LLM Playground — see tokens, attention and prediction live",
-    description:
-      "An interactive LLM playground running in your browser: tokenize text, watch embeddings and attention, and see next-token prediction and temperature change the output. Nothing to install.",
   },
   "course-plan.html": {
     title: "Generative AI Course Syllabus — six sessions, 12 hours, with labs",
@@ -67,17 +65,34 @@ const META = {
     description:
       "Running this generative AI course outside Madurai: what to swap for your own city and cohort, what is load-bearing and must stay, and what not to touch.",
   },
+  "assessment-pack.html": {
+    title: "Generative AI Question Bank — course outcomes and a model paper",
+    description:
+      "A full assessment pack for a one-credit generative AI course: course outcomes with CO and Bloom mapping, a question bank across all three parts, and one model question paper set to the Part A / B / C pattern.",
+  },
+  "college-project-tracks.html": {
+    title: "Generative AI Project Ideas for College Students — four graded tracks",
+    description:
+      "Generative AI project tracks for 3rd- and final-year CSE students, graded from 6 hours to research-oriented: the artifacts every project must ship, a suggested rubric, and what not to pick first.",
+  },
+  "placement-roadmap.html": {
+    title: "AI Placement Roadmap — twelve weeks from this course to an offer",
+    description:
+      "An honest twelve-week path from a twelve-hour generative AI course to a placement offer: the gap named, the interview questions to prepare, realistic role targets, and what to keep off your resume.",
+  },
 };
 
 const BREADCRUMB_NAME = {
   "how-llms-work.html": "How LLMs work",
-  "llm-playground.html": "LLM playground",
   "course-plan.html": "Course syllabus",
   "learning-guide.html": "Learning guide",
   "teach-this-course.html": "Teach this course",
   "zero-setup.html": "Zero setup",
   "timing-guide.html": "Timing guide",
   "localization.html": "Localization kit",
+  "assessment-pack.html": "Assessment pack",
+  "college-project-tracks.html": "College project tracks",
+  "placement-roadmap.html": "Placement roadmap",
 };
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
@@ -234,7 +249,14 @@ export default function genaiSeo() {
                 new RegExp(`<meta property="${prop}" content="[^"]*"\\s*/?>`, "i"),
                 `<meta property="${prop}" content="${esc(val)}">`
               );
+              // Some pages ship no og: tags at all, so there is nothing to
+              // replace. Insert instead, or the page shares with no card.
               if (r) s = r;
+              else
+                s = s.replace(
+                  /<\/title>\n?/i,
+                  `</title>\n<meta property="${prop}" content="${esc(val)}">\n`
+                );
             }
             if (!/<meta name="twitter:card"/i.test(s)) {
               s = s.replace(

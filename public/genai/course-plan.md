@@ -2,7 +2,7 @@
 ### One-credit course · 3rd & 4th year BE CSE · Thiagarajar College of Engineering, Madurai
 **Instructor:** Karthikeyan Natarajan Gnanapalam (TCE CSE '09) · **Total: 12 hours · 6 sessions × 2 hours**
 
-**Delivery format: weekend bootcamp.** Two consecutive days (Fri+Sat or Sat+Sun), three sessions per day, back-to-back with 10–15 min breaks and a lunch gap. **Day 1:** S1 → S2 → S3. **Day 2:** S4 → S5 → S6. What this format changes: no homework between sessions — all prep happens inside the labs (e.g., the 10-question test set is written in Lab 1's final 10 minutes, ready for Lab 2). The single overnight gap has exactly one job: students gather 2–3 of their own documents (notes, PDFs) for Day 2's RAG build. The capstone becomes a scoped in-session sprint in S6, not a take-home.
+**Delivery format: weekend bootcamp.** Two consecutive days (Saturday and Sunday — 19–20 September 2026 at TCE), with three protected two-hour instructional blocks per day. The published timetable must include breaks and lunch **outside** those six instructional hours; do not run the blocks back-to-back without recovery time. **Day 1:** S1 → S2 → S3. **Day 2:** S4 → S5 → S6. Students complete account and access checks before Day 1; the labs handle the remaining preparation. The only overnight task is to gather 2–3 non-sensitive documents (notes or PDFs) for Day 2's RAG build. The capstone is a deliberately small in-session sprint in S6, not a take-home production project. See `TIMING.md` for the delivery contract and the fallback plan.
 
 ---
 
@@ -11,7 +11,7 @@
 1. **Every session ships something.** Students leave each session with working code in their own Colab.
 2. **Intuition before jargon.** Analogies first, terms second. The main line stays math-free — but it is not capped there (see *The depth layer* below).
 3. **Honest engineering.** Cover failure modes (hallucination, injection, cost) as first-class content, not footnotes.
-4. **Zero-install.** Google Colab + Gemini free tier. Works on any college machine with a browser.
+4. **Zero local install.** Google Colab plus the live API path, with an offline path built into every notebook: `MOCK = False` in Cell 1; set it `True` and every cell runs on canned responses prefixed `[MOCK]` (Lab 4 uses a hashed bag-of-words embedding so search still works). Works on a browser-capable college machine, subject to account, network, and provider availability.
 
 ## The depth layer
 
@@ -32,14 +32,17 @@ None of it is examinable and none of it is required. It is there so the ceiling 
 | Hook + recap of last session | 8 min |
 | Talk with live interactive demos (HTML deck) | 48 min |
 | Lab (hands-on, pair-friendly) | 50 min |
-| Show & tell + wrap + next-session teaser | 12 min |
+| Show & tell + wrap + next-session teaser | 14 min |
+| **Total** | **120 min** |
+
+Session 1 is the exception on paper: after the September 2026 cut (the tokenizer/embeddings/attention mechanism slides collapsed into one, because `how-llms-work.html` now carries them), its deck budgets 58.5 min of hook + talk, 50 min of lab and 7 min of wrap, leaving ~4.5 min of reserve for the API-key sink. Session 6 is the other exception — see below.
 
 ---
 
 ## Session 1 — How Machines Learned to Talk
 *Covers original topics: 1 (What is Generative AI?)*
 
-**Talk:** Discriminative vs generative AI, and the terminology map (AI ⊃ ML ⊃ GenAI ⊃ LLM; app ≠ model). The one idea behind everything: predict the next token. The basics most courses skip: it's NOT a database (nothing stored, nothing looked up), what a parameter is (students hand-train a 2-knob model), training vs inference ("does it learn from my chats?"), and the no-memory truth (apps re-send the whole conversation). Tokens (Tamil vs English cost). Embeddings as coordinates. Attention as "which words look at which." Pretraining → instruction tuning → RLHF. The mid-2026 landscape. What LLMs are bad at, and why. What an API call actually is (before the lab).
+**Talk — core:** discriminative vs generative AI, the terminology map (AI ⊃ ML ⊃ GenAI ⊃ LLM; app ≠ model), next-token prediction, parameters, training vs inference, tokens, embeddings, attention, model failure modes, and what an API call actually is. **Optional/depth:** pretraining → instruction tuning → RLHF, reasoning-model economics, detailed model comparisons, and the no-memory implementation detail. Protect the core mental model and the API lab if the room is behind.
 
 **Interactive deck demos:** next-token prediction game, live tokenizer visualizer, 2D embedding map, attention hover demo, temperature slider.
 
@@ -63,7 +66,7 @@ None of it is examinable and none of it is required. It is there so the ceiling 
 ## Session 3 — AI Beyond Text
 *Covers original topic: 4 (Images, Voice, Video)*
 
-**Talk:** How image generation works — the noise-to-picture intuition (diffusion). Vision models: AI that reads photos, documents, handwriting. Speech-to-text and text-to-speech. Video generation state of play (mid-2026). What multimodal means in one API call.
+**Talk — core:** multimodal input, image/document understanding, structured extraction, speech-to-text, and the limits of vision models. **Optional/depth:** diffusion internals, image generation, text-to-speech, and the mid-2026 video landscape. These topics are useful context but should not displace the document-extraction lab.
 
 **Lab 3:** Multimodal Colab: upload a photo → ask questions about it. Extract structured data from a photographed document/receipt. Stretch: voice-note transcription → summary pipeline.
 
@@ -100,9 +103,9 @@ None of it is examinable and none of it is required. It is there so the ceiling 
 
 **Lab 6, red-team round (~30 min):** students attack each other's Session 4 RAG apps with injection payloads, then patch the holes.
 
-**Capstone sprint + demos (~50 min):** in pairs, extend the app you already built today (S4 RAG app or S5 assistant) with **one more course technique** — e.g., add tool use to your RAG app, add an eval set to your assistant, or bolt vision onto either. Then 2–3 minute demos: what it does, one failure you found, one fix you made. (S6 deviates from the standard session timing: talk is compressed to ~30 min to make room.)
+**Capstone sprint + demos (~50 min):** in pairs, extend the app you already built today (S4 RAG app or S5 assistant) with **one more course technique** — e.g., add tool use to your RAG app, add an eval set to your assistant, or bolt vision onto either. Then 2–3 minute demos: what it does, one failure you found, one fix you made. (S6 deviates from the standard session timing: the talk is compressed to ~40 min before the capstone block, which then runs as ~30 min of red-teaming plus ~35 min of demos and a short close.)
 
-**Student leaves with:** a security mindset, a shipped demo, and a portfolio project.
+**Student leaves with:** a security mindset, a working prototype, and a credible starting point for a portfolio or final-year project.
 
 ---
 
@@ -113,6 +116,16 @@ Seeded end of Day 1 ("start thinking about what you'd build"), data gathered ove
 **Grading suggestion (100):** Working demo 40 · Eval set with honest numbers 25 · Failure analysis 15 · Technique fit (right tool for the job) 10 · Presentation clarity 10.
 
 **Optional stretch:** students who want a bigger portfolio piece can keep building after the weekend and submit a video demo within a week — grade the in-session version, bonus for the polished one.
+
+## College project bridge
+
+The weekend is a foundation and prototype sprint, not a complete final-year project. After the course, students should choose one bounded track from `COLLEGE-PROJECT-TRACKS.md`: study-notes RAG, codebase RAG, multimodal document QA, an evaluation/observability dashboard, a department knowledge service, or a subject tutor. Each track requires a user, permitted data source, baseline, labelled evaluation set, failure report, cost/latency note, and safe demo. The browser version is `COLLEGE-PROJECT-TRACKS.html`.
+
+**Recommended extensions rather than extra weekend lectures:**
+
+- Use the external AI Engineering from Scratch curriculum selectively for classical ML evaluation, self-attention, tokenizer construction, context engineering, tool protocols, and observability.
+- Add these as pre-reading or post-course tracks, not as additional required material in the 12-hour schedule.
+- Students should build a small version first, compare it with the production library/API, then ship a measured artifact.
 
 ---
 
@@ -127,11 +140,11 @@ Seeded end of Day 1 ("start thinking about what you'd build"), data gathered ove
 | Ready-to-run Colab notebook | `labs/session-N/session_N_lab.ipynb` |
 | 1-page cheatsheet | `cheatsheets/session-N-cheatsheet.md` |
 
-## Tech decisions (July 2026)
+## Tech decisions (verified 8 September 2026)
 
 - **SDK:** `google-genai` (`from google import genai`) — the current unified SDK; old `google-generativeai` is deprecated.
-- **Default model:** `gemini-flash-latest` — the alias for the free tier's current Flash (Gemini 3.5 Flash as of July 2026). The alias is deliberate: dated ids age out — `gemini-2.5-flash` is no longer available to *new* accounts while older accounts still have it, and the alias serves both, so a mixed room just works. Typical free-tier limits: ~10 requests/min, a few hundred/day per key — ample when each student has their own key; Google no longer publishes fixed per-model numbers, so confirm your project's live limits in AI Studio. Notebooks use a single `MODEL` variable; pin a dated id only if you need frozen behavior. Check current list: https://ai.google.dev/gemini-api/docs/models
-- **Embeddings (S4):** Gemini embedding model via same SDK.
+- **Default model:** `gemini-flash-lite-latest` — the alias for the free tier's current Flash Lite (Gemini 3.5 Flash Lite as of September 2026; no newer Lite exists — resolve it live the week before and record the result in `fact-check.md`). The alias is deliberate: dated ids age out — `gemini-2.5-flash` returned "no longer available to new users" on fresh keys in July–August 2026 (observed on fresh keys; not in Google's docs, no shutdown date published) while older accounts still had it, and the alias serves both, so a mixed room just works. Lite is deliberate too: the `gemini-flash-latest` alias is hot-swapped on every release and currently resolves to a thinking Flash model (3.7 Flash GA 13 Aug 2026, 3.8 Flash GA 2 Sep 2026 — check with `client.models.get`). One measured session on it billed 28,089 invisible reasoning tokens against 2,770 visible ones, 91% of the output charged. On Gemini 3.x the numeric `thinking_budget` is rejected (400 INVALID_ARGUMENT); `thinking_level="minimal"` exists on 3.5/3.6 Flash but not on 3.7/3.8 Flash, so on a free-tier key that alias burns the output quota roughly an order of magnitude faster and answers arrive slower. Flash-Lite defaults to minimal thinking and was verified for vision, function calling, streaming, `response_schema` and `max_output_tokens`, which covers every lab. `temperature`, `top_p` and `top_k` are deprecated on Gemini 3.x since 21 Jul 2026 (still accepted as of August — re-verify the Lab 1 temperature demo on the pre-class run). An alias can move under you like that inside a month, which is exactly why the course pins the lite alias and re-verifies it on a real key before teaching. Typical free-tier limits: ~10 requests/min, a few hundred/day per key — ample when each student has their own key; Google no longer publishes fixed per-model numbers, so confirm your project's live limits in AI Studio. Since September 2026 the API rejects the older "Standard" keys: new AI Studio keys are auth keys automatically, but regenerate instructor/demo keys created before the change, and a student with an existing Google Cloud account must import a project in AI Studio before "Get API key" works. Notebooks use a single `MODEL` variable; pin a dated id only if you need frozen behavior. Check current list: https://ai.google.dev/gemini-api/docs/models
+- **Embeddings (S4):** `gemini-embedding-2` via the same SDK (GA 22 Apr 2026; $0.20 per 1M text tokens). The lab passes `output_dimensionality=768` (the default is 3072) and wraps each chunk in `types.Content` — a bare list of strings is aggregated into one embedding. `gemini-embedding-001` is not shut down (still available for text; earliest shutdown 14 May 2028), it is simply superseded.
 - **Local models (S5):** Ollama demo on instructor laptop (pre-pull a small model; don't rely on college bandwidth).
 
 ## Currency, alignment & future-proofing
@@ -147,6 +160,6 @@ This course's spine — LLM fundamentals → prompting → evaluation → RAG �
 ## Risk / fallback plan
 
 - **College Wi-Fi dies:** decks are fully offline (single HTML files, no CDN). Keep one mobile hotspot; labs degrade to instructor-driven demo + students run at home.
-- **AI Studio blocked / sign-up friction:** carry 5 spare API keys on paper for stuck students; keys are free.
-- **Rate limits (429):** notebooks include retry-with-backoff cell; students each use their own key.
+- **AI Studio blocked / sign-up friction:** set `MOCK = True` in Cell 1 of the notebook — every cell then runs on canned `[MOCK]` responses (Lab 4's search still works on a hashed bag-of-words embedding) — or run a controlled demonstration; do not distribute shared keys or ask students to create extra accounts.
+- **Rate limits (429):** every notebook's `ask()` retries with backoff, but retries are bounded; when a quota is exhausted, flip the pair to `MOCK = True` instead of repeatedly rerunning.
 - **Slow machines:** everything runs in Colab's cloud — local specs don't matter. See `ZERO-SETUP.md` for the full any-laptop/zero-cost guarantee.

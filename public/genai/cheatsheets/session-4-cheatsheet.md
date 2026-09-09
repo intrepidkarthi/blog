@@ -41,4 +41,4 @@ Vocabulary gap → rephrase query, k=5 · answer split across chunks → overlap
 
 **Carry forward:** SAVE the notebook — S5 adds tools to it, S6 attacks + hardens it, then you demo it.
 
-**Go deeper (press D on the deck):** pooling, normalization and query-vs-document task types · chunking upgrades and filter-before-rank · rerank (bi-encoder vs cross-encoder), hybrid BM25 + semantic, query rewriting · recall@k / MRR / faithfulness — two scores, never one. Prose versions: Learning Guide **Part 8**.
+**Go deeper (press D on the deck):** pooling, normalization and query-vs-document task types · chunking upgrades and filter-before-rank · rerank (bi-encoder vs cross-encoder), hybrid BM25 + semantic, query rewriting · recall@k / MRR / faithfulness — two scores, never one. Prose versions: Learning Guide **Part 8**. Papers worth reading: RAG (2020) · lost-in-the-middle (2023).

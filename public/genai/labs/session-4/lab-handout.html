@@ -48,37 +48,35 @@
 <div class="wrap">
   <nav class="crumbs"><a href="../../index.html">← Course home</a></nav>
   <div class="kicker">Lab 4 · 50 minutes</div>
-  <h1>Chat With YOUR Notes</h1>
-  <p class="lead">Session 4 · Embeddings + RAG · TCE · 50 min · pairs · The weekend's main build.</p>
+  <h1>Lab 4 — Chat With YOUR Notes</h1>
+  <p class="lead"><strong>Session 4 · Embeddings + RAG · TCE</strong> · 50 min · pairs · The weekend’s main build</p>
 
-  <blockquote><p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p></blockquote>
+<blockquote>
+<p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p>
+</blockquote>
+<p><strong>You need:</strong> the 2–3 non-sensitive documents you gathered last night (PDF/txt). Use a short, text-based document or one chapter. Forgot? Use the instructor’s sample document <code>sample-os-notes.txt</code> (OS lecture notes + an <em>illustrative</em> page of academic regulations — Cell 2 falls back to it automatically, and Cells 5–7 are pre-filled with queries that work on it; see <code>sample-queries.md</code>). Do not upload private marks, IDs, passwords, or confidential college records.</p>
+<h2 id="part-a--ingest-12-min">Part A — Ingest (12 min)</h2>
+<p>Load your document → chunk (paragraph + overlap) → embed → numpy vector store. <strong>Read the Cell 2 sanity print</strong> — if extraction is empty, suspiciously short, or visibly garbled, stop and switch to the instructor sample now (<code>FILENAME = SAMPLE</code>), not at minute 40. Cell 1 mounts your Google Drive — accept the prompt: Cell 4 saves your vector store there so Labs 5 and 6 can reload it after the break. The notebook indexes only the configured chunk limit; a score applies only to the content actually indexed.</p>
+<p>✓ <strong>Checkpoint 1:</strong> chunk count + vector-store shape printed.</p>
+<h2 id="part-b--search-sanity-8-min">Part B — Search sanity (8 min)</h2>
+<p>Three test queries about your material (the pre-filled ones are for the sample document — replace them). Eyeball the top chunks: right topic? complete thoughts? If not, tune chunk <code>target</code> size and re-run Cells 3–4.</p>
+<p>✓ <strong>Checkpoint 2:</strong> three sane searches shown.</p>
+<h2 id="part-c--full-rag-15-min">Part C — Full RAG (15 min)</h2>
+<p>Grounded template (ONLY the context · cite chunks · “I don’t know” escape hatch) → ask 5 real questions about your material. Use <code>show_chunks=True</code> — watching retrieval is how you debug RAG.</p>
+<h2 id="part-d--break-it-honestly-10-min">Part D — Break it honestly (10 min)</h2>
+<ol type="1">
+<li>Ask something <strong>not in your docs</strong> → must say “I don’t know,” not invent.</li>
+<li>Ask something split across two sections → catch the half-truth.</li>
+</ol>
+<p>✓ <strong>Checkpoint 3:</strong> one honest failure + your fix (or why it’s genuinely hard).</p>
+<h2 id="stretch">Stretch</h2>
+<p>RAG eval — 5 Q + expected through your S2 harness (this becomes 25% of your capstone score — aim for 10 examples, not 5) · k=1 vs 3 vs 5 · add your second document · print similarity scores in answers.</p>
+<p><strong>Going deeper (S3, S4 in the notebook).</strong> <em>Rerank</em> — retrieve 20, let a model re-order them, keep 4: the biggest RAG upgrade after chunking, in ten lines. <em>Two scores, never one</em> — label which chunk should win, then measure <code>recall@k</code> (your ceiling on accuracy) and <code>MRR</code> (did it arrive near the top) separately from answer quality. High recall with low MRR is the exact signature that says <em>add the reranker</em>. Both are unpacked in the deck’s <code>&lt;|deeper|&gt;</code> panels — press <strong>D</strong>.</p>
+<h2 id="capstone-note">Capstone note</h2>
+<p><strong>Save this notebook</strong> — and note that File → Save keeps your code, not your uploaded PDF or embeddings: Cell 4 writes <code>chunk_vecs.npy</code> + <code>chunks.json</code> to your Drive (<code>MyDrive/genai</code>), and Labs 5 and 6 have a reload cell that reads them back instead of re-embedding. It IS your capstone foundation: S5 (after lunch) bolts tools onto it; S6 attacks and hardens it, then you demo. Choose documents you actually care about — the demo is only as interesting as the data.</p>
 
-  <p><strong>You need:</strong> the 2–3 documents you gathered last night (PDF/txt). Forgot? Grab any lecture PDF from your class group right now — 2 minutes.</p>
 
-  <h2>Part A — Ingest (12 min)</h2>
-  <p>Load your document → chunk (paragraph + overlap) → embed → numpy vector store. <strong>Read the Cell 2 sanity print</strong> — if the PDF extracted garbage, swap documents now, not at minute 40.</p>
-  <blockquote><p>✓ <strong>Checkpoint 1:</strong> chunk count + vector-store shape printed.</p></blockquote>
 
-  <h2>Part B — Search sanity (8 min)</h2>
-  <p>Three test queries about your material. Eyeball the top chunks: right topic? complete thoughts? If not, tune chunk <code>target</code> size and re-run Cells 3–4.</p>
-  <blockquote><p>✓ <strong>Checkpoint 2:</strong> three sane searches shown.</p></blockquote>
-
-  <h2>Part C — Full RAG (15 min)</h2>
-  <p>Grounded template (ONLY the context · cite chunks · "I don't know" escape hatch) → ask 5 real questions about your material. Use <code>show_chunks=True</code> — watching retrieval is how you debug RAG.</p>
-
-  <h2>Part D — Break it honestly (10 min)</h2>
-  <ol>
-    <li>Ask something <strong>not in your docs</strong> → must say "I don't know," not invent.</li>
-    <li>Ask something split across two sections → catch the half-truth.</li>
-  </ol>
-  <blockquote><p>✓ <strong>Checkpoint 3:</strong> one honest failure + your fix (or why it's genuinely hard).</p></blockquote>
-
-  <h2>Stretch</h2>
-  <p>RAG eval — 5 Q + expected through your S2 harness · <code>k=1</code> vs <code>3</code> vs <code>5</code> · add your second document · print similarity scores in answers.</p>
-  <p><strong>Going deeper (S3, S4 in the notebook).</strong> <em>Rerank</em> — retrieve 20, let a model re-order them, keep 4: the biggest RAG upgrade after chunking, in ten lines. <em>Two scores, never one</em> — label which chunk should win, then measure <code>recall@k</code> (your ceiling on accuracy) and <code>MRR</code> (did it arrive near the top) separately from answer quality. High recall with low MRR is the exact signature that says <em>add the reranker</em>. Both are unpacked in the deck's <code>&lt;|deeper|&gt;</code> panels — press <strong>D</strong>.</p>
-
-  <h2>Capstone note</h2>
-  <p><strong>Save this notebook.</strong> It IS your capstone foundation: S5 (after lunch) bolts tools onto it; S6 attacks and hardens it, then you demo. Choose documents you actually care about — the demo is only as interesting as the data.</p>
 
   <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="../../index.html">course home</a> · free to use, fork, localize and teach</footer>
 </div>

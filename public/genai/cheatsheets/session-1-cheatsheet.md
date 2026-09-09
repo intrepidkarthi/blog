@@ -43,7 +43,7 @@ from google import genai
 
 client = genai.Client(api_key=KEY)      # key from aistudio.google.com — keep secret
 r = client.models.generate_content(
-    model="gemini-flash-latest",        # the free tier's current Flash (July 2026 → Gemini 3.5 Flash)
+    model="gemini-flash-lite-latest",   # minimal thinking by default (Sep 2026 → Gemini 3.5 Flash Lite)
     contents="Explain tokens like I'm 12")
 print(r.text)
 ```
@@ -60,4 +60,4 @@ Closed APIs (GPT, Gemini, Claude) vs **open weights** you can download (Llama, D
 
 **Carry into Session 2:** your 10-question expert test set (written in Lab 1). **Overnight before Day 2:** put 2–3 real documents (notes/PDFs) on your laptop — Day 2 you build "chat with my notes" over them.
 
-**Go deeper (press D on the deck):** logits → softmax and what temperature divides · cross-entropy loss and perplexity · positional encoding (RoPE) and attention's n² cost · scaling laws and Chinchilla · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT. Prose versions: Learning Guide **Part 8**.
+**Go deeper (press D on the deck):** logits → softmax and what temperature divides · cross-entropy loss and perplexity · positional encoding (RoPE) and attention's n² cost · scaling laws and Chinchilla · MoE, distillation, quantization · the KV cache, prefill vs decode, TTFT. Prose versions: Learning Guide **Part 8**. Papers: see Appendix D of the book — start with Attention Is All You Need (2017) and the Chinchilla scaling paper (2022); read abstract, figures, results, limitations, in that order.

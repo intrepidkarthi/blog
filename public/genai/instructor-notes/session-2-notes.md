@@ -1,64 +1,115 @@
-# Session 2 — Talking to AI, and Catching Its Lies · Run Sheet
+# Session 2 — Run Sheet
 
-> Deep prep: work through `session-2-prep.md` first — this file is delivery-day only.
+### Talking to AI, and Catching Its Lies · 21 slides · 1:42 total
 
-> Prep with `session-2-prep.md` first. **Deck:** `session-2-talking-to-ai-and-catching-its-lies.html` (21 slides, 9 interactives)
+**Delivery-day document.** The concepts are in `session-2-prep.md`; this is the clock. 
+The discipline session. If you deliver only one thing well this weekend, make it slides 13–16.
 
-## Timing
+Generated from the deck, so the timings are the deck's own budgets. Press **S** in the deck for presenter mode — it shows the same numbers with a live timer.
 
-| Clock | Segment | Slides |
-|---|---|---|
-| 0:00–0:06 | Recap quiz + the deal | 1–3 |
-| 0:06–0:52 | Talk: prompting (4–9), the turn to lies (10–12), evaluation (13–17) | 4–27 |
-| 0:52–0:58 | Recap flips + lab brief | 18–19 |
-| 0:58–1:48 | **Lab 2** | — |
-| 1:48–2:00 | Show & tell + break teaser | 20 |
+---
 
-Running late? Compress 8 (JSON — one click, one line) and 16 (demo trap — say the headline). Never cut: makeover, spot-the-lie, eval run, arena.
+## Timing map
+
+| At | # | Slide | Budget | |
+|---|---|---|---|---|
+| 0:00 | 1 | Talking to AI, and catching its lies | 1 min |  |
+| 0:01 | 2 | Still true after the break? | 2 min |  |
+| 0:03 | 3 | Two artifacts in two hours | 1.5 min |  |
+| 0:04 | 4 | The prompt makeover: five upgrades | 4 min |  |
+| 0:08 | 5 | Anatomy of a prompt: six switches | 2.5 min |  |
+| 0:11 | 6 | Few-shot: show, don't tell | 2.5 min |  |
+| 0:14 | 7 | Step-by-step beats straight-to-answer | 2.5 min |  |
+| 0:16 | 8 | Demand a format, or parse chaos forever | 2 min | `trim` |
+| 0:18 | 9 | The four classic prompt crimes | 3 min |  |
+| 0:21 | 10 | Your polished prompt still lies beautifully. | 2 min |  |
+| 0:23 | 11 | One of these is a confident lie | 4.5 min |  |
+| 0:28 | 12 | Hallucination is an expected failure mode. That does not make it acceptable. | 1.5 min | `trim` |
+| 0:29 | 13 | "How do you know it's right?" You measure. | 2 min |  |
+| 0:31 | 14 | Watch an eval run | 3.5 min |  |
+| 0:34 | 15 | Same answer, three verdicts | 3 min | `D` |
+| 0:38 | 16 | Prompt A vs Prompt B: the arena | 3.5 min | `D` |
+| 0:41 | 17 | "It worked when I tried it" is not evidence. | 1.5 min | `trim` |
+| 0:42 | 18 | Eval-driven development: the loop | 2.5 min |  |
+| 0:45 | 19 | Six ideas you own now | 2.5 min |  |
+| 0:48 | 20 | Lab 2: the lie detector | 52 min |  |
+| 1:40 | 21 | You can now prove whether AI is right. | 3 min |  |
+| 1:42 | | *end* | | |
+
+**`trim`** = the deck flags this slide **compressible** (press **S** and you will see `▸ compressible` on it) — these are the first things to shorten when you are behind, not beats you must land. **`D`** = a `<|deeper|>` panel lives on this slide; press **D** to open it.
+
+---
 
 ## Slide beats
 
-**2 · Recap quiz.** Fast energy opener. Wrong answers = re-teach in one line, don't lecture.
+One line per slide — what you actually do. Fuller reasoning is in the prep pack.
 
-**4 · Makeover (6 min, centerpiece #1).** Click through v0→v5 slowly. At each step ask "what's still wrong with this?" BEFORE clicking Improve. v5's constraint line is the punchline — "same output, but now it can't invent awards. Remember that for slide 11."
+**0:00 · 1 · Talking to AI, and catching its lies** — ‘You can now call the model. But your asks are wishes, not instructions. Today: make them instructions, and catch the lies.’
 
-**5 · Builder.** Toggle parts on/off live. Point: task mandatory, rest are dials, over-stuffing dilutes attention.
+**0:01 · 2 · Still true after the break?** — Recap quiz. Fast energy. Wrong answers = one-line re-teach, don’t lecture.
 
-**6–8 · Three quick demos.** Zero vs few-shot (the Tanglish review lands well); direct vs step-by-step (₹472 — let them calculate first on paper, 30 seconds, THEN reveal both answers); format (the "ONLY" word).
+**0:03 · 3 · Two artifacts in two hours** — Two artifacts: prompt playbook + eval harness. ‘This one artifact is the difference between using AI and engineering it.’
 
-**9 · Prompt crimes.** Class guesses each fix before the click.
+**0:04 · 4 · The prompt makeover: five upgrades** — CENTERPIECE. Makeover v0→v5. Before each Improve click ask ‘what’s still wrong?’ v5 constraint = the punchline (can’t invent awards). Quality meter climbs 10%→85%.
 
-**10 · The turn.** Read the lawyer + Air Canada stories straight — real cases, real consequences. Room goes quiet here; let it.
+**0:08 · 5 · Anatomy of a prompt: six switches** — Toggle prompt parts live — watch the ~token count climb. Task mandatory, rest are dials; over-stuffing dilutes attention.
 
-**11 · Spot the lie (4 min, centerpiece #2).** Hands up for A/B/C before reveal. Punchline: the lie is welded to a true fact (1957 is real, the award isn't). "No amount of squinting detects it. Only checking does."
+**0:11 · 6 · Few-shot: show, don't tell** — Zero vs few-shot. The Tanglish review lands well. ‘2–5 examples pin format + edge cases — the model imitates.’
 
-**13 · Eval run.** Run it, then IMMEDIATELY "Run again" — score changes 7→8. "Which is the true score? Neither. T=0, three runs, average — that's the discipline."
+**0:14 · 7 · Step-by-step beats straight-to-answer** — Let class compute ₹472 on paper FIRST (30s), then reveal both. Direct = confident wrong; steps = auditable.
 
-**14 · Scorers.** Exact-match failing a CORRECT answer is the aha — "your scorer can be the liar too."
+**0:16 · 8 · Demand a format, or parse chaos forever** — The word ONLY does real work. ‘Apps don’t read prose — your 2 a.m. parser dies without it.’
 
-**15 · Arena.** B wins 4-2 but Q5 beats both. "The loop never ends; it converges."
+**0:18 · 9 · The four classic prompt crimes** — Crime cards. Class guesses each fix before the click. Kitchen-sink previews S5 workflows.
 
-**19 · Lab brief.** Emphasize: expected strings SHORT; diagnose every ✗; documentation is the deliverable.
+**0:21 · 10 · Your polished prompt still lies beautifully.** — The turn. Read the lawyer + Air Canada cases straight. Room goes quiet — let it. ‘Not bad prompts. Unmeasured ones.’ Point at the receipts line: ‘Unlike the lawyer, I checked mine.’
 
-## Lab hour
+**0:23 · 11 · One of these is a confident lie** — GAME. 3 rounds, vote A/B/C before each reveal. Lies: C (award invented) · B (India LOST that match) · A (Nobel was for photoelectric, not relativity). Tone-o-meter: identical bars every round. ‘Tone tells you nothing. Only checking does.’
 
-- Common failure #1: `expected` too strict ("A. R. Rahman composed the music in 1992") → coach to key-fact-only.
-- Common failure #2: test sets the model aces 10/10 → "your test is too easy — add obscure questions until it bleeds. A test that can't fail teaches nothing."
-- Common failure #3: students change 3 things between runs → one change at a time.
-- Checkpoint sweep at 1:30. Collect 2–3 best "interesting failures" for show & tell.
+**0:28 · 12 · Hallucination is an expected failure mode. That does not make it acceptable.** — Pick the fight deliberately. Read it once, slowly, then be quiet for 3 seconds. Invite disagreement — take one counter-argument now, park the rest for the break.
 
-## Show & tell (1:48–2:00)
+**0:29 · 13 · "How do you know it's right?" You measure.** — Test set + scorer + score = one honest number. Dots fill to ‘7/10 — argument over.’ Then land the line: ‘A prompt without an eval is a superstition.’
 
-Best prompt improvement (before/after read aloud) + best caught hallucination. Ask each presenter: "was it the model, the scorer, or the question?" Close: "You can now PROVE whether AI is right. Next: it gets eyes and ears. Have photos on your phone."
+**0:31 · 14 · Watch an eval run** — Run eval, then IMMEDIATELY Run-again — score 7→8. ‘Which is true? Neither. T=0, ×3, average.’ Read failures.
 
-## Anticipated questions
+**0:34 · 15 · Same answer, three verdicts** — Exact-match FAILS a correct answer — the aha. ‘Your scorer can be the liar too.’ Contains = today’s lab scorer. [D] deeper: precision / recall / F1, and the AI judge’s position + verbosity bias (fix: swap the order and run twice). Open it if anyone proposes an LLM judge.
 
-**"Is prompt engineering a real job / will it last?"** — The job title fades; the skill compounds. As models improve, crude tricks die but structured context (role/facts/format/constraints) IS how you program these systems. It's becoming everyone's job, like Googling was.
+**0:38 · 16 · Prompt A vs Prompt B: the arena** — Arena. Fight. B wins 4–2 but Q5 beats both. ‘The loop never ends; it converges. Then grow the test set.’ [D] deeper: why 5 questions cannot settle A vs B: the ±1/√n rule, paired comparison, and separating model variance from test-set variance.
 
-**"Why not just use a reasoning model instead of step-by-step prompts?"** — Reasoning models internalize the technique — you're seeing it graduate into the product. You still need visible steps when you must AUDIT the logic (finance, medicine, grading).
+**0:41 · 17 · "It worked when I tried it" is not evidence.** — ‘It worked when I tried it’ = not evidence. Demo = best case; eval = expected case.
 
-**"10 questions — is that statistically valid?"** — No, and don't pretend it is. It's a directional harness that teaches the workflow. Real teams run hundreds to thousands. Yours grows next session onwards.
+**0:42 · 18 · Eval-driven development: the loop** — The loop = the job. Prompt→eval→read failures→fix ONE thing→re-run. The pipeline cycles on its own — let it. ‘Failures are the syllabus.’
 
-**"Can the AI judge be trusted?"** — Partially. Known biases: prefers longer answers, its own phrasing, first position. Use it for paraphrase-tolerant checks, spot-audit it manually, never let it be the only signal.
+**0:45 · 19 · Six ideas you own now** — Recall flips. Class says each before clicking. Six ideas: anatomy, few-shot, step-by-step, hallucination, test set, the loop.
 
-**"Does 'please' / politeness change answers?"** — Marginal at best; specificity beats manners every time. Fun test for their eval harness, actually.
+**0:48 · 20 · Lab 2: the lie detector** — 2 min brief, then 50 MIN LAB. Press L — the 50:00 countdown paces the room. Expected strings SHORT; diagnose every ✗; documentation is the deliverable — three iterations documented well beats five documented badly. A/B on their 10 Qs. Links are on screen — point at them.
+
+**1:40 · 21 · You can now prove whether AI is right.** — Show & tell + break. Best improvement + best caught lie + name the strongest hot-take counter-argument. ‘Model, scorer, or question?’ Next: AI gets eyes — have photos. Links are on screen — point at them.
+
+---
+
+## The lab hour
+
+Slide 20, 52 minutes. Two-minute brief, then hands off.
+
+Your four moves, the same every lab: **circulate** (never sit), **ask before answering** ("what did you expect?"), **checkpoint sweep** at +40 minutes, **collect two artifacts** for show and tell.
+
+The five-minute rule: stuck for five minutes, ask a neighbour before asking you. Say it at the brief.
+
+---
+
+## Close
+
+Ask of every failure: model, scorer, or question? Tell them to bring photos.
+
+---
+
+## Fallbacks
+
+- **API down or rate-limited** — switch to the fallback model named in `fact-check.md`; if the whole provider is down, the deck's widgets run offline and the lab becomes a paper walkthrough.
+
+- **No internet** — every deck is offline-capable. Open the deck, run the widgets, and compress the lab to Parts A–C; run the remaining parts as the opening of the next block.
+
+- **Projector washes out the dot-grid** — press **F** for fullscreen; if it is still bad, the decks are legible at 100% browser zoom on a laptop passed around.
+
+- **Running long** — the prep pack's timing pressure map lists what to cut, in order. Cut from the top of that list, never from a checkpoint.

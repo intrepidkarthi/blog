@@ -9,14 +9,12 @@
 def calculator(expression: str) -> float:
     """Evaluate a math expression exactly. Use for ANY arithmetic;
     never compute numbers yourself."""          # docstring = instruction to the model
-    if not set(expression) <= set("0123456789+-*/(). "):
-        raise ValueError("unsafe")               # validate BEFORE running
-    return eval(expression)
+    return safe_eval(expression)   # AST allow-list — see notebook Cell 2; never eval() model output
 
 config = types.GenerateContentConfig(tools=[calculator])   # hand over the menu
 ```
 
-The model reads only **name + docstring + type hints** — vague docstring = wrong tool, bad args. The agent loop: `while it_wants_a_tool: run it (your code), feed result back`.
+The model reads only **name + docstring + type hints** — vague docstring = wrong tool, bad args. The agent loop: `while it_wants_a_tool and steps < MAX_STEPS: run it (your code), feed result back` — the step cap and the tool allow-list are not optional.
 **MCP (Model Context Protocol)** = USB-C for tools: one standard plug, so N models + M tools instead of N×M custom adapters.
 
 ## Five failure modes → fixes
@@ -32,8 +30,8 @@ Wrong tool (sharpen docstrings, "answer directly if no tool needed") · bad args
 **Prompt → Few-shot → RAG → Tools → Fine-tune.** Climb only when your **eval** proves the current rung failed. Interview line: **"Fine-tuning teaches behaviour; RAG provides knowledge."** Fine-tune is the last resort, never the first, and never for facts.
 
 ## API vs local (a trade, not a religion)
-Local/open weights (Ollama: `ollama run gemma4:e4b`) win on **privacy** (data never leaves), **cost at scale** (hardware once), **offline/edge**. Frontier APIs win on raw capability and zero-ops upgrades. Real systems: **hybrid** — API for the hard 10%, small/local for the routine 90%.
+Local/open weights (Ollama: `ollama run gemma4:e4b`) win on **privacy** (data never leaves), **cost at scale** (hardware once), **offline/edge**. Frontier APIs win on raw capability and zero-ops upgrades. Real systems: **hybrid** — API for the hard 10%, small/local for the routine 90%. No 8 GB machine or admin rights? Run the same model in a free Colab runtime — same lesson, nothing installed.
 
 **Capstone:** RAG (knowledge) + tools (hands) + evals (judge) = your app. Save the notebook — the finale attacks it, you harden it, you demo.
 
-**Go deeper (press D on the deck):** the JSON schema and message roles the SDK actually sends · the loop guard (max steps, allow-list, validated args) and context growth · trajectory eval: tool-choice accuracy, step count, wasted calls · params × bits ÷ 8, and why memory bandwidth sets tokens/sec. Prose versions: Learning Guide **Part 8**.
+**Go deeper (press D on the deck):** the JSON schema and message roles the SDK actually sends · the loop guard (max steps, allow-list, validated args) and context growth · trajectory eval: tool-choice accuracy, step count, wasted calls · params × bits ÷ 8, and why memory bandwidth sets tokens/sec. Papers worth reading: ReAct (2022) · "Lost in the Middle" (Liu et al., 2023). Prose versions: Learning Guide **Part 8**.

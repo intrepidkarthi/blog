@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>College Project Tracks — Generative AI · Foundations &amp; Applications</title>
+<meta name="description" content="Applied engineering and research directions for 3rd- and final-year CSE students">
+<meta property="og:title" content="College Project Tracks">
+<meta property="og:description" content="Applied engineering and research directions for 3rd- and final-year CSE students">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315181e'/%3E%3Ctext x='50' y='71' font-size='58' font-weight='800' font-family='ui-monospace,monospace' fill='%23fff' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#FFFFFF;--ink:#14171F;--body:#3A404C;--muted:#667080;--faint:#98A0AD;--line:#E8EAEF;--linedark:#C5CAD4;
+    --accent:#1D3AD1;--accentpale:#E3E9FF;--panel:#F4F6F9;
+    --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:var(--font);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:5vh 24px 12vh}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px}
+  .crumbs a{color:var(--muted);text-decoration:none;font-weight:600}
+  .crumbs a:hover{color:var(--accent)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.7rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);margin-bottom:10px}
+  .lead{font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+  h2{font-size:1.28rem;font-weight:750;letter-spacing:-.015em;color:var(--ink);margin:40px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+  h3{font-size:1.02rem;font-weight:700;color:var(--ink);margin:26px 0 8px}
+  p{margin:10px 0}
+  b,strong{color:var(--ink);font-weight:650}
+  a{color:var(--accent)}
+  ul,ol{padding-left:1.4em;margin:10px 0}
+  li{margin:5px 0}
+  code{font-family:var(--mono);font-size:.88em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink)}
+  pre{background:#12161c;border-radius:10px;padding:16px 18px;overflow:auto;margin:14px 0}
+  pre code{background:none;border:none;color:#d7dde6;font-size:.85rem;line-height:1.7;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:16px 0;display:block;overflow-x:auto}
+  th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:9px 12px;border-bottom:1.5px solid var(--linedark);white-space:nowrap}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--ink);font-weight:650;white-space:nowrap}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:10px 18px;border-radius:0 8px 8px 0;margin:14px 0;color:var(--body)}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+  .foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.85rem;color:var(--faint)}
+  .foot a{color:var(--muted);text-decoration:none;font-weight:600}
+  @media print{.crumbs,.foot{display:none}.wrap{padding:0}body{font-size:12px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs"><a href="index.html">← Course home</a></nav>
+  <div class="kicker">Course guide</div>
+  <h1>College Project Tracks</h1>
+  <p class="lead">Applied engineering and research directions for 3rd- and final-year CSE students</p>
+
+<p>This guide turns the weekend’s small prototypes into realistic college projects. The course gives you a starting artifact; it does <strong>not</strong> make a production system in two days.</p>
+<h2 id="the-rule-that-keeps-a-project-gradeable">The rule that keeps a project gradeable</h2>
+<p>Choose <strong>one user, one data source, one decision, and one measurable claim</strong>.</p>
+<p>Bad scope:</p>
+<blockquote>
+<p>Build an AI assistant for students.</p>
+</blockquote>
+<p>Good scope:</p>
+<blockquote>
+<p>Help the exam-cell assistant answer 40 recurring questions from the current regulations PDF, with citations, at least 85% answer accuracy on a 100-question test set, and a refusal when the answer is not in the document.</p>
+</blockquote>
+<h2 id="every-project-must-ship-these-artifacts">Every project must ship these artifacts</h2>
+<ol type="1">
+<li><strong>Problem brief:</strong> named users, current workflow, and the specific pain.</li>
+<li><strong>Data note:</strong> source, ownership, privacy classification, and update frequency.</li>
+<li><strong>Architecture diagram:</strong> model, prompt, retrieval, tools, interface, and storage.</li>
+<li><strong>Baseline:</strong> the current process or a simpler model/prompt that your approach must beat.</li>
+<li><strong>Evaluation set:</strong> 20 examples for a small prototype, 50 for a semester project, or 100 for a final-year claim. Include unanswerable and failure cases.</li>
+<li><strong>Failure report:</strong> at least three failures, their category, and the mitigation attempted.</li>
+<li><strong>Cost and latency note:</strong> tokens, requests, approximate cost, p50 latency, and what happens on timeout or quota exhaustion.</li>
+<li><strong>Safe demo:</strong> no secrets in the repository, no private data in free-tier prompts, no destructive action without human approval.</li>
+<li><strong>README and reproducible run:</strong> setup, sample data, test command, limitations, and a short demo video or hosted URL where appropriate.</li>
+</ol>
+<p>A polished UI without these artifacts is a demo. A modest UI with these artifacts is an engineering project.</p>
+<h2 id="choose-a-track">Choose a track</h2>
+<h3 id="level-1--610-hours-after-the-course">Level 1 · 6–10 hours after the course</h3>
+<p>These are small portfolio extensions.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Project</th>
+<th>Core techniques</th>
+<th>Minimum evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Study-notes RAG</strong></td>
+<td>embeddings, retrieval, citations, evaluation</td>
+<td>20 questions, one baseline, one retrieval failure</td>
+</tr>
+<tr class="even">
+<td><strong>Receipt/document extractor</strong></td>
+<td>vision, structured output, validation</td>
+<td>field-level accuracy on 20 images or synthetic samples; unknown path for unreadable fields</td>
+</tr>
+<tr class="odd">
+<td><strong>Prompt evaluation dashboard</strong></td>
+<td>prompt versioning, regression tests, latency/cost logging</td>
+<td>compare two prompts on a fixed test set and display failures</td>
+</tr>
+</tbody>
+</table>
+<h3 id="level-2--1220-hours">Level 2 · 12–20 hours</h3>
+<p>These fit a mini-project or a guided lab series.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Project</th>
+<th>Core techniques</th>
+<th>Minimum evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Department regulations assistant</strong></td>
+<td>RAG, citations, refusal, freshness, injection testing</td>
+<td>50 labelled questions, document dates, answer and retrieval metrics, poisoned-document test</td>
+</tr>
+<tr class="even">
+<td><strong>Codebase RAG assistant</strong></td>
+<td>code chunking, semantic + keyword retrieval, citations</td>
+<td>index one student repository, answer 30 code questions, cite file paths and line ranges</td>
+</tr>
+<tr class="odd">
+<td><strong>College document QA</strong></td>
+<td>multimodal extraction, schema validation, human review</td>
+<td>marksheet/form/receipt pipeline, field-level confusion table, explicit rejection cases</td>
+</tr>
+<tr class="even">
+<td><strong>Subject tutor for one course</strong></td>
+<td>RAG, quiz generation, evaluation, optional vision</td>
+<td>one subject only, 30-question test set, source citations, weak-topic report</td>
+</tr>
+<tr class="odd">
+<td><strong>Tamil or multilingual scheme assistant</strong></td>
+<td>multilingual retrieval, token measurement, RAG, evaluation</td>
+<td>parallel language questions, token/cost comparison, language-specific failure analysis</td>
+</tr>
+</tbody>
+</table>
+<h3 id="level-3--2040-hours">Level 3 · 20–40 hours</h3>
+<p>These are suitable for a semester project when one team owns the scope.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Project</th>
+<th>Core techniques</th>
+<th>Minimum evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>LLM evaluation and observability dashboard</strong></td>
+<td>evals, traces, cost, latency, prompt versions</td>
+<td>run history, p50/p99 latency, token/cost charts, regression alerts, privacy-safe logs</td>
+</tr>
+<tr class="even">
+<td><strong>RAG + tools assistant with approval gates</strong></td>
+<td>RAG, function calling, workflow, validation, human approval</td>
+<td>at least two read-only tools, one blocked side effect, step cap, tool-choice evaluation</td>
+</tr>
+<tr class="odd">
+<td><strong>Department knowledge service</strong></td>
+<td>ingestion pipeline, metadata filters, hybrid retrieval, deployment</td>
+<td>update/re-index path, citations, access control, 100-question evaluation, hosted demo</td>
+</tr>
+<tr class="even">
+<td><strong>Personal AI tutor for one subject</strong></td>
+<td>multimodal input, RAG, quiz/eval loop, user feedback</td>
+<td>measurable learning task, baseline comparison, failure and bias analysis, privacy plan</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a-good-semester-progression">A good semester progression</h2>
+<h3 id="weeks-12--narrow-the-problem">Weeks 1–2 · Narrow the problem</h3>
+<p>Interview 3–5 users. Observe the current process. Collect only the documents you are allowed to use. Write one measurable claim.</p>
+<h3 id="weeks-34--build-a-baseline">Weeks 3–4 · Build a baseline</h3>
+<p>Start with a plain prompt or manual workflow. Record where it fails. Do not add RAG, tools, or agents before you have a baseline.</p>
+<h3 id="weeks-56--build-the-smallest-useful-system">Weeks 5–6 · Build the smallest useful system</h3>
+<p>Add one technique at a time: structured output, retrieval, or one read-only tool. Keep the system understandable enough to draw on a whiteboard.</p>
+<h3 id="weeks-78--create-the-evaluation-set">Weeks 7–8 · Create the evaluation set</h3>
+<p>Write labelled examples with a domain expert. Include ambiguous, unanswerable, multilingual, and adversarial cases. Freeze version 1 of the set.</p>
+<h3 id="weeks-910--measure-and-harden">Weeks 9–10 · Measure and harden</h3>
+<p>Compare against the baseline. Separate retrieval failure from generation failure. Test prompt injection, stale documents, malformed output, timeouts, and quota errors.</p>
+<h3 id="weeks-1112--deploy-and-explain">Weeks 11–12 · Deploy and explain</h3>
+<p>Put the key server-side, add limits and logs, deploy a small interface, run a user trial, and document what you would not automate.</p>
+<h2 id="level-4--research-oriented-final-year-projects">Level 4 · Research-oriented final-year projects</h2>
+<p>These are not “build a chatbot” projects. Each one is an experiment with a hypothesis, a controlled comparison, a measurable result, and a reproducible artifact. A team should choose <strong>one</strong> track and implement a narrow version over a semester; do not attempt all the techniques listed in a row.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Research track</th>
+<th>Research question / hypothesis</th>
+<th>Baselines and variables</th>
+<th>Metrics and artifact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Multilingual and code-switched RAG</strong></td>
+<td>Does retrieval quality degrade when students ask the same question in English, Tamil, Tanglish, and Hindi? Does query translation improve recall without increasing hallucination?</td>
+<td>Baselines: English-only dense retrieval and keyword search. Variables: language, translation, embedding model, chunking.</td>
+<td>Recall@k, MRR, answer faithfulness, token/cost ratio, language-wise error report, reproducible multilingual benchmark.</td>
+</tr>
+<tr class="even">
+<td><strong>Chunking and hybrid retrieval study</strong></td>
+<td>Does structure-aware chunking plus BM25+dense retrieval beat paragraph-only dense retrieval on college regulations and code?</td>
+<td>Baselines: fixed-size chunks and dense-only search. Variables: chunk size, overlap, metadata filters, BM25 fusion, reranking.</td>
+<td>Recall@k, MRR, nDCG, answer accuracy, latency, index size, ablation table, reusable retrieval benchmark.</td>
+</tr>
+<tr class="odd">
+<td><strong>Hallucination and abstention calibration</strong></td>
+<td>Can a system learn when to answer and when to say “I don’t know” without becoming uselessly evasive?</td>
+<td>Baselines: always-answer prompt and grounded prompt. Variables: refusal threshold, retrieval score, verifier model, answer format.</td>
+<td>Coverage, selective accuracy, abstention precision/recall, calibration curve, risk-weighted error, refusal/evidence dashboard.</td>
+</tr>
+<tr class="even">
+<td><strong>Multimodal document QA robustness</strong></td>
+<td>Which image conditions cause structured extraction to fail: blur, skew, lighting, handwriting, language, or small text? Can preprocessing improve field accuracy?</td>
+<td>Baselines: raw image at one resolution. Variables: crop, resize, deskew, contrast, prompt, schema, model.</td>
+<td>Field-level accuracy, character error rate, rejection rate, confidence/error calibration, robustness matrix, labelled image fixture set.</td>
+</tr>
+<tr class="odd">
+<td><strong>Agent trajectory reliability</strong></td>
+<td>Does a guarded workflow outperform an unconstrained agent on the same task as tool count and task length increase?</td>
+<td>Baselines: direct prompt and unguarded loop. Variables: step cap, validation, retries, model size, workflow/agent choice.</td>
+<td>Task success, per-step success, end-to-end reliability, step distribution, unnecessary calls, cost, failure trace viewer.</td>
+</tr>
+<tr class="even">
+<td><strong>Prompt-injection defense evaluation</strong></td>
+<td>Which defense layers reduce successful instruction hijacking, and what false positives do they create?</td>
+<td>Baseline: naive RAG prompt. Variables: delimiters, instruction hierarchy, input filtering, output validation, tool permissions, human gate.</td>
+<td>Attack success rate, benign-task pass rate, leakage rate, false-positive rate, blast-radius analysis, red-team corpus and report.</td>
+</tr>
+<tr class="odd">
+<td><strong>Quality–cost–latency model routing</strong></td>
+<td>Can a router send routine questions to a small/local model and hard questions to a stronger model while preserving quality?</td>
+<td>Baseline: always use the strongest API model. Variables: routing features, confidence threshold, model pair, caching, output cap.</td>
+<td>Quality, cost/query, p50/p95 latency, escalation rate, worst-case failures, routing policy and simulation notebook.</td>
+</tr>
+<tr class="even">
+<td><strong>Local versus API model under constraints</strong></td>
+<td>For a bounded college task, when does a quantized local model become preferable to an API model?</td>
+<td>Baselines: API model and a smaller local model. Variables: quantization, context length, language, prompt, hardware.</td>
+<td>Accuracy/faithfulness, tokens/sec, TTFT, RAM, energy proxy, privacy exposure, cost at 100/10k users, deployment decision.</td>
+</tr>
+<tr class="odd">
+<td><strong>Evaluation-set quality and judge bias</strong></td>
+<td>How much do conclusions change when the evaluator is biased, the test set is contaminated, or the test questions are written by different groups?</td>
+<td>Baselines: exact/contains scorer and human labels. Variables: LLM judge, position swap, question author, difficulty, language.</td>
+<td>Human–judge agreement, position bias, inter-rater agreement, score intervals, contamination audit, evaluation methodology paper.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-makes-one-of-these-research-not-just-a-bigger-app">What makes one of these research, not just a bigger app?</h3>
+<p>A final-year team should submit all of the following:</p>
+<ol type="1">
+<li><strong>Research question:</strong> one sentence that could be false.</li>
+<li><strong>Hypothesis:</strong> what you expect and why.</li>
+<li><strong>Dataset protocol:</strong> how data is collected, labelled, split, versioned, and legally handled.</li>
+<li><strong>Baseline:</strong> a simple method that a reviewer can reproduce.</li>
+<li><strong>Controlled variables:</strong> change one major factor at a time; record model/version/prompt/configuration.</li>
+<li><strong>Ablation study:</strong> remove one component and show what changes.</li>
+<li><strong>Metrics:</strong> define them before seeing the result; report confidence intervals or repeated-run spread where practical.</li>
+<li><strong>Error taxonomy:</strong> categories, examples, counts, and representative failures.</li>
+<li><strong>Reproducibility pack:</strong> code, environment, configuration, fixture data or data-generation script, and exact commands.</li>
+<li><strong>Limitations and ethics:</strong> privacy, bias, data rights, misuse, and what the system must refuse to automate.</li>
+</ol>
+<h3 id="a-feasible-research-paper-structure">A feasible research-paper structure</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Section</th>
+<th>What students should write</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Abstract</td>
+<td>Problem, method, comparison, main number, limitation.</td>
+</tr>
+<tr class="even">
+<td>Introduction</td>
+<td>User/problem context and why the question matters.</td>
+</tr>
+<tr class="odd">
+<td>Related work</td>
+<td>5–10 relevant papers or systems, not a list of buzzwords.</td>
+</tr>
+<tr class="even">
+<td>Method</td>
+<td>Data pipeline, architecture, variables, and evaluation protocol.</td>
+</tr>
+<tr class="odd">
+<td>Experiments</td>
+<td>Baseline, ablations, metrics, repeated runs, and resource budget.</td>
+</tr>
+<tr class="even">
+<td>Results</td>
+<td>Tables and plots with the failures visible, not only the best number.</td>
+</tr>
+<tr class="odd">
+<td>Error analysis</td>
+<td>Why the system failed and which component was responsible.</td>
+</tr>
+<tr class="even">
+<td>Ethics and limitations</td>
+<td>Privacy, fairness, security, generalization, and non-goals.</td>
+</tr>
+<tr class="odd">
+<td>Reproducibility</td>
+<td>Repository, environment, commands, and data statement.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="research-complexity-ladder">Research complexity ladder</h3>
+<ul>
+<li><strong>Level A — Replication:</strong> reproduce a published method on a college dataset.</li>
+<li><strong>Level B — Comparison:</strong> compare two or more methods under the same evaluation protocol.</li>
+<li><strong>Level C — Improvement:</strong> add one principled change and show an ablation.</li>
+<li><strong>Level D — New evidence:</strong> test a language, domain, failure mode, or user group missing from prior work.</li>
+</ul>
+<p>For most final-year teams, <strong>Level B or C is the right ambition</strong>. Level D can be excellent, but only when the dataset and evaluation are genuinely strong.</p>
+<h2 id="what-not-to-choose-for-this-course">What not to choose for this course</h2>
+<p>Do not begin with autonomous research agents, multi-agent swarms, Kubernetes troubleshooting, GitHub issue-to-PR automation, distributed training, full RLHF, vision-language pretraining, speculative decoding servers, or a generic chatbot that answers everything. These can become later research directions, but they are poor first college projects because the scope and evaluation boundary are unclear.</p>
+<h2 id="suggested-evaluation-rubric">Suggested evaluation rubric</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Criterion</th>
+<th style="text-align: right;">Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Problem clarity and user evidence</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="even">
+<td>Working artifact and reproducibility</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="odd">
+<td>Baseline and evaluation quality</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="even">
+<td>Failure analysis and mitigation</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="odd">
+<td>Security, privacy, and responsible use</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr class="even">
+<td>Communication and documentation</td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+<p>The best project is not the one with the most agents. It is the one that solves a real, bounded problem and can show a number, a baseline, and an honest limitation.</p>
+<h2 id="after-this-guide">After this guide</h2>
+<p>Use the current course artifacts as your starting point:</p>
+<ul>
+<li>Session 2’s evaluation harness becomes your regression test.</li>
+<li>Session 3’s extractor becomes your multimodal baseline.</li>
+<li>Session 4’s NumPy RAG becomes your retrieval baseline.</li>
+<li>Session 5’s tools become read-only workflow steps before any agent is considered.</li>
+<li>Session 6’s attack and ship checklist becomes your review gate.</li>
+</ul>
+<p>For deeper theory, use the external <a href="https://aiengineeringfromscratch.com/index.html#contents">AI Engineering from Scratch</a> curriculum selectively: classical ML evaluation, self-attention, tokenizer construction, LLM application engineering, tool protocols, and observability. Its full 503-lesson curriculum is a long-term roadmap, not a two-day syllabus.</p>
+
+
+
+
+
+
+  <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="index.html">course home</a> · free to use, fork, localize and teach</footer>
+</div>
+</body>
+</html>

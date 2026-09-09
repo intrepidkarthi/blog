@@ -1,133 +1,100 @@
-# Lab Facilitation Guide — all 6 labs
-How to run the hands-on hours so nobody is silently stuck and everybody ships something. Read this once; it applies to every lab.
+# Lab Facilitation Guide — all six labs
 
-## The universal rhythm (same all weekend — taught once on S1’s “Your lab kit, and the rhythm” slide)
-1. **Pairs.** Both partners run every cell on their own machine. One types, one reads the output aloud, swap each part.
-2. **Checkpoints → show the instructor.** Each ✓ is a 10-second show-me. It's how you catch a stuck pair before minute 40, not after.
-3. **The 5-minute rule.** Stuck > 5 min? Ask the pair beside you first, then the instructor. (Peer-teaching scales you; it also cements the helper's learning.)
-4. **Stretch goals for fast pairs.** There is always more on the handout — nobody sits idle.
+**What this file is.** How to run the lab hour. It is the same hour six times, and the shape does not change — which is the point, because a room that knows the rhythm stops asking about the rhythm and starts asking about the work.
 
-## Your job during the lab hour (the same four moves)
-- **First 10–15 min = setup triage.** This is where labs live or die. Circulate fast, fix keys/uploads, get everyone to Checkpoint 1.
-- **Middle = ask "what did it get WRONG?"** not "did it work?" — trains the evaluation mindset every session.
-- **~Minute 40 = checkpoint sweep.** Walk a paper roster; confirm every pair hit the checkpoints. Note 2–3 interesting results for show & tell.
-- **Last 10 min = land the plane.** Call the final task (test set / save notebook / documents for tomorrow) out loud; don't let it drift.
+Taught once, on Session 1's *"Your lab kit, and the rhythm"* slide. After that you only have to point at it.
 
-## Timing template (50-min lab)
-| Min | Phase |
+---
+
+## The universal rhythm
+
+Every lab is the same five moves, in the same order:
+
+| | | |
+|---|---|---|
+| **Brief** | 2–3 min | What you are building, and the one thing that must work by the end |
+| **Build** | ~50 min | Pairs — both partners have a key, one drives per part, swap at each checkpoint |
+| **Sweep** | at +40 | You walk the room and check every pair against the checkpoint list |
+| **Collect** | last 5 | Two artifacts for show and tell — one that worked, one that failed usefully |
+| **Show** | next slide | Two or three pairs, three minutes total |
+
+**Pairs, not groups of four.** Both partners create their own API key in Part A; one drives per lab part and they swap at each checkpoint, so both hands have typed every kind of cell by the end. The moment one person is only watching, they have stopped learning, and by Session 4 they cannot catch up.
+
+---
+
+## Your four moves during the hour
+
+**1 · Circulate. Never sit down.** The single highest-value thing you do in twelve hours is walk. A stuck pair will not raise a hand; they will quietly fall behind and leave.
+
+**2 · Ask before you answer.** *"What did you expect to happen?"* and *"What did it actually do?"* Most bugs solve themselves in the gap between those two sentences, and the student keeps the skill.
+
+**3 · Checkpoint sweep at +40 minutes.** Not before — earlier and you interrupt flow; later and you cannot rescue anyone. Walk the room with the checkpoint list and ask each pair which one they are on. This is also how you find the pair that has been stuck for twenty minutes and said nothing.
+
+**4 · Collect two artifacts.** One thing that worked, one thing that failed interestingly. Show and tell without collection is dead air; collection makes it two minutes of the best content in the session.
+
+---
+
+## The five-minute rule
+
+Say this at every brief: **stuck for five minutes → ask your neighbour → then ask me.** It halves your queue and it is how the room starts teaching itself. By Session 4 you will hear pairs debugging each other, which is the moment the weekend is working.
+
+---
+
+## Timing template for a 50-minute lab
+
+| | |
 |---|---|
-| 0–3 | You brief from the lab slide; students open the notebook + Save to Drive |
-| 3–15 | Setup + Checkpoint 1 (the make-or-break window) |
-| 15–35 | Core parts + Checkpoints 2–3 |
-| 35–45 | Stretch for fast pairs; you sweep checkpoints |
-| 45–50 | Everyone lands the closing task; you pick show-&-tell items |
+| 0:00–0:03 | Brief. The goal, the checkpoints, the five-minute rule. Links on screen — point, do not read |
+| 0:03–0:10 | Setup and first cell. **Your busiest window** — most failures are environmental and happen here |
+| 0:10–0:40 | Build. Circulate continuously |
+| 0:40–0:45 | Checkpoint sweep |
+| 0:45–0:50 | Stretch goals for the fast pairs; rescue for the stuck ones; collect artifacts |
+
+If you are behind, cut a stretch goal. Never cut a checkpoint — the checkpoints are what the next session assumes.
 
 ---
 
 ## Per-lab specifics
 
-### Lab 1 — Your First API Call (S1)
-**Goal:** everyone's own key + first Gemini response + one model-comparison surprise. Ends with writing the 10-question test set (Part E).
-**Setup landmines:**
-- College Google account blocks AI Studio → use a personal Gmail.
-- Phone-verification loop on key creation → hand them a spare paper key to proceed; they make their own at home.
-- **Carry 5 spare keys on paper.** This single prep item saves the most lab time all weekend.
-**Watch for:** students pasting the key into a code cell (it must go in the `getpass` box). 
-**Land the plane:** Part E (10 questions + answers) in the last 10 min — it's the fuel for Lab 2, one hour later. Don't let anyone skip it.
+**Lab 1 · Your first AI API call.** A confirm access and key (10) · B first call (10) · C five prompts (10) · D one prompt, three models (10) · E build your test set (10) — 50 total.
+*The sink:* API key setup. Have the five steps on the board before anyone opens a laptop (and the "I already have a Google Cloud account → import a project first" line with them).
+*Protect:* Part E — it is the hand-off to Lab 2, which consumes those ten questions. Part D is the designated cut: if you are behind at the +30 checkpoint, drop D and go straight to E.
 
-### Lab 2 — The Lie Detector (S2)
-**Goal:** prompt makeover (5 documented iterations) + an eval harness scoring their own 10 questions + a prompt A/B with numbers.
-**Landmines:**
-- `expected` strings too long ("A. R. Rahman composed it in 1992") → coach to key-fact-only ("rahman"). This is the #1 issue.
-- Test set the model aces 10/10 → "your test is too easy — add obscure questions until it bleeds. A test that can't fail teaches nothing."
-- Changing 3 things between eval runs → one change at a time or you learn nothing.
-**Heaviest lab for API calls (~50).** Free tier handles it; the retry helper covers 429s.
-**Show & tell:** best before/after prompt + best caught hallucination. Ask: "model, scorer, or question?"
+**Lab 2 · The lie detector.** A prompt makeover (15) · B first eval (15) · C the arena (15).
+*The sink:* students loosening the expected string until the test passes. Name it at the brief, before it happens.
+*Protect:* diagnosing every ✗. The documentation is the deliverable, not the score.
 
-### Lab 3 — Interrogate Your Photos (S3)
-**Goal:** photo Q&A ladder + document→JSON that actually parses + one confident invention caught.
-**Landmines:**
-- Photo upload is the #1 time sink → demo the folder-icon upload ONCE on the projector before releasing them.
-- iPhone HEIC files → screenshot the photo and upload the PNG (fallback in notebook).
-- Students stop at "the JSON looks right" → push until `json.loads()` succeeds. The parse crash IS the lesson.
-- Images are auto-resized in the notebook (`_shrink`) — no action needed, but mention it (quota-saving).
-**Show & tell:** two best inventions. Then **Day-1 close** — don't rush; repeat the "bring 2–3 documents tonight" task twice.
+**Lab 3 · Interrogate your photos.** A interrogation ladder (10) · B document → JSON (10) · `response_schema` (5) · C handwriting (10) · D break it (10).
+*The sink:* the folder upload. Demo it once yourself before they start.
+*Protect:* pushing Part B until `json.loads` actually passes. That is the checkpoint that matters.
 
-### Lab 4 — Chat With Your Notes (S4) — the main build
-**Goal:** a working RAG app over their own document, with citations + one honest failure.
-**Landmines:**
-- **Garbage PDF extraction** (#1): scanned PDFs have no text layer → pypdf returns empty. Fix: swap to a text PDF, or screenshot pages → S3 vision transcription (nice callback for fast pairs). Catch this at Cell 2's sanity print, not minute 40.
-- Chunks capped at 60 (`MAX_CHUNKS`) — keeps free-tier safe; if they want more, one chapter at a time.
-- Junk search results → 90% chunking (tune `target`), 10% bad extraction.
-- "I don't know" test failing (it invents) → strengthen the ONLY line + escape hatch; A/B it (S2 discipline).
-- Embedding loop sleeps 1s between batches — students who delete it hit 429.
-**Show & tell:** two honest failures + fixes. Remind: **SAVE the notebook** — it's the capstone foundation.
+**Lab 4 · Chat with YOUR notes.** A ingest (12) · B search sanity (8) · C full RAG (15) · D break it honestly (10).
+*The sink:* garbage PDF extraction. Swap the document at minute five rather than fighting it, or use Session 3's vision extraction.
+*Protect:* Part B. If search is junk, the answer is chunking, and no amount of prompt work will save it.
 
-### Lab 5 — Give It Hands (S5)
-**Goal:** calculator tool (fixes S1's math) + a chained two-tool call + the raw function-call trace + scenario cards.
-**Landmines:**
-- `eval()` in the demo calculator: the notebook validates the charset first — point out WHY (never eval raw model output). Good security habit before S6.
-- Automatic function calling feels like magic → Part C (manual, see the raw call) de-mystifies it; make sure pairs do it.
-- **Ollama is NOT in the student lab** — it's your instructor demo only. If a student asks to run it, that's an at-home optional, not lab work.
-**Accelerator:** nudge strong pairs to the Stretch (wire their S4 `search_notes` in as a tool) — that literally assembles their capstone.
-**Checkpoint 3 is verbal** — hear at least one scenario defense per pair.
+**Lab 5 · Give it hands.** A calculator tool (12) · B two tools chained (12) · C see the machinery (8) · D scenario cards, paper (10).
+*The sink:* over-tooling — pairs adding a third and fourth tool and then wondering why routing broke.
+*Protect:* Part C, the manual loop. It is what demystifies agents. Nudge strong pairs to the RAG-as-a-tool stretch — that is where the capstone assembles itself.
 
-### Lab 6 — Break It, Then Ship It (S6) — finale
-**Goal:** attack a naive bot, harden it, red-team a classmate's app, self-audit, then demo.
-**Landmines / logistics:**
-- Attack/defense behavior is **probabilistic** — the naive bot sometimes refuses, the hardened one sometimes slips. Say so; it's the honest picture of security.
-- **Enforce the laptop swap** for red-teaming (Part C) — the indirect-injection-via-poisoned-document is the moment; make sure pairs actually try it. Keep it good-natured.
-- **Demos: hard-cap 3 min each with a visible timer.** ~10 pairs = tight. Enforce the 3-part structure (does / one failure / one fix). Applaud every team.
-- If > 12 pairs: run two parallel demo rooms, or pre-select via 1-line pitches, or a short overflow. Decide before the session.
-**Grade live** against the rubric (working 40 / eval 25 / failure 15 / fit 10 / presentation 10). Say out loud before demos: "honest evals + a real failure beat a flashy fragile demo" — so they optimize for the right thing.
+**Lab 6 · Break it, then ship it.** A attack a naive bot (8) · B harden it (8) · C red-team a classmate (10) · D ship-readiness audit (5).
+*The sink:* pairs attacking their own bot. Make them swap — nobody sees their own blind spot.
+*Protect:* Part C. The classmate's attack is the lesson.
 
 ---
 
-## If the internet or a service dies (any lab)
-- **Venue Wi-Fi down:** decks are fully offline. Switch to instructor-driven demo over a phone hotspot on the projector; students run the notebook at home and submit checkpoints async.
-- **AI Studio down / blocked campus-wide:** for prompt-comparison-style parts, fall back to the free web UIs (Gemini web, ChatGPT). API portions become take-home.
-- **A student's key hits its daily cap:** it resets next day, or a second free key with another Google account. Never a paid fix.
-- **Colab is slow / disconnects:** Runtime → Restart; reconnect. Work is in Drive if they saved. Their laptop specs are irrelevant — it's Google's cloud.
+## If the internet or a service dies
+
+1. **One pair affected** — pair them with a working machine. Both still type.
+2. **Rate limits across the room** — switch to the fallback model named in `fact-check.md`, or stagger: half the room runs while half writes their test set.
+3. **The provider is down** — flip the room to `MOCK = True` in Cell 1: every cell runs on canned `[MOCK]` responses, so the checkpoints still happen at reduced fidelity. If even Colab is gone, the deck widgets all run offline: convert the lab to a paper walkthrough — they write the prompts and predict the outputs — and run the live version as the opening of the next block (after S6 there is no next block, so for S6 it becomes the post-weekend stretch). Say plainly that this is what production incident response looks like.
+4. **No internet at all** — every deck opens offline. Teach the slides, demo the local model from Session 5 if you have it pulled, and move the lab.
+
+**Have the labs downloaded before you arrive.** Colab needs the network, but the notebooks and handouts do not.
+
+---
 
 ## The one metric that matters
-Every student leaves each lab with **working code they ran themselves** and **one thing they found that was wrong.** If both are true, the lab succeeded — regardless of how polished the output looked.
 
-## Known API failure modes (both seen live, July 2026)
+Not how many finished. **How many can explain what they built to the pair next to them.**
 
-### 1. 403 "project denied access"
-
-Seen in the wild (July 2026): a key that authenticates (`count_tokens` works) but every
-`generateContent`/`embedContent` call returns **403 PERMISSION_DENIED — "Your project has been
-denied access"**. This is a Google project-level block, not quota and not a code bug.
-
-**Fix (2 minutes):** aistudio.google.com/app/apikey → **Create API key** → choose
-**"Create API key in new project"** (not the existing project) → swap the key in. If a student
-hits this, don't debug their code — recreate the key in a fresh project first.
-
-### 2. 404 "model no longer available to new users"
-
-Verified live (July 2026, fresh free-tier account): `gemini-2.5-flash` and
-`gemini-2.5-flash-lite` return **404 — "no longer available to new users"** on newly created
-accounts, while older accounts still have them. So the same model id works on one laptop and
-404s on the one next to it — a mixed room sees it inconsistently, which looks baffling until
-you know the cause.
-
-**Tell:** the key itself is fine (other models respond); only a *pinned old* model id 404s,
-and only for students whose Google account/key is new.
-
-**Fix:** none needed if they're on the course code — every notebook uses the
-**`gemini-flash-latest`** alias, which serves the current Flash to old and new accounts alike,
-so nobody following the notebook should ever hit this. If a student does hit it, they typed a
-pinned old id (copied from a blog post or an old snippet) — point them back to the `MODEL`
-line at the top of the notebook rather than debugging anything else.
-
-### Mode 3 — 503 "model is currently experiencing high demand" (seen live, July 17 2026)
-
-`gemini-flash-latest` (and 3.5 Flash behind it) can 503 for many minutes during
-capacity spikes — while the **lite tier stays instant**. Verified during a real
-event: `flash-latest` 503'd continuously; `gemini-flash-lite-latest` answered in 0.6 s
-on the same key.
-
-**Tell:** every generate call 503s, `count_tokens`/`embed_content` still fine.
-**Fix (one line, announce to the room):** `MODEL = "gemini-flash-lite-latest"` — every
-lab works identically on it. Switch back after the spike if you care.
+At the checkpoint sweep, ask one pair to explain their code to another pair. If they can, the hour worked. If the notebook runs and they cannot explain it, they copied it, and Session 4 will find that out the hard way.

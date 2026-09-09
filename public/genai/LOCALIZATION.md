@@ -18,7 +18,7 @@ If you do nothing else, do these four. They cover the references students will a
 |---|---|---|---|
 | 1 | `TCE` · `Thiagarajar College of Engineering` · `TCE Madurai` | your institution, long and short form | 84 hits — mostly deck footers, `<title>`, and og: meta |
 | 2 | `Madurai` · `Meenakshi` · `jigarthanda` · `Vaigai` | your city, its landmark, its signature food/drink, a local landmark journey | 73 hits |
-| 3 | `₹` and `₹95.5` per USD | your currency and the current rate | 37 hits — and see *Money* below, the arithmetic is already dual-currency |
+| 3 | `₹` and `≈ ₹95.5` per USD (approximate, Sep 2026) | your currency and the current rate | 37 hits — and see *Money* below, the arithmetic is already dual-currency |
 | 4 | `Tamil` / `தமிழ்` | **keep it, and add your language** — see *Language* below, this one is technical, not decorative | 44 hits |
 
 A blunt `sed` over the repo gets you 80% of the way:
@@ -84,7 +84,7 @@ All the cost arithmetic is already **dual-currency** — USD is computed first a
 
 Change the one constant in each and every derived figure follows. If your currency is close to USD, you may prefer to delete the second figure entirely — search for the `var(--faint)` span that wraps it.
 
-`PRICE_IN` / `PRICE_OUT` (1.50 / 9.00 per 1M tokens) are Gemini 3.5 Flash as of July 2026. **Check these before you teach** — they move, and the S6 depth panel makes an argument about the ~6× input/output ratio that only works while the ratio holds.
+`PRICE_IN` / `PRICE_OUT` (1.50 / 9.00 per 1M tokens) are Gemini 3.5 Flash — correct as of Sep 2026, but that model is now *previous-gen* Flash (current 3.8 Flash is 0.75 / 3.75, introductory through 31 Dec 2026; the lab model, 3.5 Flash-Lite, is 0.30 / 2.50). **Check these before you teach** — they move, and the S6 depth panel makes an argument about the ~5–6× input/output ratio that only works while the ratio holds.
 
 `GST` at 18% appears in a few tool-use examples (S3, S5). Any sales tax works; the arithmetic is the point, not the rate.
 
@@ -94,7 +94,7 @@ The instructor slide (S1, slide 2) is Karthikeyan's — replace it wholesale wit
 
 `assets/img/` holds photographs of the original instructor. Delete them and drop in your own, or delete the bio slide's image references entirely; nothing else depends on them.
 
-Also swap: the footer line in every deck (`Session N · TCE Madurai`), each deck's `<title>` and `og:` meta, and the placeholder link `tinyurl.com/tce-genai` in the S1 lab-kit slide — that one is a **required** change, it points at materials you'll need to host yourself.
+Also swap: the footer line in every deck (`Session N · TCE Madurai`), each deck's `<title>` and `og:` meta, and the materials link on the S1 lab-kit slide (it reads `intrepidkarthi.com/genai` — point it at your own hosting and test the link from a student device).
 
 ## Jurisdiction
 

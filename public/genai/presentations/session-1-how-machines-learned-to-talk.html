@@ -32,6 +32,39 @@
     --font:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Arabic",sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
   }
+  html[data-theme="dark"]{
+    --paper:#0E1218; --ink:#EDF1F7; --body:#C3CBD8; --muted:#8E9AAC; --faint:#647085;
+    --line:#20262F; --linedark:#36404E; --panel:#151B24;
+    --green:#2FCF9B; --greenpale:#0F2B22; --red:#F2684F; --redpale:#331813;
+    --amber:#E8A33D; --amberpale:#33260F;
+    --h1:#6C8BFF; --d1:#9DB4FF; --t1:#182240;
+    --h2:#B07BF5; --d2:#C9A4F7; --t2:#24183C;
+    --h3:#F078B4; --d3:#F79EC4; --t3:#381728;
+    --h4:#F5A33C; --d4:#F7C886; --t4:#37270F;
+    --h5:#2ECF96; --d5:#7FDCBE; --t5:#0E2E22;
+    --h6:#F0644A; --d6:#F7A294; --t6:#381811;
+    --hue:var(--h1); --deep:var(--d1); --tint:var(--t1);
+    --bg:var(--paper);
+    --accent:var(--deep); --accent2:var(--hue); --accentpale:var(--tint);
+    --stagebg:#06080C; --stageink:#FFFFFF;
+  }
+  html[data-theme="dark"] .slide{background:radial-gradient(var(--line) 1.05px, transparent 1.05px) 0 0/26px 26px, var(--paper)}
+  html[data-theme="dark"] .slide.take{background:#0A0D13}
+  html[data-theme="dark"] .codebox{background:#06080C}
+  html[data-theme="dark"] .bigno{color:var(--tint);opacity:.85}
+  #theme-btn{appearance:none;border:1.5px solid var(--linedark);background:var(--paper);color:var(--muted);
+    font-family:var(--mono);font-size:10.5px;font-weight:800;border-radius:999px;padding:4px 10px;cursor:pointer;transition:.15s;letter-spacing:.05em}
+  #theme-btn:hover{border-color:var(--ink);color:var(--ink)}
+  #hud .sesdots{display:inline-flex;gap:5px;margin:0 10px}
+  #hud .sesdots i{width:7px;height:7px;border-radius:3px;background:var(--line);transition:.25s}
+  #hud .sesdots i.on{background:var(--hue);transform:scale(1.25)}
+  /* tally histogram (temperature slide) */
+  .tgrows{display:grid;gap:7px}
+  .tgrow{display:grid;grid-template-columns:max-content 1fr 34px;align-items:center;gap:11px;font-family:var(--mono);font-size:.82rem}
+  .tgrow .w{font-weight:600;color:var(--muted);min-width:58px;white-space:nowrap}
+  .tgrow .tr{display:block;height:9px;background:var(--panel);border-radius:999px;overflow:hidden}
+  .tgrow .fi{display:block;height:100%;width:0;background:var(--hue);border-radius:999px;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+  .tgrow .p{text-align:right;font-weight:700;color:var(--muted);font-size:.78rem;font-variant-numeric:tabular-nums}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{background:var(--paper);color:var(--body);font-family:var(--font);overflow:hidden;-webkit-font-smoothing:antialiased}
@@ -146,23 +179,6 @@
   @keyframes tokin{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
   .tokcount{font-family:var(--mono);font-size:.88rem;color:var(--muted);margin-top:12px}
   .tokcount b{color:var(--accent);font-size:1.1rem}
-  /* embedding map */
-  .map{position:relative;height:44vh;min-height:290px;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-  .map svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-  .word{position:absolute;transform:translate(-50%,-50%);font-size:.86rem;font-weight:600;padding:4px 11px;border-radius:999px;
-    cursor:pointer;border:1px solid var(--linedark);background:var(--bg);transition:.15s;user-select:none;white-space:nowrap;color:var(--body)}
-  .word:hover{transform:translate(-50%,-50%) scale(1.1);border-color:var(--ink);color:var(--ink);z-index:5}
-  .word.sel{background:var(--ink);color:var(--bg);border-color:var(--ink);z-index:6}
-  .simout{margin-top:14px;font-size:.98rem;color:var(--body);min-height:26px}
-  .simout b{font-family:var(--mono);color:var(--accent);font-size:1.15rem}
-  /* attention */
-  .attn{position:relative;padding:40px 8px 10px}
-  .attn svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-  .attn .words{position:relative;display:flex;flex-wrap:wrap;gap:9px;justify-content:center;z-index:2}
-  .aw{font-size:clamp(.98rem,1.7vw,1.28rem);font-weight:600;padding:7px 13px;border-radius:9px;background:var(--bg);
-    border:1px solid var(--linedark);cursor:pointer;transition:.15s;color:var(--body)}
-  .aw:hover,.aw.hot{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-  .aw.lit{border-color:var(--accent);color:var(--accent);border-width:1.5px}
   /* pipeline stepper */
   .pipe{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;justify-content:space-between}
   .stage{flex:1;min-width:96px;background:var(--paper);border:1.5px solid var(--linedark);border-radius:9px;padding:11px 10px;text-align:center;transition:.2s}
@@ -303,6 +319,12 @@
   #pres .ctl button.go{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   #pres-hint{position:fixed;left:16px;bottom:52px;z-index:60;font-size:11px;color:var(--faint);opacity:.7}
 
+  /* title-slide pipeline strip */
+  .pipe-strip{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:26px;font-family:var(--mono)}
+  .pipe-strip .ps{font-size:.78rem;font-weight:700;color:var(--muted);border:1.5px solid var(--linedark);border-radius:999px;padding:6px 13px;background:var(--paper);animation:psglow 6s ease-in-out infinite;opacity:.55}
+  .pipe-strip .ps:nth-child(2){animation-delay:.5s}.pipe-strip .ps:nth-child(4){animation-delay:1s}.pipe-strip .ps:nth-child(6){animation-delay:1.5s}.pipe-strip .ps:nth-child(8){animation-delay:2s}.pipe-strip .ps:nth-child(10){animation-delay:2.5s}.pipe-strip .ps:nth-child(12){animation-delay:3s}
+  .pipe-strip .ar{color:var(--faint);font-size:.85rem}
+  @keyframes psglow{0%,78%,100%{opacity:.55;border-color:var(--linedark)}6%,22%{opacity:1;border-color:var(--hue);background:var(--tint);color:var(--ink);transform:translateY(-2px)}}
   /* series token squares (title slide) */
   .sdots{display:inline-flex;gap:5px;margin-left:4px}
   .sdots i{width:9px;height:9px;border-radius:3px;background:var(--line)}
@@ -355,7 +377,11 @@
 <div id="progress"></div>
 <div id="hud">
   <span class="brand"><span class="pbars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><b>Generative AI · Foundations &amp; Applications</b> &nbsp;·&nbsp; Session 1 · TCE Madurai</span>
-  <span id="counter">1 / 1</span>
+  <span style="display:flex;align-items:center;gap:10px">
+    <span class="sesdots" id="sesdots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span id="counter">1 / 1</span>
+    <button id="theme-btn" type="button" aria-label="Toggle light and dark theme">dark</button>
+  </span>
 </div>
 <div id="keyhint"><kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp; <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>D</kbd> deeper</div>
 
@@ -371,7 +397,10 @@
     <span class="pill">Thiagarajar College of Engineering</span>
     <span class="pill on">100% hands-on</span>
   </div>
-  <p class="note rv">Zero scary math — one school formula, tops. A live demo for every big idea, and your first AI API call before you leave.</p>
+  <div class="pipe-strip rv" aria-hidden="true">
+    <span class="ps">prompt</span><span class="ar">→</span><span class="ps">tokens</span><span class="ar">→</span><span class="ps">embeddings</span><span class="ar">→</span><span class="ps">attention</span><span class="ar">→</span><span class="ps">sample</span><span class="ar">→</span><span class="ps">repeat</span>
+  </div>
+  <p class="note rv">Zero scary math in the main line — one school formula, tops. (Press D on any slide for an optional deeper layer, with the maths, when you want it.) A live demo for every big idea, and your first AI API call before you leave.</p>
 </section>
 
 <!-- 2 · INSTRUCTOR -->
@@ -393,7 +422,7 @@
     <div class="card rv"><h3><span class="em"></span>S3 · Vision app</h3><p>Upload a photo, ask questions about it. AI that reads documents and images.</p></div>
     <div class="card rv"><h3><span class="em"></span>S4 · Chat with your notes</h3><p>An AI that answers from <b>your</b> study material — the #1 real-world pattern (RAG).</p></div>
     <div class="card rv"><h3><span class="em"></span>S5 · Tool-using assistant</h3><p>AI that calls a calculator, searches, reads files — and knows when <b>not</b> to be an agent.</p></div>
-    <div class="card rv hi"><h3><span class="em"></span>S6 · Capstone demo</h3><p>You attack each other's apps, patch the holes, and demo a real product.</p></div>
+    <div class="card rv hi"><h3><span class="em"></span>S6 · Capstone demo</h3><p>You attack each other's apps, patch the holes, and demo a real product — and the shape of a final-year project.</p></div>
   </div>
   <p class="note rv">Everything runs on free tiers, in the browser. No installs, no credit cards, no excuses.</p>
 </section>
@@ -445,7 +474,7 @@
     </div>
     <div class="rv">
       <div class="card"><h3 id="tm-title">—</h3><p id="tm-def">—</p><p class="note" id="tm-ex"></p></div>
-      <div class="card mt"><h3>App ≠ model</h3><p><b>ChatGPT / Gemini app</b> = the product you open. <b>GPT-5.6 / Gemini 3.5</b> = the model inside it. Like WhatsApp vs the phone network — today in lab you skip the app and talk to the network directly.</p></div>
+      <div class="card mt"><h3>App ≠ model</h3><p><b>ChatGPT / Gemini app</b> = the product you open. <b>GPT-5.6 / Gemini 3.5</b> = the model inside it (names as of mid-2026 — they change monthly). Like WhatsApp vs the phone network — today in lab you skip the app and talk to the network directly.</p></div>
     </div>
   </div>
 </section>
@@ -453,10 +482,10 @@
 <!-- 5 · THE ONE IDEA -->
 <section class="slide">
   <div class="kicker rv"><span class="no">05</span><span class="tk">the_one_idea</span></div>
-  <h1 class="rv" style="font-size:clamp(2rem,4.4vw,3.5rem)">ChatGPT is <span class="u">autocomplete</span><br>with a PhD.</h1>
-  <p class="lead rv mt">Every large language model does exactly one thing: <b>given some text, predict the most likely next token.</b> Append it. Repeat. A thousand times per answer.</p>
-  <p class="lead rv">Essays, poems, code, exam answers — all generated <b>one token at a time</b>, left to right.</p>
-  <p class="note rv">Sounds too simple to write poetry? Your brain plays this exact game every day — let's catch it in the act →</p>
+  <h1 class="rv" style="font-size:clamp(2rem,4.4vw,3.5rem)">ChatGPT is <span class="u">autocomplete at scale.</span><br>That one idea goes surprisingly far.</h1>
+  <p class="lead rv mt">Every large language model repeatedly does this core operation: <b>given context, assign scores to possible next tokens</b>, choose one, append it, and continue. A token is a chunk of text — not necessarily a word; the tokens slide shows why. Sampling, attention, and tool or retrieval layers determine how useful the loop becomes.</p>
+  <p class="lead rv">Essays, poems, code, and exam answers emerge from that loop plus learned representations, attention, training, and tool or retrieval layers around the model. The metaphor is useful — but it is not a claim that the system is simple or always correct.</p>
+  <p class="note rv">Sounds too simple to write poetry? Good. Let's catch the smallest version in the act →</p>
 </section>
 
 <!-- 6 · DEMO: NEXT-TOKEN GAME -->
@@ -480,7 +509,7 @@
 <!-- N · MARKOV: WHERE THE ODDS COME FROM -->
 <section class="slide" id="markov">
   <div class="kicker rv"><span class="no">07</span><span class="tk">live_demo</span><span class="tk">where_the_odds_come_from</span></div>
-  <h2 class="rv">Those odds aren't magic — <span class="u">you just count words.</span></h2>
+  <h2 class="rv">Those odds aren’t magic — <span class="u">you just count words.</span></h2>
   <div class="cols">
     <div class="demo rv">
       <div class="dtitle">Train a next-word model by tallying</div>
@@ -572,7 +601,12 @@
       <p>It doesn't always pick the #1 token — it <b>samples</b> from the distribution. Temperature reshapes those dice.</p>
       <p class="mt"><b>Low T</b> → sharpens the peaks. Deterministic, safe, boring. Use for facts, code, extraction.</p>
       <p class="mt"><b>High T</b> → flattens the field. Creative, surprising, riskier. Use for stories, brainstorms, names.</p>
-      <p class="note">This is why your friend's ChatGPT answer ≠ yours. Nobody is lying. It's dice.</p></div>
+      <p class="note">This is why your friend's ChatGPT answer ≠ yours. Nobody is lying. It's dice.</p>
+      <div class="mt" id="tmp-tally" style="display:none">
+        <div class="dtitle" style="margin-bottom:10px">50 rolls, this temperature</div>
+        <div class="tgrows" id="tmp-tallyrows"></div>
+      </div>
+      <button class="btn" id="tmp-roll50" style="margin-top:12px">Roll 50× — see the shape</button></div>
     </div>
   </div>
   <div class="deep rv">
@@ -682,62 +716,13 @@
     <div class="tokwrap" id="tk-out"></div>
     <div class="tokcount" id="tk-count"></div>
   </div>
-  <p class="note rv">Tokens are learned letter-chunks (~¾ of an English word each), and the meter runs in tokens, not words. Press the four language buttons: <b style="color:var(--ink)">the same sentence needs far more chips once you leave English</b> — and English is the <i>only</i> one that gets cheap multi-letter merges. That is not a Tamil problem. Tokenizer vocabularies are learned from English-heavy text, so Hindi, Arabic, Thai, Swahili and most of the world pay the same tax three times over: on price, on speed, and on how much of their own language fits in the context window. On real tokenizers the gap is wider than this illustration — you'll measure it on Gemini in the lab.</p>
-</section>
-
-<!-- 9 · DEMO: EMBEDDINGS -->
-<section class="slide">
-  <div class="kicker rv"><span class="no">14</span><span class="tk">live_demo</span></div>
-  <h2 class="rv">Embeddings: <span class="u">meaning becomes coordinates</span></h2>
-  <div class="cols" style="grid-template-columns:1.35fr 1fr">
-    <div class="demo rv">
-      <div class="dtitle">Meaning space — click any two words</div>
-      <div class="map" id="emb-map"><svg id="emb-svg"></svg></div>
-      <div class="simout" id="emb-out">Click two words to measure how close their meanings are.</div>
-    </div>
-    <div class="rv">
-      <div class="card"><h3>Every token gets coordinates</h3>
-        <p>The model turns each token into a long list of numbers — thousands of dimensions; this map shows 2. Words used in similar contexts land <b>near each other</b>.</p>
-        <p class="mt"><b>idli ↔ dosa</b> → neighbours.<br><b>idli ↔ GPU</b> → different continents.</p>
-        <p class="mt">Famous party trick: <span style="font-family:var(--mono);color:var(--accent)">king − man + woman ≈ queen</span>. Meaning supports arithmetic.</p>
-        <p class="note">Remember this map — in Session 4 it becomes a search engine over your own notes.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- 10 · DEMO: ATTENTION -->
-<section class="slide">
-  <div class="kicker rv"><span class="no">15</span><span class="tk">live_demo</span></div>
-  <h2 class="rv">Attention: <span class="u">every word looks at every other word</span></h2>
-  <div class="demo rv">
-    <div class="dtitle">Hover any word — especially “it” · illustrative, top links only</div>
-    <div class="attn" id="at-zone"><svg id="at-svg"></svg><div class="words" id="at-words"></div></div>
-    <div class="btnrow mt">
-      <button class="btn primary" id="at-toggle">Change “big” → “small”</button>
-      <span class="note" style="margin:0" id="at-note">What does “it” point to?</span>
-    </div>
-  </div>
-  <p class="lead rv mt">One changed word flips what “it” means — and the model re-weights instantly. That mechanism is the <b>T in GPT</b>: the Transformer, from the 2017 paper <i>“Attention Is All You Need.”</i></p>
-  <div class="deep rv">
-    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">two things this picture is hiding</span></button>
-    <div class="deepbody">
-      <p><b>1 · Attention has no idea what order the words are in.</b> Every word weighs every other word — but "dog bites man" and "man bites dog" would produce the <i>identical</i> set of weights, because a set has no order. Attention is genuinely order-blind. The fix is unglamorous: before the words ever reach attention, the model <b>adds position information into each embedding</b> — so the vector for "man" at slot 1 is not the vector for "man" at slot 3. Early models added a fixed wave pattern; today's standard is <b>RoPE</b> (rotary position embedding), which rotates each vector by an angle proportional to its position, so the maths naturally encodes <i>relative</i> distance. Position is not a detail bolted on — without it a Transformer cannot do grammar at all.</p>
-      <p><b>2 · "Every word looks at every other word" has a price tag.</b> Count the arrows in the picture. For n tokens there are n × n of them, so attention cost scales with <b>n²</b> — double the context, quadruple the work.</p>
-      <div class="deepgrid">
-        <div class="dcell"><h4><span class="em"></span>1,000 tokens</h4><p>1 million pairs. Instant.</p></div>
-        <div class="dcell"><h4><span class="em"></span>100,000 tokens</h4><p>10 billion pairs — 10,000× the work of the line above.</p></div>
-        <div class="dcell"><h4><span class="em"></span>1,000,000 tokens</h4><p>10<sup>12</sup> pairs. This is why a 1M-token window was a headline, not a checkbox.</p></div>
-      </div>
-      <p>So when Session 4 tells you "don't paste the whole textbook, retrieve the right three paragraphs" — that isn't tidiness. It's this curve. And it's why the industry keeps shipping attention variants (sliding-window, grouped-query, sparse) whose entire purpose is to dodge the n².</p>
-      <p class="note">One more honest caption for the demo above: real models run <b>many attention heads in parallel</b> — one may track grammatical subject, another long-range topic, another quotation boundaries — across dozens of layers. This picture shows one head's strongest links, once. The mechanism is right; the scale is simplified.</p>
-    </div>
-  </div>
+  <p class="note rv">Tokens are learned letter-chunks (~¾ of an English word each), and the meter runs in tokens, not words. Press the four language buttons: <b style="color:var(--ink)">the same sentence needs far more chips once you leave English</b> — and English is the <i>only</i> one that gets cheap multi-letter merges. That is not a Tamil problem. Tokenizer vocabularies are learned from English-heavy text, so Hindi, Arabic, Thai, Swahili and most of the world pay the same tax three times over: on price, on speed, and on how much of their own language fits in the context window. The real gap depends on the tokenizer — you'll measure Gemini's with <span style="font-family:var(--mono)">count_tokens</span> in the lab.</p>
 </section>
 
 <!-- 11 · PIPELINE STEPPER -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">16</span><span class="tk">assemble_the_machine</span></div>
-  <h2 class="rv">The whole trick, <span class="u">step by step</span></h2>
+  <div class="kicker rv"><span class="no">14</span><span class="tk">assemble_the_machine</span><span class="tk">you_saw_this_on_the_page</span></div>
+  <h2 class="rv">You saw this machine on the pre-class page — <span class="u">here it is in one loop</span></h2>
   <div class="demo rv">
     <div class="dtitle">One loop per token — drive it yourself</div>
     <div class="pipe" id="pl-stages"></div>
@@ -751,20 +736,28 @@
     </div>
     <div id="pl-finale" style="display:none;margin-top:12px;font-weight:800;font-size:1.02rem;color:var(--accent);animation:tokin .35s ease">9 tokens · 9 full trips through ~a trillion knobs · under a second on real GPUs.</div>
   </div>
-  <p class="note rv">Every word of every ChatGPT answer went through this exact loop. A 500-word answer ≈ 650 loops.</p>
+  <p class="note rv">Every word of every ChatGPT answer went through this exact loop. A 500-word answer ≈ 650 loops. The two middle stages — embeddings and attention — are the ones you drove with a real model on the pre-class page; the panel below is the two-paragraph version.</p>
+  <div class="deep rv">
+    <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">embeddings and attention, in two paragraphs</span></button>
+    <div class="deepbody">
+      <p><b>Embeddings — meaning as coordinates.</b> Before anything else happens, each token is turned into a long list of numbers: thousands of dimensions, of which a picture can show two. Tokens used in similar contexts land <b>near each other</b> — <i>idli</i> sits beside <i>dosa</i>, and both are a continent away from <i>GPU</i>. Because meaning is now geometry, it supports arithmetic: the famous party trick is <span style="font-family:var(--mono);color:var(--accent)">king − man + woman ≈ queen</span>. These are learned rows of a table, not hand-written; direction carries the meaning, and the same idea becomes a search engine over your own notes in Session 4.</p>
+      <p><b>Attention — every token looks at every other.</b> Coordinates alone cannot tell you what “it” refers to in <i>“the trophy didn’t fit in the suitcase because it was too big”</i>. So each token weighs every other token in the context and blends in what matters: “it” leans on <i>trophy</i>; change <i>big</i> to <i>small</i> and the same mechanism re-weights instantly toward <i>suitcase</i>. That mechanism is the <b>T in GPT</b> — the Transformer, from the 2017 paper <i>“Attention Is All You Need”</i>. Two honest footnotes: attention is <b>order-blind</b> (a set has no order), so position is added into each embedding first — <b>positional encoding</b>, today usually RoPE; and “every token looks at every other” costs <b>n²</b> — double the context, quadruple the work, which is why a 1M-token window was a headline and why Session 4 retrieves three paragraphs instead of pasting the textbook.</p>
+      <p class="note">Want the live versions? The pre-class page <span style="font-family:var(--mono)">how-llms-work.html</span> has the embedding map and the attention heat-map running on a real model (chapters on embeddings and attention); Session 4 re-teaches embeddings with the Gemini embedding API and real cosine numbers.</p>
+    </div>
+  </div>
 </section>
 
 <!-- HOT TAKE -->
 <section class="slide take">
   <div class="kicker rv"><span class="no">HT</span><span class="tk">hot_take</span><span class="tk">argue_with_me</span></div>
   <h1 class="rv" style="font-size:clamp(2.2rem,5vw,3.9rem)">If autocomplete can pass your exam,<br><span class="tu">your exam was never testing understanding.</span></h1>
-  <p class="lead rv mt" style="max-width:56ch">You just watched the whole trick: no ideas, no intent, no understanding — only next-token statistics. If that is enough to top a question paper, the paper was measuring memory and pattern, not thought.</p>
+  <p class="lead rv mt" style="max-width:56ch">You just watched the core loop, not the whole product: next-token prediction plus learned representations, attention, training, and sometimes tools. If a model can top a question paper, ask whether the paper measured recall and pattern rather than transferable understanding.</p>
   <p class="note rv">Disagree? Good. Bring it to the break — strongest counter-argument gets named on the closing slide.</p>
 </section>
 
 <!-- 12 · SCALE SLIDER -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">17</span><span class="tk">why_now?</span></div>
+  <div class="kicker rv"><span class="no">15</span><span class="tk">why_now?</span></div>
   <h2 class="rv">The loop is old. <span class="u">The scale is new.</span></h2>
   <div class="cols" style="grid-template-columns:1fr 1.15fr">
     <div class="demo rv">
@@ -781,7 +774,7 @@
     </div>
   </div>
   <p class="lead rv mt"><b>Quantity became quality.</b> Keep scaling the <i>same</i> next-token loop and abilities nobody explicitly programmed start appearing — <b>emergence</b>; researchers still argue how sudden it really is. (And since 2024, labs also <i>train</i> models to think step-by-step before answering — scale isn't the whole story.)</p>
-  <p class="note rv">How big did it get? ChatGPT crossed <b style="color:var(--ink)">1 billion monthly users</b> in June 2026 — the fastest app in history to 1B, beating TikTok and Instagram. 900M were using it <i>weekly</i> back in February.</p>
+  <p class="note rv">How big did it get? ChatGPT reached <b style="color:var(--ink)">roughly a billion monthly users</b> by mid-2026 — the fastest consumer app in history to that mark. (Figure as reported by the company; treat it as an order of magnitude, not a data point.)</p>
   <div class="deep rv">
     <button class="deeptog" aria-expanded="false"><span class="cv"></span><span class="lbl">scale is not one slider — it is three</span></button>
     <div class="deepbody">
@@ -790,7 +783,7 @@
       <div class="deepgrid">
         <div class="dcell"><h4><span class="em"></span>Then: bigger</h4><p>2018–2022. Parameter counts as the headline. Under-trained giants.</p></div>
         <div class="dcell"><h4><span class="em"></span>Now: better-fed and cheaper to serve</h4><p>Compute-optimal sizing, far more data, heavy filtering and dedup of that data — and models built for the cost of <i>answering</i>, not just training.</p></div>
-        <div class="dcell"><h4><span class="em"></span>Next: think longer</h4><p>The data wall is real — high-quality human text is finite. So the newest axis isn't training at all, it's spending compute at answer time. That's slide 20.</p></div>
+        <div class="dcell"><h4><span class="em"></span>Next: think longer</h4><p>The data wall is real — high-quality human text is finite. So the newest axis isn't training at all, it's spending compute at answer time. That's slide 20 — reasoning models.</p></div>
       </div>
       <p class="note">Keep the shape of the argument, not the constants. The exact ratio has been revised more than once and depends on how you count. What has held for six years: <b>capability follows compute in a predictable curve, and the curve is smooth even when the abilities that pop out of it feel sudden.</b> That's the honest version of "emergence."</p>
     </div>
@@ -799,9 +792,9 @@
 
 <!-- 13 · BASE VS TUNED -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">18</span><span class="tk">plot_twist</span></div>
-  <h2 class="rv">A freshly trained model is <span class="u">feral</span></h2>
-  <p class="lead rv">A raw “base model” only continues text. It has read everything and learned nothing about manners. Try it:</p>
+  <div class="kicker rv"><span class="no">16</span><span class="tk">plot_twist</span></div>
+  <h2 class="rv">A freshly trained model won’t answer you. <span class="u">It just keeps writing.</span></h2>
+  <p class="lead rv">Straight out of pretraining you get a <b>base model</b>. Ask it a question and it does not reply — it carries on writing, because continuing text is the only game it has ever played. The informal name for a model in that raw state is <b>feral</b>: all of the internet’s knowledge, none of its manners. Try it:</p>
   <div class="demo rv mt">
     <div class="dtitle">Same prompt, two models</div>
     <div style="font-family:var(--mono);font-size:.95rem;color:var(--ink)" id="bm-prompt"></div>
@@ -817,7 +810,7 @@
 
 <!-- 14 · FINISHING SCHOOL -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">19</span><span class="tk">from_parrot_to_assistant</span></div>
+  <div class="kicker rv"><span class="no">17</span><span class="tk">from_parrot_to_assistant</span></div>
   <h2 class="rv">Finishing school, <span class="u">in three steps</span></h2>
   <div class="cols3">
     <div class="card rv"><h3><span class="em"></span>Pretraining</h3>
@@ -835,7 +828,7 @@
 
 <!-- 14b · REASONING MODELS -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">20</span><span class="tk">the_third_dial</span></div>
+  <div class="kicker rv"><span class="no">18</span><span class="tk">the_third_dial</span></div>
   <h2 class="rv">Reasoning models: <span class="u">think longer</span>, not just train bigger</h2>
   <p class="lead rv">Since late 2024 there's a third way to buy intelligence. Dial 1 was <b>scale</b> — a bigger brain. Dial 2 was <b>finishing school</b> — better manners. Dial 3: let the model spend tokens <b>thinking</b> before it answers. A scratchpad you usually don't see, then the reply.</p>
   <div class="cols mt">
@@ -851,12 +844,12 @@
 
 <!-- M · KITCHENS + LANDSCAPE -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">21</span><span class="tk">same_trick</span><span class="tk">different_kitchens</span></div>
+  <div class="kicker rv"><span class="no">19</span><span class="tk">same_trick</span><span class="tk">different_kitchens</span></div>
   <h2 class="rv">Why ChatGPT ≠ Gemini ≠ Claude</h2>
   <p class="lead rv">Three kitchens, same recipe book, different biryani: different <b>training data</b>, different <b>finishing school</b>, different <b>house rules</b> (system prompts) and <b>tools</b> bolted on. The map as of mid-2026:</p>
   <div class="rv mt">
   <table class="tbl">
-    <tr><th>Lab</th><th>Flagship family</th><th>Weights</th><th>Worth knowing</th></tr>
+    <tr><th>Lab</th><th>Flagship family <span style="font-weight:400;text-transform:none;letter-spacing:0">(names as of mid-2026 — they change monthly)</span></th><th>Weights</th><th>Worth knowing</th></tr>
     <tr><td>OpenAI</td><td>GPT-5.6 (Luna · Terra · Sol)</td><td><span class="tag closed">Closed</span></td><td>Started the ChatGPT era</td></tr>
     <tr><td>Google DeepMind</td><td>Gemini 3.5 Flash · Pro</td><td><span class="tag closed">Closed</span></td><td>1M-token windows · our free lab</td></tr>
     <tr><td>Anthropic</td><td>Claude Fable 5 · Sonnet 5 · Opus 4.8</td><td><span class="tag closed">Closed</span></td><td>Safety lab · coding + long docs</td></tr>
@@ -882,7 +875,7 @@
 
 <!-- 17 · FAILURES (click to reveal) -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">22</span><span class="tk">you_now_know_why</span></div>
+  <div class="kicker rv"><span class="no">20</span><span class="tk">you_now_know_why</span></div>
   <h2 class="rv">Famous failures — <span class="u">you explain them</span></h2>
   <p class="lead rv" style="margin-bottom:14px">Click a card only <b>after</b> the class has guessed the mechanism.</p>
   <div class="cols">
@@ -908,7 +901,7 @@
 
 <!-- 18 · CONTEXT WINDOW -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">23</span><span class="tk">one_last_concept</span></div>
+  <div class="kicker rv"><span class="no">21</span><span class="tk">one_last_concept</span></div>
   <h2 class="rv">The context window: <span class="u">its entire working memory</span></h2>
   <p class="lead rv">If it isn't in the window, it doesn't exist — the model's entire universe is one box measured in tokens. Try filling it:</p>
   <div class="demo rv mt">
@@ -954,7 +947,7 @@
 
 <!-- 19 · RECAP (active recall) -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">24</span><span class="tk">lock_it_in</span></div>
+  <div class="kicker rv"><span class="no">22</span><span class="tk">lock_it_in</span></div>
   <h2 class="rv">Eight words you <span class="u">own</span> now</h2>
   <p class="lead rv" style="margin-bottom:14px">Active recall: say the definition out loud <b>before</b> clicking.</p>
   <div class="cols3" style="grid-template-columns:repeat(4,1fr)">
@@ -996,7 +989,7 @@
 
 <!-- N · API ANATOMY -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">25</span><span class="tk">before_you_open_laptops</span></div>
+  <div class="kicker rv"><span class="no">23</span><span class="tk">before_you_open_laptops</span></div>
   <h2 class="rv">What actually happens <span class="u">when you call an API</span></h2>
   <div class="demo rv">
     <div class="dtitle">One request, round trip — press send</div>
@@ -1019,14 +1012,14 @@
 
 <!-- N · LAB KIT & RHYTHM -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">26</span><span class="tk">how_labs_work</span><span class="tk">same_rules_all_weekend</span></div>
+  <div class="kicker rv"><span class="no">24</span><span class="tk">how_labs_work</span><span class="tk">same_rules_all_weekend</span></div>
   <h2 class="rv">Your lab kit, <span class="u">and the rhythm</span></h2>
   <div class="cols" style="grid-template-columns:1fr 1fr">
     <div>
       <div class="card rv"><h3><span class="em"></span>Lab handout</h3><p>Parts <b>A → E</b>, top to bottom. Exact steps, checkpoints, and stretch goals — you never have to wonder “what now?”</p></div>
       <div class="card rv mt"><h3><span class="em"></span>Colab notebook</h3><p>Cells pre-written, you run and edit. <b>File → Save a copy in Drive</b> first, every time.</p></div>
       <div class="card rv mt"><h3><span class="em"></span>Cheatsheet</h3><p>One page per session — key terms + the code that matters. Keep it open in a tab; it's your revision material too.</p></div>
-      <div class="card rv hi mt"><h3><span class="em"></span>Everything lives at</h3><p style="font-family:var(--mono);font-size:1.05rem;color:var(--ink)">tinyurl.com/tce-genai</p><!-- TODO: replace with real short link before Day 1 --><p class="note" style="margin-top:6px">Bookmark it now — decks, handouts, notebooks, cheatsheets for all 6 sessions.</p></div>
+      <div class="card rv hi mt"><h3><span class="em"></span>Everything lives at</h3><p style="font-family:var(--mono);font-size:1.45rem;font-weight:700;color:var(--ink);letter-spacing:-.01em">intrepidkarthi.com/genai</p><p class="note" style="margin-top:6px">Bookmark it — every deck, handout, notebook and cheatsheet, all six sessions.</p></div>
     </div>
     <div>
       <div class="demo rv">
@@ -1044,18 +1037,19 @@
         </div>
       </div>
       <div class="card rv mt"><h3><span class="em"></span>The rhythm — every lab, all weekend</h3>
-        <p><b>1.</b> Pairs — both partners run every cell.<br>
+        <p><b>1.</b> Pairs — both partners have a key · one drives per part · swap at each checkpoint.<br>
         <b>2.</b> Hit a ✓ checkpoint → wave me over, show it.<br>
         <b>3.</b> Stuck &gt; 5 minutes → ask the pair beside you first, then me.<br>
         <b>4.</b> Finished early → stretch goals. There is always more.</p>
-        <p class="note">Checkpoints are how I know nobody's silently left behind — they're for you, not for marks. Using an AI assistant to write your lab code? Allowed — encouraged. One rule: <b>your eval set judges its code too.</b></p></div>
+        <p class="note">Checkpoints are how I know nobody's silently left behind — they're for you, not for marks. Using an AI assistant to write your lab code? Allowed — encouraged. One rule: <b>your eval set judges its code too.</b></p>
+        <p class="note" style="margin-top:8px;color:var(--ink)"><b>Lab 3 needs two photos on your laptop</b> — put a receipt + a page of your handwriting in Drive now, while you have a minute.</p></div>
     </div>
   </div>
 </section>
 
 <!-- 20 · LAB BRIEF -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">27</span><span class="tk">50_minutes</span><span class="tk">laptops_open</span></div>
+  <div class="kicker rv"><span class="no">25</span><span class="tk">50_minutes</span><span class="tk">laptops_open</span></div>
   <h2 class="rv">Lab 1: <span class="u">your first AI API call</span></h2>
   <div class="cols" style="grid-template-columns:1.2fr 1fr">
     <div class="steps rv">
@@ -1071,12 +1065,12 @@
 
 client = genai.Client(api_key=KEY)
 r = client.models.<span class="f">generate_content</span>(
-    model=<span class="s">"gemini-flash-latest"</span>,
+    model=<span class="s">"gemini-flash-lite-latest"</span>,
     contents=<span class="s">"Explain tokens like I'm 12"</span>)
 <span class="f">print</span>(r.text)</div>
-      <p class="note" style="margin-top:10px"><span style="font-family:var(--mono)">gemini-flash-latest</span> is our free workhorse — the alias gives you the newest Flash automatically — today that's <b>Gemini 3.5 Flash</b>. The free model in your lab today beats last year's flagship.</p>
+      <p class="note" style="margin-top:10px"><span style="font-family:var(--mono)">gemini-flash-lite-latest</span> is our free workhorse — the alias keeps you on the newest Flash Lite automatically — today that's <b>Gemini 3.5 Flash Lite</b>. Lite runs with minimal thinking by default, so your free quota lasts the whole lab. The free model in your lab today still beats last year's flagship.</p>
       <div class="card mt"><h3>Rules of the lab</h3>
-        <p>Work in pairs, both run the code. Stuck &gt; 5 min? Ask the pair beside you first, then me. Finished early? Stretch goals on the handout.</p></div>
+        <p>Work in pairs — both have a key, one drives per part, swap at each checkpoint. Stuck &gt; 5 min? Ask the pair beside you first, then me. Finished early? Stretch goals on the handout.</p></div>
     </div>
   </div>
 
@@ -1085,11 +1079,11 @@ r = client.models.<span class="f">generate_content</span>(
 
 <!-- 21 · HOMEWORK -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">28</span><span class="tk">no_homework</span><span class="tk">we_roll_straight_on</span></div>
-  <h2 class="rv">Two things before <span class="u">the next session</span></h2>
+  <div class="kicker rv"><span class="no">26</span><span class="tk">no_homework</span><span class="tk">we_roll_straight_on</span></div>
+  <h2 class="rv">Three things before <span class="u">the next session</span></h2>
   <div class="cols">
     <div class="card rv"><h3><span class="em"></span>Your 10 questions — written in Part E</h3>
-      <p>You wrote these in Part E: 10 questions on a subject you know <b>cold</b> — DSA, cricket stats, Ilaiyaraaja discography — <b>with the correct answers</b> saved in a text file. That file is live ammunition for the <b>lie-detector lab</b>, next session. Missing it? Two minutes. Write it now.</p></div>
+      <p>You wrote these in Part E: 10 questions on a subject you know <b>cold</b> — DSA, cricket stats, Ilaiyaraaja discography — <b>each with a one-word or one-number answer</b> (a name, a year, a score — not a sentence) saved in a text file. That file is live ammunition for the <b>lie-detector lab</b>, next session. Missing it? Two minutes. Write it now.</p></div>
     <div class="card rv"><h3><span class="em"></span>Coming up: you catch it lying</h3>
       <p>In the next session's lab you'll interrogate the model on <b>your</b> expert topic until it confidently states something false — then measure how often, with numbers. Best catch gets bragging rights.</p></div>
   </div>
@@ -1099,7 +1093,7 @@ r = client.models.<span class="f">generate_content</span>(
 
 <!-- 22 · THANKS -->
 <section class="slide">
-  <div class="kicker rv"><span class="no">29</span><span class="tk">short_break</span><span class="tk">session_2_starts_soon</span></div>
+  <div class="kicker rv"><span class="no">27</span><span class="tk">short_break</span><span class="tk">session_2_starts_soon</span></div>
   <h1 class="rv" style="font-size:clamp(2rem,4.4vw,3.4rem)">You've learned the trick.<br><span class="u">Next: you learn to drive it.</span></h1>
   <p class="lead rv mt">Stretch, refill water, and find me if anything from this session is still fuzzy:</p>
   <div class="mt rv">
@@ -1178,12 +1172,40 @@ function tokBgs(){return ['var(--t1)','var(--t2)','var(--t3)','var(--t4)','var(-
   let tx=null;
   addEventListener('touchstart',e=>{
     // don't hijack drags on sliders / interactive demos
-    tx=e.target.closest('input[type=range],.map,.attn,.demo')?null:e.touches[0].clientX;
+    tx=e.target.closest('input[type=range],.demo')?null:e.touches[0].clientX;
   },{passive:true});
   addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;
     if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));tx=null;},{passive:true});
   const h=parseInt((location.hash||'').slice(1),10);
   go(isNaN(h)?0:h-1,false);
+  addEventListener('hashchange',()=>{const n=parseInt((location.hash||'').slice(1),10);if(!isNaN(n))go(n-1,false);});
+})();
+
+/* ============ theme toggle (light/dark, saved per browser) ============ */
+(function(){
+  const btn=document.getElementById('theme-btn');
+  function apply(t){
+    document.documentElement.setAttribute('data-theme',t);
+    if(btn)btn.textContent=(t==='dark')?'light':'dark';
+    document.dispatchEvent(new CustomEvent('themechange'));
+  }
+  let saved=null;
+  try{saved=localStorage.getItem('tce-genai-theme');}catch(e){}
+  apply(saved==='dark'?'dark':'light');
+  if(btn)btn.addEventListener('click',()=>{
+    const next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    try{localStorage.setItem('tce-genai-theme',next);}catch(e){}
+    apply(next);
+  });
+})();
+
+/* ============ session dots: where are we in the six-session arc ============ */
+(function(){
+  const dots=[].slice.call(document.querySelectorAll('#sesdots i'));
+  if(!dots.length)return;
+  const ME=0;                         // this deck is session 1 (0-based) — the HUD dot never moves within a deck
+  const counts=[29,21,17,20,23,21];   // slides per session, for the record
+  dots.forEach((d,k)=>d.classList.toggle('on',k===ME));
 })();
 
 /* ============ title: subtitle appears token by token ============ */
@@ -1399,6 +1421,22 @@ document.addEventListener('click',e=>{
     out.textContent='10 rolls → '+order.map(k=>base[k][0]+' ×'+tally[k]).join(' · ');
     rows.forEach((row,k)=>row.classList.toggle('win',!!tally[k]));
   };
+  /* 50-roll histogram: the same dice, the long way */
+  const tallyBox=document.getElementById('tmp-tally'),tallyRows=document.getElementById('tmp-tallyrows'),
+        roll50=document.getElementById('tmp-roll50');
+  function tallyPaint(){
+    const p=dist(+slider.value),tally=new Array(base.length).fill(0);
+    for(let n=0;n<50;n++){tally[sample(p)]++;}
+    tallyBox.style.display='block';
+    tallyRows.innerHTML=base.map((o,k)=>{
+      const pct=(tally[k]/50)*100;
+      return '<div class="tgrow'+(tally[k]?'':'')+'"><span class="w">'+o[0]+'</span><span class="tr"><span class="fi" style="width:'+pct+'%"></span></span><span class="p">'+tally[k]+'</span></div>';
+    }).join('');
+    const win=tally.indexOf(Math.max.apply(null,tally));
+    out.textContent='50 rolls → '+base[win][0]+' won '+tally[win]+'×. At T='+(+slider.value).toFixed(2)+', '+
+      (tally[win]/50>=0.6?'the winner dominates.':'the field spreads out.');
+  }
+  if(roll50)roll50.onclick=tallyPaint;
   slider.oninput=render;render();
 })();
 
@@ -1444,97 +1482,6 @@ document.addEventListener('click',e=>{
   document.querySelectorAll('[data-tk]').forEach(b=>b.onclick=()=>{inp.value=b.dataset.tk;render();});
   document.addEventListener('themechange',render);
   render();
-})();
-
-/* ============ demo: embedding map ============ */
-(function(){
-  const words=[
-    ['idli',14,22],['dosa',20,16],['sambar',10,32],['biryani',26,27],['jigarthanda',17,38],
-    ['cricket',72,18],['wicket',80,24],['Kohli',66,26],['sixer',76,33],
-    ['laptop',70,68],['GPU',79,75],['Python',63,78],['compiler',73,86],
-    ['happy',18,70],['joy',24,77],['angry',11,80],['love',27,66],
-    ['chef',38,30],['stadium',55,31],['keyboard',52,72],['smile',35,72]
-  ];
-  const map=document.getElementById('emb-map'),svg=document.getElementById('emb-svg'),out=document.getElementById('emb-out');
-  let sel=[];
-  words.forEach(w=>{
-    const el=document.createElement('div');el.className='word';el.textContent=w[0];
-    el.style.left=w[1]+'%';el.style.top=w[2]+'%';el.dataset.x=w[1];el.dataset.y=w[2];
-    el.onclick=()=>{
-      if(sel.includes(el)){el.classList.remove('sel');sel=sel.filter(s=>s!==el);}
-      else{if(sel.length===2){sel.forEach(s=>s.classList.remove('sel'));sel=[];}
-        el.classList.add('sel');sel.push(el);}
-      draw();
-    };
-    map.appendChild(el);
-  });
-  function draw(){
-    svg.innerHTML='';
-    if(sel.length<2){out.textContent=sel.length===1?'Now click a second word…':'Click two words to measure how close their meanings are.';return;}
-    const r=map.getBoundingClientRect();
-    const [a,b]=sel.map(el=>({x:+el.dataset.x/100*r.width,y:+el.dataset.y/100*r.height,t:el.textContent}));
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',a.x);line.setAttribute('y1',a.y);line.setAttribute('x2',b.x);line.setAttribute('y2',b.y);
-    line.setAttribute('stroke',cssVar('--ink'));line.setAttribute('stroke-width','2');line.setAttribute('stroke-dasharray','5 5');
-    svg.appendChild(line);
-    const dx=(+sel[0].dataset.x - +sel[1].dataset.x),dy=(+sel[0].dataset.y - +sel[1].dataset.y);
-    const d=Math.hypot(dx,dy),maxD=Math.hypot(100,100);
-    const sim=Math.max(0,1-d/(maxD*0.75));
-    const verdict=sim>0.8?'practically neighbours':sim>0.6?'same neighbourhood':sim>0.4?'same city, different area':'different continents of meaning';
-    out.innerHTML='similarity(<b style="font-family:var(--font);color:var(--ink);font-size:1rem">'+a.t+'</b>, <b style="font-family:var(--font);color:var(--ink);font-size:1rem">'+b.t+'</b>) ≈ <b>'+sim.toFixed(2)+'</b> — '+verdict;
-  }
-  addEventListener('resize',draw);
-})();
-
-/* ============ demo: attention ============ */
-(function(){
-  const zone=document.getElementById('at-zone'),svg=document.getElementById('at-svg'),
-        wrap=document.getElementById('at-words'),note=document.getElementById('at-note'),
-        toggle=document.getElementById('at-toggle');
-  let variant=0;
-  const sentences=[
-    {words:['The','trophy','didn’t','fit','in','the','suitcase','because','it','was','too','big'],
-     focus:8,weights:{1:.80,6:.13,11:.42,3:.25}},
-    {words:['The','trophy','didn’t','fit','in','the','suitcase','because','it','was','too','small'],
-     focus:8,weights:{1:.12,6:.82,11:.40,3:.25}}
-  ];
-  function build(){
-    const s=sentences[variant];wrap.innerHTML='';svg.innerHTML='';
-    s.words.forEach((w,k)=>{
-      const el=document.createElement('span');el.className='aw'+(k===s.focus?' lit':'');el.textContent=w;
-      el.onmouseenter=()=>draw(k);el.onmouseleave=clear;
-      wrap.appendChild(el);
-    });
-    note.textContent=variant===0?'Hover “it” — which word claims it?':'Same sentence, one word changed. Hover “it” again.';
-    setTimeout(()=>draw(s.focus),400);
-  }
-  function clear(){svg.innerHTML='';[...wrap.children].forEach(el=>el.classList.remove('hot'));}
-  function draw(k){
-    clear();const s=sentences[variant];const els=[...wrap.children];els[k].classList.add('hot');
-    const zr=zone.getBoundingClientRect(),er=els[k].getBoundingClientRect();
-    const x1=er.left-zr.left+er.width/2,y1=er.top-zr.top;
-    const weights=(k===s.focus)?s.weights:defaultW(k,s.words.length);
-    Object.entries(weights).forEach(([j,w])=>{
-      j=+j;if(j===k||!els[j])return;
-      const tr=els[j].getBoundingClientRect();
-      const x2=tr.left-zr.left+tr.width/2,y2=tr.top-zr.top;
-      const midY=Math.min(y1,y2)-24-w*36;
-      const p=document.createElementNS('http://www.w3.org/2000/svg','path');
-      p.setAttribute('d','M'+x1+' '+y1+' Q'+((x1+x2)/2)+' '+midY+' '+x2+' '+y2);
-      p.setAttribute('fill','none');p.setAttribute('stroke',w>.5?cssVar('--accent'):cssVar('--muted'));
-      p.setAttribute('stroke-width',(w*6+0.8).toFixed(1));p.setAttribute('stroke-linecap','round');p.setAttribute('opacity',Math.max(.35,w));
-      svg.appendChild(p);
-      const label=document.createElementNS('http://www.w3.org/2000/svg','text');
-      label.setAttribute('x',(x1+x2)/2);label.setAttribute('y',midY+9);label.setAttribute('text-anchor','middle');
-      label.setAttribute('fill',w>.5?cssVar('--accent'):cssVar('--muted'));label.setAttribute('font-size','11');label.setAttribute('font-family','monospace');
-      label.textContent=(w*100).toFixed(0)+'%';
-      svg.appendChild(label);
-    });
-  }
-  function defaultW(k,n){const w={};[k-1,k+1,0].forEach(j=>{if(j>=0&&j<n&&j!==k)w[j]=.25;});return w;}
-  toggle.onclick=()=>{variant=1-variant;toggle.textContent=variant===0?'Change “big” → “small”':'Change “small” → “big”';build();};
-  build();addEventListener('resize',build);
-  document.addEventListener('slidechange',()=>{const sl=zone.closest('.slide');if(sl&&sl.classList.contains('active'))build();});
 })();
 
 /* ============ pipeline stepper ============ */
@@ -1811,7 +1758,7 @@ document.addEventListener('click',e=>{
         pay=document.getElementById('api-payload'),btn=document.getElementById('api-send');
   const nodes=[...flow.querySelectorAll('.anode')];
   const steps=[
-    '<span class="mono">client.models.generate_content(model="gemini-flash-latest", contents="\u2026")</span><br>Your laptop wraps this into an HTTPS request. The model does NOT run here.',
+    '<span class="mono">client.models.generate_content(model="gemini-flash-lite-latest", contents="\u2026")</span><br>Your laptop wraps this into an HTTPS request. The model does NOT run here.',
     'Gateway reads your <b>API key</b>: who is this? within your free-tier quota (typically ~10 requests/min)? Over the limit \u2192 <b style="color:var(--red)">error 429</b>, try again shortly.',
     'GPUs load the <b>frozen parameters</b> and run the token loop — one loop per token. This is the 1\u20133 seconds you wait.',
     'Tokens stream back. <span class="mono">r.text</span> is your answer. Quota spent: a few hundred tokens. Loop back anytime.'
@@ -1916,7 +1863,7 @@ document.addEventListener('click',e=>{
   var PHASES=[
     function(){ // 0 embed
       phaseEl.textContent='1/5 · tokens become numbers';
-      statusEl.innerHTML='Each token is looked up as a <b>vector of numbers</b> (its embedding — the map from the next demos).';
+      statusEl.innerHTML='Each token is looked up as a <b>vector of numbers</b> (its embedding — the meaning-map you drove on the pre-class page).';
       var ts=toksEl.querySelectorAll('.nn-tok');
       ts.forEach(function(s,i){later(function(){s.classList.add('hot');
         if(i<COLS[0]&&nodes[0][i])nodes[0][i].act.setAttribute('r',R-3);},i*110);});
@@ -1983,7 +1930,7 @@ document.addEventListener('click',e=>{
 
 /* ===== presenter mode ===== */
 (function(){
-  var DATA = [{"m": 1, "n": "<b>Open with energy.</b> “By the end of today, everyone here writes code that talks to a frontier AI model — for free.”", "c": false, "title": "How machines learned to talk"}, {"m": 1, "n": "<b>Under 45 seconds.</b> One line of credibility, one line of humility. The failed-things line gets the laugh — let it land, then move on. The work sells you better than the bio.", "c": true, "title": "I sat in these seats — TCE CSE, class of 2009."}, {"m": 1.5, "n": "Walk the 6 artifacts fast. Plant the capstone seed: “Session 6 you demo — start thinking what you’d build.”", "c": false, "title": "12 hours. 6 things you'll build."}, {"m": 3, "n": "<b>GAME.</b> Class shouts judges/creates before each click. Gotcha = keyboard autocomplete (generative). ~25s/item.", "c": true, "title": "Two kinds of AI: judges vs creators"}, {"m": 2.5, "n": "Click rings outside-in AI→LLM. Land <b>app ≠ model</b>: ChatGPT is WhatsApp, GPT is the network.", "c": false, "title": "AI, ML, GenAI, LLM — who lives inside whom"}, {"m": 1.5, "n": "THE slide. Say slowly: one job — predict the next token, repeat. Pre-empt “but it reasons!” → hold for scale.", "c": false, "title": "ChatGPT is autocomplete with a PhD."}, {"m": 3.5, "n": "<b>GAME.</b> Class shouts the next word BEFORE reveal. Ex2 (idli+__) room disagrees = spread distribution. Finale: Thiagarajar College of ___ → 97% — the room is sitting inside a distribution. Bridge: who picks? dice.", "c": false, "title": "Play the model: guess the next word"}, {"m": 3, "n": "<b>THE demystifier.</b> Click <b>Build the table</b> — narrate: training is just tallying which word follows which. Then Sample from &lt;|start|&gt;: room shouts a word, you roll. Hit <b>Take the top</b> to contrast greedy vs sampling. Land it: the SAME three steps as Claude — only step 2 and training differ. It stops when it samples &lt;|end|&gt; — that is the EOS token. Compress by skipping the greedy toggle.", "c": true, "title": "Those odds aren’t magic — you just count words."}, {"m": 3, "n": "<b>THE money slide.</b> Play it once in silence — let the room watch. Then Reset and Step through, narrating: tokens→numbers, layers mix, distribution, dice, APPEND. Land the punch: it never plans a sentence. It only ever picks one next token — 650 times for a 500-word answer.", "c": false, "title": "Watch the network think"}, {"m": 3, "n": "<b>SLIDER.</b> T→0.05, Roll 10× (Chennai ×10). T→2, Roll 10× until pizza shows in the tally. Rule: facts low, creative high. Answers “why different answers?” <b>[D] deeper:</b> logits &rarr; softmax &rarr; temperature <i>divides the logits</i>, so T=0 is argmax; plus top-k / top-p. Open it if anyone asks &ldquo;but where does the probability come from?&rdquo;", "c": false, "title": "Why the same question gives different answers"}, {"m": 2.5, "n": "<b>Kills #1 myth.</b> Search → 0 results; Ask model → pirate jigarthanda poem. “Nothing stored. It computed that.”", "c": false, "title": "Wait — is it just searching a giant database?"}, {"m": 3.5, "n": "<b>WIDGET.</b> Invite a student to drag both sliders to ‘trained’. Narrate: w,b are PARAMETERS; a model = a file of knob values. <b>[D] deeper:</b> cross-entropy loss + perplexity &mdash; the one number a lab watches for months. Good answer to &ldquo;how do they know it&rsquo;s working?&rdquo;", "c": false, "title": "What's inside a model? Just knobs."}, {"m": 2.5, "n": "Cookbook analogy: write once, cooking doesn’t change the book. Q3 (free-tier trains future) = the privacy warning.", "c": false, "title": "Training vs using: the cookbook rule"}, {"m": 3, "n": "<b>Type a student name, then தமிழ்.</b> The ratio jump is the moment — and the ₹ meter turns it into money: same meaning, bigger bill. Honest: illustrative tokenizer; lab shows real counts.", "c": false, "title": "Models don't read words. They read tokens."}, {"m": 2.5, "n": "idli+dosa high, idli+GPU low. Student predicts a pair. Deliver king−man+woman≈queen. ‘Session 4 turns this into search.’", "c": false, "title": "Embeddings: meaning becomes coordinates"}, {"m": 3.5, "n": "Hover ‘it’ → trophy. Ask “how did YOU know?” Toggle big→small → suitcase. Let it breathe. ‘The T in GPT.’ <b>[D] deeper:</b> attention is order-blind &rarr; positional encoding / RoPE; and the n&sup2; cost curve. Open this the moment a sharp student asks about word order.", "c": false, "title": "Attention: every word looks at every other word"}, {"m": 3.5, "n": "<b>STEPPER — hardest 3 min.</b> Step slowly, narrate each stage; then Auto-run — it ends on the stat flash, let it land. ‘500-word answer ≈ 650 loops.’", "c": false, "title": "The whole trick, step by step"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Say it looking at the faculty row — and smile. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "If autocomplete can pass your exam…"}, {"m": 2, "n": "Drag 10M→1T. Pause at 10B: ‘translation appeared — nobody programmed it.’ Emergence; researchers argue how sudden it is. <b>[D] deeper:</b> scaling laws + the Chinchilla correction (params and data together), and the data wall. Pairs with slide 22 on test-time compute.", "c": true, "title": "The loop is old. The scale is new."}, {"m": 2.5, "n": "Click Raw base on 2+2 (laugh), then After finishing school. Point: raw pretraining ≠ assistant.", "c": false, "title": "A freshly trained model is feral"}, {"m": 2, "n": "Three steps, one line each. Land: ‘ChatGPT’s 2022 win was better finishing school, not a smarter brain.’", "c": false, "title": "Finishing school, in three steps"}, {"m": 2, "n": "<b>Dial metaphor.</b> 1 scale, 2 finishing school, 3 thinking time. Land the cost rule: never pay thinking prices for capital-city questions. Pre-empts 'is o-series different magic?' — no, more tokens.", "c": true, "title": "Reasoning models: think longer, not train bigger"}, {"m": 1.5, "n": "Biryani line. Two points only: closed vs open weights, and ‘names change, mechanics don’t.’ Don’t read table. <b>[D] deeper:</b> MoE, distillation, quantization &mdash; why Flash-class models exist and why parameter count stopped predicting cost. Sets up the S6 routing decision.", "c": true, "title": "Why ChatGPT ≠ Gemini ≠ Claude"}, {"m": 3, "n": "<b>REVEAL CARDS.</b> Class explains WHY before each click: strawberry→tokens, math→predict, news→cutoff, citation→plausible.", "c": false, "title": "Famous failures — you explain them"}, {"m": 2.5, "n": "Fill window with chat+notes (green), then textbook → red overflow. Then 1M: textbook fits — ‘the wall moves; the physics doesn’t.’ Twist: <b>no memory — app re-sends everything.</b> Motivates RAG. <b>[D] deeper:</b> the KV cache: prefill vs decode, TTFT vs tokens/sec, and why context caching is ~90% off. This is the mechanism behind three later cost claims &mdash; worth opening if time allows.", "c": false, "title": "The context window: its entire working memory"}, {"m": 2.5, "n": "<b>ACTIVE RECALL.</b> Class says each definition aloud, THEN click. Now includes Parameter + Inference.", "c": false, "title": "Eight words you own now"}, {"m": 2.5, "n": "<b>Press Send.</b> Dot travels code→key→GPUs→response. ‘The model does NOT run on your laptop.’ De-mystifies the lab.", "c": false, "title": "What actually happens when you call an API"}, {"m": 2, "n": "Shown ONCE, applies to all 6 labs. Point at A→E strip; make everyone bookmark the link. ‘Checkpoints are for you, not marks.’", "c": false, "title": "Your lab kit, and the rhythm"}, {"m": 52, "n": "<b>2 min brief, then 50 MIN LAB.</b> 5 steps on board + aistudio.google.com. Pairs, both run code, 5-min rule. Circulate; checkpoint sweep at +40. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 1: your first AI API call"}, {"m": 3, "n": "After lab. The 10-question test set is written in the last 10 min of lab (Part E) — confirm every pair has it. Feeds Session 2.", "c": false, "title": "Two things before the next session"}, {"m": 3, "n": "<b>Show & tell (~5) + close.</b> 2–3 pairs’ model differences. ‘Learned the trick; next you drive it.’ Remind: bring docs for Day 2. <b>Links are on screen</b> — point at them.", "c": false, "title": "You've learned the trick. Next: you drive it."}];
+  var DATA = [{"m": 1, "n": "<b>Open with energy.</b> “By the end of today, everyone here writes code that talks to a frontier AI model — for free.”", "c": false, "title": "How machines learned to talk"}, {"m": 1, "n": "<b>Under 45 seconds.</b> One line of credibility, one line of humility. The failed-things line gets the laugh — let it land, then move on. The work sells you better than the bio.", "c": true, "title": "I sat in these seats — TCE CSE, class of 2009."}, {"m": 1.5, "n": "Walk the 6 artifacts fast. Plant the capstone seed: “Session 6 you demo — start thinking what you’d build.”", "c": false, "title": "12 hours. 6 things you'll build."}, {"m": 3, "n": "<b>GAME.</b> Class shouts judges/creates before each click. Gotcha = keyboard autocomplete (generative). ~25s/item.", "c": true, "title": "Two kinds of AI: judges vs creators"}, {"m": 2.5, "n": "Click rings outside-in AI→LLM. Land <b>app ≠ model</b>: ChatGPT is WhatsApp, GPT is the network.", "c": false, "title": "AI, ML, GenAI, LLM — who lives inside whom"}, {"m": 1.5, "n": "THE slide. Say slowly: one job — predict the next token, repeat. Pre-empt “but it reasons!” → hold for scale.", "c": false, "title": "ChatGPT is autocomplete at scale. That one idea goes surprisingly far."}, {"m": 3.5, "n": "<b>GAME.</b> Class shouts the next word BEFORE reveal. Ex2 (idli+__) room disagrees = spread distribution. Finale: Thiagarajar College of ___ → 97% — the room is sitting inside a distribution. Bridge: who picks? dice.", "c": false, "title": "Play the model: guess the next word"}, {"m": 2.5, "n": "<b>THE demystifier.</b> Click <b>Build the table</b> — narrate: training is just tallying which word follows which. Then Sample from &lt;|start|&gt;: room shouts a word, you roll. Hit <b>Take the top</b> to contrast greedy vs sampling. Land it: the SAME three steps as Claude — only step 2 and training differ. It stops when it samples &lt;|end|&gt; — that is the EOS token. Compress by skipping the greedy toggle.", "c": true, "title": "Those odds aren’t magic — you just count words."}, {"m": 3, "n": "<b>THE money slide.</b> Play it once in silence — let the room watch. Then Reset and Step through, narrating: tokens→numbers, layers mix, distribution, dice, APPEND. Land the punch: it never plans a sentence. It only ever picks one next token — 650 times for a 500-word answer.", "c": false, "title": "Watch the network think"}, {"m": 3, "n": "<b>SLIDER.</b> T→0.05, Roll 10× (Chennai ×10). T→2, Roll 10× until pizza shows in the tally. Rule: facts low, creative high. Answers “why different answers?” <b>[D] deeper:</b> logits &rarr; softmax &rarr; temperature <i>divides the logits</i>, so T=0 is argmax; plus top-k / top-p. Open it if anyone asks &ldquo;but where does the probability come from?&rdquo;", "c": false, "title": "Why the same question gives different answers"}, {"m": 2.5, "n": "<b>Kills #1 myth.</b> Search → 0 results; Ask model → pirate jigarthanda poem. “Nothing stored. It computed that.”", "c": false, "title": "Wait — is it just searching a giant database?"}, {"m": 3, "n": "<b>WIDGET.</b> Invite a student to drag both sliders to ‘trained’. Narrate: w,b are PARAMETERS; a model = a file of knob values. <b>[D] deeper:</b> cross-entropy loss + perplexity &mdash; the one number a lab watches for months. Good answer to &ldquo;how do they know it&rsquo;s working?&rdquo;", "c": false, "title": "What's inside a model? Just knobs."}, {"m": 2.5, "n": "Cookbook analogy: write once, cooking doesn’t change the book. Q3 (free-tier trains future) = the privacy warning.", "c": false, "title": "Training vs using: the cookbook rule"}, {"m": 2.5, "n": "<b>Type a student name, then தமிழ்.</b> The ratio jump is the moment — and the ₹ meter turns it into money: same meaning, bigger bill. Honest: illustrative tokenizer; lab shows real counts.", "c": false, "title": "Models don't read words. They read tokens."}, {"m": 3, "n": "<b>STEPPER — the hardest 3 min.</b> Ask “who did the pre-class page?” — then Step slowly, narrating each stage: tokens → coordinates → attention → scores → dice → APPEND. Auto-run ends on the stat flash; let it land. ‘500-word answer ≈ 650 loops.’ Embeddings and attention are NOT taught on their own slides any more — they live on the page and come back in Session 4. <b>[D] deeper:</b> the two-paragraph version (idli/dosa, king−man+woman, what “it” points to, the T in GPT, positional encoding, n²). Open it only if someone asks “wait, what is attention?”", "c": false, "title": "You saw this machine on the pre-class page — here it is in one loop"}, {"m": 1.5, "n": "<b>Pick the fight deliberately.</b> Read it once, slowly, then be quiet for 3 seconds. Say it looking at the faculty row — and smile. Invite disagreement — take one counter-argument now, park the rest for the break.", "c": true, "title": "If autocomplete can pass your exam, your exam was never testing understanding."}, {"m": 2, "n": "Drag 10M→1T. Pause at 10B: ‘translation appeared — nobody programmed it.’ Emergence; researchers argue how sudden it is. <b>[D] deeper:</b> scaling laws + the Chinchilla correction (params and data together), and the data wall. Pairs with slide 20 on test-time compute.", "c": true, "title": "The loop is old. The scale is new."}, {"m": 2.5, "n": "Click Raw base on 2+2 (laugh), then After finishing school. Point: raw pretraining ≠ assistant.", "c": false, "title": "A freshly trained model won’t answer you. It just keeps writing."}, {"m": 2, "n": "Three steps, one line each. Land: ‘ChatGPT’s 2022 win was better finishing school, not a smarter brain.’", "c": false, "title": "Finishing school, in three steps"}, {"m": 2, "n": "<b>Dial metaphor.</b> 1 scale, 2 finishing school, 3 thinking time. Land the cost rule: never pay thinking prices for capital-city questions. Pre-empts 'is o-series different magic?' — no, more tokens.", "c": true, "title": "Reasoning models: think longer, not just train bigger"}, {"m": 1.5, "n": "Biryani line. Two points only: closed vs open weights, and ‘names change, mechanics don’t.’ Don’t read table. <b>[D] deeper:</b> MoE, distillation, quantization &mdash; why Flash-class models exist and why parameter count stopped predicting cost. Sets up the S6 routing decision.", "c": true, "title": "Why ChatGPT ≠ Gemini ≠ Claude"}, {"m": 2.5, "n": "<b>REVEAL CARDS.</b> Class explains WHY before each click: strawberry→tokens, math→predict, news→cutoff, citation→plausible.", "c": false, "title": "Famous failures — you explain them"}, {"m": 2, "n": "Fill window with chat+notes (green), then textbook → red overflow. Then 1M: textbook fits — ‘the wall moves; the physics doesn’t.’ Twist: <b>no memory — app re-sends everything.</b> Motivates RAG. <b>[D] deeper:</b> the KV cache: prefill vs decode, TTFT vs tokens/sec, and why context caching is ~90% off. This is the mechanism behind three later cost claims &mdash; worth opening if time allows.", "c": false, "title": "The context window: its entire working memory"}, {"m": 2, "n": "<b>ACTIVE RECALL.</b> Class says each definition aloud, THEN click. Now includes Parameter + Inference.", "c": false, "title": "Eight words you own now"}, {"m": 2.5, "n": "<b>Press Send.</b> Dot travels code→key→GPUs→response. ‘The model does NOT run on your laptop.’ De-mystifies the lab.", "c": false, "title": "What actually happens when you call an API"}, {"m": 2, "n": "Shown ONCE, applies to all 6 labs. Point at A→E strip. Point at <b>intrepidkarthi.com/genai</b> — everyone bookmarks it now, phones out. Pairs rule: <b>both have a key · one drives per part · swap at each checkpoint</b>. Read the Lab 3 line aloud: put a receipt + a handwriting page in Drive now. ‘Checkpoints are for you, not marks.’", "c": false, "title": "Your lab kit, and the rhythm"}, {"m": 50, "n": "<b>2 min brief, then 50 MIN LAB.</b> 5 steps on board + aistudio.google.com. Pairs: both have a key, one drives per part, swap at checkpoints; 5-min rule. Circulate; checkpoint sweep at +40. <b>Links are on screen</b> — point at them.", "c": false, "title": "Lab 1: your first AI API call"}, {"m": 5, "n": "<b>After lab · 5 min incl. show & tell.</b> Show & tell first (~3): 2–3 pairs’ model differences from Part D. Then the three cards: the 10-question test set is written in the last 10 min of lab (Part E) — confirm every pair has it, it feeds Session 2; the lie-detector teaser; the next-session hand-off.", "c": true, "title": "Three things before the next session"}, {"m": 2, "n": "<b>Close (2 min).</b> ‘Learned the trick; next you drive it.’ Name the strongest hot-take counter-argument from the room, with credit. Remind: bring your own documents (PDF/notes) for Day 2, and the two photos for Lab 3. <b>Links are on screen</b> — point at them.", "c": true, "title": "You've learned the trick. Next: you learn to drive it."}];
   var deck=document.getElementById('deck');
   var total=DATA.reduce(function(a,d){return a+d.m;},0);
   var cum=[],run=0; DATA.forEach(function(d){run+=d.m;cum.push(run);});

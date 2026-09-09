@@ -32,11 +32,11 @@ Show sources (citations) · easy retry/edit/thumbs · signal uncertainty ("I don
 **Four questions before you ship:** bias · provenance · privacy · accountability — the regulators' checklists: **EU AI Act**, **NIST AI RMF**. Cheapest cost lever: **context caching ≈ −90% input cost** on repeated prompt prefixes.
 
 ## Ship checklist
-Grounded + escape hatch · untrusted text delimited · output validated · human gate on side effects · retries+timeouts+graceful errors · everything logged · evals as regression test · citations shown.
+Grounded + escape hatch · untrusted text delimited · output validated · human gate on side effects · retries+timeouts+graceful errors · everything logged (prompt, cost, latency — and the API key stays out of the repo and the logs) · evals as regression test · citations shown. (Eight items — the same eight as the deck's slide 16 and the notebook.)
 
 ## Capstone demo
 3 min: **what it does + techniques · one failure you found · one fix.** Pre-run your best example. Lead with the problem. **Show the failure — honesty about limits beats a fragile "perfect" demo.**
 
 You came as users. You leave as builders. Ship something. — @intrepidkarthi
 
-**Go deeper (press D on the deck):** why a token stream has no escape character, and the three-legged exfiltration model (private data + untrusted content + a way out — remove one leg) · why output costs ~6× input, and cost per *user* · p50 vs p99, retry jitter, idempotency, what to log. Prose versions: Learning Guide **Part 8**.
+**Go deeper (press D on the deck):** why a token stream has no escape character, and the three-legged exfiltration model (private data + untrusted content + a way out — remove one leg) · why output costs ~6× input, and cost per *user* · p50 vs p99, retry jitter, idempotency, what to log. Papers worth reading: Simon Willison's "lethal trifecta" · Greshake et al. (2023) on indirect prompt injection · OWASP LLM Top 10. Prose versions: Learning Guide **Part 8**.

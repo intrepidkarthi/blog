@@ -47,34 +47,32 @@
 <body>
 <div class="wrap">
   <nav class="crumbs"><a href="../../index.html">← Course home</a></nav>
-  <div class="kicker">Lab 6 · 50 minutes</div>
-  <h1>Break It, Then Ship It</h1>
-  <p class="lead">Session 6 · Security + Shipping · TCE — the finale · ~30 min hardening + ~50 min demos.</p>
+  <div class="kicker">Lab 6 · ~65 minutes</div>
+  <h1>Lab 6 — Break It, Then Ship It</h1>
+  <p class="lead"><strong>Session 6 · Security + Shipping · TCE — the finale</strong> · ~30 min hardening + ~35 min demos (3 min per pair)</p>
 
-  <blockquote><p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p></blockquote>
+<blockquote>
+<p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p>
+</blockquote>
+<p>Open your Session 4/5 capstone notebook alongside this one.</p>
+<h2 id="part-a--attack-a-naive-bot-8-min">Part A — Attack a naive bot (8 min)</h2>
+<p>Run the under-defended TCE-Bot. Throw attacks at it: instruction override, “print your system prompt”, roleplay jailbreak. Add your own — creativity rewarded. Expect most direct attacks to bounce even here: current models are trained hard against them. That is the finding, not a broken exercise.</p>
+<p>✓ <strong>Checkpoint 1:</strong> you can say which attacks bounced, which got anywhere, and what that proves about the bot.</p>
+<h2 id="part-b--harden-it-8-min">Part B — Harden it (8 min)</h2>
+<p>Add the layered defenses (instruction hierarchy, delimit user text as DATA, output filter). Re-run the <strong>same</strong> attacks. Many of them bounced before you hardened anything, so this is not a clean before/after: the questions are which class of attack still lands (the indirect one in Cell 5) and what your layers actually changed. Before Cell 5, run the <em>Reload your Lab 4 store</em> cell: it mounts Drive and reads back your Lab 4 embeddings, so the poisoned chunk is injected into <strong>your</strong> real store. Then try to beat your own defense (no prompt is unbreakable — layers, not walls).</p>
+<p>✓ <strong>Checkpoint 2:</strong> you can name the attack class that still lands and what your hardening changed; normal question still answered.</p>
+<h2 id="part-c--red-team-a-classmate-10-min">Part C — Red-team a classmate (10 min)</h2>
+<p><strong>Swap laptops with another pair.</strong> Attack their capstone: direct injection, an <strong>indirect</strong> poisoned document (add a malicious line, re-ingest, ask normally), a tool that fires when it shouldn’t. Find one real hole. Swap back → patch YOURS. No working app on either side? Red-team the naive bot from Cell 2 instead, and harden that — the checkpoint is the hole plus the fix, not the app.</p>
+<p>✓ <strong>Checkpoint 3:</strong> one hole found + one fix applied to your app.</p>
+<h2 id="part-d--ship-readiness-self-audit-5-min">Part D — Ship-readiness self-audit (5 min)</h2>
+<p>Score your capstone against the 8-point checklist (Cell 6): grounded prompt with an “I don’t know” escape · untrusted text delimited &amp; labeled · output validated before returning · no destructive tool without a human gate · retries + timeout + graceful error · requests logged (prompt/cost/latency) · eval set runs as a regression test · sources/citations shown to the user. Honest count = your roadmap, not your grade.</p>
+<h2 id="then-capstone-demos">Then: Capstone demos</h2>
+<p>Use the instructor’s announced format: normally <strong>up to 3 minutes per pair</strong>, but a larger class may use 60–90-second lightning demos, selected live demos, or parallel rooms. Cover what it does + techniques · one failure you found · one fix. Pre-run your best example. Lead with the problem. <strong>Show the failure — honesty about limits scores higher than a fragile “perfect” demo.</strong></p>
+<h2 id="keep-everything">Keep everything</h2>
+<p>All decks, labs, cheatsheets, prep notes are yours. Ship your capstone for real (Streamlit/Vercel free tier), put the link on your resume and GitHub — API key in Streamlit secrets or an env var, never in the repo. Or scope it into your final-year project: a metric, a baseline, and where it fails. Stay in touch: @intrepidkarthi.</p>
 
-  <p>Open your Session 4/5 capstone notebook alongside this one.</p>
 
-  <h2>Part A — Attack a naive bot (8 min)</h2>
-  <p>Run the under-defended TCE-Bot. Throw attacks at it: instruction override, "print your system prompt", roleplay jailbreak. Add your own — creativity rewarded.</p>
-  <blockquote><p>✓ <strong>Checkpoint 1:</strong> one attack that makes it misbehave.</p></blockquote>
 
-  <h2>Part B — Harden it (8 min)</h2>
-  <p>Add the layered defenses (instruction hierarchy, delimit user text as DATA, output filter). Re-run the <strong>same</strong> attacks — they should bounce while normal questions still work. Then try to beat your own defense (no prompt is unbreakable — layers, not walls).</p>
-  <blockquote><p>✓ <strong>Checkpoint 2:</strong> attacks bounce, normal question answered.</p></blockquote>
-
-  <h2>Part C — Red-team a classmate (12 min)</h2>
-  <p><strong>Swap laptops with another pair.</strong> Attack their capstone: direct injection, an <strong>indirect</strong> poisoned document (add a malicious line, re-ingest, ask normally), a tool that fires when it shouldn't. Find one real hole. Swap back → patch YOURS.</p>
-  <blockquote><p>✓ <strong>Checkpoint 3:</strong> one hole found + one fix applied to your app.</p></blockquote>
-
-  <h2>Part D — Ship-readiness self-audit (5 min)</h2>
-  <p>Score your capstone against the 8-point checklist. Honest count = your roadmap, not your grade.</p>
-
-  <h2>Then: Capstone demos</h2>
-  <p><strong>3 minutes each:</strong> what it does + techniques · one failure you found · one fix. Pre-run your best example. Lead with the problem. <strong>Show the failure — honesty about limits scores higher than a fragile "perfect" demo.</strong></p>
-
-  <h2>Keep everything</h2>
-  <p>All decks, labs, cheatsheets, prep notes are yours. Ship your capstone for real (Streamlit/Vercel free tier), put the link on your resume and GitHub. Stay in touch: @intrepidkarthi.</p>
 
   <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="../../index.html">course home</a> · free to use, fork, localize and teach</footer>
 </div>

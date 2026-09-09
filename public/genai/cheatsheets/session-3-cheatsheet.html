@@ -48,51 +48,64 @@
 <div class="wrap">
   <nav class="crumbs"><a href="../index.html">← Course home</a></nav>
   <div class="kicker">Session 3 cheatsheet</div>
-  <h1>AI Beyond Text</h1>
-  <p class="lead">Generative AI: Foundations and Applications · TCE</p>
-
-  <h2>The one idea</h2>
-  <blockquote style="background:var(--accentpale)"><strong>Same loop, new tokens.</strong> Images → patch-tokens, audio → slice-tokens, into the same attention machine from Session 1. Multimodal = new eyes wired into the same brain.</blockquote>
-
-  <h2>Reading vs making</h2>
-  <ul>
-    <li><strong>Reading images</strong> (vision) = prediction with picture-tokens in context. It doesn't just see — it <em>reads</em>: documents, handwriting, charts, screenshots.</li>
-    <li><strong>Making images</strong> = <strong>diffusion</strong>: train a network to remove noise; generate by starting from pure static and "repairing" toward an image, steered each step by your prompt.</li>
-  </ul>
-
-  <h2>The code that matters</h2>
-  <pre><code>from PIL import Image
-img = Image.open("receipt.jpg")
+  <h1>Session 3 Cheatsheet — AI Beyond Text</h1>
+<h2 id="the-one-idea">The one idea</h2>
+<p><strong>Same loop, new tokens.</strong> Images → patch-tokens, audio → slice-tokens, into the same attention machine from Session 1. Multimodal = new eyes wired into the same brain.</p>
+<h2 id="reading-vs-making">Reading vs making</h2>
+<ul>
+<li><strong>Reading images</strong> (vision) = prediction with picture-tokens in context. It doesn’t just see — it <em>reads</em>: documents, handwriting, charts, screenshots.</li>
+<li><strong>Making images</strong> = <strong>diffusion</strong>: train a network to remove noise; generate by starting from pure static and “repairing” toward an image, steered each step by your prompt. Today’s lab is vision-in only — free-tier image-generation APIs are limited; try the making side free in Google AI Studio tonight.</li>
+</ul>
+<h2 id="the-code-that-matters">The code that matters</h2>
+<pre class="python"><code>from PIL import Image
+img = Image.open(&quot;receipt.jpg&quot;)
 
 r = client.models.generate_content(
     model=MODEL,
-    contents=[img, """Extract data. Reply ONLY with JSON:
-      {"vendor": str, "total": float}
-      If unreadable, use null — do NOT guess."""])</code></pre>
-  <p>Audio: <code>f = client.files.upload(file="note.m4a")</code> then <code>contents=[f, "Transcribe this."]</code><br>
-  The test of extraction isn't "looks right" — it's <strong><code>json.loads()</code> succeeds</strong>.<br>
-  Production version: <code>response_schema</code> (+ <code>response_mime_type="application/json"</code>) in the config = <strong>guaranteed JSON</strong> — delete the format-begging from your prompt.</p>
+    contents=[img, &quot;&quot;&quot;Extract data. Reply ONLY with JSON:
+      {&quot;vendor&quot;: str, &quot;total&quot;: float}
+      If unreadable, use null — do NOT guess.&quot;&quot;&quot;])</code></pre>
+<p>Audio: <code>f = client.files.upload(file="note.m4a")</code> then <code>contents=[f, "Transcribe this."]</code> The test of extraction isn’t “looks right” — it’s <strong><code>json.loads()</code> succeeds</strong>. Production version: <code>response_schema</code> (+ <code>response_mime_type="application/json"</code>) in the config <strong>guarantees the shape parses; it does not verify the values</strong> — allow <code>null</code> for anything unreadable, keep the <code>try/except</code> (truncation at <code>max_output_tokens</code> can still cut the JSON), and delete the format-begging from your prompt.</p>
+<h2 id="where-vision-fails-and-why">Where vision fails (and why)</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Failure</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Miscounts objects</td>
+<td>patches summarize, don’t enumerate</td>
+<td>detection tools when counts matter</td>
+</tr>
+<tr class="even">
+<td>Left/right confusion</td>
+<td>spatial info lost in flattening</td>
+<td>don’t trust precise geometry</td>
+</tr>
+<tr class="odd">
+<td>Blurred text “read” anyway</td>
+<td>plausible completion = pixel hallucination</td>
+<td>grounding: “if unreadable, say UNREADABLE”</td>
+</tr>
+<tr class="even">
+<td>Won’t identify faces</td>
+<td>refused by design (privacy)</td>
+<td>KYC face-match = separate regulated systems</td>
+</tr>
+</tbody>
+</table>
+<h2 id="voice-one-paragraph">Voice, one paragraph</h2>
+<p>STT is often excellent but not uniformly solved — accents, noise, rare names and Tamil-English code-switching still produce silent errors, so lectures → notes is useful, not solved: verify names, numbers and formulas. TTS is convincingly human. <strong>Cloning needs seconds of audio</strong> — the “family member urgently needs money/OTP” call is a live scam pattern. Set a family password. Tell your parents.</p>
+<h2 id="carry-forward">Carry forward</h2>
+<p>Everything from S1–S2 applies to images unchanged: prompting, format control, grounding, <strong>evals</strong> (5 images + expected answers = vision eval). <strong>Tonight: 2–3 real documents on your laptop — Day 2 builds “chat with my notes” over them.</strong></p>
+<p><strong>Go deeper (press D on the deck):</strong> ViT patches as tokens — why resolution costs tokens quadratically and small text fails suddenly · what a diffusion model actually predicts (the noise), plus steps / guidance / seed / latent diffusion · constrained decoding: how a schema makes malformed JSON unreachable. Prose versions: Learning Guide <strong>Part 8</strong>. Papers worth reading: ViT — the Vision Transformer (2020).</p>
 
-  <h2>Where vision fails (and why)</h2>
-  <table>
-    <thead>
-      <tr><th>Failure</th><th>Cause</th><th>Fix</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Miscounts objects</td><td>patches summarize, don't enumerate</td><td>detection tools when counts matter</td></tr>
-      <tr><td>Left/right confusion</td><td>spatial info lost in flattening</td><td>don't trust precise geometry</td></tr>
-      <tr><td>Blurred text "read" anyway</td><td>plausible completion = pixel hallucination</td><td>grounding: "if unreadable, say UNREADABLE"</td></tr>
-      <tr><td>Won't identify faces</td><td>refused by design (privacy)</td><td>KYC face-match = separate regulated systems</td></tr>
-    </tbody>
-  </table>
 
-  <h2>Voice, one paragraph</h2>
-  <p>STT is near-human (lectures → notes is solved). TTS is convincingly human. <strong>Cloning needs seconds of audio</strong> — the "family member urgently needs money/OTP" call is a live scam pattern. Set a family password. Tell your parents.</p>
 
-  <h2>Carry forward</h2>
-  <p>Everything from S1–S2 applies to images unchanged: prompting, format control, grounding, <strong>evals</strong> (5 images + expected answers = vision eval). <strong>Tonight: 2–3 real documents on your laptop — Day 2 builds "chat with my notes" over them.</strong></p>
-
-  <p><strong>Go deeper (press D on the deck):</strong> ViT patches as tokens &mdash; why resolution costs tokens quadratically and small text fails suddenly · what a diffusion model actually predicts (the noise), plus steps / guidance / seed / latent diffusion · constrained decoding: how a schema makes malformed JSON unreachable. Prose versions: Learning Guide <strong>Part 8</strong>.</p>
 
   <footer class="foot">
     <div style="margin-bottom:8px"><a href="session-2-cheatsheet.html">← Session 2</a> · deck: <a href="../presentations/session-3-ai-beyond-text.html">session-3-ai-beyond-text.html</a> · <a href="session-4-cheatsheet.html">Session 4 →</a></div>

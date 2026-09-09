@@ -47,6 +47,6 @@ Rules: `expected` = the key fact only · temperature 0 · run 3×, report averag
 ## The loop (memorize)
 **Write → eval → read failures → fix ONE thing → re-run.** "It worked when I tried it" is not evidence — the demo is the best case, the eval is the expected case.
 
-**Carry forward:** this harness grades your capstone (S6). Next session: photos on your phone.
+**Carry forward:** this harness grades your capstone (S6). Final-year project: an eval harness plus a score curve is a Results chapter — a project with numbers beats a project with a demo. Next session: photos on your phone.
 
-**Go deeper (press D on the deck):** precision / recall / F1 and when accuracy lies · auditing an LLM judge (position and verbosity bias — swap the order and re-run) · how many test questions is enough (±1/√n) and paired comparison. Prose versions: Learning Guide **Part 8**.
+**Go deeper (press D on the deck):** precision / recall / F1 and when accuracy lies · auditing an LLM judge (position and verbosity bias — swap the order and re-run) · how many test questions is enough (±1/√n) and paired comparison. Prose versions: Learning Guide **Part 8**. Papers: see Appendix D of the book — start with *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models* (Wei et al., 2022) and *Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena* (Zheng et al., 2023 — the position-bias result behind today's judge panel); read abstract, figures, results, limitations, in that order.

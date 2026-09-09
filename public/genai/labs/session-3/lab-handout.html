@@ -48,37 +48,34 @@
 <div class="wrap">
   <nav class="crumbs"><a href="../../index.html">← Course home</a></nav>
   <div class="kicker">Lab 3 · 50 minutes</div>
-  <h1>Interrogate Your Photos</h1>
-  <p class="lead">Session 3 · Multimodal · TCE · 50 min · pairs · Same rhythm (checkpoints → show instructor).</p>
+  <h1>Lab 3 — Interrogate Your Photos</h1>
+  <p class="lead"><strong>Session 3 · Multimodal · TCE</strong> · 50 min · pairs · Same rhythm (checkpoints → show instructor)</p>
 
-  <blockquote><p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p></blockquote>
+<blockquote>
+<p><strong>Runs entirely in your browser (Google Colab).</strong> Any laptop or lab PC works — nothing to install, no GPU, no payment. See <a href="../../ZERO-SETUP.html"><code>ZERO-SETUP</code></a>.</p>
+</blockquote>
+<p><strong>You need:</strong> 2–3 photos on your laptop (receipt / handwritten notes / menu board / anything). Stuck? The notebook links two public-domain samples — a Swiss receipt (Part B) and Abraham Lincoln’s 1854 handwritten letter (Part C) — but your own mess bill is more fun.</p>
+<h2 id="part-a--the-interrogation-ladder-10-min">Part A — The interrogation ladder (10 min)</h2>
+<p>Upload a photo to Colab (folder icon → upload). Run the 5-question ladder: describe → read text → count → infer → surprise. Grade each answer honestly.</p>
+<p>✓ <strong>Checkpoint 1:</strong> ladder run + 2-line grading (where did it wobble?).</p>
+<h2 id="part-b--document--json-10-min">Part B — Document → JSON (10 min)</h2>
+<p>Receipt/bill/marksheet → strict-schema extraction. The test isn’t the output <em>looking</em> right — it’s <strong><code>json.loads()</code> succeeding</strong>. If the parse cell crashes, your prompt isn’t strict enough. Tighten (“Reply ONLY with JSON”, “null if unreadable — do NOT guess”) and re-run.</p>
+<p>✓ <strong>Checkpoint 2:</strong> parse cell prints your total.</p>
+<h2 id="the-production-way-response_schema-5-min">The production way: response_schema (5 min)</h2>
+<p>Prompt-begging for JSON is fragile. Pass a schema with the request (<code>response_mime_type="application/json"</code> + <code>response_schema=…</code>) to constrain the response shape. This reduces formatting failures, but it does <strong>not</strong> guarantee correct values, a successful request, or a useful answer when the image is unreadable. The schema must also allow an explicit unknown/null outcome. Run the Part B2 cell in the notebook.</p>
+<p>✓ <strong>Checkpoint 3:</strong> the structured response parses, and you inspect whether its values are actually supported by the image.</p>
+<h2 id="part-c--handwriting-10-min">Part C — Handwriting (10 min)</h2>
+<p>Your own notes page → transcription with <code>[?]</code> for unclear words. What % did it get? Tamil/Tanglish = bonus data point. No page of your own? Cell 5 has a <code>wget</code> for the Lincoln letter sample — 19th-century cursive is a fair test.</p>
+<h2 id="part-d--break-it-10-min">Part D — Break it (10 min)</h2>
+<p>Find one <strong>confident invention</strong>: a blurred price it reads anyway, a miscount, paraphrased “quotes.”</p>
+<p>✓ <strong>Checkpoint 4:</strong> show me the invention.</p>
+<h2 id="stretch">Stretch</h2>
+<p>Grounding A/B (does “reply UNREADABLE if unclear” stop the invention?) · vision eval — 5 images + expected answers through your S2 harness (this becomes 25% of your capstone score — aim for 10 examples, not 5) · voice-note transcription.</p>
+<h2 id="tonight-5-min--this-one-is-mandatory">Tonight (5 min — this one is mandatory)</h2>
+<p>Put <strong>2–3 real documents</strong> on your laptop/Drive: lecture notes, a textbook chapter PDF, anything worth querying. Tomorrow you build <strong>chat with my notes</strong> over them. No documents = boring Day 2. Bring good ones.</p>
 
-  <p><strong>You need:</strong> 2–3 photos on your laptop (receipt / handwritten notes / menu board / anything). Sample images linked in the notebook if you're stuck — but your own mess bill is more fun.</p>
 
-  <h2>Part A — The interrogation ladder (12 min)</h2>
-  <p>Upload a photo to Colab (folder icon → upload). Run the 5-question ladder: describe → read text → count → infer → surprise. Grade each answer honestly.</p>
-  <blockquote><p>✓ <strong>Checkpoint 1:</strong> ladder run + 2-line grading (where did it wobble?).</p></blockquote>
 
-  <h2>Part B — Document → JSON (15 min)</h2>
-  <p>Receipt/bill/marksheet → strict-schema extraction. The test isn't the output <em>looking</em> right — it's <strong><code>json.loads()</code> succeeding</strong>. If the parse cell crashes, your prompt isn't strict enough. Tighten ("Reply ONLY with JSON", "null if unreadable — do NOT guess") and re-run.</p>
-  <blockquote><p>✓ <strong>Checkpoint 2:</strong> parse cell prints your total.</p></blockquote>
-
-  <h2>The production way: response_schema</h2>
-  <p>Prompt-begging for JSON works — production code doesn't beg. Pass a schema with the request (<code>response_mime_type="application/json"</code> + <code>response_schema=…</code>) and the API <strong>cannot</strong> return anything else: no code fences, nothing to strip — and the format instructions come out of your prompt entirely. Run the Part B2 cell in the notebook.</p>
-  <blockquote><p>✓ <strong>Checkpoint:</strong> <code>json.loads</code> never fails now — even with an empty prompt about format.</p></blockquote>
-
-  <h2>Part C — Handwriting (8 min)</h2>
-  <p>Your own notes page → transcription with <code>[?]</code> for unclear words. What % did it get? Tamil/Tanglish = bonus data point.</p>
-
-  <h2>Part D — Break it (10 min)</h2>
-  <p>Find one <strong>confident invention</strong>: a blurred price it reads anyway, a miscount, paraphrased "quotes."</p>
-  <blockquote><p>✓ <strong>Checkpoint 3:</strong> show me the invention.</p></blockquote>
-
-  <h2>Stretch</h2>
-  <p>Grounding A/B (does "reply UNREADABLE if unclear" stop the invention?) · vision eval — 5 images + expected answers through your S2 harness · voice-note transcription.</p>
-
-  <h2>Tonight (5 min — this one is mandatory)</h2>
-  <p>Put <strong>2–3 real documents</strong> on your laptop/Drive: lecture notes, a textbook chapter PDF, anything worth querying. Tomorrow you build <strong>chat with my notes</strong> over them. No documents = boring Day 2. Bring good ones.</p>
 
   <footer class="foot">Generative AI: Foundations &amp; Applications · <a href="../../index.html">course home</a> · free to use, fork, localize and teach</footer>
 </div>

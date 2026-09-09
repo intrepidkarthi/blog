@@ -1,0 +1,100 @@
+OPERATING SYSTEMS — LECTURE NOTES (Units 2–5, condensed)
+BE CSE, Semester 4. Instructor's sample document for the GenAI bootcamp, Lab 4 (Chat With YOUR Notes).
+Use this only if you did not bring a document of your own. Everything below is ordinary undergraduate OS material; the final section is an ILLUSTRATIVE extract of academic regulations written for the lab, not the college's official rulebook.
+
+1. PROCESSES AND THREADS
+
+A process is a program in execution. A program on disk is passive (a file of instructions); a process is active: it has a program counter, a set of registers, a stack, a heap, and an address space assigned by the operating system. The kernel keeps one Process Control Block (PCB) per process: state, PID, saved registers, scheduling information, memory-management information (page tables), accounting and open files. When the CPU switches from one process to another the kernel saves the running process's context into its PCB and loads the next one's. This is the context switch, and it is pure overhead: no useful work is done while switching.
+
+A process moves through five states: New (being created), Ready (waiting for a CPU), Running, Waiting (blocked on an event such as I/O completion) and Terminated. On a single-core machine exactly one process is Running at any instant; many can be Ready or Waiting.
+
+A thread is the unit of CPU scheduling inside a process. Threads of the same process share the code section, the data section, the heap and open files, but each thread has its own program counter, its own register set and its own stack. Because the shared parts are already in place, creating a thread is far cheaper than creating a process (fork must copy or copy-on-write the whole address space), and switching between threads of one process is cheaper than a full process context switch because the address space, and therefore the TLB and most of the cache, stay the same.
+
+The trade-off is isolation. Two processes cannot corrupt each other's memory; two threads can, because they share the heap, and a bug in one thread can crash the entire process. A web browser puts each tab in a separate process for exactly this reason; a web server handles thousands of connections with threads because per-connection processes would exhaust memory.
+
+Exam pointer: "Compare process and thread" is a standard 8-mark question: what is shared, what is private, creation and switching cost, isolation, one example each.
+
+2. CPU SCHEDULING
+
+The scheduler decides which Ready process gets the CPU next. A non-preemptive scheduler only switches when the running process gives up the CPU voluntarily; a preemptive scheduler can take the CPU away, typically on a timer interrupt.
+
+Criteria: CPU utilisation, throughput (processes completed per unit time), turnaround time (submission to completion), waiting time (time spent in the ready queue) and response time (submission to first response). No algorithm optimises all of them at once.
+
+First-Come First-Served (FCFS) runs processes in arrival order, non-preemptively. Simple, fair in the queue sense, but suffers from the convoy effect: one long CPU-bound process at the front makes all the short ones behind it wait.
+
+Shortest Job First (SJF) runs the process with the smallest next CPU burst. SJF is provably optimal for average waiting time, but the next burst length is not known in advance; real systems predict it from previous bursts. The preemptive variant is Shortest Remaining Time First (SRTF). Long processes can starve.
+
+Priority scheduling picks the highest-priority ready process. The danger is starvation of low-priority processes; the fix is aging, gradually raising the priority of a process the longer it waits.
+
+Round Robin (RR) is FCFS with preemption. Each process gets a time quantum (typically 10–100 ms); when it expires the process goes to the back of the ready queue. RR gives good response time and is the default for time-sharing systems. The quantum is the knob: a very large quantum degenerates to FCFS; a very small one means the CPU spends most of its time context switching. Rule of thumb: about 80% of CPU bursts should be shorter than the quantum.
+
+Worked example. Four processes, all arriving at time 0, with burst times P1 = 8, P2 = 4, P3 = 9, P4 = 5 (ms).
+FCFS order P1, P2, P3, P4: finishing times 8, 12, 21, 26. Waiting times 0, 8, 12, 21. Average waiting time = 41 / 4 = 10.25 ms.
+SJF order P2, P4, P1, P3: finishing times 4, 9, 17, 26. Waiting times 0, 4, 9, 17. Average waiting time = 30 / 4 = 7.5 ms.
+Round Robin with quantum 4: the sequence is P1(4) P2(4) P3(4) P4(4) P1(4) P3(4) P4(1) P3(1). P2 finishes at 8, P1 at 20, P4 at 25, P3 at 26. Waiting times: P1 = 12, P2 = 4, P3 = 17, P4 = 20. Average waiting time = 53 / 4 = 13.25 ms.
+So SJF wins on average waiting time, RR loses on it but every process got its first slice within 16 ms, which is what an interactive user notices.
+
+Multilevel feedback queues keep several ready queues and let a process move between them: a process that uses its whole quantum is demoted to a lower-priority, longer-quantum queue, so CPU-bound jobs sink and interactive jobs float to the top without anyone labelling them.
+
+3. DEADLOCK
+
+A set of processes is deadlocked when every process in the set is waiting for an event that only another process in the set can cause. The classic picture is two processes each holding one lock and requesting the other's.
+
+Deadlock can occur only if all four Coffman conditions hold simultaneously:
+1. Mutual exclusion: at least one resource is non-sharable; only one process can use it at a time.
+2. Hold and wait: a process holding at least one resource is waiting to acquire more.
+3. No preemption: a resource can be released only voluntarily by the process holding it.
+4. Circular wait: there is a cycle of processes P0 → P1 → ... → Pn → P0 in which each waits for a resource held by the next.
+Breaking any one of the four is enough to prevent deadlock.
+
+Handling strategies. Prevention: make one condition impossible, for example impose a global ordering on locks so circular wait cannot occur (this is what most real code does). Avoidance: the Banker's algorithm refuses any request that would leave the system in an unsafe state; it needs each process to declare its maximum demand in advance, which is rarely practical. Detection and recovery: allow deadlocks, periodically search the resource-allocation graph for cycles, then kill a process or preempt resources. Ignore it: the ostrich approach, used by most general-purpose OSes because deadlocks among user processes are rare and the user just kills the program.
+
+In a resource-allocation graph a request edge points from process to resource and an assignment edge from resource to process. If every resource has a single instance, a cycle means deadlock; with multiple instances a cycle is necessary but not sufficient.
+
+4. MEMORY MANAGEMENT: PAGING AND SEGMENTATION
+
+Programs use logical addresses; the memory unit sees physical addresses; the MMU translates at run time. Contiguous allocation (a base and limit register per process) suffers from external fragmentation: free memory is chopped into holes too small to use.
+
+Paging removes the need for contiguous physical memory. Physical memory is divided into fixed-size frames and logical memory into pages of the same size (commonly 4 KB). A logical address is split into a page number p and an offset d; the page table, indexed by p, gives the frame number f, and the physical address is f concatenated with d. Any free frame can hold any page, so external fragmentation disappears; internal fragmentation remains (about half a page per process).
+
+Because the page table lives in memory, every access would need two memory accesses. The Translation Lookaside Buffer (TLB) caches recent page-table entries; with hit ratio h, TLB time t and memory time m the effective access time is h(t + m) + (1 − h)(t + 2m). With h = 0.98, t = 10 ns and m = 100 ns that is about 112 ns, so a good TLB makes paging almost free. Large address spaces need multi-level, hashed or inverted page tables.
+
+Segmentation divides memory the way the programmer sees it: a code segment, a data segment, a stack, each with its own base and limit; a logical address is (segment number, offset). Segments are variable-sized, which makes sharing and protection natural (mark the code segment read-only and share it) but reintroduces external fragmentation. Comparison in one line: paging is fixed-size, invisible to the programmer and free of external fragmentation; segmentation is variable-size, visible to the programmer, and mirrors the program's logical structure. Modern 64-bit systems use paging almost exclusively.
+
+5. VIRTUAL MEMORY AND PAGE REPLACEMENT
+
+Virtual memory lets a process run with only part of its address space in physical memory. Each page-table entry carries a valid/invalid bit; touching an invalid page raises a page fault, the kernel finds the page on backing store, picks a free frame (or evicts a victim), reads the page in, updates the table and restarts the instruction. This is demand paging: programs larger than RAM, faster process start, more processes resident at once.
+
+If p is the page-fault rate, m the memory access time and F the fault service time, the effective access time is (1 − p) m + p F. With F ≈ 8 ms and m ≈ 100 ns, even p = 0.001 gives about 8.1 μs, an 80× slowdown, so the fault rate has to be tiny.
+
+When no frame is free the kernel must choose a victim. FIFO evicts the oldest resident page; simple, but it ignores usage and suffers Belady's anomaly: giving the process more frames can increase the number of page faults. Optimal (OPT) evicts the page that will not be used for the longest time in the future; unimplementable, but the benchmark every practical algorithm is measured against. Least Recently Used (LRU) evicts the page unused for the longest time in the past, assuming the recent past predicts the near future; it does not suffer Belady's anomaly, but exact LRU needs a counter or stack updated on every access, which is too expensive in hardware. The second-chance (clock) algorithm approximates it with a reference bit: cycle through frames, clear a set bit and move on, evict the first page whose bit is already clear.
+
+Worked example. Reference string 7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1 with 3 frames: FIFO gives 15 page faults, LRU 12, OPT 9. With 4 frames: FIFO 10, LRU 8, OPT 8. Tracing one of these on paper is compulsory for the end-semester exam.
+
+If a process does not have enough frames for its working set (the pages it is actively using) it faults constantly, the CPU sits idle waiting for the disk, the scheduler sees low utilisation and admits more processes, and the situation gets worse. This collapse is thrashing. The working-set model and page-fault-frequency control keep every resident process above its thrashing threshold, suspending processes if necessary.
+
+6. FILE SYSTEMS
+
+A file is a named collection of related information on secondary storage; the OS hides the disk's blocks behind a logical view. Attributes (name, size, location, protection bits, timestamps) live in a directory entry or an inode. Directory structures range from single-level to tree-structured (absolute and relative paths) to acyclic graphs (shared subdirectories via links).
+
+Allocation methods decide how a file's blocks are placed on disk. Contiguous allocation stores each file in consecutive blocks: fast access, but external fragmentation and files that cannot grow. Linked allocation chains blocks with pointers: no fragmentation, but direct access means walking the chain; the FAT (File Allocation Table) keeps all the pointers in one table at the start of the volume. Indexed allocation gathers the block pointers into an index block; UNIX inodes use 12 direct pointers plus single, double and triple indirect blocks, which makes small files cheap and still allows very large ones.
+
+Free space is tracked with a bit vector (one bit per block) or a linked list of free blocks. Journaling file systems (ext4, NTFS) write an intent record to a log before modifying metadata, so after a crash the log is replayed or discarded and the file system is consistent without a full fsck scan.
+
+Exam pointer: draw the inode layout, compute the maximum file size given block size and pointer size, and explain why FAT is fine for a pen drive but poor for a server disk.
+
+7. TCE CSE — EXTRACT FROM ACADEMIC REGULATIONS (ILLUSTRATIVE)
+
+ILLUSTRATIVE: written for the GenAI bootcamp so that the deck's demo queries (attendance, pass marks) have something to retrieve. The numbers are typical of Indian engineering colleges but they are NOT the official Thiagarajar College of Engineering regulations. For anything that matters, read the actual regulations for your batch on the college website.
+
+Attendance. A student must have a minimum of 75% attendance in each course, counted over the semester, to be eligible to write the end-semester examination in that course. A student whose attendance is between 65% and 75% may be granted condonation on medical grounds, on production of a medical certificate and payment of the condonation fee, subject to approval by the Head of the Department and the Principal. Below 65% the student is not permitted to write the end-semester examination and must re-register for the course. On-duty leave sanctioned for placement drives, sports and college-approved events is counted as present.
+
+Assessment split. Every theory course is assessed for 100 marks: 50 marks of continuous internal assessment (CIA) and 50 marks of end-semester examination (ESE). The internal assessment consists of two continuous assessment tests of 20 marks each, scaled to 30, plus 20 marks for assignments, tutorials and quizzes. Laboratory courses are assessed as 60 marks internal (record work, weekly evaluation, model examination) and 40 marks end-semester practical examination.
+
+Passing a course. To pass a theory course a student must secure a minimum of 45% of the marks in the end-semester examination (that is, 22.5 out of 50) AND a minimum of 50% of the total marks in the course, internal and end-semester taken together (that is, 50 out of 100). Both conditions must be met; a high internal mark cannot compensate for an end-semester mark below 45%. For laboratory courses the minimum is 50% in the end-semester practical examination and 50% in aggregate.
+
+Re-appearance (arrears). A student who fails a course, or who was absent from the end-semester examination, carries an arrear in that course. The internal assessment marks are retained, and the student re-appears only for the end-semester examination of that course in the next available examination session. A student may re-appear any number of times within the maximum duration of the programme (8 years for a 4-year BE). To improve the internal component the student must re-register for the course and attend classes again. A student with more than 4 standing arrears at the end of the fourth semester is not permitted to register for higher-semester courses until the count is brought down.
+
+Grading. Marks convert to letter grades and grade points: O (91–100, 10), A+ (81–90, 9), A (71–80, 8), B+ (61–70, 7), B (51–60, 6), C (50, 5), U (fail, 0). CGPA is the credit-weighted mean of grade points; a CGPA of at least 5.0 with no standing arrears is needed for the degree.
+
+Reminder: illustrative for the lab. Do not quote these numbers to the office.
