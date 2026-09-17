@@ -5,35 +5,6 @@
       "subtitle": "Things that are running right now and you can use today",
       "items": [
         {
-          "id": "feaws",
-          "name": "feaws",
-          "tagline": "Public quantitative trading lab",
-          "status": "active",
-          "url": "https://feaws.xyz",
-          "url_label": "feaws.xyz",
-          "year": 2025,
-          "image": "/images/lab/01-feaws.svg",
-          "summary": "An asset-agnostic quant trading model. BTC first, but the same engine applies to stocks, commodities, forex. The whitepaper is open. The trades are public.",
-          "highlights": [
-            {
-              "k": "accuracy",
-              "v": "70% on 30 test windows"
-            },
-            {
-              "k": "current signal",
-              "v": "BTC dip over the next couple of months"
-            },
-            {
-              "k": "stack",
-              "v": "Python · Polymarket API · GDELT · sentiment + F&G · Postgres · Next.js"
-            },
-            {
-              "k": "philosophy",
-              "v": "the content IS the product · the trading IS the proof"
-            }
-          ]
-        },
-        {
           "id": "dailyvox",
           "name": "Dailyvox",
           "tagline": "Offline AI voice diary, 100% on-device",
@@ -59,6 +30,35 @@
             {
               "k": "pricing",
               "v": "free, no upsell"
+            }
+          ]
+        },
+        {
+          "id": "orderbook",
+          "name": "orderbook",
+          "tagline": "Limit order book + matching engine, in Go",
+          "status": "active",
+          "url": "https://intrepidkarthi.github.io/orderbook/",
+          "url_label": "github.io/orderbook",
+          "year": 2026,
+          "image": "/images/lab/08-orderbook.svg",
+          "summary": "An embeddable central limit order book — integer-exact pricing, one goroutine owning the book with no lock on the hot path, and crash recovery gated in CI. It compiles to WebAssembly, so the demo, the six-chapter tutorial and the live console are the real engine running in your tab, not a drawing of it. MIT on GitHub.",
+          "highlights": [
+            {
+              "k": "latency",
+              "v": "p50 83ns · p99 167ns · 0 B/op on the match path"
+            },
+            {
+              "k": "orders",
+              "v": "limit · market · stop · iceberg · pegged · OCO · bracket · trailing"
+            },
+            {
+              "k": "code",
+              "v": "20,299 lines of Go · 19,906 lines of tests · 18 docs"
+            },
+            {
+              "k": "click it",
+              "v": "live demo · tutorial · console — all WASM, nothing mocked"
             }
           ]
         },
