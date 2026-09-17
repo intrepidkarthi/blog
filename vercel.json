@@ -583,8 +583,18 @@
     },
     {
       "source": "/genai/ASSESSMENT.html",
-      "destination": "/genai/assessment-pack.html",
-      "permanent": true
+      "destination": "/genai/",
+      "permanent": false
+    },
+    {
+      "source": "/genai/assessment-pack.html",
+      "destination": "/genai/",
+      "permanent": false
+    },
+    {
+      "source": "/genai/ASSESSMENT.pdf",
+      "destination": "/genai/",
+      "permanent": false
     },
     {
       "source": "/genai/COLLEGE-PROJECT-TRACKS.html",
@@ -605,6 +615,15 @@
   "headers": [
     {
       "source": "/genai/(.*)\\.(md|ipynb|py|pdf)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/genai/sample-inputs/(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",

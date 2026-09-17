@@ -1,0 +1,17 @@
+# Sample test set for Lab 2 (Session 2) — 10 questions with their key fact.
+# Format: question | expected key fact (short — a name, a number, a word)
+# Use this ONLY if you did not bring your own 10 questions. Your own subject is better:
+# you can tell instantly when the model is wrong, which is the whole point of the exercise.
+#
+# Paste into Lab 2 Cell 3 as:  {"q": "...", "expected": "..."},
+
+Who composed the music for the film Roja? | rahman
+In which year was Thiagarajar College of Engineering, Madurai founded? | 1957
+Who captained India in the 2011 Cricket World Cup final? | dhoni
+Which river flows through Madurai? | vaigai
+What is the currency of Japan? | yen
+Which data structure does a breadth-first search use? | queue
+What does the SQL keyword HAVING filter — rows or groups? | groups
+In an operating system, which page-replacement algorithm suffers from Belady's anomaly? | fifo
+Which Tamil poet wrote the Thirukkural? | valluvar
+What is the time complexity of binary search on a sorted array? | log

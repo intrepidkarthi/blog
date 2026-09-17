@@ -55,7 +55,11 @@ export default defineConfig({
         "https://intrepidkarthi.com/genai/zero-setup.html",
         "https://intrepidkarthi.com/genai/timing-guide.html",
         "https://intrepidkarthi.com/genai/localization.html",
-        "https://intrepidkarthi.com/genai/assessment-pack.html",
+        // assessment-pack.html is withheld until the November 2026 terminal exam
+        // results are out — ASSESSMENT.* is excluded from the course repo's
+        // sync-to-blog.sh, so the page no longer exists in dist. Restore this
+        // line together with that exclude.
+        // "https://intrepidkarthi.com/genai/assessment-pack.html",
         "https://intrepidkarthi.com/genai/college-project-tracks.html",
         "https://intrepidkarthi.com/genai/placement-roadmap.html",
         "https://intrepidkarthi.com/minecraft/",

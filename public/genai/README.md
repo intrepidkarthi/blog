@@ -22,9 +22,13 @@ LEARNING-GUIDE.md           ← every concept in one document — read this to L
                               (Parts 1–7 = the main line; Part 8 = the depth layer, mechanism-level;
                                Part 9 = the whole machine end to end)
 TEACH-THIS-YOURSELF.md      ← run the course at any scale (12 hours / one session / a 45-min talk)
-ASSESSMENT.md               ← for the department: course outcomes, a 53-question bank, CO/Bloom mapping and
-                              one model paper for the 2 / 6 / 15-mark pattern. ASSESSMENT.pdf and
-                              ASSESSMENT.docx are the same pack as documents, for the COE
+ASSESSMENT.md               ← for the department: the BOS-approved CO1–CO4, a 71-question bank, CO/Bloom
+                              mapping and the November 2026 paper for the 2 / 6 / 20-mark pattern.
+                              ASSESSMENT.pdf and .docx are the same pack as documents, for the COE
+SCHEME-OF-EVALUATION.md     ← the valuation scheme for that paper, mark-by-mark. Confidential until
+                              results are published; excluded from sync-to-blog.sh along with ASSESSMENT.*
+MODEL-ANSWERS.md            ← specimen full-mark scripts for all 16 questions, paced to exam time.
+                              Student revision material — release only after results. Also excluded
 PLACEMENT-ROADMAP.md        ← twelve honest weeks from this course to an interview
 certificate.html            ← capstone rubric: what a defensible project looks like
 LOCALIZATION.md             ← swap-kit for teaching it outside Madurai (what to localize, what is load-bearing)
