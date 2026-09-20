@@ -71,9 +71,9 @@ const META = {
       "A full assessment pack for a one-credit generative AI course: course outcomes with CO and Bloom mapping, a question bank across all three parts, and one model question paper set to the Part A / B / C pattern.",
   },
   "college-project-tracks.html": {
-    title: "Generative AI Project Ideas for College Students — four graded tracks",
+    title: "Generative AI Project Ideas for College Students — 20 ideas and four tracks",
     description:
-      "Generative AI project tracks for 3rd- and final-year CSE students, graded from 6 hours to research-oriented: the artifacts every project must ship, a suggested rubric, and what not to pick first.",
+      "Twenty generative AI project ideas worth building, five two-minute tests for picking one, how to form the team before the code, and four graded tracks from 6 hours to research-oriented — with the artifacts every project must ship and what not to pick first.",
   },
   "placement-roadmap.html": {
     title: "AI Placement Roadmap — twelve weeks from this course to an offer",
